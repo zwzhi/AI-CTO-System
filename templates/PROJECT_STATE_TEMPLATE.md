@@ -94,6 +94,43 @@
 - Remaining Risks / Acceptance：
 - Next Release Action：
 
+## Maintenance Status
+
+仅在 `MAINTENANCE` 及 Maintenance → Evolution / Retirement 复核期间维护；其他阶段填写 `Not Applicable` 并说明原因。
+
+- Current Release / Operational Baseline：
+- Maintenance Cycle / Owner：
+- Open Tasks（P0 / P1 / P2 / P3）：
+- Open Bugs / Reopened Bugs：
+- Active Incidents / Latest Postmortem：
+- Technical Debt（Critical / High / Medium / Low）：
+- User Feedback Pipeline Status：
+- Performance / Security / Dependency Status：
+- AI Capability Trend（AI 项目）或 Approved N/A：
+- Maintenance Metrics / Threshold Breaches：
+- Retirement Review / Disposition：
+- Known Risks / Blockers：
+- Evolution Trigger Assessment：
+- Next Maintenance Action：
+
+## Evolution Status
+
+仅在 Evolution Gate 评审或 `EVOLUTION` 期间维护；其他阶段填写 `Not Applicable` 并说明原因。
+
+- Trigger / Evidence：
+- Evolution Proposal ID / Version：
+- Proposal Score / Confidence：
+- Redlines：
+- Gate Result：`APPROVED_FOR_EVOLUTION` / `CHANGES_REQUIRED` / `REMAIN_IN_MAINTENANCE`
+- Approved Scope / Success Metrics：
+- Downstream Lifecycle Route / Gate Status：
+- Current Execution Baseline：
+- Actual Benefits / Regressions：
+- Rollback / Stop Condition Status：
+- Direct System Modification Authorization：`NO`
+- Known Risks / Blockers：
+- Next Evolution Action：
+
 ## Last Updated
 
 YYYY-MM-DD

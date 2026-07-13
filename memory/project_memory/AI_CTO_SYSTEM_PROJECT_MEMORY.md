@@ -34,6 +34,12 @@
 - 项目健康分数与迁移门禁分开判断；高分不能抵消安全红线、来源不明的 Git 改动或未知测试风险边界。
 - 接管门禁只允许 `ONBOARDING_COMPLETED` 或 `ONBOARDING_BLOCKED`；完成接管不授予编码、测试、发布或生产变更权限。
 - 接管完成后的跨项目经验按证据、适用范围和许可边界沉淀到 `memory/knowledge_base/`。
+- Maintenance 负责稳定运营中的 Bug、小版本、性能、依赖、安全和技术债；临时恢复、永久修复和 Incident 关闭必须分开记录。
+- Incident、Postmortem、技术债、用户反馈和 AI Capability History 使用不可覆盖的历史记录，并把已验证、已脱敏经验沉淀到知识库。
+- AI 项目在运营期持续评估输出质量、准确率、稳定性、Agent 成功率、Prompt 效果、Token 成本和响应时间；单次 Release 评测不能替代长期趋势。
+- 系统性优化必须先创建 Evolution Proposal。只有 `APPROVED_FOR_EVOLUTION` 允许从 MAINTENANCE 进入 EVOLUTION，且该结果不授权编码、测试、发布或生产修改。
+- Evolution 实现继续执行适用的 Research、Evaluation、Design、Development、Testing 和 Release Gate；重大变更不能从 Feedback、Incident 或 Proposal 直接进入代码。
+- 项目周期复核必须在继续维护、重构、归档和停止之间形成证据化结论，并处理用户、数据、安全、依赖和恢复边界。
 
 ## 历史修改
 
@@ -44,11 +50,12 @@
 - 2026-07-13：建立 Phase 5 Development Execution Intelligence。
 - 2026-07-13：建立 Phase 6 Testing & Release Intelligence。
 - 2026-07-13：建立 Phase 6.5 Existing Project Onboarding Intelligence。
+- 2026-07-13：建立 Phase 7 Maintenance & Evolution Intelligence。
 
 ## 当前状态
 
-Phase 6.5 已建立已有项目扫描、逆向理解、文档恢复、健康评分、迁移门禁、状态与经验沉淀规则；当前停留在 Phase 6.5 完成状态，等待用户确认，不进入 Phase 7。
+Phase 7 已建立 Maintenance、Incident、Postmortem、技术债、用户反馈、AI 能力历史、Evolution Proposal / Gate 和项目归档淘汰规则；当前停留在 Phase 7 完成状态，等待用户确认，不进入 Phase 8。
 
 ## 未来计划
 
-用户确认后进入 Phase 7；当前不得提前推进。
+用户确认后再决定 Phase 8；当前不得提前推进。

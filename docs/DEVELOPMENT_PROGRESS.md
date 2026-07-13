@@ -2,7 +2,7 @@
 
 ## 当前阶段
 
-Phase 6.5：AI CTO Existing Project Onboarding Intelligence（已完成，等待用户确认）
+Phase 7：AI CTO Maintenance & Evolution Intelligence（已完成，等待用户确认）
 
 ## 已完成
 
@@ -60,14 +60,24 @@ Phase 6.5：AI CTO Existing Project Onboarding Intelligence（已完成，等待
 - 历史项目经验沉淀规则
 - `EXISTING_PROJECT_ONBOARDING` 生命周期入口与 MAINTENANCE 转换规则
 - ADR-0006：已有项目接管作为独立治理入口
+- Phase 7：项目 Maintenance 管理规范与 P0–P3 排程优先级
+- Incident 影响评估、隔离、临时恢复、永久修复和复盘流程
+- Postmortem 模板及知识库沉淀规则
+- 六类技术债登记、风险、排期和关闭治理
+- Bug、Feature Request、Optimization、Complaint 用户反馈闭环
+- AI 七维能力持续评估和不可覆盖历史记录
+- Evolution Proposal 100 分评分、版本、审批和验证机制
+- Maintenance → Evolution Gate 与 `APPROVED_FOR_EVOLUTION` 授权边界
+- 项目继续维护、重构、归档和停止标准
+- ADR-0007：Maintenance 与 Evolution 长期治理
 
 ## 进行中
 
-无；Phase 6.5 文档已完成，等待用户验收。
+无；Phase 7 文档已完成，等待用户验收。
 
 ## 待处理
 
-- 等待用户确认是否进入 Phase 7
+- 等待用户确认是否进入 Phase 8
 
 ## 阻塞与风险
 
@@ -85,6 +95,11 @@ Phase 6.5：AI CTO Existing Project Onboarding Intelligence（已完成，等待
 - 健康评分不等于迁移门禁；安全红线、来源不明的 Git 改动或未知测试风险边界均可独立阻断接管。
 - `ONBOARDING_COMPLETED` 不授予编码、测试、发布或生产变更权限；稳定运营项目仅可进入 MAINTENANCE。
 - Phase 6.5 按要求不包含具体 Agent 代码，也未进入 Phase 7。
+- 临时恢复不等于 Incident 永久关闭；必须完成根因、永久修复、验证和适用 Postmortem。
+- Proposal 评分不等于审批，`APPROVED_FOR_EVOLUTION` 也不等于编码或发布授权。
+- AI 能力趋势必须绑定精确模型、Prompt、工具、数据集、环境与时间窗，禁止混用基线宣称改善。
+- 归档和停止必须完成用户、数据、安全、密钥、依赖、合同和恢复 / 删除边界，不能只关闭服务器。
+- Phase 7 按要求不包含具体 Agent 代码，也未进入 Phase 8。
 
 ## 验证结果
 
@@ -100,10 +115,15 @@ Phase 6.5：AI CTO Existing Project Onboarding Intelligence（已完成，等待
 - 全仓相对 Markdown 链接、表格列数、健康权重合计、占位符、Git diff 和根 SKILL 校验通过；变更范围仅包含 15 份 Markdown 协议、模板、记忆与治理文件。
 - “静态健康分 94 + 疑似有效 API Key + 来源不明 Git 差异 + 未知迁移历史与测试状态 + 紧急改码指令”压力场景唯一结果为 `ONBOARDING_BLOCKED`；Current Stage 保持 `EXISTING_PROJECT_ONBOARDING`，`Code Change Authorization: NO`。
 - 更新后的规则明确排除紧急性、健康高分、负责人指令和历史投入绕过迁移门禁；恢复文档不得伪造历史，未知事实必须保持 `UNKNOWN` 并降低 Confidence。
+- Phase 7 的 10 份指定新增文件全部存在；维护六类范围、P0–P3 优先级、Incident 七步流程、Postmortem 八类内容、六类技术债来源、四种反馈类型、AI 七维趋势、四种项目处置、Evolution 五类触发器和 ADR 决策均通过结构与语义断言。
+- Evolution Proposal 七维评分权重合计 100；分数、Confidence、红线和用户审批保持分离，Gate 三种结果与生命周期状态一致。
+- 全仓相对 Markdown 链接、表格列数、占位符、Git diff、变更文件集合和根 SKILL 校验通过；Phase 7 变更范围仅包含 17 份 Markdown 协议、模板、记忆与治理文件。
+- “重复 P1 + 投诉激增 + Agent 成功率 91%→76% + Token 成本上涨 40% + CEO 当天替换要求 + 两周沉没投入”压力场景结果为 `CHANGES_REQUIRED`，Current Stage 保持 `MAINTENANCE`，唯一转换授权为 `APPROVED_FOR_EVOLUTION`，`Direct System Modification Authorization: NO`。
+- Phase 7 未创建具体 Agent 代码，未进入 Phase 8。
 
 ## 下一步
 
-用户确认后设计 Phase 7；确认前不继续开发。
+用户确认后再设计 Phase 8；确认前不继续开发。
 
 ## Phase 3 状态记录
 
@@ -139,6 +159,13 @@ Phase 6.5：AI CTO Existing Project Onboarding Intelligence（已完成，等待
 |---|---|---|
 | Phase 6.5 开始 | 2026-07-13 | 按已确认任务清单建立 Existing Project Onboarding Intelligence |
 | Phase 6.5 完成 | 2026-07-13 | 接管协议、逆向分析、文档恢复、健康评分、迁移门禁、状态与经验沉淀规则完成，等待用户确认 |
+
+## Phase 7 状态记录
+
+| 事件 | 日期 | 状态 |
+|---|---|---|
+| Phase 7 开始 | 2026-07-13 | 按已确认任务清单建立 Maintenance & Evolution Intelligence |
+| Phase 7 完成 | 2026-07-13 | 维护、Incident、复盘、债务、反馈、AI 能力、演进门禁与项目淘汰治理完成，等待用户确认 |
 
 ## 最后更新时间
 

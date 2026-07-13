@@ -32,9 +32,9 @@
 | `DEVELOPMENT` | 当前设计基线取得 `APPROVED_FOR_DEVELOPMENT`；任务、测试、变更影响与回滚方案明确 | Development Approval Gate 取得 `APPROVED_FOR_TESTING` | Development Plan、Task、Progress、源代码、测试证据、Code Review、Change Impact、五层 Traceability Matrix、ADR、`PROJECT_MEMORY.md` |
 | `TESTING` | 当前精确 Commit 与文档基线取得 `APPROVED_FOR_TESTING`；测试策略、环境、数据、责任人与第一项行动已记录 | 测试、AI 评测（适用时）、安全审核与用户验收完成；P0/P1 Bug 关闭；TESTING → RELEASE 门禁取得 `READY_FOR_RELEASE` | Test Strategy、Test Case 与 Evidence、Bug Register、AI Evaluation 或 Approved N/A、Security Review、UAT 记录、Release Gate、Progress、`PROJECT_STATE.md` |
 | `RELEASE` | 当前精确候选基线取得 `READY_FOR_RELEASE`；部署、回滚、监控方案已确认 | 部署与上线验证完成；观察窗口达到退出条件；发布、回滚及剩余风险结果已记录 | Release Report、部署记录、回滚记录、监控记录、Bug/Incident、`PROJECT_MEMORY.md`、`PROJECT_STATE.md` |
-| `MAINTENANCE` | 项目已发布并进入稳定运营 | 触发重大产品、架构或能力演进，或项目被正式归档 | 运维记录、问题与解决方案、Progress、知识库条目 |
+| `MAINTENANCE` | 发布结果与观察窗口通过并进入稳定运营；或已有项目取得 `ONBOARDING_COMPLETED` 后纳管 | Evolution Gate 取得 `APPROVED_FOR_EVOLUTION`；或完成继续维护、重构、归档 / 停止的处置决定 | Maintenance Task、Incident、Postmortem、Debt、Feedback、AI Capability History、Retirement Review、Progress、知识库条目、`PROJECT_STATE.md`、`PROJECT_MEMORY.md` |
 | `EXISTING_PROJECT_ONBOARDING` | 用户提供已有软件项目及其来源，并授权对项目进行只读扫描 | 代码、技术栈、文档、状态、风险、Git 与测试状态已确认；迁移门禁取得 `ONBOARDING_COMPLETED` | 扫描记录、Reverse Analysis、恢复的 PRD/Architecture/Database/ADR、Health Report、Onboarding State、Migration Gate、`PROJECT_MEMORY.md` |
-| `EVOLUTION` | 新证据或战略目标要求重大演进 | 演进方案进入新一轮 Design，或评估后返回 Maintenance | Evolution Proposal、Evaluation、ADR、更新后的 PRD/Architecture |
+| `EVOLUTION` | 系统性演进触发器已有证据；当前 Evolution Proposal 经评分、风险复核和用户审批，并取得 `APPROVED_FOR_EVOLUTION` | Proposal 被验证并返回 Maintenance；或获准路线进入适用的 Research / Evaluation / Design 及后续门禁 | Evolution Proposal、Gate Record、Evaluation / Research、ADR、更新后的 PRD / Architecture、执行与验证证据、`PROJECT_STATE.md`、`PROJECT_MEMORY.md` |
 
 状态目录顺序为：`IDEA`、`RESEARCH`、`EVALUATION`、`DESIGN`、`DEVELOPMENT`、`TESTING`、`RELEASE`、`MAINTENANCE`、`EXISTING_PROJECT_ONBOARDING`、`EVOLUTION`。其中 `EXISTING_PROJECT_ONBOARDING` 是已有项目的替代入口，不是新项目标准路径中的顺序步骤。
 
@@ -46,6 +46,16 @@
 - 接管结果不授予编码、测试、发布或生产变更权限；进入其他阶段必须重新满足该阶段的原有门禁。
 - 关键事实必须标注证据、真值标签与 Confidence；禁止把当前代码推断包装为已证实的历史事实。
 - 接管授权边界及设置独立入口的原因见 [ADR-0006](../adr/ADR-0006-EXISTING-PROJECT-ONBOARDING.md)。
+
+## Maintenance 与 Evolution 转换规则
+
+- Maintenance 管理稳定运营中的 Bug、小版本、性能、依赖、安全和技术债；生产故障必须执行 Incident、永久修复和适用 Postmortem。
+- 重复 Bug、大量用户反馈、技术路线变化、AI 能力不足或流程低效达到系统性影响时，创建 Evolution Proposal 并执行 Gate。
+- Gate 只允许 `APPROVED_FOR_EVOLUTION`、`CHANGES_REQUIRED` 或 `REMAIN_IN_MAINTENANCE`。只有第一种结果允许进入 `EVOLUTION`。
+- `APPROVED_FOR_EVOLUTION` 不授权直接编码、测试、发布或生产修改；实现必须继续满足适用 Research、Evaluation、Design、Development、Testing 和 Release Gate。
+- Proposal 验证达到用户结果和长期指标后，项目返回 `MAINTENANCE`；失败时回滚、缩小范围、重新评审或返回 Maintenance。
+- Retirement Review 可以形成继续维护、重构、归档或停止结论。重构需要 Evolution Proposal；归档和停止必须完成用户、数据、安全、依赖和恢复检查。
+- 长期维护与演进治理的决策见 [ADR-0007](../adr/ADR-0007-MAINTENANCE-AND-EVOLUTION-GOVERNANCE.md)。
 
 ## 状态转换记录
 

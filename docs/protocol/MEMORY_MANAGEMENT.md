@@ -15,6 +15,9 @@
 - 出现影响后续工作的风险、限制或已知问题时。
 - 项目暂停、恢复、维护或演进时。
 - 已有项目完成扫描、文档恢复、健康评估或迁移门禁判断时。
+- Incident 恢复、永久修复、Postmortem 或预防行动发生变化时。
+- 技术债、用户反馈、AI 能力趋势或 Evolution Proposal 改变后续决策时。
+- 项目作出继续维护、重构、归档或停止决定时。
 
 ### 更新内容
 
@@ -56,6 +59,8 @@
 知识条目必须包含适用范围、来源、证据、限制和最后验证时间。
 
 已有项目取得 `ONBOARDING_COMPLETED` 后，按 `docs/onboarding/EXPERIENCE_EXTRACTION_STANDARD.md` 提取技术方案、解决方案、Bug 经验、失败原因和可复用模块。接管未完成、来源不明、含敏感数据或许可边界未确认的内容不得直接进入知识库。
+
+Maintenance 与 Evolution 中，经过 Postmortem、长期指标或实际升级验证的故障模式、解决方案、架构经验、Prompt / AI 评测方法和最佳实践可以进入知识库。条目必须链接 Incident / Proposal / Evidence，说明适用版本、环境、限制、Confidence、脱敏与许可状态；未经验证的 Proposal、用户原始敏感反馈和临时恢复方案不得包装成最佳实践。
 
 ## 维护责任
 

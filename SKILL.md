@@ -1,6 +1,6 @@
 ---
 name: ai-cto-system
-description: Use when receiving or guiding a new AI project idea, requirement, feature, or product, or when taking over an existing software project, repository, or codebase for lifecycle governance.
+description: Use when receiving or guiding a new AI project, taking over an existing software project, or governing project maintenance, incidents, technical debt, user feedback, AI capability drift, evolution, archival, or retirement.
 ---
 
 # AI CTO
@@ -111,6 +111,30 @@ Design Approval Gate 的唯一授权结果是 `APPROVED_FOR_DEVELOPMENT`。任�
 
 Release 执行完成不代表自动进入 Phase 7。只有部署结果已验证、观察窗口满足、发布报告完成、剩余风险被有权限的责任人接受，并取得后续阶段的明确授权后，才允许离开 `RELEASE`。
 
+## MAINTENANCE 阶段规则
+
+1. 使用 `docs/maintenance/MAINTENANCE_STANDARD.md` 管理 Bug、小版本需求、性能、依赖、安全和技术债，并维护 P0–P3 排程优先级。
+2. 生产故障使用 `docs/maintenance/INCIDENT_MANAGEMENT_STANDARD.md`，先评估影响、隔离与临时恢复，再完成根因、永久修复和复盘；临时恢复不得冒充永久关闭。
+3. 对重大、重复或系统性 Incident 使用 `templates/POSTMORTEM_TEMPLATE.md`，为预防行动设置 Owner、期限和验证标准，并将已脱敏经验沉淀到 `memory/knowledge_base/`。
+4. 使用 `docs/maintenance/TECH_DEBT_MANAGEMENT_STANDARD.md` 登记代码、架构、依赖、测试、性能和安全债务；临时接受必须有有效期、监控和复核触发器。
+5. 使用 `docs/maintenance/USER_FEEDBACK_PIPELINE.md` 管理 Bug、Feature Request、Optimization 和 Complaint，从记录、分类、价值评估到验证形成闭环。
+6. AI 项目使用 `docs/evolution/AI_CAPABILITY_EVOLUTION_STANDARD.md` 持续记录输出质量、准确率、稳定性、Agent 成功率、Prompt 效果、Token 成本和响应时间的历史变化。
+7. 使用 `docs/maintenance/PROJECT_RETIREMENT_STANDARD.md` 周期判断继续维护、重构、归档或停止，并处理用户、数据、密钥、依赖、合同与恢复边界。
+8. 每个维护周期更新 `PROJECT_STATE.md`、`PROJECT_MEMORY.md`、Progress、风险、指标和 Next Action。
+
+Maintenance 允许处理边界明确的小变更，但代码、配置、数据库、模型、Prompt 和基础设施修改仍须执行适用的 Design、TDD、Change Impact、Review、Testing 和 Release Gate。改变核心产品范围、系统边界、关键数据、主要 AI 行为或长期技术路线的事项必须转为 Evolution Proposal。
+
+## EVOLUTION 阶段规则
+
+1. 使用 `docs/evolution/EVOLUTION_GATE.md` 判断重复 Bug、大量用户反馈、技术路线变化、AI 能力不足或流程低效是否需要从 Maintenance 进入 Evolution。
+2. 使用 `docs/evolution/EVOLUTION_PROPOSAL_STANDARD.md` 记录 Proposal ID、发现原因、优化目标、影响范围、风险、收益、执行方案、评分、Confidence 和用户审批。
+3. Gate 结果只允许 `APPROVED_FOR_EVOLUTION`、`CHANGES_REQUIRED` 或 `REMAIN_IN_MAINTENANCE`；只有 `APPROVED_FOR_EVOLUTION` 才允许把 Current Stage 改为 `EVOLUTION`。
+4. Proposal 批准只授权进入 Evolution，不授权编码、测试、发布或生产修改。执行升级必须重新经过适用的 Research、Evaluation、Design、Development、Testing 和 Release Gate。
+5. Proposal 目标、范围、架构、数据、AI 行为、预算、风险或成功指标变化时，旧审批失效并重新执行 Gate。
+6. 演进完成后，用用户结果、运行指标、七维 AI 能力、成本、风险和长期观察验证 Proposal；未达到目标时回滚、缩小范围或返回 Maintenance。
+
+每次 Evolution 判断必须输出：Current Stage、Trigger、Proposal ID / Version、Score、Confidence、Evidence、Redlines、Gate Result、Approved Scope、Downstream Gates、Next Action 和 `Direct System Modification Authorization: NO`。
+
 ### Phase 0：Idea 分析
 
 执行 Idea 输入协议和 Idea Candidate 标准，理解目标、提取需求、判断真实问题、关联历史项目并创建项目候选记录。输出问题定义、初始需求、假设、证据和下一动作。
@@ -145,7 +169,7 @@ Release 执行完成不代表自动进入 Phase 7。只有部署结果已验证�
 
 ### Phase 7：持续进化
 
-在 MAINTENANCE 中处理稳定运营，在 EVOLUTION 中评估重大演进。根据反馈、指标和故障更新记忆与知识库；重大演进重新经过 Evaluation、Research 与 Design。
+在 `MAINTENANCE` 中管理 Bug、小版本、性能、依赖、安全、Incident、Postmortem、技术债、用户反馈和 AI 能力历史。系统性变化先生成并评分 Evolution Proposal，经 Maintenance → Evolution Gate 与用户审批后进入 `EVOLUTION`；重大演进继续经过适用的 Research、Evaluation、Design、Development、Testing 与 Release Gate。周期判断继续维护、重构、归档或停止，并更新记忆与知识库。
 
 ## 状态与文档
 
@@ -160,8 +184,10 @@ Release 执行完成不代表自动进入 Phase 7。只有部署结果已验证�
 - 按 `docs/release/RELEASE_APPROVAL_GATE.md` 与 `docs/release/TESTING_RELEASE_GATE.md` 审批 TESTING → RELEASE。
 - 按 `docs/release/DEPLOYMENT_ROLLBACK_STANDARD.md`、`docs/release/MONITORING_STANDARD.md` 和 `templates/RELEASE_REPORT_TEMPLATE.md` 执行并记录 RELEASE。
 - 按 `docs/onboarding/PROJECT_ONBOARDING_PROTOCOL.md`、`docs/onboarding/PROJECT_DOCUMENT_RECOVERY.md`、`docs/onboarding/PROJECT_HEALTH_CHECK_STANDARD.md` 和 `docs/onboarding/PROJECT_MIGRATION_CHECKLIST.md` 管理已有项目接管。
+- 按 `docs/maintenance/MAINTENANCE_STANDARD.md`、`docs/maintenance/INCIDENT_MANAGEMENT_STANDARD.md`、`docs/maintenance/TECH_DEBT_MANAGEMENT_STANDARD.md`、`docs/maintenance/USER_FEEDBACK_PIPELINE.md` 和 `docs/maintenance/PROJECT_RETIREMENT_STANDARD.md` 管理长期运营。
+- 按 `docs/evolution/AI_CAPABILITY_EVOLUTION_STANDARD.md`、`docs/evolution/EVOLUTION_PROPOSAL_STANDARD.md` 和 `docs/evolution/EVOLUTION_GATE.md` 管理持续评估与重大演进。
 - 每次状态转换都更新 `PROJECT_STATE.md` 和 `PROJECT_MEMORY.md`。
 
 ## 核心约束
 
-遵守项目根目录的 `AGENTS.md`。新项目不得跳过 Idea、需求分析、设计文档、重大决策记录、项目记忆、状态和进度更新；已有项目不得跳过 Existing Project Onboarding、证据恢复、健康评估和迁移门禁。不得以原型、试验、紧急需求、负责人指令或既有投入为理由直接编码。
+遵守项目根目录的 `AGENTS.md`。新项目不得跳过 Idea、需求分析、设计文档、重大决策记录、项目记忆、状态和进度更新；已有项目不得跳过 Existing Project Onboarding、证据恢复、健康评估和迁移门禁；重大演进不得跳过 Evolution Proposal、Gate、用户审批和后续工程门禁。不得以原型、试验、紧急需求、负责人指令或既有投入为理由直接编码或修改生产系统。

@@ -41,6 +41,15 @@
 | 从现有证据恢复文档的事实边界 | Project Document Recovery |
 | 已有项目纳入治理的最终授权 | Project Migration Checklist |
 | 已有项目接管期间的当前状态 | Project Onboarding State |
+| 稳定运营中的维护任务、优先级和结果 | Maintenance Record |
+| 生产故障影响、处理时间线和根因 | Incident Record |
+| Incident 复盘、预防行动和经验 | Postmortem |
+| 技术债影响、风险、成本和处置状态 | Technical Debt Register |
+| 用户反馈分类、价值、排期和验证 | Feedback Register |
+| AI 能力跨版本趋势与基线 | AI Capability History |
+| 重大演进的目标、评分、风险和执行方案 | Evolution Proposal |
+| MAINTENANCE → EVOLUTION 状态授权 | Evolution Gate |
+| 继续维护、重构、归档和停止判断 | Retirement Review |
 
 ## PRD 关联规则
 
@@ -118,3 +127,15 @@ ADR 用于记录会影响架构、数据、接口、安全、成本、开发流�
 已有项目接管时：
 
 `Frozen Baseline → Project Scan → Reverse Analysis → Document Recovery → Health Report → Onboarding State → Migration Gate → PROJECT_STATE → PROJECT_MEMORY`
+
+长期维护时：
+
+`Monitoring / Feedback → Maintenance Task / Incident / Debt → Assessment → Change + Test + Release Evidence → Validation → Postmortem / Knowledge → PROJECT_STATE → PROJECT_MEMORY`
+
+重大演进时：
+
+`Trigger → Impact Analysis → Evolution Proposal + Score + Confidence → Evolution Gate → User Approval → Applicable Lifecycle Gates → Git / Validation → PROJECT_STATE → PROJECT_MEMORY`
+
+项目结束判断时：
+
+`User Value + Maintenance Cost + Technical Health + Business Value → Retirement Review → Continue / Refactor / Archive / Stop → Execution Evidence → PROJECT_STATE → PROJECT_MEMORY`
