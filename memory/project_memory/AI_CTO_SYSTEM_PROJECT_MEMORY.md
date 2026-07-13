@@ -18,7 +18,10 @@
 - 项目评估采用 100 分制，但分数、Confidence 与风险红线分别判断。
 - 进入 DESIGN 前必须完成 Research、Evaluation、风险分析、立项门禁和用户确认。
 - Design 完成与 Development 授权分离；只有 Design Approval Gate 通过后才能编码。
-- Requirement → Design → Development Task → Test Case 必须端到端可追踪。
+- DESIGN 阶段必须先建立 Requirement → Design → Development Task → Test Case 计划链，并为尚未产生的 Commit 明确标记 `NOT_CREATED`。
+- Development 执行采用测试先行，禁止代码完成后补测试。
+- Requirement → Design → Task → Commit → Test 必须形成五层追踪。
+- Development 完成与 Testing 授权分离；只有 Development Approval Gate 通过后才能进入 TESTING。
 
 ## 历史修改
 
@@ -26,11 +29,12 @@
 - 2026-07-13：建立 Phase 2 Operating Protocol。
 - 2026-07-13：建立 Phase 3 Decision Intelligence。
 - 2026-07-13：建立 Phase 4 Design Intelligence。
+- 2026-07-13：建立 Phase 5 Development Execution Intelligence。
 
 ## 当前状态
 
-Phase 4 设计标准、模板与 Development Gate 已编写，等待验证与用户确认。
+Phase 5 工程执行规范、五层追踪与 Testing Gate 已编写，等待验证与用户确认。
 
 ## 未来计划
 
-用户确认后进入 Phase 5；当前不得提前开发。
+用户确认后进入 Phase 6；当前不得提前推进。

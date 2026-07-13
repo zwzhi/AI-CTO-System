@@ -116,8 +116,8 @@ PRD、Architecture、Database Design、Agent Design、Development Plan 和 ADR �
 
 ### 5.7 Traceability Matrix
 
-- Requirement ID → Design ID → Development Task ID → Test Case ID 的四层链完整。
-- 正向和反向检查全部通过，活动项不存在孤儿、空链、N/A 核心字段或隐藏列表。
+- Requirement ID → Design ID → Development Task ID → Commit 槽 → Test Case ID 的计划链完整；Commit 槽为 `NOT_CREATED`，测试结果为 `NOT_RUN`，且不是 N/A。
+- 对 Design 阶段适用的 Requirement、Design、Task 与 Test Case 正向和反向检查全部通过；活动项不存在孤儿、空链、N/A 核心字段或隐藏列表。
 - 一对多与多对一关系均按原子链展开。
 - 所有文档链接、章节、状态和版本有效且对应当前基线。
 - 变更影响全部关闭，活动 Chain Status 均为 ALIGNED。
@@ -173,7 +173,7 @@ PRD、Architecture、Database Design、Agent Design、Development Plan 和 ADR �
 - Database Design 或 Agent Design 被错误豁免，或 N/A 未批准、依据不足、引用旧范围。
 - PRD 缺少稳定需求 ID或可判定验收标准。
 - Architecture 与 PRD、设计与 Architecture、计划与设计之间存在未解决冲突。
-- 四层追踪存在空链、孤儿项、失效链接、旧版本、未展开关系或未关闭影响。
+- Design 阶段计划链存在空链、孤儿项、失效链接、旧版本、未展开关系、未关闭影响，或 Commit 槽没有明确标记为 `NOT_CREATED`。
 - Test Plan 不可执行、关键需求无测试、预期结果或通过标准不明确。
 - AI Agent 的评估方案不完整，设计期安全检查未通过，或存在未关闭的注入绕过、越权、敏感数据泄露路径、未经批准副作用等关键设计缺陷。
 - 存在未关闭红线、开发阻断风险、合规或安全问题。
@@ -189,7 +189,7 @@ PRD、Architecture、Database Design、Agent Design、Development Plan 和 ADR �
 1. Gate Owner 确认立项结果，冻结范围和全部输入版本。
 2. 判断 Database Design 与 Agent Design 的适用性，核验所有 N/A 记录。
 3. 各责任评审人按第 5 节逐项核验源文档和证据。
-4. 执行四层正向、反向、链接、版本、孤儿项和变更影响检查。
+4. 执行 Design 阶段计划链的正向、反向、链接、版本、孤儿项和变更影响检查；确认 Commit 槽均为 `NOT_CREATED`。
 5. 核对 ADR、风险、回滚及跨文档一致性，登记全部阻断项。
 6. 文档责任人关闭问题；任何修订都创建新基线并重新执行受影响检查。
 7. 所有硬阻断为零后，向用户展示完整当前基线并取得明确批准。
@@ -291,7 +291,7 @@ PRD、Architecture、Database Design、Agent Design、Development Plan 和 ADR �
 
 - APPROVED_FOR_DEVELOPMENT 门禁记录及精确版本基线。
 - Database Design 与 Agent Design 的批准版本或有效 N/A 记录。
-- 四层 Traceability Matrix、正反向检查与零孤儿证明。
+- 带 `NOT_CREATED` Commit 槽的 Traceability Matrix、Design 阶段正反向检查与零孤儿证明。
 - 已关闭评审问题、已接受剩余风险和可执行回滚证据。
 - 用户对当前版本的明确批准记录。
 - PROJECT_STATE 转换证据、PROJECT_MEMORY 摘要和 DEVELOPMENT 的首个 Next Action。

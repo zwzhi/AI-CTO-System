@@ -22,8 +22,9 @@
 | 技术结构、边界与非功能设计 | Architecture |
 | 数据模型、生命周期与迁移 | Database Design |
 | AI Agent 的职责、工具、记忆与评估 | Agent Design |
-| 需求到测试的端到端对应关系 | Traceability Matrix |
+| 需求、设计、任务、提交与测试的端到端对应关系 | Traceability Matrix |
 | DEVELOPMENT 授权结果 | Design Approval Gate |
+| TESTING 授权结果 | Development Approval Gate |
 
 ## PRD 关联规则
 
@@ -45,14 +46,15 @@
 - 进度项使用计划中的任务标识，记录计划与实际差异。
 - 新增、删除或重排重大任务时更新 Development Plan，并在 Progress 中说明原因。
 
-### Requirement → Design → Task → Test
+### Requirement → Design → Task → Commit → Test
 
 - 每项已批准需求必须拥有稳定的 Requirement ID。
 - Architecture、Database Design 和 Agent Design 使用 Design ID 引用对应需求。
 - Development Plan 中的任务必须引用其实现的 Requirement ID 与 Design ID。
-- Test Plan 和测试案例必须引用验证的 Requirement ID、Design ID 与 Task ID。
+- 每个重要 Git Commit 必须引用 Task ID，并在 Traceability Matrix 中关联 Requirement、Design 与 Test Case。
+- Test Plan 和测试案例必须引用验证的 Requirement ID、Design ID、Task ID 与相关 Commit。
 - `docs/design/TRACEABILITY_MATRIX_TEMPLATE.md` 是端到端追踪关系的权威索引；源文档仍保存具体内容。
-- 需求、设计、任务或测试改变时，必须更新矩阵并执行正向和反向孤儿项检查。
+- 需求、设计、任务、Commit 映射或测试改变时，必须更新矩阵并执行正向和反向孤儿项检查。
 
 ## ADR 规则
 
@@ -82,3 +84,7 @@ ADR 用于记录会影响架构、数据、接口、安全、成本、开发流�
 设计与开发授权时：
 
 `PRD → Requirement Priority → Architecture → Database/Agent Design（适用时）→ ADR → Development Plan + Test Plan → Traceability Matrix → Risk/Rollback → Design Approval Gate → PROJECT_STATE → PROJECT_MEMORY`
+
+开发执行与测试授权时：
+
+`Task → Test Case (RED) → Implementation (GREEN) → Refactor → Commit → Code Review → Validation → Five-layer Traceability → Development Approval Gate → PROJECT_STATE → PROJECT_MEMORY`

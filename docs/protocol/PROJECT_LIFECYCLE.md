@@ -23,8 +23,8 @@
 | `RESEARCH` | Idea 信息足以确定调研问题；需要外部证据或方案比较 | 调研范围完成；来源、结论、风险和建议可追溯 | Research 文档、`PROJECT_MEMORY.md`、`PROJECT_STATE.md` |
 | `EVALUATION` | 已有足够信息评估价值、范围、资源和风险 | 成功标准、可行性、优先级与立项建议明确；用户作出立项决定 | Evaluation 文档、必要的 ADR、`PROJECT_STATE.md` |
 | `DESIGN` | Research 与 Evaluation 均完成且项目获准立项 | PRD、Architecture、数据或 Agent 设计、开发计划和验收标准获确认 | PRD、Architecture、Development Plan、必要的数据库/Agent 设计、ADR、`PROJECT_MEMORY.md` |
-| `DEVELOPMENT` | 设计文档与开发计划已确认；任务、测试和回滚思路明确 | 计划范围已实现；开发验证通过；已知偏差被记录 | Progress、源代码、测试、ADR、`PROJECT_MEMORY.md` |
-| `TESTING` | 开发范围完成并具备可测试版本 | 功能与非功能验收完成；缺陷已关闭或获准接受；发布条件满足 | Test Report、缺陷记录、Release Checklist、Progress |
+| `DEVELOPMENT` | 当前设计基线取得 `APPROVED_FOR_DEVELOPMENT`；任务、测试、变更影响与回滚方案明确 | Development Approval Gate 取得 `APPROVED_FOR_TESTING` | Development Plan、Task、Progress、源代码、测试证据、Code Review、Change Impact、五层 Traceability Matrix、ADR、`PROJECT_MEMORY.md` |
+| `TESTING` | Development Gate 已批准当前 Commit 基线；测试范围、环境与第一项行动已记录 | 功能与非功能验收完成；缺陷已关闭或获准接受；发布条件满足 | Test Report、缺陷记录、Release Checklist、Progress |
 | `RELEASE` | 测试通过；发布、监控和回滚方案已确认 | 版本已发布；关键指标可观测；发布结果已记录 | Release Notes、部署记录、回滚记录、`PROJECT_MEMORY.md` |
 | `MAINTENANCE` | 项目已发布并进入稳定运营 | 触发重大产品、架构或能力演进，或项目被正式归档 | 运维记录、问题与解决方案、Progress、知识库条目 |
 | `EVOLUTION` | 新证据或战略目标要求重大演进 | 演进方案进入新一轮 Design，或评估后返回 Maintenance | Evolution Proposal、Evaluation、ADR、更新后的 PRD/Architecture |

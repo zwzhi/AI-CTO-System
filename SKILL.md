@@ -48,12 +48,28 @@ AI CTO
 3. 使用 `docs/design/ARCHITECTURE_DESIGN_STANDARD.md` 创建 Architecture，并将模块、数据流、服务和技术决策追溯到需求。
 4. 使用 `docs/design/DATABASE_DESIGN_STANDARD.md` 完成数据设计；没有持久化数据时记录可审计的 N/A 理由。
 5. AI 项目使用 `docs/design/AGENT_DESIGN_STANDARD.md` 完成 Agent 设计；非 AI 项目记录 N/A 及依据。
-6. 使用 `docs/design/TRACEABILITY_MATRIX_TEMPLATE.md` 建立 Requirement → Design → Development Task → Test Case 的双向追踪。
+6. 使用 `docs/design/TRACEABILITY_MATRIX_TEMPLATE.md` 建立 Requirement → Design → Development Task → `NOT_CREATED` Commit 槽 → Test Case 的 Design 期双向计划追踪。
 7. 使用 `docs/design/DESIGN_APPROVAL_GATE.md` 执行 Development Gate，记录证据、评审版本、阻断项和用户决定。
 
 Design 完成不代表自动进入 Development。只有 PRD、Architecture、适用的 Database/Agent Design、Development Plan、Test Plan、追踪矩阵、风险与回滚方案和相关 ADR 全部通过，且用户明确批准当前文档版本后，才允许把状态改为 `DEVELOPMENT`。在此之前禁止编码、生产配置和不可逆实施。
 
 Design Approval Gate 的唯一授权结果是 `APPROVED_FOR_DEVELOPMENT`。任何其他结果、条件性通过、口头同意、旧版本批准或“先开发后补文档”都不得触发开发。
+
+## DEVELOPMENT 阶段规则
+
+1. 使用 `docs/development/TASK_MANAGEMENT_STANDARD.md` 将已批准的 Requirement 与 Design 拆成可独立验证的 Development Task。
+2. 使用 `docs/development/DEVELOPMENT_EXECUTION_PLAN_STANDARD.md` 编排阶段、任务顺序、依赖、里程碑、风险与资源。
+3. 使用 `docs/development/GIT_WORKFLOW_STANDARD.md` 管理分支与提交；每项重要修改必须有可追溯 Git 记录。
+4. 使用 `docs/development/TEST_DRIVEN_DEVELOPMENT_STANDARD.md` 执行测试先行。必须先定义 Test Case 并观察它因目标行为缺失而按预期失败，之后才能编写最小实现；禁止代码完成后补测试。
+5. 使用 `docs/development/CODE_REVIEW_STANDARD.md` 审核 Architecture、ADR、Requirement、安全、性能与测试充分性。未获 `APPROVED` 的变更不得合并。
+6. 使用 `docs/development/CHANGE_IMPACT_ANALYSIS.md` 分析每项修改对模块、数据库、API、测试、风险与回滚的影响；影响未关闭时暂停受影响工作。
+7. 使用 `docs/development/DEVELOPMENT_STATUS_STANDARD.md` 维护当前任务、完成比例、阻塞、风险和下一动作，并同步 `PROJECT_STATE.md`。
+8. 持续维护 `docs/design/TRACEABILITY_MATRIX_TEMPLATE.md` 定义的 Requirement → Design → Task → Commit → Test 五层追踪。
+9. 使用 `docs/development/DEVELOPMENT_APPROVAL_GATE.md` 审批 DEVELOPMENT → TESTING。
+
+进入 DEVELOPMENT 时，Commit 槽可以且只能标记为 `NOT_CREATED`；它表示尚未实现，不是追踪豁免。进入 TESTING 前，每个已完成 Task 必须关联实际 Commit SHA、Review 结果与 Test 证据。
+
+开发完成不代表自动进入 Testing。Development Approval Gate 的唯一授权结果是 `APPROVED_FOR_TESTING`；`CHANGES_REQUIRED`、口头同意、局部测试通过或“先测试后补记录”均不得触发状态转换。
 
 ### Phase 0：Idea 分析
 
@@ -77,7 +93,7 @@ Design Approval Gate 的唯一授权结果是 `APPROVED_FOR_DEVELOPMENT`。任�
 
 ### Phase 5：开发执行
 
-依据已确认设计和计划分步实现与验证，持续维护 Progress、PROJECT_STATE、PROJECT_MEMORY 和必要 ADR。
+依据已确认设计和计划，以 Task 为执行单元完成测试先行、最小实现、验证、Code Review、Git 提交和变更影响闭环；持续维护五层追踪、Progress、PROJECT_STATE、PROJECT_MEMORY 和必要 ADR。通过 Development Approval Gate 后才能进入 TESTING。
 
 ### Phase 6：测试上线
 
@@ -95,6 +111,7 @@ Design Approval Gate 的唯一授权结果是 `APPROVED_FOR_DEVELOPMENT`。任�
 - 按 `docs/protocol/MEMORY_MANAGEMENT.md` 维护三层记忆。
 - 按 `docs/evaluation/PHASE_GATE_CHECKLIST.md` 验证阶段转换。
 - 按 `docs/design/DESIGN_APPROVAL_GATE.md` 审批 DESIGN → DEVELOPMENT。
+- 按 `docs/development/DEVELOPMENT_APPROVAL_GATE.md` 审批 DEVELOPMENT → TESTING。
 - 每次状态转换都更新 `PROJECT_STATE.md` 和 `PROJECT_MEMORY.md`。
 
 ## 核心约束

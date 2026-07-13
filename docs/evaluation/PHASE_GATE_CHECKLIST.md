@@ -137,7 +137,7 @@
 - [ ] Database Design 已确认；无持久化数据时有可审计的 N/A 理由。
 - [ ] AI 项目的 Agent Design 已确认；非 AI 项目有可审计的 N/A 理由。
 - [ ] 已确认的 Development Plan，引用 Architecture 版本并列出任务、顺序、依赖、责任、验证方法和完成条件。
-- [ ] Traceability Matrix 已建立 Requirement → Design → Development Task → Test Case 的完整双向关系。
+- [ ] Traceability Matrix 已建立 Requirement → Design → Development Task → `NOT_CREATED` Commit 槽 → Test Case 的完整 Design 期双向关系。
 - [ ] 验收测试方案或用例，覆盖功能、非功能要求、环境、测试数据、预期结果和通过条件。
 - [ ] 开发与交付风险清单，包含责任人、缓解措施、监控信号和剩余风险。
 - [ ] 回滚方案，包含触发条件、操作步骤、数据备份与恢复、回滚后验证和责任人。
@@ -162,7 +162,7 @@
 - [ ] Database Design 覆盖实体、字段、关系、索引、数据生命周期和迁移/回滚；不适用理由已获确认。
 - [ ] AI 项目的 Agent Design 覆盖职责、输入输出、Prompt、工具、Memory、失败处理和评估；非 AI 项目不适用理由已获确认。
 - [ ] Development Plan 引用当前 Architecture；任务范围、顺序、依赖、验证和完成条件可执行。
-- [ ] Requirement、Design、Development Task 与 Test Case 可正向和反向追踪，不存在未解释的孤儿项。
+- [ ] Requirement、Design、Development Task 与 Test Case 可正向和反向追踪，Commit 槽均明确为 `NOT_CREATED`，不存在未解释的孤儿项。
 - [ ] 每项必须满足的需求至少对应一项验收测试，预期结果和判定标准明确。
 - [ ] 风险有责任人和处置方案，不存在未解决的开发阻断项。
 - [ ] 回滚触发条件、步骤、数据保护、恢复验证和责任人完整且可执行。
@@ -178,3 +178,36 @@
 - 用户未确认、确认对应旧版本或提出未关闭条件时，不得进入 DEVELOPMENT。
 - 所有阻断项关闭、文档重新基线化并取得用户确认后，重新执行完整门禁。
 - Design 文档全部完成也不构成自动授权；只有 Design Approval Gate 结果为 `APPROVED_FOR_DEVELOPMENT` 才能转换状态。
+
+## DEVELOPMENT → TESTING
+
+本转换的最终判定必须使用 [Development Approval Gate](../development/DEVELOPMENT_APPROVAL_GATE.md)。
+
+### 输入
+
+- [ ] 当前范围有有效的 `APPROVED_FOR_DEVELOPMENT` 记录。
+- [ ] Development Plan、Task 列表与 Development Status 已更新。
+- [ ] Requirement → Design → Task → Commit → Test 五层追踪已完成。
+- [ ] TDD 的 RED、GREEN、REFACTOR 与 Validation 证据可追溯。
+- [ ] Code Review、Change Impact、Bug Register、文档同步与 Git 状态证据齐全。
+
+### 输出
+
+- [ ] `APPROVED_FOR_TESTING` 或 `CHANGES_REQUIRED` 门禁记录。
+- [ ] PROJECT_STATE、PROJECT_MEMORY 与 Development Progress 更新。
+- [ ] Testing 范围、版本基线、测试环境和第一项 Next Action。
+
+### 验收标准
+
+- [ ] 所有 P0 Requirement 关联 Task 和核心功能已完成并通过任务验收。
+- [ ] 每个已完成 Task 都有关联 Commit、Review 与 Test 证据。
+- [ ] 测试用例、文档和五层追踪与当前代码基线一致。
+- [ ] 无未关闭高优先级 Bug、红线、开发阻断或高风险变更影响。
+- [ ] Git 工作区、分支、提交和合并状态满足工程规范。
+- [ ] Development Approval Gate 结果为 `APPROVED_FOR_TESTING`。
+
+### 未通过处理
+
+- 保持 DEVELOPMENT，不得把未满足项转移到 TESTING 阶段掩盖。
+- 将缺口分配给具体 Task 与责任人，完成修复、测试、Review、文档和追踪更新后重新执行完整门禁。
+- 若实现暴露设计、范围或关键可行性失效，退回 DESIGN、EVALUATION 或 RESEARCH 并记录影响。

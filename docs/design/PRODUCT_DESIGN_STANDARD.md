@@ -51,7 +51,7 @@ AI CTO 在起草 PRD 前必须冻结以下输入。任何必需输入缺失时�
 3. 一个 ID 只表达一个可独立验收的行为或结果。含多个独立行为的需求必须拆分。
 4. 场景、痛点、指标和验收标准应分别使用 `SCN-`、`PAIN-`、`MET-` 和 `AC-<Requirement ID>-<序号>` 标识。
 5. 每项核心功能必须至少追溯到一个用户痛点或约束、一个使用场景、一个成功指标或明确的门禁理由，以及至少一项验收标准。
-6. 进入后续设计时，Requirement ID 必须保持不变，并继续建立 Requirement → Design → Development Task → Test Case 的双向追溯关系。
+6. 进入后续设计时，Requirement ID 必须保持不变，并继续建立 Requirement → Design → Development Task → `NOT_CREATED` Commit 槽 → Test Case 的 Design 期双向追溯关系；实际 Commit 在 DEVELOPMENT 中补充。
 
 需求拆分或合并时，应保留原 ID 的状态，并在变更记录中列出替代关系，不得通过改名掩盖范围变化。
 
