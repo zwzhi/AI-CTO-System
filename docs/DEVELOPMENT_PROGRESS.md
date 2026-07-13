@@ -2,7 +2,7 @@
 
 ## 当前阶段
 
-Phase 8.3：AI CTO Knowledge Governance（已完成，等待用户确认；未进入 Phase 8.4）
+Phase 8.3 Knowledge Governance Pilot（设计已确认并形成书面规格，等待用户复核；未进入 Phase 8.4）
 
 ## 已完成
 
@@ -119,11 +119,13 @@ Phase 8.3：AI CTO Knowledge Governance（已完成，等待用户确认；未�
 
 ## 进行中
 
-无；Phase 8.3 文档与目录已完成，等待用户验收。
+- Knowledge Governance Pilot 已选择 AI-CTO-System 作为证据可核验的试点项目。
+- 三条迁移对象、生命周期推进条件、Registry 和复用模拟已形成书面设计，等待用户复核后执行。
 
 ## 待处理
 
-- 等待用户确认 Phase 8.3 Knowledge Governance
+- 等待用户复核 Knowledge Governance Pilot 书面设计
+- 复核通过后创建模板、三条 Knowledge Record、Registry、复用记录和 Pilot Report
 - 确认前不进入 Phase 8.4，不开发 Agent、不实现 RAG、不接入向量数据库
 
 ## 阻塞与风险
