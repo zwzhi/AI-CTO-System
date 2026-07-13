@@ -1,6 +1,6 @@
 ---
 name: ai-cto-system
-description: Use when receiving or governing AI projects, taking over existing software, or managing multiple projects, competing resources, portfolio priorities, dependencies, reusable technical assets, AI costs, investment decisions, maintenance, evolution, archival, or retirement.
+description: Use when receiving or governing AI projects, reviewing AI CTO system architecture, classifying future capabilities into layers or modules, taking over existing software, or managing portfolios, priorities, dependencies, reusable assets, AI costs, maintenance, evolution, archival, or retirement.
 ---
 
 # AI CTO
@@ -146,7 +146,7 @@ Maintenance 允许处理边界明确的小变更，但代码、配置、数据�
 7. 使用 `docs/portfolio/PROJECT_INVESTMENT_DECISION_STANDARD.md` 在项目竞争资源时生成 Investment Recommendation，比较价值、成本、风险、时间窗口、复用、依赖和机会成本。
 8. 使用 `docs/portfolio/PORTFOLIO_HEALTH_STANDARD.md` 评估项目健康平均分、风险项目比例、技术债、资产复用和 AI 成本趋势。
 
-Portfolio Management 是治理覆盖层，不是单项目生命周期状态。Portfolio Status 与 Current Stage 必须分别记录；Priority Score、Portfolio Health 和 Investment Recommendation 都不能自动启动、暂停、归档、淘汰项目，也不能替代单项目 Gate 或用户审批。
+Portfolio Management 是 Layer 2 内的治理覆盖面，不是独立架构 Layer 或单项目生命周期状态。Portfolio Status 与 Current Stage 必须分别记录；Priority Score、Portfolio Health 和 Investment Recommendation 都不能自动启动、暂停、归档、淘汰项目，也不能替代单项目 Gate 或用户审批。
 
 每次组合资源决策必须输出：Portfolio Snapshot、Project Table、Priority Score / Level / Confidence、Dependency Risks、Reusable Assets、Resource Capacity、AI Cost、Portfolio Health、Investment Recommendation、Approval Status、Affected Project Gates 和 Next Review。
 
@@ -161,6 +161,21 @@ Project Table 对每个项目使用以下固定字段和词汇：
 - Portfolio Health 输出 Score / Range、Evidence Coverage 和“健康、可控、风险、严重”之一，证据不足时标记 `Provisional`，不只输出颜色。
 
 缺少评分输入时保留 `UNASSESSED` 和补证动作，不根据职位、紧急表述或历史投入编造分数。Executive Override 作为独立审批与风险记录保存，不改写原 Priority、Health、依赖或成本证据。
+
+## LAYER + MODULE 架构规则
+
+1. 使用 `docs/architecture/AI_CTO_SYSTEM_ARCHITECTURE.md` 判断五层职责，使用 `docs/architecture/MODULE_REGISTRY.md` 检索现有 Module 和状态。
+2. 每个未来功能、协议、集成或自动化需求先执行 `docs/architecture/FEATURE_CLASSIFICATION_RULES.md`，不得因路线图名称、截止时间、负责人指令或历史投入直接创建新 Phase。
+3. 依次选择：复用现有 Module、扩展现有 Module、在现有 Layer 创建 Module；只有现有五层确实无法承载且新职责可稳定支持多个 Module 时，才提出新 Layer。
+4. Phase 只表示历史交付批次；Layer 表示稳定职责；Module 表示可独立治理的能力；Lifecycle State 表示单项目当前阶段。四者不得混用。
+5. 每个 Module 必须有且只有一个 Owning Layer。跨层能力通过版本化输入输出合同连接，不复制权威数据或 Gate。
+6. Layer 5 只负责未来执行与编排，不得覆盖 Layer 2 决策、Layer 3 工程基线、Layer 4 生命周期门禁或 Layer 1 记忆规则。
+7. 按 `docs/architecture/ARCHITECTURE_EVOLUTION_STANDARD.md` 管理结构变化。新 Layer、Module 移动 / 合并 / 拆分、跨层权威或核心 Gate 变化必须完成架构评审并创建 ADR。
+8. 结构变化同步 System Architecture、Module Registry、SKILL、PROJECT_MEMORY 和 DEVELOPMENT_PROGRESS，并保留兼容、迁移、废弃和回滚记录。
+
+每次未来需求归类必须按以下固定顺序输出：Feature / Request、Owning Layer、Existing Module、Classification Result、Cross-Layer Inputs / Outputs、Architecture Review Required、ADR Required、Registry Update、Next Action。Classification Result 只允许 `USE_EXISTING_MODULE`、`EXTEND_EXISTING_MODULE`、`CREATE_MODULE_IN_EXISTING_LAYER`、`PROPOSE_NEW_LAYER` 或 `REJECT_OR_DEFER`。
+
+Capability Governance 当前是 Layer 5 的 `Planned` Module。本次架构审查不实现该模块，也不进入 Phase 8.2。
 
 ### Phase 0：Idea 分析
 
@@ -200,7 +215,7 @@ Project Table 对每个项目使用以下固定字段和词汇：
 
 ### Phase 8：项目组合治理
 
-在 Portfolio Management 层维护多个项目的列表、状态、阶段、价值、健康、优先级、依赖、技术资产、资源和 AI 成本。通过 Portfolio Health 与 CTO Dashboard 识别风险和机会，在资源竞争时生成 Investment Recommendation，并由用户审批资源配置。所有项目继续遵守各自生命周期与 Gate。
+在 Layer 2 的 Portfolio Management 治理范围内维护多个项目的列表、状态、阶段、价值、健康、优先级、依赖、技术资产、资源和 AI 成本。通过 Portfolio Health 与 CTO Dashboard 识别风险和机会，在资源竞争时生成 Investment Recommendation，并由用户审批资源配置。所有项目继续遵守各自生命周期与 Gate。
 
 ## 状态与文档
 
@@ -218,8 +233,9 @@ Project Table 对每个项目使用以下固定字段和词汇：
 - 按 `docs/maintenance/MAINTENANCE_STANDARD.md`、`docs/maintenance/INCIDENT_MANAGEMENT_STANDARD.md`、`docs/maintenance/TECH_DEBT_MANAGEMENT_STANDARD.md`、`docs/maintenance/USER_FEEDBACK_PIPELINE.md` 和 `docs/maintenance/PROJECT_RETIREMENT_STANDARD.md` 管理长期运营。
 - 按 `docs/evolution/AI_CAPABILITY_EVOLUTION_STANDARD.md`、`docs/evolution/EVOLUTION_PROPOSAL_STANDARD.md` 和 `docs/evolution/EVOLUTION_GATE.md` 管理持续评估与重大演进。
 - 按 `docs/portfolio/PROJECT_PORTFOLIO_STANDARD.md`、`docs/portfolio/PROJECT_PRIORITY_MODEL.md`、`docs/portfolio/PROJECT_DEPENDENCY_STANDARD.md`、`docs/portfolio/TECH_ASSET_REGISTRY_STANDARD.md`、`docs/portfolio/AI_COST_MANAGEMENT_STANDARD.md`、`docs/portfolio/PROJECT_INVESTMENT_DECISION_STANDARD.md` 和 `docs/portfolio/PORTFOLIO_HEALTH_STANDARD.md` 管理多项目组合。
+- 按 `docs/architecture/AI_CTO_SYSTEM_ARCHITECTURE.md`、`docs/architecture/MODULE_REGISTRY.md`、`docs/architecture/FEATURE_CLASSIFICATION_RULES.md` 和 `docs/architecture/ARCHITECTURE_EVOLUTION_STANDARD.md` 管理 AI CTO System 自身架构。
 - 每次状态转换都更新 `PROJECT_STATE.md` 和 `PROJECT_MEMORY.md`。
 
 ## 核心约束
 
-遵守项目根目录的 `AGENTS.md`。新项目不得跳过 Idea、需求分析、设计文档、重大决策记录、项目记忆、状态和进度更新；已有项目不得跳过 Existing Project Onboarding、证据恢复、健康评估和迁移门禁；重大演进不得跳过 Evolution Proposal、Gate、用户审批和后续工程门禁；组合评分和投资建议不得自动改变项目状态或资源。不得以原型、试验、紧急需求、负责人指令或既有投入为理由直接编码、修改生产系统或绕过统一组合证据。
+遵守项目根目录的 `AGENTS.md`。新项目不得跳过 Idea、需求分析、设计文档、重大决策记录、项目记忆、状态和进度更新；已有项目不得跳过 Existing Project Onboarding、证据恢复、健康评估和迁移门禁；重大演进不得跳过 Evolution Proposal、Gate、用户审批和后续工程门禁；组合评分和投资建议不得自动改变项目状态或资源；未来需求不得跳过 Layer + Module 归类并直接创建 Phase。不得以原型、试验、紧急需求、负责人指令、路线图标签或既有投入为理由直接编码、修改生产系统、建立新 Phase 或绕过统一治理证据。

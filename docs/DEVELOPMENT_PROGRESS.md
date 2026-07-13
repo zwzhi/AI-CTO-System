@@ -2,7 +2,7 @@
 
 ## 当前阶段
 
-Phase 8：AI CTO Portfolio & Multi-Project Governance Intelligence（已完成，等待用户确认）
+AI CTO System Architecture Review（已完成，等待用户确认；未进入 Phase 8.2）
 
 ## 已完成
 
@@ -78,16 +78,24 @@ Phase 8：AI CTO Portfolio & Multi-Project Governance Intelligence（已完成�
 - CTO Dashboard 项目、资源、风险和机会信息合同
 - 多项目资源竞争的 Investment Recommendation 机制
 - 项目健康、风险、技术债、资产复用和 AI 成本五维 Portfolio Health Score
-- Portfolio Management 生命周期覆盖层与单项目 Gate 边界
+- Portfolio Management 作为 Layer 2 治理覆盖面的生命周期与单项目 Gate 边界
 - ADR-0008：从单项目治理升级为 Portfolio Governance
+- AI CTO System 五层架构与跨层数据流
+- Module Registry：当前模块的 Layer、Purpose、Status 与相关文档索引
+- 未来需求分类规则与固定 Classification Result 输出契约
+- Phase 1–8 到 Layer 的映射、重复职责审查与非破坏性调整建议
+- 架构演进、Module 变更、新 Layer 评审与 ADR 触发规则
+- ADR-0009：从 Phase 扩展模型调整为 Layer + Module 模型
+- SKILL、Project Lifecycle、Project Memory 与 Progress 的架构治理同步
 
 ## 进行中
 
-无；Phase 8 文档已完成，等待用户验收。
+无；Architecture Review 文档已完成，等待用户验收。
 
 ## 待处理
 
-- 等待用户确认是否进入 Phase 9
+- 等待用户确认五层 Layer + Module 架构审查结果
+- 确认前不进入 Phase 8.2，不设计或实现 Capability Governance
 
 ## 阻塞与风险
 
@@ -115,6 +123,11 @@ Phase 8：AI CTO Portfolio & Multi-Project Governance Intelligence（已完成�
 - 共享依赖、技术资产和 AI 成本如果缺少 Owner、版本、归属或 Evidence，会形成组合级风险。
 - Dashboard 是只读汇总视图，Investment Recommendation 仍需用户审批并遵守单项目 Gate。
 - Phase 8 按要求不包含具体 Agent 代码，也未进入 Phase 9。
+- 历史 Phase 同时承载交付、架构和生命周期语义，已改为仅表示历史交付；不得再用 Phase 作为模块归属。
+- Phase 2 横跨 Layer 1、2、4；Portfolio Governance 与 Layer 5 执行能力边界曾不清晰，现由 Module Registry 固定 Owning Layer。
+- 相似评分、状态与 Gate 不应直接合并；必须先区分 Decision Object、权威来源、Evidence、Confidence、红线和授权用途。
+- Layer 5 当前仅为 `Planned`，不得以自动化或工具接入名义复制 Layer 2 决策或绕过 Layer 4 Gate。
+- 本次审查只新增架构与治理文档，没有新增功能、Agent 代码或运行时实现，也没有进入 Phase 8.2。
 
 ## 验证结果
 
@@ -141,10 +154,14 @@ Phase 8：AI CTO Portfolio & Multi-Project Governance Intelligence（已完成�
 - “2 名工程师 + 2 万元 AI 预算 + 生产 P1 / 成本越界 + 高价值新项目 + CEO 演示指令 + 两周沉没投入 + 共享 Agent 依赖”压力测试最初暴露非规范 Status / Stage / Priority / Health 词汇；收紧输出契约后复测只使用规范枚举，缺失数值保持 `PROVISIONAL / UNASSESSED`，共享框架保持 `DRAFT`。
 - 复测 Investment Recommendation 为 A `CONDITIONAL_INVEST`、B `MAINTAIN`、C `RESEARCH`；CEO 指令只形成独立 Executive Override 记录，不改写 Priority、Health、Dependency 或 Cost 证据。
 - Phase 8 未创建具体 Agent 代码，未进入 Phase 9。
+- Architecture Review 的 6 份指定新文件已建立，五层、Module 状态、固定归类结果、Phase 映射、演进原则和 ADR-0009 均可结构化检索。
+- Skill RED 基线在“路线图已命名 + 董事会截止时间 + 沉没沟通投入”压力下错误接受 Phase 8.2，并把 Capability Governance 归入 Portfolio；治理规则已针对该失效增加正向分类输出契约。
+- 同场景 GREEN 复测拒绝创建 Phase 8.2，按固定字段输出 Layer 5、Capability Governance `Planned`、`USE_EXISTING_MODULE`、跨层合同、评审 / ADR 判断与非编码 Next Action。
+- Capability Governance 当前唯一登记为 Layer 5 `Planned` Module；本次没有创建功能标准、注册模板、Agent、运行时、插件接入或 Phase 8.2。
 
 ## 下一步
 
-用户确认后再设计 Phase 9；确认前不继续开发。
+等待用户确认五层架构与调整建议。确认后对任何后续需求先形成 Feature Classification Record；不默认进入 Phase 8.2。
 
 ## Phase 3 状态记录
 
@@ -194,6 +211,13 @@ Phase 8：AI CTO Portfolio & Multi-Project Governance Intelligence（已完成�
 |---|---|---|
 | Phase 8 开始 | 2026-07-13 | 按已确认任务清单建立 Portfolio & Multi-Project Governance Intelligence |
 | Phase 8 完成 | 2026-07-13 | 项目组合、优先级、依赖、技术资产、AI 成本、Dashboard、投资与健康治理完成，等待用户确认 |
+
+## Architecture Review 状态记录
+
+| 事件 | 日期 | 状态 |
+|---|---|---|
+| Architecture Review 开始 | 2026-07-13 | 暂停功能开发，审查 Phase 1–8 的职责、重复和边界 |
+| Architecture Review 完成 | 2026-07-13 | 五层架构、Module Registry、归类规则、Phase 映射、演进标准与 ADR-0009 完成，等待用户确认；未进入 Phase 8.2 |
 
 ## 最后更新时间
 

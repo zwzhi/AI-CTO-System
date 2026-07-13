@@ -21,13 +21,13 @@
 
 两者均完成后才能进入 `DESIGN`。任何状态发现关键假设失效时，可退回前序状态，并记录原因。
 
-## Portfolio Management 层
+## Portfolio Management 治理覆盖面
 
 单项目生命周期在 Portfolio Governance 管理下运行：
 
 `Portfolio Management → 多个 Project → 各自 IDEA → RESEARCH / EVALUATION → DESIGN → DEVELOPMENT → TESTING → RELEASE → MAINTENANCE / EVOLUTION`
 
-Portfolio Management 是跨项目治理层，不是单项目生命周期状态。它维护项目列表、Portfolio Status、Priority、Health、Dependency、Technical Asset、AI Cost、Investment Recommendation 和 Portfolio Health，不改变项目自身 Current Stage 的含义。
+Portfolio Management 属于五层架构的 Layer 2，是跨项目治理覆盖面，不是独立架构 Layer 或单项目生命周期状态。它维护项目列表、Portfolio Status、Priority、Health、Dependency、Technical Asset、AI Cost、Investment Recommendation 和 Portfolio Health，不改变项目自身 Current Stage 的含义。
 
 单项目的简化业务路径 `IDEA → RELEASE → MAINTENANCE` 受 Portfolio Governance 持续管理；其中被省略的 Research、Evaluation、Design、Development 和 Testing 门禁仍然强制执行。
 
@@ -37,6 +37,18 @@ Portfolio Management 是跨项目治理层，不是单项目生命周期状态�
 - `ARCHIVED`、`RETIRED` 是组合处置状态，不是新增生命周期状态，也不表示单项目门禁自动完成。
 - 组合资源、依赖、资产、成本或投资决定变化时，必须同步受影响项目状态、记忆、计划和风险。
 - Portfolio Governance 的决策与授权边界见 [ADR-0008](../adr/ADR-0008-PORTFOLIO-GOVERNANCE.md)。
+
+## Layer + Module 与生命周期的关系
+
+[AI CTO System 五层架构](../architecture/AI_CTO_SYSTEM_ARCHITECTURE.md)是稳定责任模型，[模块注册表](../architecture/MODULE_REGISTRY.md)是能力归属索引；本文件的 Lifecycle State 是 Layer 4 管理的单项目状态机。三者用途不同：
+
+- Layer 1 为生命周期提供用户、项目和知识上下文，并保存可追溯结果；不批准状态转换。
+- Layer 2 决定项目价值、优先级、资源和立项授权；Portfolio Governance 是覆盖层，不是生命周期状态。
+- Layer 3 生成 PRD、Architecture、Task、Commit、Test Plan 等工程基线；工程文档完成不自动改变生命周期状态。
+- Layer 4 拥有本状态机、专项 Gate、接管、发布、维护和演进的状态语义。
+- Layer 5 未来可编排状态转换请求，但必须消费当前权威 Gate 结果，不能创建临时状态或绕过转换条件。
+
+Phase 1–8 仅表示 AI CTO System 自身的历史交付批次，不属于单项目 Lifecycle State，也不再作为未来能力的架构归类。未来需求先按[需求归类规则](../architecture/FEATURE_CLASSIFICATION_RULES.md)确定 Owning Layer 和 Module；单一功能不得直接创建新 Phase 或生命周期状态。该决策见 [ADR-0009](../adr/ADR-0009-AI-CTO-SYSTEM-ARCHITECTURE-MODEL.md)。
 
 ## 状态定义
 
