@@ -2,7 +2,7 @@
 
 ## 当前阶段
 
-Phase 5：AI CTO Development Execution Intelligence（已完成，等待用户确认）
+Phase 6：AI CTO Testing & Release Intelligence（已完成，等待用户确认）
 
 ## 已完成
 
@@ -40,14 +40,25 @@ Phase 5：AI CTO Development Execution Intelligence（已完成，等待用户�
 - Development → Testing 门禁
 - Requirement → Design → Task → Commit → Test 五层追踪
 - DEVELOPMENT 阶段治理规则
+- Phase 6：测试策略规范
+- Bug 生命周期与 P0 Blocker / P1 Critical / P2 Major / P3 Minor 分级
+- AI 系统八维评测规范
+- 上线前安全评审规范
+- Release Approval Gate 与 TESTING → RELEASE 状态门禁
+- 部署、回滚与数据恢复规范
+- 上线后监控规范
+- Release Report 模板
+- Requirement → Test Case → Evidence 执行证据追踪
+- TESTING 与 RELEASE 状态管理规则
+- ADR-0005：Testing 与 Release 授权分离
 
 ## 进行中
 
-无；Phase 5 文档已完成，等待用户验收。
+无；Phase 6 文档已完成，等待用户验收。
 
 ## 待处理
 
-- 等待用户确认是否进入 Phase 6
+- 等待用户确认是否进入 Phase 7
 
 ## 阻塞与风险
 
@@ -57,17 +68,25 @@ Phase 5：AI CTO Development Execution Intelligence（已完成，等待用户�
 - Phase 4 按要求不包含具体 Agent 代码。
 - 开发完成不等于 Testing 授权；必须通过 Development Approval Gate。
 - Phase 5 按要求不包含具体 Developer Agent 代码。
+- Testing 完成不等于已发布；只有 Testing Release Gate 的 `READY_FOR_RELEASE` 才能进入 RELEASE。
+- `READY_FOR_RELEASE` 不是部署成功；仍须执行部署、上线验证、观察窗口和 Release Report。
+- AI 项目除功能测试外必须完成 AI 效果评测，且所有证据必须绑定同一候选基线。
+- Phase 6 按要求不包含具体 Agent 代码，也未进入 Phase 7。
 
 ## 验证结果
 
-- 8 份 Development 核心规范均存在；Task 必填字段 11/11、Plan 必需内容 6/6、Git 分支 4/4、Commit 类型 5/5、Code Review 检查项 6/6、Review 结果 3/3 均通过结构验证。
+- Phase 5 验收时，8 份 Development 核心规范均存在；Task 必填字段 11/11、Plan 必需内容 6/6、Git 分支 4/4、Commit 类型 5/5、Code Review 检查项 6/6、Review 结果 3/3 均通过结构验证。
 - Phase 5 相关文档的相对链接、Markdown 表格、状态词汇、五层追踪、Skill 引用与阶段门禁一致性检查通过。
-- 先代码后补测试、P1/High Bug 与脏工作区、Review 未批准、Design 期 `NOT_CREATED`、Phase 6 Test `NOT_RUN`、Task 状态词汇六类压力场景均已验证；发现的阶段化测试和状态歧义已关闭。
-- 变更范围仅包含协议、标准、模板、记忆、进度与 ADR；未创建具体 Developer Agent 代码，未进入 Phase 6。
+- Phase 5 验收时，先代码后补测试、P1 Critical Bug 与脏工作区、Review 未批准、Design 期 `NOT_CREATED`、Phase 6 Test `NOT_RUN`、Task 状态词汇六类压力场景均已验证；发现的阶段化测试和状态歧义已关闭。
+- Phase 5 变更范围仅包含协议、标准、模板、记忆、进度与 ADR；该阶段未创建具体 Developer Agent 代码，也未提前进入 Phase 6。
+- Phase 6 的 9 份指定核心文件全部存在；测试八类策略字段、五种测试类型、Bug 六阶段与四级优先级、AI 八维指标、安全六类检查、三种 Release 结果、部署回滚字段和五类监控域均通过结构与语义断言。
+- 全仓相对 Markdown 链接、表格列数、尾随空格、文件结尾换行与 Git diff 检查通过；根 SKILL 通过 `quick_validate.py` 校验。
+- P1 Critical + 安全整改、API Key 泄露、全部条件通过、授权后新增配置 Commit、AI 幻觉超阈值五类发布压力场景通过；其中新增配置 Commit 唯一判定为 `BLOCKED`、退回 DEVELOPMENT、禁止部署。
+- Phase 6 变更范围为 19 份 Markdown 文档、模板、记忆与治理文件；未创建具体 Agent 代码，未进入 Phase 7。
 
 ## 下一步
 
-用户确认后设计 Phase 6；确认前不继续开发。
+用户确认后设计 Phase 7；确认前不继续开发。
 
 ## Phase 3 状态记录
 
@@ -89,6 +108,13 @@ Phase 5：AI CTO Development Execution Intelligence（已完成，等待用户�
 |---|---|---|
 | Phase 5 开始 | 2026-07-13 | 按已确认任务清单建立 Development Execution Intelligence |
 | Phase 5 完成 | 2026-07-13 | 工程规范、五层追踪与 Testing 门禁完成，等待用户确认 |
+
+## Phase 6 状态记录
+
+| 事件 | 日期 | 状态 |
+|---|---|---|
+| Phase 6 开始 | 2026-07-13 | 按已确认任务清单建立 Testing & Release Intelligence |
+| Phase 6 完成 | 2026-07-13 | 测试、安全、AI 评测、发布、部署、回滚与监控治理完成，等待用户确认 |
 
 ## 最后更新时间
 

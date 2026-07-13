@@ -37,6 +37,40 @@
 - Test Status：
 - Next Development Action：
 
+## Testing Status
+
+仅在 TESTING 及 TESTING → RELEASE 门禁复核期间维护；其他阶段填写 `Not Applicable` 并说明原因。
+
+- Release Candidate / Commit Baseline：
+- Test Strategy Baseline：
+- Test Execution Progress：
+- Requirement → Test Case → Evidence Status：
+- Unit / Integration / System / UAT / Regression Result：
+- Open Bugs（P0 / P1 / P2 / P3）：
+- AI Evaluation Result（AI 项目）或 Approved N/A：
+- Security Review Result：
+- User Acceptance Result：
+- Release Gate Record / Result：
+- Blockers：
+- Risks：
+- Next Testing Action：
+
+## Release Status
+
+仅在 RELEASE 及其上线验证期间维护；其他阶段填写 `Not Applicable` 并说明原因。
+
+- Release Version / Candidate Baseline：
+- Release Authorization Record：
+- Target Environment：
+- Deployment Status / Evidence：
+- Rollback Readiness / Execution Status：
+- Monitoring Baseline / Observation Window：
+- Monitoring Conclusion：
+- Open Incidents / Bugs：
+- Release Report：
+- Remaining Risks / Acceptance：
+- Next Release Action：
+
 ## Last Updated
 
 YYYY-MM-DD

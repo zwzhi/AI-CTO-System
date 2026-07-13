@@ -165,8 +165,8 @@ P0 / 核心功能检查、完成 Task 的 Commit / Review / Test 证据、五层
 
 ### 7.9 Bug、风险与安全
 
-- Bug 优先级取 Bug Register 与项目定义中的最高严重度；如果项目使用不同词汇，必须先映射到 P0 / Blocker、P1 / High、P2 / Medium、P3 / Low，不能在门禁时降级。
-- 未关闭 P0 / Blocker 和 P1 / High Bug 数量必须为 0。风险接受、计划在 Testing 修复、Feature Flag 隐藏或“不影响主流程”不能绕过。
+- Bug 优先级取 Bug Register 与项目定义中的最高严重度；如果项目使用不同词汇，必须先映射到 P0 Blocker、P1 Critical、P2 Major、P3 Minor，不能在门禁时降级。
+- 未关闭 P0 Blocker 和 P1 Critical Bug 数量必须为 0。风险接受、计划在 Testing 修复、Feature Flag 隐藏或“不影响主流程”不能绕过。
 - 已关闭高优先级 Bug 具有修复 Commit、Review、定向测试、回归和五层追踪证据；重新出现时立即重新打开。
 - 未关闭安全、隐私、合规、数据完整性红线，开发阻断和无可信回滚的 HIGH / CRITICAL 风险数量为 0。
 - 非阻断剩余风险由有权限的人针对当前基线明确接受，并记录监控、触发器、Owner 和 Testing 期间的处置动作。

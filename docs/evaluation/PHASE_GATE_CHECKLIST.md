@@ -4,7 +4,7 @@
 
 本文按标准路径展开：
 
-**IDEA → RESEARCH → EVALUATION → DESIGN → DEVELOPMENT**
+**IDEA → RESEARCH → EVALUATION → DESIGN → DEVELOPMENT → TESTING → RELEASE**
 
 每次转换都必须留下证据、下一动作和可追溯记录。清单中的“输入”是门禁评审所需材料，“输出”是门禁结束后必须形成的结果，“验收标准”决定能否转换，“未通过处理”规定项目停留或退回的位置。
 
@@ -211,3 +211,43 @@
 - 保持 DEVELOPMENT，不得把未满足项转移到 TESTING 阶段掩盖。
 - 将缺口分配给具体 Task 与责任人，完成修复、测试、Review、文档和追踪更新后重新执行完整门禁。
 - 若实现暴露设计、范围或关键可行性失效，退回 DESIGN、EVALUATION 或 RESEARCH 并记录影响。
+
+## TESTING → RELEASE
+
+本转换的端到端准备检查使用 [Release Approval Gate](../release/RELEASE_APPROVAL_GATE.md)，最终状态转换判定必须使用 [Testing Release Gate](../release/TESTING_RELEASE_GATE.md)。Development Gate 只授权进入 TESTING，不构成跨阶段发布许可。
+
+### 输入
+
+- [ ] 当前候选范围、文档版本与 Commit 基线具有有效的 `APPROVED_FOR_TESTING` 记录。
+- [ ] Test Strategy 已冻结目标、范围、类型、环境、数据、指标、责任人与结果记录方式。
+- [ ] Requirement → Test Case → Evidence 可双向追溯，所有发布必需测试均针对当前基线执行。
+- [ ] Bug Register 已更新；未关闭 P0 Blocker 与 P1 Critical 数量均为 0。
+- [ ] AI 项目的 AI Evaluation 已达到预设阈值；非 AI 项目具有当前基线的 Approved N/A。
+- [ ] Security Review 针对当前基线取得 `APPROVED`。
+- [ ] 用户验收已完成，验收人、范围、版本、结果与证据可追溯。
+- [ ] 部署、回滚、数据恢复、监控与观察窗口方案完整且可执行。
+- [ ] PROJECT_STATE、PROJECT_MEMORY、Progress 与 Release Report 草案已同步。
+
+### 输出
+
+- [ ] `READY_FOR_RELEASE`、`CHANGES_REQUIRED` 或 `BLOCKED` 三者之一的不可覆盖 Gate Record。
+- [ ] 逐项检查结果、精确候选基线、证据、未通过项、责任人与完成条件。
+- [ ] PROJECT_STATE、PROJECT_MEMORY 与 Progress 更新。
+- [ ] 通过时形成 RELEASE 的环境、执行责任人、首个部署动作与停止条件；未通过时形成修订或解除阻断计划。
+
+### 验收标准
+
+- [ ] 所有发布范围内测试结果达到预先定义的通过阈值，且 Evidence 完整、可复核、未失效。
+- [ ] 未关闭 P0/P1 Bug 为 0；P2/P3 的处置、风险接受、监控和 Owner 已记录。
+- [ ] AI Evaluation（适用时）、Security Review 与用户验收均通过且绑定同一候选基线。
+- [ ] 部署、回滚、数据恢复和监控方案已验证到当前风险要求，责任与触发器明确。
+- [ ] 不存在未关闭安全、隐私、合规、数据完整性或不可恢复红线。
+- [ ] 最终 Testing Release Gate 结果为 `READY_FOR_RELEASE`。
+
+### 未通过处理
+
+- `CHANGES_REQUIRED` 时保持 TESTING，为每个缺口记录 Bug/Issue、Owner、Next Action、完成条件与重新验证范围；关闭后针对新基线重新执行完整门禁。
+- `BLOCKED` 时保持 TESTING 或按失效原因退回前序阶段，先完成安全遏制、外部授权、关键证据补齐或不可恢复风险处置；阻断未解除不得部署。
+- 发布窗口、负责人指令、局部测试通过、口头风险接受或旧版本批准均不能改变门禁结果。
+- 任何代码、配置、依赖、模型、Prompt、数据集、数据库或部署方案变化都会触发影响分析，并使受影响的旧测试、审核或门禁证据失去当前性。
+- `READY_FOR_RELEASE` 只允许转换到 RELEASE，不代表部署成功，也不自动进入 MAINTENANCE 或 EVOLUTION。

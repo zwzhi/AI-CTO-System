@@ -25,6 +25,16 @@
 | 需求、设计、任务、提交与测试的端到端对应关系 | Traceability Matrix |
 | DEVELOPMENT 授权结果 | Design Approval Gate |
 | TESTING 授权结果 | Development Approval Gate |
+| 测试目标、范围、类型、环境、数据、指标与责任 | Test Strategy |
+| 测试案例的实际执行结果与可复核证明 | Test Evidence |
+| 缺陷状态、优先级、修复与验证 | Bug Register |
+| AI 输出质量、准确率、稳定性、幻觉、成本与时延结论 | AI Evaluation |
+| 上线前安全检查与结论 | Security Review |
+| 端到端发布准备判断 | Release Approval Gate |
+| RELEASE 状态转换授权 | Testing Release Gate |
+| 部署、回滚与数据恢复执行 | Deployment / Rollback Record |
+| 上线指标、阈值、告警、观察窗口与处置 | Monitoring Record |
+| 单个版本的发布结果总览 | Release Report |
 
 ## PRD 关联规则
 
@@ -46,15 +56,17 @@
 - 进度项使用计划中的任务标识，记录计划与实际差异。
 - 新增、删除或重排重大任务时更新 Development Plan，并在 Progress 中说明原因。
 
-### Requirement → Design → Task → Commit → Test
+### Requirement → Design → Task → Commit → Test → Evidence
 
 - 每项已批准需求必须拥有稳定的 Requirement ID。
 - Architecture、Database Design 和 Agent Design 使用 Design ID 引用对应需求。
 - Development Plan 中的任务必须引用其实现的 Requirement ID 与 Design ID。
 - 每个重要 Git Commit 必须引用 Task ID，并在 Traceability Matrix 中关联 Requirement、Design 与 Test Case。
 - Test Plan 和测试案例必须引用验证的 Requirement ID、Design ID、Task ID 与相关 Commit。
+- 每次测试执行必须生成稳定的 Evidence ID，记录候选基线、环境、数据、步骤、预期结果、实际结果、时间、执行人和原始证据位置，并关联对应 Test Case。
+- TESTING → RELEASE 前，每项发布必需测试都必须形成 Requirement → Test Case → Evidence 的可复核投影；计划中的 `NOT_RUN` 不能作为通过证据。
 - `docs/design/TRACEABILITY_MATRIX_TEMPLATE.md` 是端到端追踪关系的权威索引；源文档仍保存具体内容。
-- 需求、设计、任务、Commit 映射或测试改变时，必须更新矩阵并执行正向和反向孤儿项检查。
+- 需求、设计、任务、Commit 映射、测试或 Evidence 有效性改变时，必须更新矩阵并执行正向、反向和孤儿项检查。
 
 ## ADR 规则
 
@@ -88,3 +100,11 @@ ADR 用于记录会影响架构、数据、接口、安全、成本、开发流�
 开发执行与测试授权时：
 
 `Task → Test Case (RED) → Implementation (GREEN) → Refactor → Commit → Code Review → Validation → Five-layer Traceability → Development Approval Gate → PROJECT_STATE → PROJECT_MEMORY`
+
+测试执行与发布授权时：
+
+`Test Strategy → Test Case → Evidence → Bug / AI Evaluation / Security Review / UAT → Release Approval Gate → Testing Release Gate → PROJECT_STATE → PROJECT_MEMORY`
+
+发布执行与上线验证时：
+
+`Release Authorization → Deployment / Rollback Plan → Deployment Record → Monitoring → Release Report → PROJECT_STATE → PROJECT_MEMORY`

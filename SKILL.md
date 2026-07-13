@@ -71,6 +71,28 @@ Design Approval Gate 的唯一授权结果是 `APPROVED_FOR_DEVELOPMENT`。任�
 
 开发完成不代表自动进入 Testing。Development Approval Gate 的唯一授权结果是 `APPROVED_FOR_TESTING`；`CHANGES_REQUIRED`、口头同意、局部测试通过或“先测试后补记录”均不得触发状态转换。
 
+## TESTING 阶段规则
+
+1. 只有当前精确基线取得 `APPROVED_FOR_TESTING` 后，才允许把 Current Stage 改为 `TESTING`；该结果不是用户验收、发布或生产部署授权。
+2. 使用 `docs/testing/TEST_STRATEGY_STANDARD.md` 冻结测试目标、范围、类型、环境、数据、指标、责任和结果记录，并维护 Requirement → Test Case → Evidence 证据链。
+3. 使用 `docs/testing/BUG_MANAGEMENT_STANDARD.md` 管理 Bug 的发现、记录、分级、修复、验证、关闭与重开；未关闭 P0 Blocker 或 P1 Critical 不得发布。
+4. AI 项目必须使用 `docs/testing/AI_EVALUATION_STANDARD.md` 验证输出质量、准确率、稳定性、幻觉、Prompt、Agent 成功率、Token 成本和响应时间；非 AI 项目记录经批准的 N/A 及依据。
+5. 使用 `docs/testing/SECURITY_REVIEW_STANDARD.md` 检查密钥、用户数据、权限、第三方服务、存储和日志安全。只有当前基线的 `APPROVED` 可以满足发布条件。
+6. 完成当前范围的测试执行、回归、用户验收和证据归档；测试失败、证据缺失或基线变化必须关闭影响并重新执行受影响测试。
+7. 使用 `docs/release/RELEASE_APPROVAL_GATE.md` 核验端到端发布准备，并以 `docs/release/TESTING_RELEASE_GATE.md` 作为 TESTING → RELEASE 状态转换的唯一授权来源。
+
+每次发布判断必须输出且只能输出 `READY_FOR_RELEASE`、`CHANGES_REQUIRED` 或 `BLOCKED` 之一，同时记录当前精确版本基线、逐项 Evidence、Current Stage 和 Next Action。只有 `READY_FOR_RELEASE` 允许把 Current Stage 从 `TESTING` 改为 `RELEASE`；该结果只授权进入 Release 执行，不代表已经部署成功。`CHANGES_REQUIRED` 或 `BLOCKED` 时保持 `TESTING`，或按已记录的失效原因退回前序阶段，禁止因截止时间、负责人指令、局部通过或风险口头接受绕过门禁。
+
+## RELEASE 阶段规则
+
+1. 使用 `docs/release/DEPLOYMENT_ROLLBACK_STANDARD.md` 记录环境、版本、配置、数据库与依赖变化，并在执行前确认部署、回滚、数据恢复和验证步骤可操作。
+2. 使用 `docs/release/MONITORING_STANDARD.md` 监控系统状态、错误日志、性能、用户反馈和 AI 质量指标；阈值、责任人、告警与处置 Runbook 必须在发布前就绪。
+3. 使用 `templates/RELEASE_REPORT_TEMPLATE.md` 保存功能、修复、测试、安全、已知风险、回滚和下一步的完整发布报告。
+4. 部署失败、监控越过回滚阈值或出现安全与数据红线时，按已批准方案停止、回滚或阻断，并同步 Bug、PROJECT_STATE、PROJECT_MEMORY 和 Progress。
+5. `READY_FOR_RELEASE` 不能替代部署结果、回滚结果或上线后监控证据。授权后、部署前发生源代码、Artifact、运行配置、依赖、Schema、模型、Prompt、检索、工具权限或 Test Case 等候选行为基线变化时，旧授权失效、部署状态为 `BLOCKED`，Current Stage 退回 `DEVELOPMENT` 并重新取得 Testing 授权；若只有候选内容之外的目标环境、发布窗口、责任人或部署 / 回滚 / 监控证据变化，则退回 `TESTING` 重做受影响审核与 Release Gate。设计失效时按证据继续退回前序阶段。
+
+Release 执行完成不代表自动进入 Phase 7。只有部署结果已验证、观察窗口满足、发布报告完成、剩余风险被有权限的责任人接受，并取得后续阶段的明确授权后，才允许离开 `RELEASE`。
+
 ### Phase 0：Idea 分析
 
 执行 Idea 输入协议和 Idea Candidate 标准，理解目标、提取需求、判断真实问题、关联历史项目并创建项目候选记录。输出问题定义、初始需求、假设、证据和下一动作。
@@ -97,7 +119,7 @@ Design Approval Gate 的唯一授权结果是 `APPROVED_FOR_DEVELOPMENT`。任�
 
 ### Phase 6：测试上线
 
-先进入 TESTING 完成功能、非功能与安全验证，再进入 RELEASE 完成发布准备、上线、监控和回滚记录。
+先凭 `APPROVED_FOR_TESTING` 进入 TESTING，完成功能、集成、系统、用户验收、回归、AI 效果与安全验证；只有 `READY_FOR_RELEASE` 才进入 RELEASE。随后按已批准的部署、回滚和监控方案执行并生成 Release 报告。不得从 DEVELOPMENT 直接跳过 TESTING，也不得把门禁授权当作部署成功。
 
 ### Phase 7：持续进化
 
@@ -112,6 +134,9 @@ Design Approval Gate 的唯一授权结果是 `APPROVED_FOR_DEVELOPMENT`。任�
 - 按 `docs/evaluation/PHASE_GATE_CHECKLIST.md` 验证阶段转换。
 - 按 `docs/design/DESIGN_APPROVAL_GATE.md` 审批 DESIGN → DEVELOPMENT。
 - 按 `docs/development/DEVELOPMENT_APPROVAL_GATE.md` 审批 DEVELOPMENT → TESTING。
+- 按 `docs/testing/TEST_STRATEGY_STANDARD.md`、`docs/testing/BUG_MANAGEMENT_STANDARD.md`、`docs/testing/AI_EVALUATION_STANDARD.md` 和 `docs/testing/SECURITY_REVIEW_STANDARD.md` 执行 TESTING。
+- 按 `docs/release/RELEASE_APPROVAL_GATE.md` 与 `docs/release/TESTING_RELEASE_GATE.md` 审批 TESTING → RELEASE。
+- 按 `docs/release/DEPLOYMENT_ROLLBACK_STANDARD.md`、`docs/release/MONITORING_STANDARD.md` 和 `templates/RELEASE_REPORT_TEMPLATE.md` 执行并记录 RELEASE。
 - 每次状态转换都更新 `PROJECT_STATE.md` 和 `PROJECT_MEMORY.md`。
 
 ## 核心约束
