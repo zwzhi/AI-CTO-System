@@ -71,6 +71,9 @@
 - Knowledge 生命周期只使用 `CAPTURED`、`VALIDATING`、`VALIDATED`、`ACTIVE`、`DEPRECATED`、`ARCHIVED`；可信等级使用 L1–L4，质量采用独立的 100 分模型。
 - 冲突知识按 Evidence、时间、适用范围和实际效果保留并处理，不允许简单覆盖；复用知识不得绕过 Architecture、Security、Testing 或 Release Gate。
 - Phase 8.3 不开发 Agent、不实现 RAG、不接入向量数据库，也不进入 Phase 8.4。
+- Knowledge Governance Pilot 选择 AI-CTO-System 作为唯一证据源；Knowledge Admission Review 必须先于实际迁移和生命周期推进。
+- Pilot 创建 `KN-ARC-0001`、`KN-ENG-0001`、`KN-FAIL-0001`；前两项为 `VALIDATED`，失败经验因因果泛化只有 L2 Confidence 而保持 `VALIDATING`，三项均未进入 `ACTIVE`。
+- 单项目多次采用不构成 L4 或通用最佳实践；复用模拟的 `ADAPT`、`ADOPT`、`REFERENCE_ONLY` 不改变 Knowledge Status，也不产生工程 Gate 授权。
 
 ## 历史修改
 
@@ -87,11 +90,12 @@
 - 2026-07-13：完成 AI CTO System Strategic Alignment Review，建立使命、原则、Module Admission、价值飞轮与 ADR-0010。
 - 2026-07-13：完成 Phase 8.2 Capability Governance 文档框架、能力目录、Superpowers 架构示例与 ADR-0011。
 - 2026-07-13：完成 Phase 8.3 Knowledge Governance 的分类、生命周期、可信度、质量、提取、复用、冲突、Registry、权威目录与 ADR-0012。
+- 2026-07-13：完成 Phase 8.3 Knowledge Governance Pilot，建立 Record 模板、Admission Review、三条受控知识、Registry、复用模拟与 Pilot Report。
 
 ## 当前状态
 
-Phase 8.3 Knowledge Governance 文档与权威目录已完成，等待用户确认。当前没有新增真实知识条目，没有开发 Agent、RAG 或向量数据库，也未进入 Phase 8.4。
+Phase 8.3 Knowledge Governance Pilot 已完成，验收结果为 `PASSED_WITH_CONSTRAINTS`：2 条 `VALIDATED`、1 条 `VALIDATING`、0 条 `ACTIVE`。当前没有开发 Agent、RAG 或向量数据库，也未进入 Phase 8.4。
 
 ## 未来计划
 
-等待用户确认 Phase 8.3。后续如需迁移历史知识或实现检索能力，必须作为独立需求重新执行准入、设计与适用 Gate；当前不进入 Phase 8.4。
+等待用户确认 Knowledge Governance Pilot。下一次试点应使用独立真实软件项目验证跨项目适用性；任何 Activation、自动检索或 RAG 均须独立准入，当前不进入 Phase 8.4。

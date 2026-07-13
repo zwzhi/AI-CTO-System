@@ -6,6 +6,8 @@ Knowledge Registry 为重要知识资产提供唯一标识、分类、证据、�
 
 正式 Knowledge Record 存放在根 `knowledge_base/{type}/`。目录和记录构成权威 Registry；未来可以生成索引或搜索投影，但投影不能改写权威记录。
 
+`knowledge_base/knowledge_registry/` 保存 Registry 元数据和索引，不是第十种 Knowledge Type。正式记录必须符合 [Knowledge Record Template](../../templates/KNOWLEDGE_RECORD_TEMPLATE.md)，Registry 中的 Type、Evidence、Confidence、Quality 和 Status 必须与源记录一致。
+
 ## 2. 哪些 Knowledge 必须登记
 
 - 被两个或以上项目复用或计划复用；

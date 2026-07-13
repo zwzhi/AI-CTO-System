@@ -2,7 +2,7 @@
 
 ## 当前阶段
 
-Phase 8.3 Knowledge Governance Pilot（设计已确认并形成书面规格，等待用户复核；未进入 Phase 8.4）
+Phase 8.3 Knowledge Governance Pilot（已完成，`PASSED_WITH_CONSTRAINTS`，等待用户确认；未进入 Phase 8.4）
 
 ## 已完成
 
@@ -116,16 +116,22 @@ Phase 8.3 Knowledge Governance Pilot（设计已确认并形成书面规格，�
 - Knowledge Registry 字段、ID、审计与状态同步规则
 - 根目录 `knowledge_base/` 九类权威目录与 Legacy Capture Area 边界
 - ADR-0012：Knowledge Governance 决策与 Layer 1 Module 扩展记录
+- Knowledge Record 模板与强制 Knowledge Admission Review
+- `KN-ARC-0001` Layer + Module Architecture Pattern（`VALIDATED`）
+- `KN-ENG-0001` 封闭状态词汇与固定输出契约 Engineering Pattern（`VALIDATED`）
+- `KN-FAIL-0001` 非规范状态与范围证据 Failure Experience（`VALIDATING`）
+- Knowledge Registry 元数据目录和三条受控记录
+- AI Content Workflow Platform 复用模拟：`ADAPT`、`ADOPT`、`REFERENCE_ONLY`
+- Knowledge Governance Pilot Report：`PASSED_WITH_CONSTRAINTS`
 
 ## 进行中
 
-- Knowledge Governance Pilot 已选择 AI-CTO-System 作为证据可核验的试点项目。
-- 三条迁移对象、生命周期推进条件、Registry 和复用模拟已形成书面设计，等待用户复核后执行。
+无；Knowledge Governance Pilot 已完成，等待用户确认。
 
 ## 待处理
 
-- 等待用户复核 Knowledge Governance Pilot 书面设计
-- 复核通过后创建模板、三条 Knowledge Record、Registry、复用记录和 Pilot Report
+- 等待用户确认 Knowledge Governance Pilot
+- 后续跨项目验证必须选择独立真实软件项目，不把单项目经验升级为通用最佳实践
 - 确认前不进入 Phase 8.4，不开发 Agent、不实现 RAG、不接入向量数据库
 
 ## 阻塞与风险
@@ -133,6 +139,7 @@ Phase 8.3 Knowledge Governance Pilot（设计已确认并形成书面规格，�
 - 当前 Knowledge Governance 只有文档与目录规则，没有 Agent、RAG、向量数据库、自动提取或自动检索实现。
 - `memory/knowledge_base/` 的历史目录尚未迁移；它只能作为 Legacy Capture Area，禁止与根 `knowledge_base/` 形成双重权威。
 - Quality Score、Evidence Level、Confidence、Status 和当前项目适用性必须分别判断；任何高分或历史 L4 都不能替代当前工程 Gate。
+- Pilot 的全部 Evidence 来自 AI-CTO-System；两条 `VALIDATED` 尚无 `ACTIVE` 授权，`KN-FAIL-0001` 仍需独立因果复现。
 - 当前决策规范尚未由具体 Agent 自动执行；Phase 3 按要求不包含 Agent 代码。
 - 评分结果依赖证据质量，必须与 Confidence 分开报告。
 - 设计完整不等于开发授权；必须通过 Design Approval Gate。
@@ -213,6 +220,10 @@ Phase 8.3 Knowledge Governance Pilot（设计已确认并形成书面规格，�
 - 根 SKILL 通过 `quick_validate.py`；全仓相对 Markdown 链接、单一 Knowledge Base Module、空知识目录边界、占位符和 Git diff 检查通过。
 - Knowledge 冲突基线案例曾暴露 `Candidate / Provisional` 非规范状态和在适用范围未知时过早选择 PostgreSQL；快速契约现已要求六种封闭状态、`REVALIDATE`、保留 SQLite L4 的原适用范围，并禁止用草案或截止时间替代当前项目验证。
 - Phase 8.3 仅新增治理文档与空目录，没有真实 Knowledge Record、Agent、RAG、Embedding、向量数据库或 Phase 8.4 工作。
+- Pilot 模板 15 个指定字段与 Admission Review 8 项审查字段完整；三个 Knowledge ID、Type、目录、Evidence、Confidence、Quality 和 Status 与 Registry 一致。
+- 三条质量分维度分别合计 86、84、73；生命周期均从 `CAPTURED` 进入 `VALIDATING`，其中两条有证据进入 `VALIDATED`，一条保持 `VALIDATING`，没有记录进入 `ACTIVE`。
+- Commit `8666495`、`201b446`、`2ea04e2` 与全部文件 Evidence 可核验；全仓相对 Markdown 链接、占位符、根 SKILL 和 Git diff 检查通过。
+- 复用模拟得到 `ADAPT`、受控 `ADOPT` 和 `REFERENCE_ONLY`；未改变 Knowledge Status，未创建真实项目或任何 Architecture、Development、Testing、Release 授权。
 
 ## 下一步
 
@@ -294,6 +305,14 @@ Phase 8.3 Knowledge Governance Pilot（设计已确认并形成书面规格，�
 |---|---|---|
 | Phase 8.3 开始 | 2026-07-13 | 用户批准 Knowledge Governance 扩展 Layer 1 既有 Knowledge Base Module；只建立文档和目录治理 |
 | Phase 8.3 完成 | 2026-07-13 | 分类、生命周期、可信度、质量、提取、复用、冲突、Registry、权威目录与 ADR-0012 完成，等待用户确认；未进入 Phase 8.4 |
+
+## Phase 8.3 Knowledge Governance Pilot 状态记录
+
+| 事件 | 日期 | 状态 |
+|---|---|---|
+| Pilot 设计确认 | 2026-07-13 | 选择 AI-CTO-System，限定三条知识并禁止批量迁移 |
+| Knowledge Admission Review | 2026-07-13 | 三条候选完成范围、反例、误用风险和验证要求审查；取消预设 `ACTIVE` |
+| Pilot 完成 | 2026-07-13 | 2 条 `VALIDATED`、1 条 `VALIDATING`、0 条 `ACTIVE`；验收为 `PASSED_WITH_CONSTRAINTS`，未进入 Phase 8.4 |
 
 ## 最后更新时间
 

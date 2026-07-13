@@ -14,6 +14,10 @@
 - `failures/`：失败经验
 - `business_insights/`：业务洞察
 
+元数据目录：
+
+- `knowledge_registry/`：Knowledge Registry 索引与审计元数据，不属于第十种 Knowledge Type
+
 历史目录 `memory/knowledge_base/` 是 Legacy Capture Area，不再接收新的权威 `ACTIVE` Knowledge。历史内容未来必须经过受控提取、验证和注册后，才能迁移到本目录。
 
 本阶段只建立治理结构，不创建真实知识条目，不实现 Agent、RAG、向量数据库或自动检索。

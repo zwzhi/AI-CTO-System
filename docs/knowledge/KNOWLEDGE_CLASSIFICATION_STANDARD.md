@@ -12,8 +12,11 @@ knowledge_base/
 ├── bug_solutions/
 ├── decisions/
 ├── failures/
-└── business_insights/
+├── business_insights/
+└── knowledge_registry/    # Registry 元数据，不是 Knowledge Type
 ```
+
+`knowledge_registry/` 只索引九类 Knowledge Record 的 ID、Evidence、Confidence、Quality、Status 和路径，不存放第十类知识，也不复制权威正文。
 
 ## 2. 分类定义
 
