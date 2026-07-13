@@ -33,7 +33,7 @@
 - 接管先冻结并只读扫描现状，再恢复文档、建立记忆和状态、完成健康评估与迁移门禁；事实、推断、冲突与未知必须分开标记并携带 Confidence。
 - 项目健康分数与迁移门禁分开判断；高分不能抵消安全红线、来源不明的 Git 改动或未知测试风险边界。
 - 接管门禁只允许 `ONBOARDING_COMPLETED` 或 `ONBOARDING_BLOCKED`；完成接管不授予编码、测试、发布或生产变更权限。
-- 接管完成后的跨项目经验按证据、适用范围和许可边界沉淀到 `memory/knowledge_base/`。
+- 接管完成后的跨项目经验按证据、适用范围和许可边界提取到权威 `knowledge_base/`；历史 `memory/knowledge_base/` 仅保留为 Legacy Capture Area。
 - Maintenance 负责稳定运营中的 Bug、小版本、性能、依赖、安全和技术债；临时恢复、永久修复和 Incident 关闭必须分开记录。
 - Incident、Postmortem、技术债、用户反馈和 AI Capability History 使用不可覆盖的历史记录，并把已验证、已脱敏经验沉淀到知识库。
 - AI 项目在运营期持续评估输出质量、准确率、稳定性、Agent 成功率、Prompt 效果、Token 成本和响应时间；单次 Release 评测不能替代长期趋势。
@@ -66,6 +66,11 @@
 - 登记、Quality Score、`ACTIVE` 和单次 Invocation Authorization 分开判断；高分或激活状态不能抵消项目权限、License、安全、兼容或 Gate。
 - 外部能力必须确认来源、License、安全、功能和兼容性，并通过可替换 Capability Contract / Adapter 接入；AI CTO Core 不直接依赖具体实现。
 - Superpowers 目前只有架构示例，没有安装、读取、调用、注册或激活任何真实能力。
+- Knowledge Governance 扩展 Layer 1 的既有 Knowledge Base Module；Phase 8.3 只是历史交付标签，不新增 Layer 或独立 Module。
+- 权威知识资产位于根目录 `knowledge_base/`，按九类目录管理；历史 `memory/knowledge_base/` 不再接收新的权威 `ACTIVE` Knowledge。
+- Knowledge 生命周期只使用 `CAPTURED`、`VALIDATING`、`VALIDATED`、`ACTIVE`、`DEPRECATED`、`ARCHIVED`；可信等级使用 L1–L4，质量采用独立的 100 分模型。
+- 冲突知识按 Evidence、时间、适用范围和实际效果保留并处理，不允许简单覆盖；复用知识不得绕过 Architecture、Security、Testing 或 Release Gate。
+- Phase 8.3 不开发 Agent、不实现 RAG、不接入向量数据库，也不进入 Phase 8.4。
 
 ## 历史修改
 
@@ -81,11 +86,12 @@
 - 2026-07-13：完成 AI CTO System Architecture Review，采用五层 Layer + Module 模型并创建 ADR-0009。
 - 2026-07-13：完成 AI CTO System Strategic Alignment Review，建立使命、原则、Module Admission、价值飞轮与 ADR-0010。
 - 2026-07-13：完成 Phase 8.2 Capability Governance 文档框架、能力目录、Superpowers 架构示例与 ADR-0011。
+- 2026-07-13：完成 Phase 8.3 Knowledge Governance 的分类、生命周期、可信度、质量、提取、复用、冲突、Registry、权威目录与 ADR-0012。
 
 ## 当前状态
 
-Phase 8.2 Capability Governance 已完成准入、注册、评估、生命周期、选择、外部接入和目录规范。当前没有正式 Capability Record，没有安装或调用外部 Skill / MCP / Agent / 工具；等待用户确认，不进入 Phase 8.3。
+Phase 8.3 Knowledge Governance 文档与权威目录已完成，等待用户确认。当前没有新增真实知识条目，没有开发 Agent、RAG 或向量数据库，也未进入 Phase 8.4。
 
 ## 未来计划
 
-等待用户确认 Phase 8.2。确认后如需接入任何真实 Capability，必须作为独立后续需求重新执行 Mission Alignment、准入、隔离评估、Registry 和 Activation Approval；当前不进入 Phase 8.3。
+等待用户确认 Phase 8.3。后续如需迁移历史知识或实现检索能力，必须作为独立需求重新执行准入、设计与适用 Gate；当前不进入 Phase 8.4。

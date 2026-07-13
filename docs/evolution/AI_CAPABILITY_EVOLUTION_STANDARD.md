@@ -61,5 +61,4 @@ Evolution Proposal 或用户审批只批准演进方向，不替代实现与上�
 
 ## 8. 记忆与知识沉淀
 
-每个评估周期更新 `PROJECT_STATE.md`、`PROJECT_MEMORY.md` 和相关 Progress。只有经过验证、已脱敏并保留适用范围的评测方法、Prompt 模式、失败案例和优化经验才能进入 `memory/knowledge_base/`。
-
+每个评估周期更新 `PROJECT_STATE.md`、`PROJECT_MEMORY.md` 和相关 Progress。评测方法、Prompt 模式、失败案例和优化经验必须先按 Knowledge Governance 以 `CAPTURED` 状态进入权威 `knowledge_base/`；只有完成验证、脱敏并保留适用范围后才能成为 `ACTIVE` Knowledge。

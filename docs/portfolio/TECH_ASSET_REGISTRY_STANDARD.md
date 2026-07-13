@@ -61,5 +61,4 @@ Asset Status 只允许：`DRAFT`、`VALIDATED`、`APPROVED_FOR_REUSE`、`DEPRECA
 
 资产接口、依赖、安全、License、Owner、质量或适用边界变化时重新评估所有使用项目。弃用必须通知使用方、提供迁移期、替代方案和最终停止日期。
 
-Incident、Bug、演进和项目退出产生的可复用经验先按 `memory/knowledge_base/` 的证据与脱敏规则沉淀；达到稳定、可验证和可维护条件后再注册为技术资产，不能把未经验证的知识条目直接标记为可复用资产。
-
+Incident、Bug、演进和项目退出产生的可复用经验先按 Knowledge Governance 沉淀到权威 `knowledge_base/`；达到稳定、可验证和可维护条件后再注册为技术资产，不能把未经验证的知识条目直接标记为可复用资产。

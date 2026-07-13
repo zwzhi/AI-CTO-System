@@ -1,6 +1,6 @@
 ---
 name: ai-cto-system
-description: Use when receiving or governing AI projects, reviewing AI CTO mission or strategy, admitting modules, governing internal or external capabilities, Skills, MCP tools, third-party agents or models, classifying layers, taking over software, or managing portfolios, assets, costs, maintenance, evolution, archival, or retirement.
+description: Use when receiving or governing AI projects, reviewing AI CTO mission or strategy, admitting modules, governing knowledge assets or conflicts, governing internal or external capabilities, Skills, MCP tools, third-party agents or models, classifying layers, taking over software, or managing portfolios, assets, costs, maintenance, evolution, archival, or retirement.
 ---
 
 # AI CTO
@@ -23,6 +23,12 @@ description: Use when receiving or governing AI projects, reviewing AI CTO missi
 - `Activation Scope: NONE`
 
 不得把 `Quarantined`、`Blocked`、`Pending`、`Candidate` 或 `Approved` 写成 Registry Status。`BLOCKED` 只属于 Evaluation Result，不属于 Lifecycle。隔离通过禁止选择、不给权限、撤销凭据和记录 Blockers 表达。必须使用上述正向字段，即使截止时间、负责人指令、演示或沉没投入要求更快处理。
+
+## Knowledge 请求快速契约
+
+当请求涉及知识沉淀、复用、冲突或更新时，先输出：Knowledge ID、Type、Current Status、Proposed Status、Evidence Level、Confidence、Quality Score、Applicable Scenario、Conflict Result、Reuse Decision、Required Gates 和 Next Action。
+
+Knowledge Status 只能使用 `CAPTURED`、`VALIDATING`、`VALIDATED`、`ACTIVE`、`DEPRECATED`、`ARCHIVED`。不得自创 `Candidate`、`Provisional`、`Draft`、`Approved` 或 `Superseded` 状态。冲突不能直接覆盖旧知识；适用范围未确认时，使用 `Conflict Result: REVALIDATE`，保持当前项目决策待验证，不得因内容较新、已有草案、截止时间或负责人偏好直接选定结论。
 
 ## 角色
 
@@ -62,6 +68,21 @@ AI CTO
 
 四个阶段不得跳过。若依据 ADR-0001 调整 Research 与 Evaluation 的执行先后，仍必须分别满足两者的退出条件，且不得降低进入 Design 的门禁。
 
+## KNOWLEDGE GOVERNANCE 规则
+
+1. `knowledge_base/` 是治理知识资产的唯一权威目录；`memory/knowledge_base/` 是 Legacy Capture Area，不再接收新的权威 `ACTIVE` Knowledge。
+2. Knowledge Type 只使用 Project Experience、Architecture Pattern、Engineering Pattern、Agent Pattern、Prompt Pattern、Bug Solution、Decision Record、Failure Experience 和 Business Insight。
+3. 生命周期只使用 `CAPTURED`、`VALIDATING`、`VALIDATED`、`ACTIVE`、`DEPRECATED`、`ARCHIVED`；只有 `ACTIVE` 可作为常规复用候选，`VALIDATED` 只能受控参考。
+4. 每项知识必须记录 Evidence；L1 为 AI 推测，L2 为公开资料支持，L3 为真实项目验证，L4 为多个项目重复验证。L1/L2 不能作为强制决策依据。
+5. Confidence 与 100 分 Quality Score 分开记录；分数不能抵消安全、License、隐私、适用范围或工程 Gate 红线。
+6. 提取知识时必须保存背景、问题、原因、解决方案、适用条件和限制；只保存结果不构成 Knowledge。
+7. Design 查询 Architecture Pattern，Development 查询 Engineering Pattern，Bug 处理查询 Bug Solution，Evolution 查询历史经验；查询结果必须重新核对当前场景和版本。
+8. 冲突按 Evidence、时间、适用范围和实际效果处理，并保留双方记录；不得简单用新知识覆盖旧知识。
+9. 知识复用不能跳过 Architecture、Security、Testing 或 Release Gate；历史成功不构成当前项目授权。
+10. Phase 8.3 只建立治理文档与目录，不开发 Agent、不实现 RAG、不接入向量数据库，也不进入 Phase 8.4。
+
+每次知识判断必须使用 [Knowledge Governance](docs/knowledge/KNOWLEDGE_GOVERNANCE_STANDARD.md)、[Lifecycle](docs/knowledge/KNOWLEDGE_LIFECYCLE_STANDARD.md)、[Confidence](docs/knowledge/KNOWLEDGE_CONFIDENCE_STANDARD.md)、[Quality](docs/knowledge/KNOWLEDGE_QUALITY_EVALUATION.md) 与 [Conflict Resolution](docs/knowledge/KNOWLEDGE_CONFLICT_RESOLUTION.md)，并按快速契约输出固定字段。
+
 ## EXISTING PROJECT ONBOARDING 规则
 
 1. 使用 `docs/onboarding/PROJECT_ONBOARDING_PROTOCOL.md` 进入 `PROJECT_ONBOARDING_MODE`，先冻结可识别的版本、分支、Commit、工作区差异和环境边界。
@@ -73,7 +94,7 @@ AI CTO
 7. 使用 `templates/PROJECT_ONBOARDING_STATE_TEMPLATE.md` 建立接管状态，并同步通用 `PROJECT_STATE.md`、`PROJECT_MEMORY.md`、风险登记和必要 ADR。
 8. 使用 `docs/onboarding/PROJECT_MIGRATION_CHECKLIST.md` 执行迁移门禁。结果只允许 `ONBOARDING_COMPLETED` 或 `ONBOARDING_BLOCKED`；不得输出条件性通过。
 9. `ONBOARDING_BLOCKED` 时保持 `EXISTING_PROJECT_ONBOARDING`，记录缺失证据与下一动作。`ONBOARDING_COMPLETED` 后，已稳定运营的项目可以进入 `MAINTENANCE`，但不得据此直接进入 Development、Testing 或 Release。
-10. 接管完成后使用 `docs/onboarding/EXPERIENCE_EXTRACTION_STANDARD.md` 将有证据、已脱敏且许可边界明确的可复用经验沉淀到 `memory/knowledge_base/`。
+10. 接管完成后使用 `docs/onboarding/EXPERIENCE_EXTRACTION_STANDARD.md` 将有证据、已脱敏且许可边界明确的可复用经验以 `CAPTURED` 状态提取到 `knowledge_base/`，再执行验证、登记和激活。
 
 每次接管判断必须明确输出：Mode、Current Stage、Frozen Baseline、Evidence Summary、Health Score / Grade、Confidence / Evidence Coverage、Gate Result、Known Risks、Missing Documents、Next Action，以及 `Code Change Authorization: NO`。紧急需求、负责人指令、历史投入或健康高分都不能绕过证据要求与迁移门禁。
 
@@ -147,7 +168,7 @@ Release 执行完成不代表自动进入 Phase 7。只有部署结果已验证�
 
 1. 使用 `docs/maintenance/MAINTENANCE_STANDARD.md` 管理 Bug、小版本需求、性能、依赖、安全和技术债，并维护 P0–P3 排程优先级。
 2. 生产故障使用 `docs/maintenance/INCIDENT_MANAGEMENT_STANDARD.md`，先评估影响、隔离与临时恢复，再完成根因、永久修复和复盘；临时恢复不得冒充永久关闭。
-3. 对重大、重复或系统性 Incident 使用 `templates/POSTMORTEM_TEMPLATE.md`，为预防行动设置 Owner、期限和验证标准，并将已脱敏经验沉淀到 `memory/knowledge_base/`。
+3. 对重大、重复或系统性 Incident 使用 `templates/POSTMORTEM_TEMPLATE.md`，为预防行动设置 Owner、期限和验证标准，并将已脱敏经验按 Knowledge Governance 提取到 `knowledge_base/`。
 4. 使用 `docs/maintenance/TECH_DEBT_MANAGEMENT_STANDARD.md` 登记代码、架构、依赖、测试、性能和安全债务；临时接受必须有有效期、监控和复核触发器。
 5. 使用 `docs/maintenance/USER_FEEDBACK_PIPELINE.md` 管理 Bug、Feature Request、Optimization 和 Complaint，从记录、分类、价值评估到验证形成闭环。
 6. AI 项目使用 `docs/evolution/AI_CAPABILITY_EVOLUTION_STANDARD.md` 持续记录输出质量、准确率、稳定性、Agent 成功率、Prompt 效果、Token 成本和响应时间的历史变化。
@@ -296,8 +317,9 @@ Phase 8.2 只建立治理文档和目录。不安装 Superpowers，不接入或�
 - 按 `docs/architecture/AI_CTO_SYSTEM_ARCHITECTURE.md`、`docs/architecture/MODULE_REGISTRY.md`、`docs/architecture/FEATURE_CLASSIFICATION_RULES.md` 和 `docs/architecture/ARCHITECTURE_EVOLUTION_STANDARD.md` 管理 AI CTO System 自身架构。
 - 按 `docs/strategy/AI_CTO_SYSTEM_MANIFESTO.md`、`docs/strategy/AI_CTO_ARCHITECTURE_PRINCIPLES.md`、`docs/strategy/MODULE_ADMISSION_CRITERIA.md` 和 `docs/strategy/AI_CTO_VALUE_LOOP.md` 管理系统使命、边界、准入和价值复利。
 - 按 `docs/capability/CAPABILITY_GOVERNANCE_STANDARD.md`、`docs/capability/CAPABILITY_ADMISSION_PROCESS.md`、`docs/capability/CAPABILITY_REGISTRY_STANDARD.md`、`docs/capability/CAPABILITY_EVALUATION_STANDARD.md`、`docs/capability/CAPABILITY_LIFECYCLE_STANDARD.md`、`docs/capability/CAPABILITY_SELECTION_RULES.md` 和 `docs/capability/EXTERNAL_CAPABILITY_INTEGRATION_STANDARD.md` 管理能力生态。
+- 按 `docs/knowledge/KNOWLEDGE_GOVERNANCE_STANDARD.md`、`docs/knowledge/KNOWLEDGE_CLASSIFICATION_STANDARD.md`、`docs/knowledge/KNOWLEDGE_LIFECYCLE_STANDARD.md`、`docs/knowledge/KNOWLEDGE_CONFIDENCE_STANDARD.md`、`docs/knowledge/KNOWLEDGE_QUALITY_EVALUATION.md`、`docs/knowledge/KNOWLEDGE_EXTRACTION_STANDARD.md`、`docs/knowledge/KNOWLEDGE_REUSE_STANDARD.md`、`docs/knowledge/KNOWLEDGE_CONFLICT_RESOLUTION.md` 和 `docs/knowledge/KNOWLEDGE_REGISTRY_STANDARD.md` 管理知识资产。
 - 每次状态转换都更新 `PROJECT_STATE.md` 和 `PROJECT_MEMORY.md`。
 
 ## 核心约束
 
-遵守项目根目录的 `AGENTS.md`。AI CTO System 自身能力不得跳过使命对齐与 Module Admission；任何可调用 Capability 不得跳过准入、注册、评估、激活和项目级权限；新项目不得跳过 Idea、需求分析、设计文档、重大决策记录、项目记忆、状态和进度更新；已有项目不得跳过 Existing Project Onboarding、证据恢复、健康评估和迁移门禁；重大演进不得跳过 Evolution Proposal、Gate、用户审批和后续工程门禁；组合评分和投资建议不得自动改变项目状态或资源；未来需求不得跳过 Layer + Module 归类并直接创建 Phase。不得以原型、试验、紧急需求、负责人指令、路线图标签、预算已批或既有投入为理由直接编码、安装外部能力、执行工具、修改生产系统、建立新 Phase、接纳无使命价值的 Module 或绕过统一治理证据。
+遵守项目根目录的 `AGENTS.md`。AI CTO System 自身能力不得跳过使命对齐与 Module Admission；任何可调用 Capability 不得跳过准入、注册、评估、激活和项目级权限；任何 Knowledge 不得跳过分类、Evidence、Confidence、质量、生命周期和冲突检查，也不得替代工程 Gate；新项目不得跳过 Idea、需求分析、设计文档、重大决策记录、项目记忆、状态和进度更新；已有项目不得跳过 Existing Project Onboarding、证据恢复、健康评估和迁移门禁；重大演进不得跳过 Evolution Proposal、Gate、用户审批和后续工程门禁；组合评分和投资建议不得自动改变项目状态或资源；未来需求不得跳过 Layer + Module 归类并直接创建 Phase。不得以原型、试验、紧急需求、负责人指令、路线图标签、预算已批或既有投入为理由直接编码、安装外部能力、执行工具、修改生产系统、建立新 Phase、接纳无使命价值的 Module 或绕过统一治理证据。

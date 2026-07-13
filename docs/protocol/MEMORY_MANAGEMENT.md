@@ -42,6 +42,8 @@
 
 ## KNOWLEDGE_BASE
 
+`knowledge_base/` 是治理知识资产的权威目录；`memory/knowledge_base/` 是 Legacy Capture Area。后者保留早期材料用于追溯，不再接收新的权威 `ACTIVE` Knowledge。Project Memory 保存单项目连续性，Knowledge Base 保存经过治理的跨时间或跨项目复用资产，两者不得互相替代。
+
 ### 更新时机
 
 - 某项经验可跨项目复用时。
@@ -49,22 +51,17 @@
 - 形成可复用的架构模式、提示词、Agent 方法或最佳实践时。
 - 失败案例揭示了通用风险或预防措施时。
 
-### 分类
+### 分类与治理
 
-- `agents/`：Agent 角色、协作与评估经验
-- `architectures/`：可复用架构模式
-- `prompts/`：经验证的提示词与使用边界
-- `bugs/`：问题症状、影响与根因
-- `solutions/`：可复用解决方案
-- `best_practices/`：跨项目最佳实践
+使用 `project_experience/`、`architecture_patterns/`、`engineering_patterns/`、`agent_patterns/`、`prompt_patterns/`、`bug_solutions/`、`decisions/`、`failures/`、`business_insights/` 九类目录。详细用途、来源与范围见 [Knowledge Classification](../knowledge/KNOWLEDGE_CLASSIFICATION_STANDARD.md)。
 
-知识条目必须包含适用范围、来源、证据、限制和最后验证时间。
+知识条目必须包含适用范围、来源、Evidence、Confidence、限制和最后验证时间，并按 [Knowledge Lifecycle](../knowledge/KNOWLEDGE_LIFECYCLE_STANDARD.md) 与 [Knowledge Registry](../knowledge/KNOWLEDGE_REGISTRY_STANDARD.md) 管理。低可信内容不得作为强制决策依据，冲突内容不得互相覆盖。
 
 已有项目取得 `ONBOARDING_COMPLETED` 后，按 `docs/onboarding/EXPERIENCE_EXTRACTION_STANDARD.md` 提取技术方案、解决方案、Bug 经验、失败原因和可复用模块。接管未完成、来源不明、含敏感数据或许可边界未确认的内容不得直接进入知识库。
 
-Maintenance 与 Evolution 中，经过 Postmortem、长期指标或实际升级验证的故障模式、解决方案、架构经验、Prompt / AI 评测方法和最佳实践可以进入知识库。条目必须链接 Incident / Proposal / Evidence，说明适用版本、环境、限制、Confidence、脱敏与许可状态；未经验证的 Proposal、用户原始敏感反馈和临时恢复方案不得包装成最佳实践。
+Maintenance 与 Evolution 中，经过 Postmortem、长期指标或实际升级验证的故障模式、解决方案、架构经验、Prompt / AI 评测方法和最佳实践可以按 `CAPTURED` 状态进入治理流程。条目必须链接 Incident / Proposal / Evidence，说明适用版本、环境、限制、Confidence、脱敏与许可状态；未经验证的 Proposal、用户原始敏感反馈和临时恢复方案不得包装成最佳实践。
 
-Portfolio Governance 中，跨项目重复出现并经验证的 Agent / Prompt、代码、架构、数据库、部署和解决方案经验先进入知识库；达到明确 Owner、版本、质量、安全、License 和适用边界后，才注册为 `APPROVED_FOR_REUSE` 技术资产。Portfolio 评分、成本和投资结论保留在组合记录与项目记忆中，不把短期资源偏好写成通用最佳实践。
+Portfolio Governance 中，跨项目重复出现并经验证的 Agent / Prompt、代码、架构、数据库、部署和解决方案经验先进入权威 `knowledge_base/`；达到明确 Owner、版本、质量、安全、License 和适用边界后，才注册为 `APPROVED_FOR_REUSE` 技术资产。Portfolio 评分、成本和投资结论保留在组合记录与项目记忆中，不把短期资源偏好写成通用最佳实践。
 
 ## 维护责任
 

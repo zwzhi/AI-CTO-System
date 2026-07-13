@@ -2,7 +2,7 @@
 
 ## 当前阶段
 
-Phase 8.2：AI CTO Capability Governance（已完成，等待用户确认；未进入 Phase 8.3）
+Phase 8.3：AI CTO Knowledge Governance（已完成，等待用户确认；未进入 Phase 8.4）
 
 ## 已完成
 
@@ -105,18 +105,32 @@ Phase 8.2：AI CTO Capability Governance（已完成，等待用户确认；未�
 - `capabilities/` 八类 Registry 目录与管理说明
 - Superpowers Engineering Capability 架构示例（未安装、未调用）
 - ADR-0011：Capability Governance 决策与 Strategic Admission Record
+- Knowledge Governance 总则与 Project Memory / Technical Asset / Capability / ADR 边界
+- Project Experience、Architecture、Engineering、Agent、Prompt、Bug、Decision、Failure、Business 九类知识体系
+- `CAPTURED`、`VALIDATING`、`VALIDATED`、`ACTIVE`、`DEPRECATED`、`ARCHIVED` 生命周期
+- L1–L4 Evidence / Confidence 体系与低可信知识决策限制
+- 准确性、复用、验证、完整、时效、适用范围六维 100 分质量模型
+- 项目结束、Bug 解决和 Evolution 完成后的知识提取标准
+- Design、Development、Bug、Evolution 场景的知识查询与复用规则
+- 知识冲突的共存、替代、合并、重验与拒绝新主张机制
+- Knowledge Registry 字段、ID、审计与状态同步规则
+- 根目录 `knowledge_base/` 九类权威目录与 Legacy Capture Area 边界
+- ADR-0012：Knowledge Governance 决策与 Layer 1 Module 扩展记录
 
 ## 进行中
 
-无；Phase 8.2 文档已完成，等待用户验收。
+无；Phase 8.3 文档与目录已完成，等待用户验收。
 
 ## 待处理
 
-- 等待用户确认 Phase 8.2 Capability Governance
-- 确认前不进入 Phase 8.3，不安装、接入、注册、激活或调用真实外部 Capability
+- 等待用户确认 Phase 8.3 Knowledge Governance
+- 确认前不进入 Phase 8.4，不开发 Agent、不实现 RAG、不接入向量数据库
 
 ## 阻塞与风险
 
+- 当前 Knowledge Governance 只有文档与目录规则，没有 Agent、RAG、向量数据库、自动提取或自动检索实现。
+- `memory/knowledge_base/` 的历史目录尚未迁移；它只能作为 Legacy Capture Area，禁止与根 `knowledge_base/` 形成双重权威。
+- Quality Score、Evidence Level、Confidence、Status 和当前项目适用性必须分别判断；任何高分或历史 L4 都不能替代当前工程 Gate。
 - 当前决策规范尚未由具体 Agent 自动执行；Phase 3 按要求不包含 Agent 代码。
 - 评分结果依赖证据质量，必须与 Confidence 分开报告。
 - 设计完整不等于开发授权；必须通过 Design Approval Gate。
@@ -193,10 +207,14 @@ Phase 8.2：AI CTO Capability Governance（已完成，等待用户确认；未�
 - 同场景 GREEN 复测完整输出 11 个 Admission 字段，结论为 `REJECT_OR_DEFER`；Owning Layer 保持 `UNRESOLVED`、Registry Update 为 `NONE`，不以截止时间、预算、领导要求或沉没投入补造使命价值。
 - Strategic Alignment 的 5 份指定新增文件、6 项架构原则、6 个准入问题、3 种结果和 8 个价值飞轮节点均通过结构验证。
 - 全仓 Markdown 相对链接和根 SKILL 校验通过；本阶段只修改战略、架构引用、治理、记忆与进度文档，没有新增功能或 Agent。
+- Phase 8.3 的 9 份知识治理标准、ADR-0012、权威 Knowledge Base README 与九类目录均存在；六种生命周期状态、十项 Registry 必填字段和六维 100 分权重通过结构断言。
+- 根 SKILL 通过 `quick_validate.py`；全仓相对 Markdown 链接、单一 Knowledge Base Module、空知识目录边界、占位符和 Git diff 检查通过。
+- Knowledge 冲突基线案例曾暴露 `Candidate / Provisional` 非规范状态和在适用范围未知时过早选择 PostgreSQL；快速契约现已要求六种封闭状态、`REVALIDATE`、保留 SQLite L4 的原适用范围，并禁止用草案或截止时间替代当前项目验证。
+- Phase 8.3 仅新增治理文档与空目录，没有真实 Knowledge Record、Agent、RAG、Embedding、向量数据库或 Phase 8.4 工作。
 
 ## 下一步
 
-等待用户确认 Phase 8.2。确认后如提出真实 Capability 接入，先作为独立后续需求执行完整准入和隔离评估；不自动进入 Phase 8.3。
+等待用户确认 Phase 8.3。确认后如提出历史知识迁移、检索或自动化能力，先作为独立后续需求执行 Mission Alignment、Module Admission、设计和适用 Gate；不自动进入 Phase 8.4。
 
 ## Phase 3 状态记录
 
@@ -267,6 +285,13 @@ Phase 8.2：AI CTO Capability Governance（已完成，等待用户确认；未�
 |---|---|---|
 | Phase 8.2 开始 | 2026-07-13 | 用户批准 Capability Governance 进入既有 Layer 5 Module；只建立文档治理，不接入真实能力 |
 | Phase 8.2 完成 | 2026-07-13 | 治理、准入、Registry、生命周期、选择、质量、外部接入、目录、示例与 ADR-0011 完成，等待用户确认；未进入 Phase 8.3 |
+
+## Phase 8.3 状态记录
+
+| 事件 | 日期 | 状态 |
+|---|---|---|
+| Phase 8.3 开始 | 2026-07-13 | 用户批准 Knowledge Governance 扩展 Layer 1 既有 Knowledge Base Module；只建立文档和目录治理 |
+| Phase 8.3 完成 | 2026-07-13 | 分类、生命周期、可信度、质量、提取、复用、冲突、Registry、权威目录与 ADR-0012 完成，等待用户确认；未进入 Phase 8.4 |
 
 ## 最后更新时间
 

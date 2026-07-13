@@ -41,7 +41,7 @@
 
 - `projects/` 中已有项目
 - `memory/project_memory/` 中的项目记忆
-- `memory/knowledge_base/` 中的相关经验
+- `knowledge_base/` 中状态和适用范围合格的相关经验
 - `memory/user_brain/` 中的稳定偏好
 
 记录可能的复用项、冲突项和重复建设风险。没有关联结果时明确写“未发现相关历史项目”。

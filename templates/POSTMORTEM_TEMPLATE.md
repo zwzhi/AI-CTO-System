@@ -84,7 +84,8 @@
 - 需要更新的 Architecture / ADR / Runbook / Test / Monitoring：
 - 适用范围与限制：
 - 脱敏与 License / 权限检查：
-- Knowledge Base 目标路径：`memory/knowledge_base/bugs/`、`memory/knowledge_base/solutions/` 或 `memory/knowledge_base/best_practices/`
+- Knowledge Base 目标路径：`knowledge_base/bug_solutions/`、`knowledge_base/failures/`、`knowledge_base/engineering_patterns/` 或其他九类权威目录
+- 初始 Knowledge Status：`CAPTURED`
 - Knowledge Entry ID / Link：
 
 ## 复盘结论

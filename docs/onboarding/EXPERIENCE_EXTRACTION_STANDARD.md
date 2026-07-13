@@ -2,7 +2,7 @@
 
 ## 1. 目的与触发条件
 
-已有项目取得 `ONBOARDING_COMPLETED` 后，AI CTO 必须检查哪些证据能够形成跨项目复用经验，并将通过审核的条目保存到 `memory/knowledge_base/`。
+已有项目取得 `ONBOARDING_COMPLETED` 后，AI CTO 必须检查哪些证据能够形成跨项目复用经验，并将合格候选以 `CAPTURED` 状态保存到权威 `knowledge_base/`，再按 Knowledge Governance 验证、登记和激活。
 
 经验提取不等于复制项目全部内容。只有具有明确来源、适用边界、复用价值和使用权的知识才能进入全局知识库。
 
@@ -10,11 +10,11 @@
 
 | 经验类型 | 提取内容 | 知识库目标 |
 |---|---|---|
-| 技术方案 | 已验证架构、数据流、部署、扩展、降级与选型边界 | `memory/knowledge_base/architectures/` |
-| 解决方案 | 可重复的问题诊断、修复、迁移、恢复和自动化方法 | `memory/knowledge_base/solutions/` |
-| Bug 经验 | 症状、影响、根因、检测、修复、回归和预防 | `memory/knowledge_base/bugs/` |
-| 失败原因 | 失败条件、错误假设、遗漏控制、停止信号与改进 | `memory/knowledge_base/best_practices/` 或 `bugs/` |
-| 可复用模块 | 模块职责、接口、依赖、测试、License 和复用限制 | `memory/knowledge_base/solutions/` 或 `architectures/` |
+| 技术方案 | 已验证架构、数据流、部署、扩展、降级与选型边界 | `knowledge_base/architecture_patterns/` |
+| 解决方案 | 可重复的问题诊断、修复、迁移、恢复和自动化方法 | `knowledge_base/engineering_patterns/` 或 `bug_solutions/` |
+| Bug 经验 | 症状、影响、根因、检测、修复、回归和预防 | `knowledge_base/bug_solutions/` |
+| 失败原因 | 失败条件、错误假设、遗漏控制、停止信号与改进 | `knowledge_base/failures/` |
+| 可复用模块 | 模块职责、接口、依赖、测试、License 和复用限制 | 先进入 `knowledge_base/engineering_patterns/`，达到资产门槛后转 Technical Asset Registry |
 
 AI Agent、Prompt 或评测经验分别进入既有 `agents/`、`prompts/` 或 `best_practices/` 分类。
 

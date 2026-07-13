@@ -30,6 +30,8 @@
 
 真实使用产生的决策、Evidence、指标、失败、反馈和经验必须进入适当的 Project Memory、Knowledge Base 或 Technical Asset Registry。没有来源、适用范围、Confidence、隐私和许可边界的内容不能冒充资产。
 
+Knowledge 必须遵守 [Knowledge Governance](../knowledge/KNOWLEDGE_GOVERNANCE_STANDARD.md)：根目录 `knowledge_base/` 是权威资产位置，原始记录或 `memory/knowledge_base/` 中的历史材料不因存在而自动成为可复用资产。每次复用结果都应回写 Evidence 和适用范围，使知识能够升级、降级或退出。
+
 **检查：** 产生什么可保留资产？由谁维护？如何验证、脱敏和复用？
 
 ### 原则 5：重大决策必须有依据

@@ -35,7 +35,7 @@
 | 4 | 用户对象 | 至少识别主要使用者、受益者或使用场景之一 | 使用者、受益者和决策者不同时分别记录；映射到 `Target Users` |
 | 5 | 当前解决方案 | 说明用户现在如何处理，包括人工流程、竞品、绕行方案或暂不处理 | “没有解决方案”是有效答案，但必须得到确认；同时记录现方案的主要痛点 |
 | 6 | 预期价值 | 说明希望改变的结果，并给出至少一个可观察的价值方向 | 将目标与问题分开；优先记录时间、成本、收入、质量、风险或体验指标，映射到 `Goal` |
-| 7 | 与已有项目关系 | 记录复用、依赖、冲突、替代或重复建设关系 | 必须检索 `projects/`、`memory/project_memory/`、`memory/knowledge_base/` 和 `memory/user_brain/`；无结果时写“未发现相关历史项目” |
+| 7 | 与已有项目关系 | 记录复用、依赖、冲突、替代或重复建设关系 | 必须检索 `projects/`、`memory/project_memory/`、`knowledge_base/` 和 `memory/user_brain/`；无结果时写“未发现相关历史项目” |
 | 8 | 初步技术方向 | 说明可能需要的能力类型、系统边界或关键依赖 | 仅作为可验证假设，不是架构承诺；尚不确定时写明需调研的技术问题，不得创建 `src/` |
 
 八项信息之外，候选记录仍须包含 Idea 输入协议要求的 `Initial Requirements`、`Constraints`、`Assumptions`、`Open Questions`、`Evidence` 和 `Recommended Next Action`。八项信息用于统一输入标准，不替代协议中的完整候选结构。
