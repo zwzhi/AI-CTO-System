@@ -17,6 +17,13 @@
 | 项目评分、依据与总分 | Project Evaluation |
 | 结论的证据可信度 | Confidence Model |
 | 立项结果与阶段门禁 | Project Approval Gate |
+| 产品背景、用户、范围、需求与验收 | PRD |
+| 需求优先级及其判断依据 | Requirement Priority |
+| 技术结构、边界与非功能设计 | Architecture |
+| 数据模型、生命周期与迁移 | Database Design |
+| AI Agent 的职责、工具、记忆与评估 | Agent Design |
+| 需求到测试的端到端对应关系 | Traceability Matrix |
+| DEVELOPMENT 授权结果 | Design Approval Gate |
 
 ## PRD 关联规则
 
@@ -37,6 +44,15 @@
 - Progress 必须引用当前 Development Plan。
 - 进度项使用计划中的任务标识，记录计划与实际差异。
 - 新增、删除或重排重大任务时更新 Development Plan，并在 Progress 中说明原因。
+
+### Requirement → Design → Task → Test
+
+- 每项已批准需求必须拥有稳定的 Requirement ID。
+- Architecture、Database Design 和 Agent Design 使用 Design ID 引用对应需求。
+- Development Plan 中的任务必须引用其实现的 Requirement ID 与 Design ID。
+- Test Plan 和测试案例必须引用验证的 Requirement ID、Design ID 与 Task ID。
+- `docs/design/TRACEABILITY_MATRIX_TEMPLATE.md` 是端到端追踪关系的权威索引；源文档仍保存具体内容。
+- 需求、设计、任务或测试改变时，必须更新矩阵并执行正向和反向孤儿项检查。
 
 ## ADR 规则
 
@@ -62,3 +78,7 @@ ADR 用于记录会影响架构、数据、接口、安全、成本、开发流�
 立项决策时：
 
 `Idea Candidate → Research → Project Evaluation + Confidence → Build vs Buy → Approval Gate → PROJECT_STATE → PROJECT_MEMORY`
+
+设计与开发授权时：
+
+`PRD → Requirement Priority → Architecture → Database/Agent Design（适用时）→ ADR → Development Plan + Test Plan → Traceability Matrix → Risk/Rollback → Design Approval Gate → PROJECT_STATE → PROJECT_MEMORY`

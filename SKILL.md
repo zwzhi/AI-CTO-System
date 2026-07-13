@@ -41,6 +41,20 @@ AI CTO
 
 进入 Development 前必须通过 DESIGN → DEVELOPMENT 门禁。PRD、Architecture、Development Plan、验收测试、风险与回滚方案、相关 ADR 或用户对当前版本的明确确认缺少任一项时，不得编码。
 
+## DESIGN 阶段规则
+
+1. 使用 `docs/design/PRODUCT_DESIGN_STANDARD.md` 创建 PRD，并为需求分配稳定的 Requirement ID。
+2. 使用 `docs/design/REQUIREMENT_PRIORITY_MODEL.md` 将需求标记为 P0、P1、P2 或 P3；优先级必须有用户价值、商业价值、开发成本和风险依据。
+3. 使用 `docs/design/ARCHITECTURE_DESIGN_STANDARD.md` 创建 Architecture，并将模块、数据流、服务和技术决策追溯到需求。
+4. 使用 `docs/design/DATABASE_DESIGN_STANDARD.md` 完成数据设计；没有持久化数据时记录可审计的 N/A 理由。
+5. AI 项目使用 `docs/design/AGENT_DESIGN_STANDARD.md` 完成 Agent 设计；非 AI 项目记录 N/A 及依据。
+6. 使用 `docs/design/TRACEABILITY_MATRIX_TEMPLATE.md` 建立 Requirement → Design → Development Task → Test Case 的双向追踪。
+7. 使用 `docs/design/DESIGN_APPROVAL_GATE.md` 执行 Development Gate，记录证据、评审版本、阻断项和用户决定。
+
+Design 完成不代表自动进入 Development。只有 PRD、Architecture、适用的 Database/Agent Design、Development Plan、Test Plan、追踪矩阵、风险与回滚方案和相关 ADR 全部通过，且用户明确批准当前文档版本后，才允许把状态改为 `DEVELOPMENT`。在此之前禁止编码、生产配置和不可逆实施。
+
+Design Approval Gate 的唯一授权结果是 `APPROVED_FOR_DEVELOPMENT`。任何其他结果、条件性通过、口头同意、旧版本批准或“先开发后补文档”都不得触发开发。
+
 ### Phase 0：Idea 分析
 
 执行 Idea 输入协议和 Idea Candidate 标准，理解目标、提取需求、判断真实问题、关联历史项目并创建项目候选记录。输出问题定义、初始需求、假设、证据和下一动作。
@@ -55,11 +69,11 @@ AI CTO
 
 ### Phase 3：产品设计
 
-通过项目立项门禁后创建并确认 PRD，明确产品范围、用户流程、需求优先级、成功指标与验收标准。
+通过项目立项门禁后，按产品设计标准创建并确认 PRD，明确用户、痛点、场景、范围、用户流程、需求优先级、成功指标与可测试验收标准。
 
 ### Phase 4：技术设计
 
-基于 PRD 创建并确认 Architecture、必要的数据与 Agent 设计、ADR 和 Development Plan。未满足 DESIGN 退出条件不得编码。
+基于已确认 PRD 创建并确认 Architecture、适用的数据与 Agent 设计、ADR、Development Plan、Test Plan、追踪矩阵、风险与回滚方案。执行 Design Approval Gate；未满足 DESIGN 退出条件不得编码。
 
 ### Phase 5：开发执行
 
@@ -80,6 +94,7 @@ AI CTO
 - 按 `docs/protocol/DOCUMENT_RELATIONSHIP.md` 维护文档关系。
 - 按 `docs/protocol/MEMORY_MANAGEMENT.md` 维护三层记忆。
 - 按 `docs/evaluation/PHASE_GATE_CHECKLIST.md` 验证阶段转换。
+- 按 `docs/design/DESIGN_APPROVAL_GATE.md` 审批 DESIGN → DEVELOPMENT。
 - 每次状态转换都更新 `PROJECT_STATE.md` 和 `PROJECT_MEMORY.md`。
 
 ## 核心约束

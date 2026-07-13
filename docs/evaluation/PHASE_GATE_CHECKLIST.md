@@ -127,12 +127,17 @@
 
 ## DESIGN → DEVELOPMENT
 
+本转换的最终判定必须使用 [Design Approval Gate](../design/DESIGN_APPROVAL_GATE.md)。本节是阶段清单，Design Approval Gate 是 DEVELOPMENT 授权记录的权威来源。
+
 ### 输入
 
 - [ ] 已批准进入 DESIGN 的立项门禁记录及其范围基线。
 - [ ] 已确认的 PRD，包含目标、范围、非范围、需求、非功能要求和验收标准。
 - [ ] 已确认的 Architecture，引用 PRD 版本并说明组件边界、接口、数据、安全和技术约束。
+- [ ] Database Design 已确认；无持久化数据时有可审计的 N/A 理由。
+- [ ] AI 项目的 Agent Design 已确认；非 AI 项目有可审计的 N/A 理由。
 - [ ] 已确认的 Development Plan，引用 Architecture 版本并列出任务、顺序、依赖、责任、验证方法和完成条件。
+- [ ] Traceability Matrix 已建立 Requirement → Design → Development Task → Test Case 的完整双向关系。
 - [ ] 验收测试方案或用例，覆盖功能、非功能要求、环境、测试数据、预期结果和通过条件。
 - [ ] 开发与交付风险清单，包含责任人、缓解措施、监控信号和剩余风险。
 - [ ] 回滚方案，包含触发条件、操作步骤、数据备份与恢复、回滚后验证和责任人。
@@ -142,6 +147,8 @@
 ### 输出
 
 - [ ] PRD、Architecture、Development Plan、验收测试、风险与回滚方案的确认版本基线。
+- [ ] Database Design 与 Agent Design 的确认版本或适用性 N/A 记录。
+- [ ] 完整 Traceability Matrix 及孤儿项检查结果。
 - [ ] 需求 → 架构组件 → 开发任务 → 验收测试的可追溯关系。
 - [ ] 已关闭的评审问题与已接受的剩余风险记录。
 - [ ] 用户对当前范围、计划、验收方式、风险和回滚方案的明确确认。
@@ -152,7 +159,10 @@
 
 - [ ] PRD 的目标、范围、需求和验收标准明确且已获确认。
 - [ ] Architecture 引用当前 PRD；每个组件可追溯到需求或非功能约束，重大决策有 Accepted ADR。
+- [ ] Database Design 覆盖实体、字段、关系、索引、数据生命周期和迁移/回滚；不适用理由已获确认。
+- [ ] AI 项目的 Agent Design 覆盖职责、输入输出、Prompt、工具、Memory、失败处理和评估；非 AI 项目不适用理由已获确认。
 - [ ] Development Plan 引用当前 Architecture；任务范围、顺序、依赖、验证和完成条件可执行。
+- [ ] Requirement、Design、Development Task 与 Test Case 可正向和反向追踪，不存在未解释的孤儿项。
 - [ ] 每项必须满足的需求至少对应一项验收测试，预期结果和判定标准明确。
 - [ ] 风险有责任人和处置方案，不存在未解决的开发阻断项。
 - [ ] 回滚触发条件、步骤、数据保护、恢复验证和责任人完整且可执行。
@@ -167,3 +177,4 @@
 - 若发现价值、范围或关键可行性假设失效，退回 EVALUATION 或 RESEARCH，并记录原因和受影响文档。
 - 用户未确认、确认对应旧版本或提出未关闭条件时，不得进入 DEVELOPMENT。
 - 所有阻断项关闭、文档重新基线化并取得用户确认后，重新执行完整门禁。
+- Design 文档全部完成也不构成自动授权；只有 Design Approval Gate 结果为 `APPROVED_FOR_DEVELOPMENT` 才能转换状态。
