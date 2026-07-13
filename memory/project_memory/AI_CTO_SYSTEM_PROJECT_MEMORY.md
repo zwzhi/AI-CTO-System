@@ -2,7 +2,7 @@
 
 ## 项目目标
 
-建立一个用于管理未来 AI 项目开发的 AI CTO 操作系统。
+帮助个人或组织建立可持续运作的 AI 技术组织，将想法持续转化为可交付、可维护、可进化的产品资产，并让真实项目经验形成研发复利。
 
 ## 技术选择
 
@@ -52,6 +52,13 @@
 - 新 Layer 必须通过系统级架构评审；Module 移动、合并、拆分、跨层权威或核心 Gate 变化必须创建 ADR。
 - Layer 5 是未来执行与智能层，目前全部为 `Planned`；它不得覆盖 Layer 2 决策、Layer 3 工程基线、Layer 4 生命周期门禁或 Layer 1 记忆规则。
 - Capability Governance 已归类为 Layer 5 的 `Planned` Module；本次审查不进入 Phase 8.2，也不实现该能力。
+- AI CTO System 的使命基线由 Manifesto 定义：提高想法到产品的长期转化能力，沉淀技术资产，形成研发复利并增强用户技术能力。
+- 系统不是单纯代码生成工具、聊天机器人、普通项目管理工具或无约束自动化机器人；通用邻近 AI 功能不自动成为核心 Module。
+- Strategic Alignment 与 Module Admission 位于 Feature Classification 之前；先证明能力应该进入系统，再判断属于哪个 Layer。
+- Module Admission 必须评估使命贡献、核心问题、Layer 候选、复用、长期资产与复杂度，结果只使用 `ADMIT_FOR_CLASSIFICATION`、`CONDITIONAL_ADMISSION` 或 `REJECT_OR_DEFER`。
+- 只有 `ADMIT_FOR_CLASSIFICATION` 允许进入 Layer + Module 分类；该结果不授权设计、编码或功能实现。
+- AI CTO 提供建议，人类对使命变化、Module 准入、重大资源投入和风险接受作最终决策。
+- Strategic Alignment 是跨层治理检查点，不是第六个 Layer、新生命周期状态或新功能 Phase。
 
 ## 历史修改
 
@@ -65,11 +72,12 @@
 - 2026-07-13：建立 Phase 7 Maintenance & Evolution Intelligence。
 - 2026-07-13：建立 Phase 8 Portfolio & Multi-Project Governance Intelligence。
 - 2026-07-13：完成 AI CTO System Architecture Review，采用五层 Layer + Module 模型并创建 ADR-0009。
+- 2026-07-13：完成 AI CTO System Strategic Alignment Review，建立使命、原则、Module Admission、价值飞轮与 ADR-0010。
 
 ## 当前状态
 
-AI CTO System Architecture Review 已完成五层架构、模块注册表、未来需求归类、Phase 映射和架构演进规则。当前等待用户确认；Capability Governance 保持 Layer 5 `Planned`，不进入 Phase 8.2。
+AI CTO System Strategic Alignment Review 已完成系统使命、边界、架构原则、Module Admission 和价值飞轮治理。当前等待用户确认，不进入下一阶段，不开发功能或 Agent。
 
 ## 未来计划
 
-等待用户确认架构审查。确认后先按 Layer + Module 规则处理后续需求；若继续 Capability Governance，应作为 Layer 5 现有 Planned Module 另行完成需求、设计与授权，不默认创建 Phase 8.2。
+等待用户确认战略对齐审查。确认后，所有 AI CTO System 自身能力先完成 Mission Alignment 与 Module Admission，再按 Layer + Module 规则分类；当前不推进任何功能阶段。

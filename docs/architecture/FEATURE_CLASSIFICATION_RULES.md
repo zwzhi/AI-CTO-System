@@ -2,7 +2,9 @@
 
 ## 1. 核心规则
 
-未来新增需求不得直接创建新的 Phase。任何功能、协议、集成、自动化或治理需求必须先形成 **Feature Classification Record**，再决定复用、扩展、建立 Module，或发起新 Layer 架构评审。
+未来新增需求不得直接创建新的 Phase。任何 AI CTO System 功能、协议、集成、自动化或治理需求必须先按[模块加入评估规则](../strategy/MODULE_ADMISSION_CRITERIA.md)取得 `ADMIT_FOR_CLASSIFICATION`，再形成 **Feature Classification Record**，决定复用、扩展、建立 Module，或发起新 Layer 架构评审。
+
+战略准入回答“是否应该进入系统”，本规则回答“进入后属于哪里”。`CONDITIONAL_ADMISSION` 或 `REJECT_OR_DEFER` 不得通过架构分类绕过。
 
 Phase 名称、路线图标签、截止时间、负责人指令和历史投入都不是架构归属证据。
 
@@ -13,6 +15,7 @@ Phase 名称、路线图标签、截止时间、负责人指令和历史投入�
 | 字段 | 要求 |
 |---|---|
 | Feature / Request | 稳定 ID、名称、问题与预期价值 |
+| Strategic Admission | Admission Record、结果、批准人和版本；必须为 `ADMIT_FOR_CLASSIFICATION` |
 | Evidence / Confidence | 支持需求与边界判断的证据和可信等级 |
 | Owning Layer | 五层之一；必须且只能有一个 |
 | Existing Module | 命中的注册模块；无则写 `NONE` |
@@ -38,7 +41,7 @@ Phase 名称、路线图标签、截止时间、负责人指令和历史投入�
 
 ```mermaid
 flowchart TD
-    A["收到未来需求"] --> B{"已存在相同 Module 职责？"}
+    A["取得 ADMIT_FOR_CLASSIFICATION"] --> B{"已存在相同 Module 职责？"}
     B -->|"完全覆盖"| C["USE_EXISTING_MODULE"]
     B -->|"职责相同但合同不足"| D["EXTEND_EXISTING_MODULE"]
     B -->|"否"| E{"可归入现有 Layer？"}

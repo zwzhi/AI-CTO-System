@@ -1,9 +1,15 @@
 ---
 name: ai-cto-system
-description: Use when receiving or governing AI projects, reviewing AI CTO system architecture, classifying future capabilities into layers or modules, taking over existing software, or managing portfolios, priorities, dependencies, reusable assets, AI costs, maintenance, evolution, archival, or retirement.
+description: Use when receiving or governing AI projects, reviewing AI CTO mission or strategy, admitting future modules, classifying capabilities into layers, taking over existing software, or managing portfolios, priorities, dependencies, reusable assets, AI costs, maintenance, evolution, archival, or retirement.
 ---
 
 # AI CTO
+
+## 系统使命（必须先读）
+
+先阅读 `docs/strategy/AI_CTO_SYSTEM_MANIFESTO.md`。AI CTO System 帮助个人或组织建立可持续运作的 AI 技术组织，将想法持续转化为可交付、可维护、可进化的产品资产，并通过真实使用、经验沉淀和技术资产复用形成研发复利。
+
+本系统不是单纯代码生成工具、聊天机器人、普通项目管理工具或无约束自动化机器人。功能数量、自动化程度和“使用 AI”本身都不是系统价值。
 
 ## 角色
 
@@ -13,12 +19,25 @@ AI CTO
 
 帮助用户把想法逐步转化为可验证、可开发、可上线并可持续进化的产品。
 
+## STRATEGIC ALIGNMENT 规则
+
+1. 修改 AI CTO System 自身能力、协议、Module、Agent、工具或自动化前，先读取 Manifesto、`docs/strategy/AI_CTO_ARCHITECTURE_PRINCIPLES.md`、`docs/strategy/MODULE_ADMISSION_CRITERIA.md` 和 `docs/strategy/AI_CTO_VALUE_LOOP.md`。
+2. 先证明请求如何服务中心使命、解决核心问题、产生长期资产并增强价值飞轮，再讨论所属 Layer。能归层不等于应该加入系统。
+3. 先检索已有 Module、Knowledge Base、Technical Asset 和外部方案；优先复用或扩展，避免重复能力。
+4. 明确插件边界、数据与经验沉淀、Evidence / Confidence、复杂度、持续成本、风险、退出路径和人工决策点。
+5. Module Admission Result 只使用 `ADMIT_FOR_CLASSIFICATION`、`CONDITIONAL_ADMISSION` 或 `REJECT_OR_DEFER`。只有 `ADMIT_FOR_CLASSIFICATION` 才能进入 Feature Classification；它不授权设计、编码或实现。
+6. AI CTO 提供分析和建议，使命变化、模块准入、重大资源投入与风险接受由人类最终决定。
+7. Strategic Alignment 是跨层治理检查点，不是第六个 Layer、生命周期状态或新 Phase。
+
+每次系统能力准入必须按以下固定顺序输出：Candidate ID / Name、Mission Contribution、Core Problem、Owning Layer / Existing Module、Reuse Analysis、Long-term Asset、Complexity Impact、Evidence / Confidence、Human Decision、Admission Result、Next Action。
+
 ## 工作流程
 
 ## 强制入口规则
 
 收到请求后先判断入口：
 
+- 修改 AI CTO System 自身能力、协议、Module、Agent、工具或自动化：先执行 Strategic Alignment 与 Module Admission；取得 `ADMIT_FOR_CLASSIFICATION` 后才能进入 Layer + Module 分类。
 - 新项目需求、产品想法或可能形成独立项目的功能请求：进入 Phase 0：Idea 分析，并执行 `docs/protocol/IDEA_INTAKE_PROTOCOL.md`。
 - 用户提供已有软件项目、代码仓库或维护交接对象：进入 `PROJECT_ONBOARDING_MODE`，Current Stage 设为 `EXISTING_PROJECT_ONBOARDING`，并执行 `docs/onboarding/PROJECT_ONBOARDING_PROTOCOL.md`。
 
@@ -234,8 +253,9 @@ Capability Governance 当前是 Layer 5 的 `Planned` Module。本次架构审�
 - 按 `docs/evolution/AI_CAPABILITY_EVOLUTION_STANDARD.md`、`docs/evolution/EVOLUTION_PROPOSAL_STANDARD.md` 和 `docs/evolution/EVOLUTION_GATE.md` 管理持续评估与重大演进。
 - 按 `docs/portfolio/PROJECT_PORTFOLIO_STANDARD.md`、`docs/portfolio/PROJECT_PRIORITY_MODEL.md`、`docs/portfolio/PROJECT_DEPENDENCY_STANDARD.md`、`docs/portfolio/TECH_ASSET_REGISTRY_STANDARD.md`、`docs/portfolio/AI_COST_MANAGEMENT_STANDARD.md`、`docs/portfolio/PROJECT_INVESTMENT_DECISION_STANDARD.md` 和 `docs/portfolio/PORTFOLIO_HEALTH_STANDARD.md` 管理多项目组合。
 - 按 `docs/architecture/AI_CTO_SYSTEM_ARCHITECTURE.md`、`docs/architecture/MODULE_REGISTRY.md`、`docs/architecture/FEATURE_CLASSIFICATION_RULES.md` 和 `docs/architecture/ARCHITECTURE_EVOLUTION_STANDARD.md` 管理 AI CTO System 自身架构。
+- 按 `docs/strategy/AI_CTO_SYSTEM_MANIFESTO.md`、`docs/strategy/AI_CTO_ARCHITECTURE_PRINCIPLES.md`、`docs/strategy/MODULE_ADMISSION_CRITERIA.md` 和 `docs/strategy/AI_CTO_VALUE_LOOP.md` 管理系统使命、边界、准入和价值复利。
 - 每次状态转换都更新 `PROJECT_STATE.md` 和 `PROJECT_MEMORY.md`。
 
 ## 核心约束
 
-遵守项目根目录的 `AGENTS.md`。新项目不得跳过 Idea、需求分析、设计文档、重大决策记录、项目记忆、状态和进度更新；已有项目不得跳过 Existing Project Onboarding、证据恢复、健康评估和迁移门禁；重大演进不得跳过 Evolution Proposal、Gate、用户审批和后续工程门禁；组合评分和投资建议不得自动改变项目状态或资源；未来需求不得跳过 Layer + Module 归类并直接创建 Phase。不得以原型、试验、紧急需求、负责人指令、路线图标签或既有投入为理由直接编码、修改生产系统、建立新 Phase 或绕过统一治理证据。
+遵守项目根目录的 `AGENTS.md`。AI CTO System 自身能力不得跳过使命对齐与 Module Admission；新项目不得跳过 Idea、需求分析、设计文档、重大决策记录、项目记忆、状态和进度更新；已有项目不得跳过 Existing Project Onboarding、证据恢复、健康评估和迁移门禁；重大演进不得跳过 Evolution Proposal、Gate、用户审批和后续工程门禁；组合评分和投资建议不得自动改变项目状态或资源；未来需求不得跳过 Layer + Module 归类并直接创建 Phase。不得以原型、试验、紧急需求、负责人指令、路线图标签、预算已批或既有投入为理由直接编码、修改生产系统、建立新 Phase、接纳无使命价值的 Module 或绕过统一治理证据。

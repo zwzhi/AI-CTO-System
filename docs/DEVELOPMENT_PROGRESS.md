@@ -2,7 +2,7 @@
 
 ## 当前阶段
 
-AI CTO System Architecture Review（已完成，等待用户确认；未进入 Phase 8.2）
+AI CTO System Strategic Alignment Review（已完成，等待用户确认；未进入下一阶段）
 
 ## 已完成
 
@@ -87,15 +87,21 @@ AI CTO System Architecture Review（已完成，等待用户确认；未进入 P
 - 架构演进、Module 变更、新 Layer 评审与 ADR 触发规则
 - ADR-0009：从 Phase 扩展模型调整为 Layer + Module 模型
 - SKILL、Project Lifecycle、Project Memory 与 Progress 的架构治理同步
+- AI CTO System Manifesto：使命、核心价值、系统边界与长期愿景
+- 六项 AI CTO 架构设计原则及冲突处理顺序
+- Module Admission 六问、固定记录与三种准入结果
+- 想法 → 使用 → 经验 → 资产 → 效率 → 能力的核心价值飞轮
+- ADR-0010：AI CTO System 战略使命对齐机制
+- README、SKILL、Project Memory 与 Module Registry 的使命入口同步
 
 ## 进行中
 
-无；Architecture Review 文档已完成，等待用户验收。
+无；Strategic Alignment Review 文档已完成，等待用户验收。
 
 ## 待处理
 
-- 等待用户确认五层 Layer + Module 架构审查结果
-- 确认前不进入 Phase 8.2，不设计或实现 Capability Governance
+- 等待用户确认 AI CTO System 使命、边界、原则和 Module Admission 规则
+- 确认前不进入下一阶段，不设计或实现新功能、Agent 或自动化
 
 ## 阻塞与风险
 
@@ -128,6 +134,11 @@ AI CTO System Architecture Review（已完成，等待用户确认；未进入 P
 - 相似评分、状态与 Gate 不应直接合并；必须先区分 Decision Object、权威来源、Evidence、Confidence、红线和授权用途。
 - Layer 5 当前仅为 `Planned`，不得以自动化或工具接入名义复制 Layer 2 决策或绕过 Layer 4 Gate。
 - 本次审查只新增架构与治理文档，没有新增功能、Agent 代码或运行时实现，也没有进入 Phase 8.2。
+- 仅证明一个功能可以归入 Layer，不代表它服务 AI CTO System 使命；战略准入必须先于架构分类。
+- 使命贡献若只使用“方便、流行、可自动化、适合演示”等表述，不能构成 Module Admission 证据。
+- 通用 AI 工具若没有直接改善产品交付、长期资产或技术组织能力，应保持为独立产品或外部实验。
+- Strategic Alignment 约束全部五层，但不是第六个 Layer、Lifecycle State 或新 Phase。
+- 本次 Strategic Alignment Review 不开发功能、不新增 Agent，也不进入下一阶段。
 
 ## 验证结果
 
@@ -158,10 +169,14 @@ AI CTO System Architecture Review（已完成，等待用户确认；未进入 P
 - Skill RED 基线在“路线图已命名 + 董事会截止时间 + 沉没沟通投入”压力下错误接受 Phase 8.2，并把 Capability Governance 归入 Portfolio；治理规则已针对该失效增加正向分类输出契约。
 - 同场景 GREEN 复测拒绝创建 Phase 8.2，按固定字段输出 Layer 5、Capability Governance `Planned`、`USE_EXISTING_MODULE`、跨层合同、评审 / ADR 判断与非编码 Next Action。
 - Capability Governance 当前唯一登记为 Layer 5 `Planned` Module；本次没有创建功能标准、注册模板、Agent、运行时、插件接入或 Phase 8.2。
+- Strategic Alignment RED 基线能拒绝通用会议纪要工具，但没有形成使命贡献、复用、长期资产、复杂度和固定 Admission Result 的完整记录；因此采用正向 Admission Record 契约而非增加额外禁止项。
+- 同场景 GREEN 复测完整输出 11 个 Admission 字段，结论为 `REJECT_OR_DEFER`；Owning Layer 保持 `UNRESOLVED`、Registry Update 为 `NONE`，不以截止时间、预算、领导要求或沉没投入补造使命价值。
+- Strategic Alignment 的 5 份指定新增文件、6 项架构原则、6 个准入问题、3 种结果和 8 个价值飞轮节点均通过结构验证。
+- 全仓 Markdown 相对链接和根 SKILL 校验通过；本阶段只修改战略、架构引用、治理、记忆与进度文档，没有新增功能或 Agent。
 
 ## 下一步
 
-等待用户确认五层架构与调整建议。确认后对任何后续需求先形成 Feature Classification Record；不默认进入 Phase 8.2。
+等待用户确认 Strategic Alignment Review。确认后，任何系统能力先形成 Admission Record；当前不继续下一阶段。
 
 ## Phase 3 状态记录
 
@@ -218,6 +233,13 @@ AI CTO System Architecture Review（已完成，等待用户确认；未进入 P
 |---|---|---|
 | Architecture Review 开始 | 2026-07-13 | 暂停功能开发，审查 Phase 1–8 的职责、重复和边界 |
 | Architecture Review 完成 | 2026-07-13 | 五层架构、Module Registry、归类规则、Phase 映射、演进标准与 ADR-0009 完成，等待用户确认；未进入 Phase 8.2 |
+
+## Strategic Alignment Review 状态记录
+
+| 事件 | 日期 | 状态 |
+|---|---|---|
+| Strategic Alignment Review 开始 | 2026-07-13 | 暂停功能扩展，审查系统使命、边界、长期价值和 Module 准入 |
+| Strategic Alignment Review 完成 | 2026-07-13 | Manifesto、架构原则、Module Admission、价值飞轮与 ADR-0010 完成，等待用户确认；未进入下一阶段 |
 
 ## 最后更新时间
 

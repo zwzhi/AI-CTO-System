@@ -24,13 +24,14 @@
 
 ## 4. 演进流程
 
-1. 按[需求归类规则](./FEATURE_CLASSIFICATION_RULES.md)创建 Feature Classification Record。
-2. 检索[模块注册表](./MODULE_REGISTRY.md)，优先选择 `USE_EXISTING_MODULE` 或 `EXTEND_EXISTING_MODULE`。
-3. 记录受影响 Layer、Module、Artifact、Lifecycle State、Gate、记忆、权限、消费者和外部合同。
-4. 确定变化等级、Owner、Evidence、Confidence、风险、兼容、迁移、回滚和验收标准。
-5. 若触发 ADR 条件，先创建并接受 ADR；未接受时状态保持 `PROPOSED`，不得实施。
-6. 更新系统架构、模块注册表、治理文件、PROJECT_MEMORY 和 DEVELOPMENT_PROGRESS。
-7. 验证链接、词汇、状态、责任归属和跨层合同一致性；保留旧决策及迁移历史。
+1. 按[模块加入评估规则](../strategy/MODULE_ADMISSION_CRITERIA.md)证明变化服务系统使命，并取得 `ADMIT_FOR_CLASSIFICATION`。
+2. 按[需求归类规则](./FEATURE_CLASSIFICATION_RULES.md)创建 Feature Classification Record。
+3. 检索[模块注册表](./MODULE_REGISTRY.md)，优先选择 `USE_EXISTING_MODULE` 或 `EXTEND_EXISTING_MODULE`。
+4. 记录受影响 Layer、Module、Artifact、Lifecycle State、Gate、记忆、权限、消费者和外部合同。
+5. 确定变化等级、Owner、Evidence、Confidence、风险、兼容、迁移、回滚和验收标准。
+6. 若触发 ADR 条件，先创建并接受 ADR；未接受时状态保持 `PROPOSED`，不得实施。
+7. 更新系统架构、模块注册表、治理文件、PROJECT_MEMORY 和 DEVELOPMENT_PROGRESS。
+8. 验证使命、链接、词汇、状态、责任归属和跨层合同一致性；保留旧决策及迁移历史。
 
 ## 5. 新 Layer 评审门槛
 

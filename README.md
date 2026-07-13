@@ -1,34 +1,50 @@
 # AI CTO System
 
+## 系统使命
+
+AI CTO System 帮助个人或组织建立可持续运作的 AI 技术组织，将想法持续转化为可交付、可维护、可进化的产品资产，并把每次项目实践沉淀为下一次研发的复利。
+
+任何 Agent、Codex 或贡献者进入本项目时，必须先阅读 [AI CTO System Manifesto](./docs/strategy/AI_CTO_SYSTEM_MANIFESTO.md)，再理解工作规则、架构和具体任务。功能数量和自动化程度不能替代使命对齐。
+
 ## 项目介绍
 
-AI CTO System 是一个用于管理未来 AI 项目开发的长期操作系统。本项目首先建设 AI CTO Kernel，为后续从想法分析、产品设计到开发上线提供统一的工作空间、规则、记忆、文档与版本管理基础。
+AI CTO System 不是单一软件项目，而是管理未来 AI 项目与技术组织能力的长期操作系统。它通过统一的身份与记忆、决策治理、产品工程、运营生命周期和未来执行能力，管理从想法、立项、设计、开发、测试、发布到维护、接管、进化和组合治理的全过程。
 
-## 项目目标
+## 核心价值
 
-- 建立 AI CTO 独立且可持续演进的项目空间。
-- 固化需求分析、设计、决策记录与进度维护规则。
-- 建立用户记忆、项目记忆和知识库三层记忆体系。
-- 提供可复用的产品、架构、开发和决策文档模板。
-- 使用 Git 保存系统演进历史，确保所有变更可追溯。
+- 提升想法到产品的转化效率。
+- 沉淀可验证、可维护、可复用的技术资产。
+- 让项目经验形成长期研发复利。
+- 通过复用和受控自动化降低重复劳动。
+- 在 AI 提供建议与执行支持的同时，增强用户自身技术能力。
 
-## 核心理念
+## 五层架构
 
-1. 先理解问题，再设计方案，最后执行开发。
-2. 用文档保存上下文，用 ADR 保存重大决策。
-3. 用项目记忆维持长期协作连续性。
-4. 将可复用经验沉淀为知识与模板。
-5. 小步演进、持续验证、版本可追溯。
+AI CTO System 使用 [Layer + Module 五层架构](./docs/architecture/AI_CTO_SYSTEM_ARCHITECTURE.md)：
 
-## 系统未来规划
+1. Identity & Memory
+2. Decision & Governance
+3. Product & Engineering
+4. Operation Lifecycle
+5. Execution & Intelligence
 
-- Phase 0：Idea 分析
-- Phase 1：项目评估
-- Phase 2：开源调研
-- Phase 3：产品设计
-- Phase 4：技术设计
-- Phase 5：开发执行
-- Phase 6：测试上线
-- Phase 7：持续进化
+Phase 只记录历史交付批次，Module 表示可独立治理的能力，Lifecycle State 表示单项目状态。未来需求不能因为路线图名称直接创建新 Phase。
 
-当前仅完成 AI CTO Kernel 基础设施，不包含自动化项目开发能力。
+## 战略与治理入口
+
+- [系统使命与边界](./docs/strategy/AI_CTO_SYSTEM_MANIFESTO.md)
+- [架构设计原则](./docs/strategy/AI_CTO_ARCHITECTURE_PRINCIPLES.md)
+- [模块加入评估规则](./docs/strategy/MODULE_ADMISSION_CRITERIA.md)
+- [核心价值飞轮](./docs/strategy/AI_CTO_VALUE_LOOP.md)
+- [模块注册表](./docs/architecture/MODULE_REGISTRY.md)
+- [未来需求归类规则](./docs/architecture/FEATURE_CLASSIFICATION_RULES.md)
+
+未来系统能力先证明 Mission Alignment 和长期价值，取得 `ADMIT_FOR_CLASSIFICATION` 后，才能进入 Layer / Module 分类。无法证明使命价值的功能不进入 AI CTO System。
+
+## 系统边界
+
+AI CTO System 不是单纯代码生成工具、聊天机器人、普通项目管理工具或无约束自动化机器人。与使命无直接关系的通用工具应作为独立产品或外部能力管理，不因“使用 AI”自动成为系统核心模块。
+
+## 当前状态
+
+Phase 1–8 的文档治理能力、五层架构模型和 Strategic Alignment Review 已建立。当前仍以文档、协议、模板、记忆和 Git 为基础，不包含具体 Agent Runtime 或自动化功能实现。

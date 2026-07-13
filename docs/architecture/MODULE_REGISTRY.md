@@ -17,7 +17,7 @@
 
 | Module Name | Layer | Purpose | Current Status | Related Documents |
 |---|---|---|---|---|
-| AI CTO Identity & Work Rules | Layer 1 | 定义角色、职责与全局工作约束 | Completed | [SKILL](../../SKILL.md)、[AGENTS](../../AGENTS.md) |
+| AI CTO Identity & Work Rules | Layer 1 | 定义使命、角色、职责与全局工作约束 | Completed | [Manifesto](../strategy/AI_CTO_SYSTEM_MANIFESTO.md)、[Architecture Principles](../strategy/AI_CTO_ARCHITECTURE_PRINCIPLES.md)、[SKILL](../../SKILL.md)、[AGENTS](../../AGENTS.md) |
 | User Brain | Layer 1 | 保存用户画像、工作方式、技术偏好、产品哲学与决策风格 | Completed | [User Brain](../../memory/user_brain/) |
 | Project Memory | Layer 1 | 保存项目目标、技术选择、决策、历史、状态与计划 | Completed | [Project Memory](../../memory/project_memory/AI_CTO_SYSTEM_PROJECT_MEMORY.md) |
 | Knowledge Base | Layer 1 | 保存可复用且已脱敏的经验、方案、Bug 与最佳实践 | Completed | [Knowledge Base](../../memory/knowledge_base/) |
