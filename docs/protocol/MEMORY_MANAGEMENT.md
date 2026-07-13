@@ -18,6 +18,8 @@
 - Incident 恢复、永久修复、Postmortem 或预防行动发生变化时。
 - 技术债、用户反馈、AI 能力趋势或 Evolution Proposal 改变后续决策时。
 - 项目作出继续维护、重构、归档或停止决定时。
+- Portfolio Priority、Investment Recommendation、跨项目依赖、资源或状态变化影响项目后续工作时。
+- 共享技术资产、AI 成本或 Portfolio Health 变化形成长期决策依据时。
 
 ### 更新内容
 
@@ -61,6 +63,8 @@
 已有项目取得 `ONBOARDING_COMPLETED` 后，按 `docs/onboarding/EXPERIENCE_EXTRACTION_STANDARD.md` 提取技术方案、解决方案、Bug 经验、失败原因和可复用模块。接管未完成、来源不明、含敏感数据或许可边界未确认的内容不得直接进入知识库。
 
 Maintenance 与 Evolution 中，经过 Postmortem、长期指标或实际升级验证的故障模式、解决方案、架构经验、Prompt / AI 评测方法和最佳实践可以进入知识库。条目必须链接 Incident / Proposal / Evidence，说明适用版本、环境、限制、Confidence、脱敏与许可状态；未经验证的 Proposal、用户原始敏感反馈和临时恢复方案不得包装成最佳实践。
+
+Portfolio Governance 中，跨项目重复出现并经验证的 Agent / Prompt、代码、架构、数据库、部署和解决方案经验先进入知识库；达到明确 Owner、版本、质量、安全、License 和适用边界后，才注册为 `APPROVED_FOR_REUSE` 技术资产。Portfolio 评分、成本和投资结论保留在组合记录与项目记忆中，不把短期资源偏好写成通用最佳实践。
 
 ## 维护责任
 

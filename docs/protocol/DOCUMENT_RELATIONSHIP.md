@@ -50,6 +50,14 @@
 | 重大演进的目标、评分、风险和执行方案 | Evolution Proposal |
 | MAINTENANCE → EVOLUTION 状态授权 | Evolution Gate |
 | 继续维护、重构、归档和停止判断 | Retirement Review |
+| 多项目列表、状态、阶段、资源与未来规划 | Portfolio Register |
+| 项目相对资源优先级及证据 | Project Priority Score |
+| 跨项目依赖方向、风险、契约和解决状态 | Dependency Register |
+| 可复用技术资产、质量、版本和使用记录 | Technical Asset Registry |
+| AI 费用、预算、预测、分摊和单位成本 | AI Cost Ledger |
+| 组合项目、资源、风险和机会快照 | CTO Dashboard Snapshot |
+| 多项目资源投入建议、条件和审批 | Investment Recommendation |
+| 组合健康分、趋势、红线与行动 | Portfolio Health Report |
 
 ## PRD 关联规则
 
@@ -139,3 +147,11 @@ ADR 用于记录会影响架构、数据、接口、安全、成本、开发流�
 项目结束判断时：
 
 `User Value + Maintenance Cost + Technical Health + Business Value → Retirement Review → Continue / Refactor / Archive / Stop → Execution Evidence → PROJECT_STATE → PROJECT_MEMORY`
+
+组合资源决策时：
+
+`Portfolio Register → Priority + Health + Dependency + Asset + AI Cost → Scenario Analysis → Investment Recommendation → User Approval → Resource Allocation → Project State / Memory / Progress`
+
+技术资产复用时：
+
+`Knowledge / Source Project → Asset Registration → Quality + License + Security Review → APPROVED_FOR_REUSE → Design Search → Usage Record → Validation → Usage Count / Portfolio Health`

@@ -2,7 +2,7 @@
 
 ## 当前阶段
 
-Phase 7：AI CTO Maintenance & Evolution Intelligence（已完成，等待用户确认）
+Phase 8：AI CTO Portfolio & Multi-Project Governance Intelligence（已完成，等待用户确认）
 
 ## 已完成
 
@@ -70,14 +70,24 @@ Phase 7：AI CTO Maintenance & Evolution Intelligence（已完成，等待用户
 - Maintenance → Evolution Gate 与 `APPROVED_FOR_EVOLUTION` 授权边界
 - 项目继续维护、重构、归档和停止标准
 - ADR-0007：Maintenance 与 Evolution 长期治理
+- Phase 8：Portfolio Register 与五种项目组合状态
+- 商业、战略、紧急、复用、资源成本和风险六维 100 分项目优先级模型
+- 跨项目 Dependency ID、方向、类型、风险、关键路径和解决规则
+- 七类可复用技术资产注册、质量评分、版本和使用记录
+- 模型、Token、API、服务器和存储成本归集与三个单位成本指标
+- CTO Dashboard 项目、资源、风险和机会信息合同
+- 多项目资源竞争的 Investment Recommendation 机制
+- 项目健康、风险、技术债、资产复用和 AI 成本五维 Portfolio Health Score
+- Portfolio Management 生命周期覆盖层与单项目 Gate 边界
+- ADR-0008：从单项目治理升级为 Portfolio Governance
 
 ## 进行中
 
-无；Phase 7 文档已完成，等待用户验收。
+无；Phase 8 文档已完成，等待用户验收。
 
 ## 待处理
 
-- 等待用户确认是否进入 Phase 8
+- 等待用户确认是否进入 Phase 9
 
 ## 阻塞与风险
 
@@ -100,6 +110,11 @@ Phase 7：AI CTO Maintenance & Evolution Intelligence（已完成，等待用户
 - AI 能力趋势必须绑定精确模型、Prompt、工具、数据集、环境与时间窗，禁止混用基线宣称改善。
 - 归档和停止必须完成用户、数据、安全、密钥、依赖、合同和恢复 / 删除边界，不能只关闭服务器。
 - Phase 7 按要求不包含具体 Agent 代码，也未进入 Phase 8。
+- Portfolio Status 与 Current Stage 必须分开记录；暂停、归档或淘汰不能覆盖单项目生命周期历史。
+- Priority Score 和 Portfolio Health 不自动启动、暂停或终止项目，也不能抵消安全、数据、合规或 P0 / P1 红线。
+- 共享依赖、技术资产和 AI 成本如果缺少 Owner、版本、归属或 Evidence，会形成组合级风险。
+- Dashboard 是只读汇总视图，Investment Recommendation 仍需用户审批并遵守单项目 Gate。
+- Phase 8 按要求不包含具体 Agent 代码，也未进入 Phase 9。
 
 ## 验证结果
 
@@ -120,10 +135,16 @@ Phase 7：AI CTO Maintenance & Evolution Intelligence（已完成，等待用户
 - 全仓相对 Markdown 链接、表格列数、占位符、Git diff、变更文件集合和根 SKILL 校验通过；Phase 7 变更范围仅包含 17 份 Markdown 协议、模板、记忆与治理文件。
 - “重复 P1 + 投诉激增 + Agent 成功率 91%→76% + Token 成本上涨 40% + CEO 当天替换要求 + 两周沉没投入”压力场景结果为 `CHANGES_REQUIRED`，Current Stage 保持 `MAINTENANCE`，唯一转换授权为 `APPROVED_FOR_EVOLUTION`，`Direct System Modification Authorization: NO`。
 - Phase 7 未创建具体 Agent 代码，未进入 Phase 8。
+- Phase 8 的 9 份指定新增文件全部存在；Portfolio 必填字段与五种状态、Priority 六维 100 分、Dependency 三档风险、七类技术资产、五类 AI 成本、Dashboard 四类视图、七种 Investment Recommendation 和 Portfolio Health 五维模型均通过结构与语义断言。
+- Project Priority、Technical Asset Quality 和 Portfolio Health 三套评分权重均合计 100；分数、Confidence、Evidence Coverage、红线和用户审批保持分离。
+- 全仓相对 Markdown 链接、表格列数、占位符、Git diff、变更文件集合和根 SKILL 校验通过；Phase 8 变更范围仅包含 16 份 Markdown 协议、记忆与治理文件。
+- “2 名工程师 + 2 万元 AI 预算 + 生产 P1 / 成本越界 + 高价值新项目 + CEO 演示指令 + 两周沉没投入 + 共享 Agent 依赖”压力测试最初暴露非规范 Status / Stage / Priority / Health 词汇；收紧输出契约后复测只使用规范枚举，缺失数值保持 `PROVISIONAL / UNASSESSED`，共享框架保持 `DRAFT`。
+- 复测 Investment Recommendation 为 A `CONDITIONAL_INVEST`、B `MAINTAIN`、C `RESEARCH`；CEO 指令只形成独立 Executive Override 记录，不改写 Priority、Health、Dependency 或 Cost 证据。
+- Phase 8 未创建具体 Agent 代码，未进入 Phase 9。
 
 ## 下一步
 
-用户确认后再设计 Phase 8；确认前不继续开发。
+用户确认后再设计 Phase 9；确认前不继续开发。
 
 ## Phase 3 状态记录
 
@@ -166,6 +187,13 @@ Phase 7：AI CTO Maintenance & Evolution Intelligence（已完成，等待用户
 |---|---|---|
 | Phase 7 开始 | 2026-07-13 | 按已确认任务清单建立 Maintenance & Evolution Intelligence |
 | Phase 7 完成 | 2026-07-13 | 维护、Incident、复盘、债务、反馈、AI 能力、演进门禁与项目淘汰治理完成，等待用户确认 |
+
+## Phase 8 状态记录
+
+| 事件 | 日期 | 状态 |
+|---|---|---|
+| Phase 8 开始 | 2026-07-13 | 按已确认任务清单建立 Portfolio & Multi-Project Governance Intelligence |
+| Phase 8 完成 | 2026-07-13 | 项目组合、优先级、依赖、技术资产、AI 成本、Dashboard、投资与健康治理完成，等待用户确认 |
 
 ## 最后更新时间
 

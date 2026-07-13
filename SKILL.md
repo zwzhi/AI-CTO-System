@@ -1,6 +1,6 @@
 ---
 name: ai-cto-system
-description: Use when receiving or guiding a new AI project, taking over an existing software project, or governing project maintenance, incidents, technical debt, user feedback, AI capability drift, evolution, archival, or retirement.
+description: Use when receiving or governing AI projects, taking over existing software, or managing multiple projects, competing resources, portfolio priorities, dependencies, reusable technical assets, AI costs, investment decisions, maintenance, evolution, archival, or retirement.
 ---
 
 # AI CTO
@@ -135,6 +135,33 @@ Maintenance 允许处理边界明确的小变更，但代码、配置、数据�
 
 每次 Evolution 判断必须输出：Current Stage、Trigger、Proposal ID / Version、Score、Confidence、Evidence、Redlines、Gate Result、Approved Scope、Downstream Gates、Next Action 和 `Direct System Modification Authorization: NO`。
 
+## PORTFOLIO 治理规则
+
+1. 使用 `docs/portfolio/PROJECT_PORTFOLIO_STANDARD.md` 维护 Portfolio Register，记录 Project ID、Name、Business Value、Current Stage、Health、Priority、Dependencies、Owner、Status、资源和未来规划。
+2. 使用 `docs/portfolio/PROJECT_PRIORITY_MODEL.md` 完成 100 分优先级评估；商业、战略、紧急、复用、资源成本和风险均须附 Evidence 与 Confidence。
+3. 使用 `docs/portfolio/PROJECT_DEPENDENCY_STANDARD.md` 登记 Source depends on Target 的跨项目依赖，维护 High / Medium / Low 风险、关键路径、Fallback 和 Resolution。
+4. 使用 `docs/portfolio/TECH_ASSET_REGISTRY_STANDARD.md` 管理 Agent 模板、Prompt 模板、代码模块、架构、数据库、部署和解决方案；新项目 DESIGN 前先检索已批准资产。
+5. 使用 `docs/portfolio/AI_COST_MANAGEMENT_STANDARD.md` 归集模型、Token、API、服务器和存储成本，并报告 Cost per Task、User 和 Successful Output。
+6. 使用 `docs/portfolio/CTO_DASHBOARD_STANDARD.md` 汇总项目、资源、风险和机会；Dashboard 只展示来自权威记录的快照，不自动执行决策。
+7. 使用 `docs/portfolio/PROJECT_INVESTMENT_DECISION_STANDARD.md` 在项目竞争资源时生成 Investment Recommendation，比较价值、成本、风险、时间窗口、复用、依赖和机会成本。
+8. 使用 `docs/portfolio/PORTFOLIO_HEALTH_STANDARD.md` 评估项目健康平均分、风险项目比例、技术债、资产复用和 AI 成本趋势。
+
+Portfolio Management 是治理覆盖层，不是单项目生命周期状态。Portfolio Status 与 Current Stage 必须分别记录；Priority Score、Portfolio Health 和 Investment Recommendation 都不能自动启动、暂停、归档、淘汰项目，也不能替代单项目 Gate 或用户审批。
+
+每次组合资源决策必须输出：Portfolio Snapshot、Project Table、Priority Score / Level / Confidence、Dependency Risks、Reusable Assets、Resource Capacity、AI Cost、Portfolio Health、Investment Recommendation、Approval Status、Affected Project Gates 和 Next Review。
+
+Project Table 对每个项目使用以下固定字段和词汇：
+
+- Portfolio Status 只使用 `ACTIVE`、`MAINTENANCE`、`PAUSED`、`ARCHIVED`、`RETIRED`；
+- Current Stage 只使用生命周期中已定义的状态；证据不足时写 `UNKNOWN`，不创建临时阶段名称；
+- Priority 使用 `Score / 100` 或 `PROVISIONAL / UNASSESSED`，Level 只使用高优先级、中优先级、低优先级；Incident / Maintenance 的 P0–P3 另列，不替代 Portfolio Priority；
+- Dependency Risk 只使用 `High`、`Medium`、`Low`；
+- Asset Status 只使用 `DRAFT`、`VALIDATED`、`APPROVED_FOR_REUSE`、`DEPRECATED`、`RETIRED`；未完成注册和质量审核的共享组件记录为候选 `DRAFT`；
+- Investment Recommendation 只使用 `INVEST`、`CONDITIONAL_INVEST`、`MAINTAIN`、`RESEARCH`、`PAUSE`、`ARCHIVE`、`RETIRE`；
+- Portfolio Health 输出 Score / Range、Evidence Coverage 和“健康、可控、风险、严重”之一，证据不足时标记 `Provisional`，不只输出颜色。
+
+缺少评分输入时保留 `UNASSESSED` 和补证动作，不根据职位、紧急表述或历史投入编造分数。Executive Override 作为独立审批与风险记录保存，不改写原 Priority、Health、依赖或成本证据。
+
 ### Phase 0：Idea 分析
 
 执行 Idea 输入协议和 Idea Candidate 标准，理解目标、提取需求、判断真实问题、关联历史项目并创建项目候选记录。输出问题定义、初始需求、假设、证据和下一动作。
@@ -171,6 +198,10 @@ Maintenance 允许处理边界明确的小变更，但代码、配置、数据�
 
 在 `MAINTENANCE` 中管理 Bug、小版本、性能、依赖、安全、Incident、Postmortem、技术债、用户反馈和 AI 能力历史。系统性变化先生成并评分 Evolution Proposal，经 Maintenance → Evolution Gate 与用户审批后进入 `EVOLUTION`；重大演进继续经过适用的 Research、Evaluation、Design、Development、Testing 与 Release Gate。周期判断继续维护、重构、归档或停止，并更新记忆与知识库。
 
+### Phase 8：项目组合治理
+
+在 Portfolio Management 层维护多个项目的列表、状态、阶段、价值、健康、优先级、依赖、技术资产、资源和 AI 成本。通过 Portfolio Health 与 CTO Dashboard 识别风险和机会，在资源竞争时生成 Investment Recommendation，并由用户审批资源配置。所有项目继续遵守各自生命周期与 Gate。
+
 ## 状态与文档
 
 - 按 `docs/protocol/PROJECT_LIFECYCLE.md` 管理生命周期。
@@ -186,8 +217,9 @@ Maintenance 允许处理边界明确的小变更，但代码、配置、数据�
 - 按 `docs/onboarding/PROJECT_ONBOARDING_PROTOCOL.md`、`docs/onboarding/PROJECT_DOCUMENT_RECOVERY.md`、`docs/onboarding/PROJECT_HEALTH_CHECK_STANDARD.md` 和 `docs/onboarding/PROJECT_MIGRATION_CHECKLIST.md` 管理已有项目接管。
 - 按 `docs/maintenance/MAINTENANCE_STANDARD.md`、`docs/maintenance/INCIDENT_MANAGEMENT_STANDARD.md`、`docs/maintenance/TECH_DEBT_MANAGEMENT_STANDARD.md`、`docs/maintenance/USER_FEEDBACK_PIPELINE.md` 和 `docs/maintenance/PROJECT_RETIREMENT_STANDARD.md` 管理长期运营。
 - 按 `docs/evolution/AI_CAPABILITY_EVOLUTION_STANDARD.md`、`docs/evolution/EVOLUTION_PROPOSAL_STANDARD.md` 和 `docs/evolution/EVOLUTION_GATE.md` 管理持续评估与重大演进。
+- 按 `docs/portfolio/PROJECT_PORTFOLIO_STANDARD.md`、`docs/portfolio/PROJECT_PRIORITY_MODEL.md`、`docs/portfolio/PROJECT_DEPENDENCY_STANDARD.md`、`docs/portfolio/TECH_ASSET_REGISTRY_STANDARD.md`、`docs/portfolio/AI_COST_MANAGEMENT_STANDARD.md`、`docs/portfolio/PROJECT_INVESTMENT_DECISION_STANDARD.md` 和 `docs/portfolio/PORTFOLIO_HEALTH_STANDARD.md` 管理多项目组合。
 - 每次状态转换都更新 `PROJECT_STATE.md` 和 `PROJECT_MEMORY.md`。
 
 ## 核心约束
 
-遵守项目根目录的 `AGENTS.md`。新项目不得跳过 Idea、需求分析、设计文档、重大决策记录、项目记忆、状态和进度更新；已有项目不得跳过 Existing Project Onboarding、证据恢复、健康评估和迁移门禁；重大演进不得跳过 Evolution Proposal、Gate、用户审批和后续工程门禁。不得以原型、试验、紧急需求、负责人指令或既有投入为理由直接编码或修改生产系统。
+遵守项目根目录的 `AGENTS.md`。新项目不得跳过 Idea、需求分析、设计文档、重大决策记录、项目记忆、状态和进度更新；已有项目不得跳过 Existing Project Onboarding、证据恢复、健康评估和迁移门禁；重大演进不得跳过 Evolution Proposal、Gate、用户审批和后续工程门禁；组合评分和投资建议不得自动改变项目状态或资源。不得以原型、试验、紧急需求、负责人指令或既有投入为理由直接编码、修改生产系统或绕过统一组合证据。

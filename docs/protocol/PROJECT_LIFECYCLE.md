@@ -21,6 +21,23 @@
 
 两者均完成后才能进入 `DESIGN`。任何状态发现关键假设失效时，可退回前序状态，并记录原因。
 
+## Portfolio Management 层
+
+单项目生命周期在 Portfolio Governance 管理下运行：
+
+`Portfolio Management → 多个 Project → 各自 IDEA → RESEARCH / EVALUATION → DESIGN → DEVELOPMENT → TESTING → RELEASE → MAINTENANCE / EVOLUTION`
+
+Portfolio Management 是跨项目治理层，不是单项目生命周期状态。它维护项目列表、Portfolio Status、Priority、Health、Dependency、Technical Asset、AI Cost、Investment Recommendation 和 Portfolio Health，不改变项目自身 Current Stage 的含义。
+
+单项目的简化业务路径 `IDEA → RELEASE → MAINTENANCE` 受 Portfolio Governance 持续管理；其中被省略的 Research、Evaluation、Design、Development 和 Testing 门禁仍然强制执行。
+
+- Portfolio Priority 只建议资源顺序，不授予进入任何生命周期阶段的权限。
+- Portfolio Status 使用 `ACTIVE`、`MAINTENANCE`、`PAUSED`、`ARCHIVED`、`RETIRED`，与 Current Stage 分开记录。
+- `PAUSED` 保留暂停前 Current Stage；恢复时重新核验阶段证据和 Gate。
+- `ARCHIVED`、`RETIRED` 是组合处置状态，不是新增生命周期状态，也不表示单项目门禁自动完成。
+- 组合资源、依赖、资产、成本或投资决定变化时，必须同步受影响项目状态、记忆、计划和风险。
+- Portfolio Governance 的决策与授权边界见 [ADR-0008](../adr/ADR-0008-PORTFOLIO-GOVERNANCE.md)。
+
 ## 状态定义
 
 | 状态 | 进入条件 | 退出条件 | 必须生成或更新的文档 |

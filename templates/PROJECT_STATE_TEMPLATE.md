@@ -23,6 +23,25 @@
 - Owner：
 - Completion Condition：
 
+## Portfolio Governance
+
+所有纳入组合管理的项目均维护；未纳管项目填写 `Not Managed` 及原因。
+
+- Project ID：
+- Portfolio Snapshot ID：
+- Portfolio Status：`ACTIVE` / `MAINTENANCE` / `PAUSED` / `ARCHIVED` / `RETIRED`
+- Business Value / Strategic Value：
+- Priority Score / Level / Confidence：
+- Portfolio Health Contribution：
+- Dependencies（High / Medium / Low）：
+- Shared Technical Assets Used / Produced：
+- Resource Allocation / Capacity：
+- AI Cost Budget / Actual / Forecast：
+- Investment Recommendation / Approval：
+- Portfolio Risks / Redlines：
+- Last Portfolio Review：
+- Next Portfolio Action：
+
 ## Onboarding Status
 
 仅在 `EXISTING_PROJECT_ONBOARDING` 及其迁移门禁复核期间维护；其他阶段填写 `Not Applicable` 并说明原因。详细状态记录使用 `templates/PROJECT_ONBOARDING_STATE_TEMPLATE.md`。

@@ -40,6 +40,12 @@
 - 系统性优化必须先创建 Evolution Proposal。只有 `APPROVED_FOR_EVOLUTION` 允许从 MAINTENANCE 进入 EVOLUTION，且该结果不授权编码、测试、发布或生产修改。
 - Evolution 实现继续执行适用的 Research、Evaluation、Design、Development、Testing 和 Release Gate；重大变更不能从 Feedback、Incident 或 Proposal 直接进入代码。
 - 项目周期复核必须在继续维护、重构、归档和停止之间形成证据化结论，并处理用户、数据、安全、依赖和恢复边界。
+- Portfolio Management 是覆盖多个单项目生命周期的治理层，不是新的单项目状态；Portfolio Status 与 Current Stage 分开记录。
+- 组合优先级采用商业、战略、紧急、复用、资源成本和风险六维 100 分制，但 Priority Score 只提供资源建议，不自动启动或停止项目。
+- 跨项目依赖、共享技术资产和 AI 成本必须使用统一 ID、版本、Owner、Evidence 和 Confidence 管理；共享能力不能成为无主单点或未分摊成本。
+- 新项目 DESIGN 前先检索 `APPROVED_FOR_REUSE` 技术资产，复用结论仍须满足适用设计、安全、测试和发布门禁。
+- CTO Dashboard 是组合快照与下钻视图，不是事实源或审批器；Investment Recommendation 必须经用户对当前 Portfolio Snapshot 明确批准。
+- Portfolio Health 综合项目健康、风险项目比例、技术债、资产复用和 AI 成本趋势，且组合高分不能抵消单项目红线。
 
 ## 历史修改
 
@@ -51,11 +57,12 @@
 - 2026-07-13：建立 Phase 6 Testing & Release Intelligence。
 - 2026-07-13：建立 Phase 6.5 Existing Project Onboarding Intelligence。
 - 2026-07-13：建立 Phase 7 Maintenance & Evolution Intelligence。
+- 2026-07-13：建立 Phase 8 Portfolio & Multi-Project Governance Intelligence。
 
 ## 当前状态
 
-Phase 7 已建立 Maintenance、Incident、Postmortem、技术债、用户反馈、AI 能力历史、Evolution Proposal / Gate 和项目归档淘汰规则；当前停留在 Phase 7 完成状态，等待用户确认，不进入 Phase 8。
+Phase 8 已建立 Portfolio Register、项目优先级、跨项目依赖、技术资产注册、AI 成本、CTO Dashboard、投资建议和组合健康规则；当前停留在 Phase 8 完成状态，等待用户确认，不进入 Phase 9。
 
 ## 未来计划
 
-用户确认后再决定 Phase 8；当前不得提前推进。
+用户确认后再决定 Phase 9；当前不得提前推进。
