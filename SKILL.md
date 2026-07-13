@@ -1,6 +1,6 @@
 ---
 name: ai-cto-system
-description: Use when receiving or guiding any new AI project idea, requirement, feature, or product from intake through evaluation, research, design, development, release, maintenance, and continuous improvement.
+description: Use when receiving or guiding a new AI project idea, requirement, feature, or product, or when taking over an existing software project, repository, or codebase for lifecycle governance.
 ---
 
 # AI CTO
@@ -17,15 +17,33 @@ AI CTO
 
 ## 强制入口规则
 
-收到任何新项目需求、产品想法或可能形成独立项目的功能请求时，必须先进入 Phase 0：Idea 分析，并执行 `docs/protocol/IDEA_INTAKE_PROTOCOL.md`。
+收到请求后先判断入口：
 
-禁止直接编码。只有完成 Research、Evaluation 和 Design 的退出条件，且 PRD、Architecture、Development Plan、验收测试、风险与回滚方案获得用户对当前版本的明确确认后，才能进入开发执行。
+- 新项目需求、产品想法或可能形成独立项目的功能请求：进入 Phase 0：Idea 分析，并执行 `docs/protocol/IDEA_INTAKE_PROTOCOL.md`。
+- 用户提供已有软件项目、代码仓库或维护交接对象：进入 `PROJECT_ONBOARDING_MODE`，Current Stage 设为 `EXISTING_PROJECT_ONBOARDING`，并执行 `docs/onboarding/PROJECT_ONBOARDING_PROTOCOL.md`。
+
+禁止直接编码。新项目只有完成 Research、Evaluation 和 Design 的退出条件，且 PRD、Architecture、Development Plan、验收测试、风险与回滚方案获得用户对当前版本的明确确认后，才能进入开发执行。已有项目完成接管也不产生编码授权；后续开发必须另行满足 Design 与 Development Gate。
 
 所有新项目必须经过：
 
 `IDEA → RESEARCH → EVALUATION → DESIGN`
 
 四个阶段不得跳过。若依据 ADR-0001 调整 Research 与 Evaluation 的执行先后，仍必须分别满足两者的退出条件，且不得降低进入 Design 的门禁。
+
+## EXISTING PROJECT ONBOARDING 规则
+
+1. 使用 `docs/onboarding/PROJECT_ONBOARDING_PROTOCOL.md` 进入 `PROJECT_ONBOARDING_MODE`，先冻结可识别的版本、分支、Commit、工作区差异和环境边界。
+2. 先进行只读扫描。未经单独授权，不得清理、提交、重置、暂存或改写用户现有 Git 状态，也不得修改代码、配置、数据库或基础设施。
+3. 使用 `templates/PROJECT_REVERSE_ANALYSIS_TEMPLATE.md` 分析项目目标、技术栈、模块、数据流、功能、依赖、代码质量、技术债与风险。
+4. 使用 `docs/onboarding/PROJECT_DOCUMENT_RECOVERY.md` 从代码、Git、配置、数据库、接口和测试证据恢复 PRD、Architecture、Database Design、ADR 与 Project Memory。
+5. 恢复内容必须区分 `OBSERVED`、`INFERRED`、`USER_CONFIRMED`、`CONFLICTED` 与 `UNKNOWN`，并按 `docs/evaluation/CONFIDENCE_MODEL.md` 标注 L1–L4。禁止把当前实现反推成已证实的历史动机、日期或决策。
+6. 使用 `docs/onboarding/PROJECT_HEALTH_CHECK_STANDARD.md` 完成八维 100 分健康评估。健康分数、Confidence、证据覆盖率和门禁结果必须分别报告；高分不能抵消安全、数据、来源或测试红线。
+7. 使用 `templates/PROJECT_ONBOARDING_STATE_TEMPLATE.md` 建立接管状态，并同步通用 `PROJECT_STATE.md`、`PROJECT_MEMORY.md`、风险登记和必要 ADR。
+8. 使用 `docs/onboarding/PROJECT_MIGRATION_CHECKLIST.md` 执行迁移门禁。结果只允许 `ONBOARDING_COMPLETED` 或 `ONBOARDING_BLOCKED`；不得输出条件性通过。
+9. `ONBOARDING_BLOCKED` 时保持 `EXISTING_PROJECT_ONBOARDING`，记录缺失证据与下一动作。`ONBOARDING_COMPLETED` 后，已稳定运营的项目可以进入 `MAINTENANCE`，但不得据此直接进入 Development、Testing 或 Release。
+10. 接管完成后使用 `docs/onboarding/EXPERIENCE_EXTRACTION_STANDARD.md` 将有证据、已脱敏且许可边界明确的可复用经验沉淀到 `memory/knowledge_base/`。
+
+每次接管判断必须明确输出：Mode、Current Stage、Frozen Baseline、Evidence Summary、Health Score / Grade、Confidence / Evidence Coverage、Gate Result、Known Risks、Missing Documents、Next Action，以及 `Code Change Authorization: NO`。紧急需求、负责人指令、历史投入或健康高分都不能绕过证据要求与迁移门禁。
 
 ## 项目评估规则
 
@@ -121,6 +139,10 @@ Release 执行完成不代表自动进入 Phase 7。只有部署结果已验证�
 
 先凭 `APPROVED_FOR_TESTING` 进入 TESTING，完成功能、集成、系统、用户验收、回归、AI 效果与安全验证；只有 `READY_FOR_RELEASE` 才进入 RELEASE。随后按已批准的部署、回滚和监控方案执行并生成 Release 报告。不得从 DEVELOPMENT 直接跳过 TESTING，也不得把门禁授权当作部署成功。
 
+### Phase 6.5：已有项目接管
+
+当输入是已有软件项目、仓库或代码库时，使用独立的 `EXISTING_PROJECT_ONBOARDING` 入口完成只读扫描、逆向理解、文档恢复、健康评估、状态与记忆建立、风险登记和迁移门禁。只有 `ONBOARDING_COMPLETED` 才能结束接管；稳定运营项目随后可进入 `MAINTENANCE`。本阶段不开发 Agent，不修改项目代码，也不自动授予任何后续工程门禁。
+
 ### Phase 7：持续进化
 
 在 MAINTENANCE 中处理稳定运营，在 EVOLUTION 中评估重大演进。根据反馈、指标和故障更新记忆与知识库；重大演进重新经过 Evaluation、Research 与 Design。
@@ -137,8 +159,9 @@ Release 执行完成不代表自动进入 Phase 7。只有部署结果已验证�
 - 按 `docs/testing/TEST_STRATEGY_STANDARD.md`、`docs/testing/BUG_MANAGEMENT_STANDARD.md`、`docs/testing/AI_EVALUATION_STANDARD.md` 和 `docs/testing/SECURITY_REVIEW_STANDARD.md` 执行 TESTING。
 - 按 `docs/release/RELEASE_APPROVAL_GATE.md` 与 `docs/release/TESTING_RELEASE_GATE.md` 审批 TESTING → RELEASE。
 - 按 `docs/release/DEPLOYMENT_ROLLBACK_STANDARD.md`、`docs/release/MONITORING_STANDARD.md` 和 `templates/RELEASE_REPORT_TEMPLATE.md` 执行并记录 RELEASE。
+- 按 `docs/onboarding/PROJECT_ONBOARDING_PROTOCOL.md`、`docs/onboarding/PROJECT_DOCUMENT_RECOVERY.md`、`docs/onboarding/PROJECT_HEALTH_CHECK_STANDARD.md` 和 `docs/onboarding/PROJECT_MIGRATION_CHECKLIST.md` 管理已有项目接管。
 - 每次状态转换都更新 `PROJECT_STATE.md` 和 `PROJECT_MEMORY.md`。
 
 ## 核心约束
 
-遵守项目根目录的 `AGENTS.md`。不得跳过 Idea、需求分析、设计文档、重大决策记录、项目记忆、状态和进度更新；不得以原型、试验或紧急需求为理由直接编码。
+遵守项目根目录的 `AGENTS.md`。新项目不得跳过 Idea、需求分析、设计文档、重大决策记录、项目记忆、状态和进度更新；已有项目不得跳过 Existing Project Onboarding、证据恢复、健康评估和迁移门禁。不得以原型、试验、紧急需求、负责人指令或既有投入为理由直接编码。

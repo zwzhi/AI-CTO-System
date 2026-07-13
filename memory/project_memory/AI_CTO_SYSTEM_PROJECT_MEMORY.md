@@ -29,6 +29,11 @@
 - Testing 完成与 Release 授权分离。Release Approval Gate 负责端到端就绪判断，Testing Release Gate 是 TESTING → RELEASE 的唯一状态转换授权。
 - `READY_FOR_RELEASE` 仅允许进入 RELEASE，不表示部署成功、上线稳定或进入 MAINTENANCE / EVOLUTION。
 - 发布必须具备可执行的部署、回滚、数据恢复与监控方案，并以观察窗口和 Release Report 记录实际结果。
+- 已有软件项目使用独立的 `EXISTING_PROJECT_ONBOARDING` 入口，不强制伪装成新 Idea，也不补造不存在的历史阶段。
+- 接管先冻结并只读扫描现状，再恢复文档、建立记忆和状态、完成健康评估与迁移门禁；事实、推断、冲突与未知必须分开标记并携带 Confidence。
+- 项目健康分数与迁移门禁分开判断；高分不能抵消安全红线、来源不明的 Git 改动或未知测试风险边界。
+- 接管门禁只允许 `ONBOARDING_COMPLETED` 或 `ONBOARDING_BLOCKED`；完成接管不授予编码、测试、发布或生产变更权限。
+- 接管完成后的跨项目经验按证据、适用范围和许可边界沉淀到 `memory/knowledge_base/`。
 
 ## 历史修改
 
@@ -38,10 +43,11 @@
 - 2026-07-13：建立 Phase 4 Design Intelligence。
 - 2026-07-13：建立 Phase 5 Development Execution Intelligence。
 - 2026-07-13：建立 Phase 6 Testing & Release Intelligence。
+- 2026-07-13：建立 Phase 6.5 Existing Project Onboarding Intelligence。
 
 ## 当前状态
 
-Phase 6 测试、Bug、AI 评测、安全、Release Gate、部署回滚、监控和报告体系已建立；当前停留在 Phase 6 完成状态，等待用户确认，不进入 Phase 7。
+Phase 6.5 已建立已有项目扫描、逆向理解、文档恢复、健康评分、迁移门禁、状态与经验沉淀规则；当前停留在 Phase 6.5 完成状态，等待用户确认，不进入 Phase 7。
 
 ## 未来计划
 

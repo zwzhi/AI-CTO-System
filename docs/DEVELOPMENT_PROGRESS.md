@@ -2,7 +2,7 @@
 
 ## 当前阶段
 
-Phase 6：AI CTO Testing & Release Intelligence（已完成，等待用户确认）
+Phase 6.5：AI CTO Existing Project Onboarding Intelligence（已完成，等待用户确认）
 
 ## 已完成
 
@@ -51,10 +51,19 @@ Phase 6：AI CTO Testing & Release Intelligence（已完成，等待用户确认
 - Requirement → Test Case → Evidence 执行证据追踪
 - TESTING 与 RELEASE 状态管理规则
 - ADR-0005：Testing 与 Release 授权分离
+- Phase 6.5：已有项目接管协议与 `PROJECT_ONBOARDING_MODE`
+- 项目逆向分析模板
+- 八维 100 分项目健康检查标准
+- 基于证据与 Confidence 的项目文档恢复规范
+- 已有项目迁移检查清单与双结果门禁
+- 项目接管状态模板
+- 历史项目经验沉淀规则
+- `EXISTING_PROJECT_ONBOARDING` 生命周期入口与 MAINTENANCE 转换规则
+- ADR-0006：已有项目接管作为独立治理入口
 
 ## 进行中
 
-无；Phase 6 文档已完成，等待用户验收。
+无；Phase 6.5 文档已完成，等待用户验收。
 
 ## 待处理
 
@@ -72,6 +81,10 @@ Phase 6：AI CTO Testing & Release Intelligence（已完成，等待用户确认
 - `READY_FOR_RELEASE` 不是部署成功；仍须执行部署、上线验证、观察窗口和 Release Report。
 - AI 项目除功能测试外必须完成 AI 效果评测，且所有证据必须绑定同一候选基线。
 - Phase 6 按要求不包含具体 Agent 代码，也未进入 Phase 7。
+- 已有项目不得伪装成新 Idea 或补造历史；扫描、恢复与评分结论必须携带证据、真值标签和 Confidence。
+- 健康评分不等于迁移门禁；安全红线、来源不明的 Git 改动或未知测试风险边界均可独立阻断接管。
+- `ONBOARDING_COMPLETED` 不授予编码、测试、发布或生产变更权限；稳定运营项目仅可进入 MAINTENANCE。
+- Phase 6.5 按要求不包含具体 Agent 代码，也未进入 Phase 7。
 
 ## 验证结果
 
@@ -83,6 +96,10 @@ Phase 6：AI CTO Testing & Release Intelligence（已完成，等待用户确认
 - 全仓相对 Markdown 链接、表格列数、尾随空格、文件结尾换行与 Git diff 检查通过；根 SKILL 通过 `quick_validate.py` 校验。
 - P1 Critical + 安全整改、API Key 泄露、全部条件通过、授权后新增配置 Commit、AI 幻觉超阈值五类发布压力场景通过；其中新增配置 Commit 唯一判定为 `BLOCKED`、退回 DEVELOPMENT、禁止部署。
 - Phase 6 变更范围为 19 份 Markdown 文档、模板、记忆与治理文件；未创建具体 Agent 代码，未进入 Phase 7。
+- Phase 6.5 的 8 份指定新增文件全部存在；接管模式、五步流程、八维 100 分健康模型、五类真值标签、双结果迁移门禁、接管状态字段和 ADR 决策均通过结构与语义断言。
+- 全仓相对 Markdown 链接、表格列数、健康权重合计、占位符、Git diff 和根 SKILL 校验通过；变更范围仅包含 15 份 Markdown 协议、模板、记忆与治理文件。
+- “静态健康分 94 + 疑似有效 API Key + 来源不明 Git 差异 + 未知迁移历史与测试状态 + 紧急改码指令”压力场景唯一结果为 `ONBOARDING_BLOCKED`；Current Stage 保持 `EXISTING_PROJECT_ONBOARDING`，`Code Change Authorization: NO`。
+- 更新后的规则明确排除紧急性、健康高分、负责人指令和历史投入绕过迁移门禁；恢复文档不得伪造历史，未知事实必须保持 `UNKNOWN` 并降低 Confidence。
 
 ## 下一步
 
@@ -115,6 +132,13 @@ Phase 6：AI CTO Testing & Release Intelligence（已完成，等待用户确认
 |---|---|---|
 | Phase 6 开始 | 2026-07-13 | 按已确认任务清单建立 Testing & Release Intelligence |
 | Phase 6 完成 | 2026-07-13 | 测试、安全、AI 评测、发布、部署、回滚与监控治理完成，等待用户确认 |
+
+## Phase 6.5 状态记录
+
+| 事件 | 日期 | 状态 |
+|---|---|---|
+| Phase 6.5 开始 | 2026-07-13 | 按已确认任务清单建立 Existing Project Onboarding Intelligence |
+| Phase 6.5 完成 | 2026-07-13 | 接管协议、逆向分析、文档恢复、健康评分、迁移门禁、状态与经验沉淀规则完成，等待用户确认 |
 
 ## 最后更新时间
 

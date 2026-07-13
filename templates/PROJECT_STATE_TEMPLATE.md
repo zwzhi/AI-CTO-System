@@ -23,6 +23,29 @@
 - Owner：
 - Completion Condition：
 
+## Onboarding Status
+
+仅在 `EXISTING_PROJECT_ONBOARDING` 及其迁移门禁复核期间维护；其他阶段填写 `Not Applicable` 并说明原因。详细状态记录使用 `templates/PROJECT_ONBOARDING_STATE_TEMPLATE.md`。
+
+- Project Name：
+- Current Version：
+- Original Source：
+- Onboarding Date：
+- Frozen Baseline：
+- Scan Status：
+- Reverse Analysis Status：
+- Recovered Documents：
+- Health Score / Grade：
+- Health Confidence / Evidence Coverage：
+- Git Status / Ownership：
+- Test Status / Risk Boundary：
+- Known Risks：
+- Missing Documents：
+- Onboarding Gate Result：`ONBOARDING_COMPLETED` / `ONBOARDING_BLOCKED`
+- Blockers：
+- Code Change Authorization：`NO`
+- Next Onboarding Action：
+
 ## Development Status
 
 仅在 DEVELOPMENT 及其门禁复核期间维护；其他阶段填写 `Not Applicable` 并说明原因。

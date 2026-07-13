@@ -35,6 +35,12 @@
 | 部署、回滚与数据恢复执行 | Deployment / Rollback Record |
 | 上线指标、阈值、告警、观察窗口与处置 | Monitoring Record |
 | 单个版本的发布结果总览 | Release Report |
+| 已有项目接管的扫描边界、模式与输出 | Project Onboarding Protocol |
+| 已有项目的现状、架构、功能、质量与风险 | Project Reverse Analysis |
+| 已有项目八维健康评分及证据覆盖 | Project Health Report |
+| 从现有证据恢复文档的事实边界 | Project Document Recovery |
+| 已有项目纳入治理的最终授权 | Project Migration Checklist |
+| 已有项目接管期间的当前状态 | Project Onboarding State |
 
 ## PRD 关联规则
 
@@ -108,3 +114,7 @@ ADR 用于记录会影响架构、数据、接口、安全、成本、开发流�
 发布执行与上线验证时：
 
 `Release Authorization → Deployment / Rollback Plan → Deployment Record → Monitoring → Release Report → PROJECT_STATE → PROJECT_MEMORY`
+
+已有项目接管时：
+
+`Frozen Baseline → Project Scan → Reverse Analysis → Document Recovery → Health Report → Onboarding State → Migration Gate → PROJECT_STATE → PROJECT_MEMORY`
