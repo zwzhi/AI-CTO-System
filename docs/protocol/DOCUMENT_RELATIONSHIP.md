@@ -13,6 +13,10 @@
 | 重大决策及其演变 | ADR |
 | 长期上下文与当前项目摘要 | PROJECT_MEMORY |
 | 当前生命周期状态 | PROJECT_STATE |
+| Idea 完整性与候选资格 | Idea Candidate Standard |
+| 项目评分、依据与总分 | Project Evaluation |
+| 结论的证据可信度 | Confidence Model |
+| 立项结果与阶段门禁 | Project Approval Gate |
 
 ## PRD 关联规则
 
@@ -54,3 +58,7 @@ ADR 用于记录会影响架构、数据、接口、安全、成本、开发流�
 实现偏差时：
 
 `Progress → ADR（如改变重大决策）→ Architecture/Development Plan → PROJECT_MEMORY`
+
+立项决策时：
+
+`Idea Candidate → Research → Project Evaluation + Confidence → Build vs Buy → Approval Gate → PROJECT_STATE → PROJECT_MEMORY`

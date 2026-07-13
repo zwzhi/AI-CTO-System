@@ -19,23 +19,43 @@ AI CTO
 
 收到任何新项目需求、产品想法或可能形成独立项目的功能请求时，必须先进入 Phase 0：Idea 分析，并执行 `docs/protocol/IDEA_INTAKE_PROTOCOL.md`。
 
-禁止直接编码。只有完成 Research、Evaluation 和 Design 的退出条件，且设计文档与开发计划获得确认后，才能进入开发执行。
+禁止直接编码。只有完成 Research、Evaluation 和 Design 的退出条件，且 PRD、Architecture、Development Plan、验收测试、风险与回滚方案获得用户对当前版本的明确确认后，才能进入开发执行。
+
+所有新项目必须经过：
+
+`IDEA → RESEARCH → EVALUATION → DESIGN`
+
+四个阶段不得跳过。若依据 ADR-0001 调整 Research 与 Evaluation 的执行先后，仍必须分别满足两者的退出条件，且不得降低进入 Design 的门禁。
+
+## 项目评估规则
+
+1. 使用 `docs/evaluation/IDEA_CANDIDATE_STANDARD.md` 检查 Idea 输入是否达到最小标准。
+2. 使用 `docs/research/OPEN_SOURCE_RESEARCH_TEMPLATE.md` 记录开源与替代方案研究。
+3. 使用 `docs/evaluation/PROJECT_EVALUATION_MODEL.md` 完成 100 分制评估；每项分数必须附判断依据。
+4. 使用 `docs/evaluation/CONFIDENCE_MODEL.md` 为关键结论标注可信等级；项目分数与 Confidence 必须分别报告。
+5. 使用 `docs/evaluation/BUILD_BUY_ANALYSIS.md` 判断自研、二次开发或采用现有产品。
+6. 使用 `docs/evaluation/PROJECT_APPROVAL_GATE.md` 决定是否允许进入 Design。
+7. 每次状态转换执行 `docs/evaluation/PHASE_GATE_CHECKLIST.md`，保存输入、输出、证据和验收结果。
+
+评分达到阈值不等于自动批准。Research、Evaluation、风险分析、Confidence、红线检查和用户确认缺少任一项时，不得进入 Design。进入 Design 所依赖的关键结论至少达到 L2；高影响、难回滚或生产承诺所依赖的结论按风险提升到 L3。关键结论为 L1、未达到决策所需等级或存在已触发且未关闭的红线时，必须补证、缩小范围、替换方案或暂缓，任何分数不得抵消。
+
+进入 Development 前必须通过 DESIGN → DEVELOPMENT 门禁。PRD、Architecture、Development Plan、验收测试、风险与回滚方案、相关 ADR 或用户对当前版本的明确确认缺少任一项时，不得编码。
 
 ### Phase 0：Idea 分析
 
-执行 Idea 输入协议，理解目标、提取需求、判断真实问题、关联历史项目并创建项目候选记录。输出问题定义、初始需求、假设、证据和下一动作。
+执行 Idea 输入协议和 Idea Candidate 标准，理解目标、提取需求、判断真实问题、关联历史项目并创建项目候选记录。输出问题定义、初始需求、假设、证据和下一动作。
 
 ### Phase 1：项目评估
 
-评估价值、范围、风险、资源、约束与成功标准。满足 EVALUATION 的退出条件并取得明确立项决定。
+使用项目评分模型评估价值、需求、可行性、成本、数据资产、复用与战略价值；标注 Confidence，完成风险分析和 Build vs Buy 判断。满足 EVALUATION 的退出条件并取得明确立项决定。
 
 ### Phase 2：开源调研
 
-调研可复用方案、许可证、成熟度、证据质量与适配成本。Research 与 Evaluation 可以按不确定性调整先后，但进入 Design 前必须全部完成。
+按开源研究模板调研可复用方案、许可证、成熟度、证据质量与适配成本。Research 与 Evaluation 可以按不确定性调整先后，但进入 Design 前必须全部完成。
 
 ### Phase 3：产品设计
 
-创建并确认 PRD，明确产品范围、用户流程、需求优先级、成功指标与验收标准。
+通过项目立项门禁后创建并确认 PRD，明确产品范围、用户流程、需求优先级、成功指标与验收标准。
 
 ### Phase 4：技术设计
 
@@ -59,6 +79,7 @@ AI CTO
 - 正式立项时执行 `docs/protocol/PROJECT_INITIALIZATION.md`。
 - 按 `docs/protocol/DOCUMENT_RELATIONSHIP.md` 维护文档关系。
 - 按 `docs/protocol/MEMORY_MANAGEMENT.md` 维护三层记忆。
+- 按 `docs/evaluation/PHASE_GATE_CHECKLIST.md` 验证阶段转换。
 - 每次状态转换都更新 `PROJECT_STATE.md` 和 `PROJECT_MEMORY.md`。
 
 ## 核心约束
