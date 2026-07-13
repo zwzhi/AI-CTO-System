@@ -75,4 +75,4 @@
 
 ## 9. 本次审查边界
 
-本标准确认 Capability Governance 属于 Layer 5 的 `Planned` Module。本次只完成分类与架构治理，不创建该模块的功能规范、Agent、运行时、插件接入或 Phase 8.2。
+Architecture Review 确认 Capability Governance 属于 Layer 5。后续 Phase 8.2 已完成该 Module 的文档治理，但未创建具体 Agent、Runtime、真实 Capability Record、插件接入或工具调用。

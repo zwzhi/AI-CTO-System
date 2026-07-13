@@ -70,7 +70,7 @@ flowchart TB
 
 **包含：** Intent Gateway、Agent Runtime、Tool Calling、Codex Integration、Automation，以及计划中的 Capability Governance。
 
-**当前状态：** `Planned`。本次架构审查不实现 Layer 5 模块，也不进入 Phase 8.2。
+**当前状态：** Capability Governance 的文档治理已 `Completed`；Intent Gateway、Agent Runtime、Tool Calling、Codex Integration、Automation、真实 Capability 接入和自动选择仍为 `Planned`。
 
 **边界：** Layer 5 负责“如何安全执行”，不拥有“是否应该做”的业务决策；不得覆盖 Layer 2 的决策、Layer 3 的工程基线、Layer 4 的状态门禁或 Layer 1 的记忆写入规则。
 
@@ -97,6 +97,7 @@ flowchart TB
 
 - 系统使命与边界：[AI_CTO_SYSTEM_MANIFESTO.md](../strategy/AI_CTO_SYSTEM_MANIFESTO.md)
 - Module 战略准入：[MODULE_ADMISSION_CRITERIA.md](../strategy/MODULE_ADMISSION_CRITERIA.md)
+- 可调用能力治理：[CAPABILITY_GOVERNANCE_STANDARD.md](../capability/CAPABILITY_GOVERNANCE_STANDARD.md)
 - 模块归属与状态：[MODULE_REGISTRY.md](./MODULE_REGISTRY.md)
 - 新需求归类：[FEATURE_CLASSIFICATION_RULES.md](./FEATURE_CLASSIFICATION_RULES.md)
 - 历史 Phase 映射：[PHASE_MAPPING_REVIEW.md](./PHASE_MAPPING_REVIEW.md)

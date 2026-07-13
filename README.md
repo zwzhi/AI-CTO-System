@@ -38,6 +38,8 @@ Phase 只记录历史交付批次，Module 表示可独立治理的能力，Life
 - [核心价值飞轮](./docs/strategy/AI_CTO_VALUE_LOOP.md)
 - [模块注册表](./docs/architecture/MODULE_REGISTRY.md)
 - [未来需求归类规则](./docs/architecture/FEATURE_CLASSIFICATION_RULES.md)
+- [Capability Governance](./docs/capability/CAPABILITY_GOVERNANCE_STANDARD.md)
+- [Capability Registry](./docs/capability/CAPABILITY_REGISTRY_STANDARD.md)
 
 未来系统能力先证明 Mission Alignment 和长期价值，取得 `ADMIT_FOR_CLASSIFICATION` 后，才能进入 Layer / Module 分类。无法证明使命价值的功能不进入 AI CTO System。
 
@@ -47,4 +49,4 @@ AI CTO System 不是单纯代码生成工具、聊天机器人、普通项目管
 
 ## 当前状态
 
-Phase 1–8 的文档治理能力、五层架构模型和 Strategic Alignment Review 已建立。当前仍以文档、协议、模板、记忆和 Git 为基础，不包含具体 Agent Runtime 或自动化功能实现。
+Phase 1–8、Architecture Review、Strategic Alignment Review 和 Phase 8.2 Capability Governance 的文档治理已经建立。当前没有具体 Agent Runtime、自动化执行或正式 Capability Record，也没有安装、接入或调用外部 Skill、MCP、Agent 或工具。

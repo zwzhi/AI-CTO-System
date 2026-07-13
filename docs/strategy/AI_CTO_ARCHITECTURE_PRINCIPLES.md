@@ -24,6 +24,8 @@
 
 **检查：** 能力能否独立启停、替换、测试、审计和回滚？
 
+所有可调用内部 / 外部能力必须执行 [Capability Governance](../capability/CAPABILITY_GOVERNANCE_STANDARD.md)。AI CTO Core 只依赖稳定 Capability Contract，不直接依赖特定 Skill、MCP、第三方 Agent、模型或供应商；插件的 Registry、Evaluation 和 Activation Approval 必须与 Core 分离。
+
 ### 原则 4：数据和经验必须沉淀
 
 真实使用产生的决策、Evidence、指标、失败、反馈和经验必须进入适当的 Project Memory、Knowledge Base 或 Technical Asset Registry。没有来源、适用范围、Confidence、隐私和许可边界的内容不能冒充资产。

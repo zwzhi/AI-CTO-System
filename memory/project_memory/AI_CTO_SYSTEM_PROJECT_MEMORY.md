@@ -51,7 +51,7 @@
 - 未来需求必须先分类为复用 Module、扩展 Module、在现有 Layer 创建 Module、提议新 Layer 或暂缓，禁止单个功能直接创建新 Phase。
 - 新 Layer 必须通过系统级架构评审；Module 移动、合并、拆分、跨层权威或核心 Gate 变化必须创建 ADR。
 - Layer 5 是未来执行与智能层，目前全部为 `Planned`；它不得覆盖 Layer 2 决策、Layer 3 工程基线、Layer 4 生命周期门禁或 Layer 1 记忆规则。
-- Capability Governance 已归类为 Layer 5 的 `Planned` Module；本次审查不进入 Phase 8.2，也不实现该能力。
+- Capability Governance 归属 Layer 5；Phase 8.2 已完成文档治理，真实 Capability、Runtime、自动选择、外部接入和工具调用仍为 `Planned`。
 - AI CTO System 的使命基线由 Manifesto 定义：提高想法到产品的长期转化能力，沉淀技术资产，形成研发复利并增强用户技术能力。
 - 系统不是单纯代码生成工具、聊天机器人、普通项目管理工具或无约束自动化机器人；通用邻近 AI 功能不自动成为核心 Module。
 - Strategic Alignment 与 Module Admission 位于 Feature Classification 之前；先证明能力应该进入系统，再判断属于哪个 Layer。
@@ -59,6 +59,13 @@
 - 只有 `ADMIT_FOR_CLASSIFICATION` 允许进入 Layer + Module 分类；该结果不授权设计、编码或功能实现。
 - AI CTO 提供建议，人类对使命变化、Module 准入、重大资源投入和风险接受作最终决策。
 - Strategic Alignment 是跨层治理检查点，不是第六个 Layer、新生命周期状态或新功能 Phase。
+- Capability 是 AI CTO 可以调用、组合或委托的内部 / 外部能力，不等同于系统 Module、Feature 或 Technical Asset。
+- Capability 治理链固定为 Mission Alignment → Admission → Registry → Evaluation → Activation → Selection / Invocation → Monitoring → Lifecycle Decision。
+- Capability Type 只使用 Engineering、Testing、Security、Deployment、Research、Documentation、Data 和 AI Model 八类。
+- Registry Status 只使用 `DISCOVERED`、`EVALUATING`、`ACTIVE`、`DEPRECATED`、`DISABLED`、`REMOVED`；Admission Result 只使用 `ADMIT_FOR_EVALUATION`、`ACTIVATE_CAPABILITY`、`REJECT_OR_DEFER`。
+- 登记、Quality Score、`ACTIVE` 和单次 Invocation Authorization 分开判断；高分或激活状态不能抵消项目权限、License、安全、兼容或 Gate。
+- 外部能力必须确认来源、License、安全、功能和兼容性，并通过可替换 Capability Contract / Adapter 接入；AI CTO Core 不直接依赖具体实现。
+- Superpowers 目前只有架构示例，没有安装、读取、调用、注册或激活任何真实能力。
 
 ## 历史修改
 
@@ -73,11 +80,12 @@
 - 2026-07-13：建立 Phase 8 Portfolio & Multi-Project Governance Intelligence。
 - 2026-07-13：完成 AI CTO System Architecture Review，采用五层 Layer + Module 模型并创建 ADR-0009。
 - 2026-07-13：完成 AI CTO System Strategic Alignment Review，建立使命、原则、Module Admission、价值飞轮与 ADR-0010。
+- 2026-07-13：完成 Phase 8.2 Capability Governance 文档框架、能力目录、Superpowers 架构示例与 ADR-0011。
 
 ## 当前状态
 
-AI CTO System Strategic Alignment Review 已完成系统使命、边界、架构原则、Module Admission 和价值飞轮治理。当前等待用户确认，不进入下一阶段，不开发功能或 Agent。
+Phase 8.2 Capability Governance 已完成准入、注册、评估、生命周期、选择、外部接入和目录规范。当前没有正式 Capability Record，没有安装或调用外部 Skill / MCP / Agent / 工具；等待用户确认，不进入 Phase 8.3。
 
 ## 未来计划
 
-等待用户确认战略对齐审查。确认后，所有 AI CTO System 自身能力先完成 Mission Alignment 与 Module Admission，再按 Layer + Module 规则分类；当前不推进任何功能阶段。
+等待用户确认 Phase 8.2。确认后如需接入任何真实 Capability，必须作为独立后续需求重新执行 Mission Alignment、准入、隔离评估、Registry 和 Activation Approval；当前不进入 Phase 8.3。

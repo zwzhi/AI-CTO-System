@@ -69,4 +69,4 @@ flowchart LR
 - 所有新需求先执行 [FEATURE_CLASSIFICATION_RULES.md](./FEATURE_CLASSIFICATION_RULES.md)，不直接创建 Phase。
 - 为所有评分模型统一 Evidence、Confidence、版本、红线和 Decision Object，但不合并不同决策对象。
 - 后续建立跨模块合同或 Gate Catalog 时，作为现有 Module 扩展提出；本次不新增这些功能。
-- Capability Governance 保持 Layer 5 `Planned`，等待本次架构审查确认；不进入 Phase 8.2。
+- Architecture Review 时 Capability Governance 保持 Layer 5 `Planned`；后续 Phase 8.2 已完成文档治理，真实 Runtime、外部接入和工具调用仍为 `Planned`。

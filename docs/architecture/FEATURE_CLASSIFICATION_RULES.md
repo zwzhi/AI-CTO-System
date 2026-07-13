@@ -83,10 +83,10 @@ flowchart TD
 |---|---|
 | Feature / Request | 外部能力、插件与工具的注册、权限和生命周期治理 |
 | Owning Layer | Layer 5：Execution & Intelligence |
-| Existing Module | Capability Governance（`Planned`） |
+| Existing Module | Capability Governance（文档治理 `Completed`；Runtime / Integration `Planned`） |
 | Classification Result | `USE_EXISTING_MODULE`；后续如扩展边界则使用 `EXTEND_EXISTING_MODULE` |
 | Cross-Layer Inputs / Outputs | 读取 Layer 2 授权、Layer 3 技术合同、Layer 4 安全与运营门禁；向执行运行时提供受控能力清单 |
 | Architecture Review Required | 当前 `NO`；模块已登记在现有 Layer 5 |
 | ADR Required | 当前 `NO`；后续重大权限或运行时边界变化再判断 |
-| Registry Update | 已登记为 `Planned`，未实现 |
-| Next Action | 等待本次架构评审确认后，另行启动该 Module 的需求与设计；本次不进入 Phase 8.2 |
+| Registry Update | Phase 8.2 已将治理文档状态更新为 `Completed`；没有注册或激活真实 Capability |
+| Next Action | 等待 Phase 8.2 用户确认；确认前不接入真实外部能力，不进入 Phase 8.3 |

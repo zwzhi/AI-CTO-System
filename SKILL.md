@@ -1,6 +1,6 @@
 ---
 name: ai-cto-system
-description: Use when receiving or governing AI projects, reviewing AI CTO mission or strategy, admitting future modules, classifying capabilities into layers, taking over existing software, or managing portfolios, priorities, dependencies, reusable assets, AI costs, maintenance, evolution, archival, or retirement.
+description: Use when receiving or governing AI projects, reviewing AI CTO mission or strategy, admitting modules, governing internal or external capabilities, Skills, MCP tools, third-party agents or models, classifying layers, taking over software, or managing portfolios, assets, costs, maintenance, evolution, archival, or retirement.
 ---
 
 # AI CTO
@@ -10,6 +10,19 @@ description: Use when receiving or governing AI projects, reviewing AI CTO missi
 先阅读 `docs/strategy/AI_CTO_SYSTEM_MANIFESTO.md`。AI CTO System 帮助个人或组织建立可持续运作的 AI 技术组织，将想法持续转化为可交付、可维护、可进化的产品资产，并通过真实使用、经验沉淀和技术资产复用形成研发复利。
 
 本系统不是单纯代码生成工具、聊天机器人、普通项目管理工具或无约束自动化机器人。功能数量、自动化程度和“使用 AI”本身都不是系统价值。
+
+## Capability 请求快速契约
+
+当请求涉及 Skill、MCP、工具、第三方 Agent、模型或其他可调用能力时，在任何自由描述前先输出规范字段。若候选尚未注册且存在准入阻断，固定输出：
+
+- `Registry Record: ABSENT`
+- `Registry Status: N/A`
+- `Proposed Registry Status: DISCOVERED`（仅决定保留候选时）
+- `Admission Result: REJECT_OR_DEFER`
+- `Selection: PROHIBITED`
+- `Activation Scope: NONE`
+
+不得把 `Quarantined`、`Blocked`、`Pending`、`Candidate` 或 `Approved` 写成 Registry Status。`BLOCKED` 只属于 Evaluation Result，不属于 Lifecycle。隔离通过禁止选择、不给权限、撤销凭据和记录 Blockers 表达。必须使用上述正向字段，即使截止时间、负责人指令、演示或沉没投入要求更快处理。
 
 ## 角色
 
@@ -194,7 +207,35 @@ Project Table 对每个项目使用以下固定字段和词汇：
 
 每次未来需求归类必须按以下固定顺序输出：Feature / Request、Owning Layer、Existing Module、Classification Result、Cross-Layer Inputs / Outputs、Architecture Review Required、ADR Required、Registry Update、Next Action。Classification Result 只允许 `USE_EXISTING_MODULE`、`EXTEND_EXISTING_MODULE`、`CREATE_MODULE_IN_EXISTING_LAYER`、`PROPOSE_NEW_LAYER` 或 `REJECT_OR_DEFER`。
 
-Capability Governance 当前是 Layer 5 的 `Planned` Module。本次架构审查不实现该模块，也不进入 Phase 8.2。
+Capability Governance 当前是 Layer 5 的 `Completed` 文档治理 Module；其 Agent Runtime、真实接入、自动选择和工具调用仍为 `Planned`。
+
+## CAPABILITY GOVERNANCE 规则
+
+1. 使用 `docs/capability/CAPABILITY_GOVERNANCE_STANDARD.md` 区分 Module、Capability、Feature 和 Technical Asset。Capability 是可调用的内部或外部能力，不是系统功能 Module。
+2. 所有候选能力依次执行 Mission Alignment、`docs/capability/CAPABILITY_ADMISSION_PROCESS.md`、Registry、`docs/capability/CAPABILITY_EVALUATION_STANDARD.md` 和 Activation；禁止先安装、调用或授权后补治理。
+3. Capability Type 只使用 Engineering、Testing、Security、Deployment、Research、Documentation、Data、AI Model 八类。
+4. Registry Status 只使用 `DISCOVERED`、`EVALUATING`、`ACTIVE`、`DEPRECATED`、`DISABLED`、`REMOVED`；不得自创 `QUARANTINED`、`PENDING` 或 `APPROVED` 状态。
+5. Admission Result 只使用 `ADMIT_FOR_EVALUATION`、`ACTIVATE_CAPABILITY` 或 `REJECT_OR_DEFER`。只有 `ACTIVATE_CAPABILITY` 可以把当前版本改为 `ACTIVE`。
+6. 只有 `ACTIVE`、当前 Evaluation 有效、无红线且项目级权限匹配的 Capability 可以进入选择；Selection Decision 仍不等于单次 Invocation Authorization。
+7. 100 分 Quality Score 与 Mission、Confidence、风险红线、Registry Status 和人类批准分开判断。高分不能抵消来源、License、安全、权限、兼容或回滚阻断。
+8. 外部 Superpowers、Codex Skill、MCP、第三方 Agent、模型或服务使用稳定 Capability Contract / Adapter；AI CTO Core 不直接依赖具体实现，并必须有 Fallback、替换、撤销和退出路径。
+9. Source、Version、License、Input / Output、Dependencies、Permissions、Applicable Layer / Phase、Status 和 Quality Score 缺少任一关键证据时，不得激活。
+10. Capability 版本、权限、License、合同、依赖或行为变化使受影响 Evaluation 和 Activation Approval 失效，返回 `EVALUATING` 或按风险转为 `DISABLED`。
+
+Capability 状态输出必须使用以下正向配方：
+
+| 当前事实 | 必须输出 |
+|---|---|
+| 候选尚无 Registry Record | `Registry Record: ABSENT`、`Registry Status: N/A`；若决定保留候选，再输出 `Proposed Registry Status: DISCOVERED` |
+| 已注册并获准评估 | `Registry Status: EVALUATING`、`Admission Result: ADMIT_FOR_EVALUATION` |
+| 当前版本全部激活条件满足 | `Registry Status: ACTIVE`、`Admission Result: ACTIVATE_CAPABILITY`、明确 Activation Scope |
+| 已注册但风险或证据阻断使用 | `Registry Status: DISABLED` 或保留 `DISCOVERED`、`Admission Result: REJECT_OR_DEFER`、`Activation Scope: NONE` |
+
+风险隔离用 `Selection: PROHIBITED`、`Activation Scope: NONE`、权限撤销和 Blockers 表达。`BLOCKED` 只允许作为 Evaluation Result；`Quarantined` 不属于任何规范词汇。未注册候选没有生命周期状态，禁止为了表达“不安全”而给它发明状态。
+
+每次 Capability 判断必须按以下固定顺序输出：Capability ID / Name、Mission Alignment、Type、Source / Version / License、Applicable Layer / Phase、Input / Output、Dependencies、Risk Level、Security / Maintenance / Compatibility、Permission Requirement、Evaluation Score / Confidence、Registry Record、Registry Status、Proposed Registry Status（仅未注册候选适用）、Admission Result、Selection、Activation Scope、Human Approver、Blockers 和 Next Action。
+
+Phase 8.2 只建立治理文档和目录。不安装 Superpowers，不接入或调用真实 Skill、MCP、Agent、模型或工具，不创建具体 Agent，也不进入 Phase 8.3。
 
 ### Phase 0：Idea 分析
 
@@ -254,8 +295,9 @@ Capability Governance 当前是 Layer 5 的 `Planned` Module。本次架构审�
 - 按 `docs/portfolio/PROJECT_PORTFOLIO_STANDARD.md`、`docs/portfolio/PROJECT_PRIORITY_MODEL.md`、`docs/portfolio/PROJECT_DEPENDENCY_STANDARD.md`、`docs/portfolio/TECH_ASSET_REGISTRY_STANDARD.md`、`docs/portfolio/AI_COST_MANAGEMENT_STANDARD.md`、`docs/portfolio/PROJECT_INVESTMENT_DECISION_STANDARD.md` 和 `docs/portfolio/PORTFOLIO_HEALTH_STANDARD.md` 管理多项目组合。
 - 按 `docs/architecture/AI_CTO_SYSTEM_ARCHITECTURE.md`、`docs/architecture/MODULE_REGISTRY.md`、`docs/architecture/FEATURE_CLASSIFICATION_RULES.md` 和 `docs/architecture/ARCHITECTURE_EVOLUTION_STANDARD.md` 管理 AI CTO System 自身架构。
 - 按 `docs/strategy/AI_CTO_SYSTEM_MANIFESTO.md`、`docs/strategy/AI_CTO_ARCHITECTURE_PRINCIPLES.md`、`docs/strategy/MODULE_ADMISSION_CRITERIA.md` 和 `docs/strategy/AI_CTO_VALUE_LOOP.md` 管理系统使命、边界、准入和价值复利。
+- 按 `docs/capability/CAPABILITY_GOVERNANCE_STANDARD.md`、`docs/capability/CAPABILITY_ADMISSION_PROCESS.md`、`docs/capability/CAPABILITY_REGISTRY_STANDARD.md`、`docs/capability/CAPABILITY_EVALUATION_STANDARD.md`、`docs/capability/CAPABILITY_LIFECYCLE_STANDARD.md`、`docs/capability/CAPABILITY_SELECTION_RULES.md` 和 `docs/capability/EXTERNAL_CAPABILITY_INTEGRATION_STANDARD.md` 管理能力生态。
 - 每次状态转换都更新 `PROJECT_STATE.md` 和 `PROJECT_MEMORY.md`。
 
 ## 核心约束
 
-遵守项目根目录的 `AGENTS.md`。AI CTO System 自身能力不得跳过使命对齐与 Module Admission；新项目不得跳过 Idea、需求分析、设计文档、重大决策记录、项目记忆、状态和进度更新；已有项目不得跳过 Existing Project Onboarding、证据恢复、健康评估和迁移门禁；重大演进不得跳过 Evolution Proposal、Gate、用户审批和后续工程门禁；组合评分和投资建议不得自动改变项目状态或资源；未来需求不得跳过 Layer + Module 归类并直接创建 Phase。不得以原型、试验、紧急需求、负责人指令、路线图标签、预算已批或既有投入为理由直接编码、修改生产系统、建立新 Phase、接纳无使命价值的 Module 或绕过统一治理证据。
+遵守项目根目录的 `AGENTS.md`。AI CTO System 自身能力不得跳过使命对齐与 Module Admission；任何可调用 Capability 不得跳过准入、注册、评估、激活和项目级权限；新项目不得跳过 Idea、需求分析、设计文档、重大决策记录、项目记忆、状态和进度更新；已有项目不得跳过 Existing Project Onboarding、证据恢复、健康评估和迁移门禁；重大演进不得跳过 Evolution Proposal、Gate、用户审批和后续工程门禁；组合评分和投资建议不得自动改变项目状态或资源；未来需求不得跳过 Layer + Module 归类并直接创建 Phase。不得以原型、试验、紧急需求、负责人指令、路线图标签、预算已批或既有投入为理由直接编码、安装外部能力、执行工具、修改生产系统、建立新 Phase、接纳无使命价值的 Module 或绕过统一治理证据。

@@ -2,7 +2,7 @@
 
 ## 当前阶段
 
-AI CTO System Strategic Alignment Review（已完成，等待用户确认；未进入下一阶段）
+Phase 8.2：AI CTO Capability Governance（已完成，等待用户确认；未进入 Phase 8.3）
 
 ## 已完成
 
@@ -93,15 +93,27 @@ AI CTO System Strategic Alignment Review（已完成，等待用户确认；未�
 - 想法 → 使用 → 经验 → 资产 → 效率 → 能力的核心价值飞轮
 - ADR-0010：AI CTO System 战略使命对齐机制
 - README、SKILL、Project Memory 与 Module Registry 的使命入口同步
+- Capability Governance 总则与 Module / Capability / Feature / Technical Asset 边界
+- Mission Alignment → Admission → Registry → Evaluation → Activation 治理链
+- Engineering、Testing、Security、Deployment、Research、Documentation、Data、AI Model 八类 Capability
+- Capability Admission 五步流程与三种固定结果
+- Capability Registry 必填字段、ID、版本、权限、质量和审计规则
+- `DISCOVERED`、`EVALUATING`、`ACTIVE`、`DEPRECATED`、`DISABLED`、`REMOVED` 生命周期
+- Current Phase、Task Type、Risk、Permission、Project Requirement 五项选择规则
+- 功能、稳定、兼容、维护、安全、复用六维 100 分质量模型
+- Superpowers、Codex Skill、MCP 和第三方 Agent 外部接入与 Core 解耦规范
+- `capabilities/` 八类 Registry 目录与管理说明
+- Superpowers Engineering Capability 架构示例（未安装、未调用）
+- ADR-0011：Capability Governance 决策与 Strategic Admission Record
 
 ## 进行中
 
-无；Strategic Alignment Review 文档已完成，等待用户验收。
+无；Phase 8.2 文档已完成，等待用户验收。
 
 ## 待处理
 
-- 等待用户确认 AI CTO System 使命、边界、原则和 Module Admission 规则
-- 确认前不进入下一阶段，不设计或实现新功能、Agent 或自动化
+- 等待用户确认 Phase 8.2 Capability Governance
+- 确认前不进入 Phase 8.3，不安装、接入、注册、激活或调用真实外部 Capability
 
 ## 阻塞与风险
 
@@ -139,6 +151,14 @@ AI CTO System Strategic Alignment Review（已完成，等待用户确认；未�
 - 通用 AI 工具若没有直接改善产品交付、长期资产或技术组织能力，应保持为独立产品或外部实验。
 - Strategic Alignment 约束全部五层，但不是第六个 Layer、Lifecycle State 或新 Phase。
 - 本次 Strategic Alignment Review 不开发功能、不新增 Agent，也不进入下一阶段。
+- Capability Registry Status、Admission Result、Quality Score 和 Invocation Authorization 必须分开；混用会造成未授权调用。
+- License、来源、生产权限、不可逆副作用和兼容性红线不能由质量总分抵消。
+- 外部 Skill、MCP、第三方 Agent 或模型若直接成为 Core 依赖，会形成供应商锁定、权限扩大和退出风险。
+- Registry 的 `Applicable Phase` 只表示工作 / 生命周期适用上下文，不恢复 Phase 作为架构归属。
+- Phase 8.2 不包含具体 Agent、真实 Capability Record、外部安装、工具调用或 Phase 8.3 工作。
+- Capability GREEN 首次复测虽然拒绝高风险 MCP 激活，但仍自创 `Quarantined / Blocked` Registry Status；已增加未注册候选的正向状态配方并明确 `BLOCKED` 只属于 Evaluation Result。
+- 第二次复测仍忽略文档后部词汇契约；已将未注册 Capability 的固定六字段输出提升到 SKILL 顶部，针对组织可见性继续复测。
+- 明确加载完整本地 SKILL 后的最终复测只使用规范字段：`Registry Record: ABSENT`、`Registry Status: N/A`、`Proposed Registry Status: DISCOVERED`、`REJECT_OR_DEFER`、`Selection: PROHIBITED`、`Activation Scope: NONE`；没有安装、连接或调用候选能力。
 
 ## 验证结果
 
@@ -176,7 +196,7 @@ AI CTO System Strategic Alignment Review（已完成，等待用户确认；未�
 
 ## 下一步
 
-等待用户确认 Strategic Alignment Review。确认后，任何系统能力先形成 Admission Record；当前不继续下一阶段。
+等待用户确认 Phase 8.2。确认后如提出真实 Capability 接入，先作为独立后续需求执行完整准入和隔离评估；不自动进入 Phase 8.3。
 
 ## Phase 3 状态记录
 
@@ -240,6 +260,13 @@ AI CTO System Strategic Alignment Review（已完成，等待用户确认；未�
 |---|---|---|
 | Strategic Alignment Review 开始 | 2026-07-13 | 暂停功能扩展，审查系统使命、边界、长期价值和 Module 准入 |
 | Strategic Alignment Review 完成 | 2026-07-13 | Manifesto、架构原则、Module Admission、价值飞轮与 ADR-0010 完成，等待用户确认；未进入下一阶段 |
+
+## Phase 8.2 状态记录
+
+| 事件 | 日期 | 状态 |
+|---|---|---|
+| Phase 8.2 开始 | 2026-07-13 | 用户批准 Capability Governance 进入既有 Layer 5 Module；只建立文档治理，不接入真实能力 |
+| Phase 8.2 完成 | 2026-07-13 | 治理、准入、Registry、生命周期、选择、质量、外部接入、目录、示例与 ADR-0011 完成，等待用户确认；未进入 Phase 8.3 |
 
 ## 最后更新时间
 

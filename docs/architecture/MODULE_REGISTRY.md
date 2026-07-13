@@ -98,6 +98,6 @@
 | Tool Calling | Layer 5 | 管理未来工具调用、权限、结果和副作用 | Planned | [System Architecture](./AI_CTO_SYSTEM_ARCHITECTURE.md) |
 | Codex Integration | Layer 5 | 管理 AI CTO 与 Codex 执行面的集成 | Planned | [System Architecture](./AI_CTO_SYSTEM_ARCHITECTURE.md) |
 | Automation | Layer 5 | 编排经授权的重复流程和状态同步 | Planned | [System Architecture](./AI_CTO_SYSTEM_ARCHITECTURE.md) |
-| Capability Governance | Layer 5 | 规划外部能力、插件与工具的注册、权限和生命周期治理 | Planned | [Classification Rules](./FEATURE_CLASSIFICATION_RULES.md) |
+| Capability Governance | Layer 5 | 管理内部 / 外部能力的准入、注册、评估、选择、权限和生命周期 | Completed | [Governance](../capability/CAPABILITY_GOVERNANCE_STANDARD.md)、[Admission](../capability/CAPABILITY_ADMISSION_PROCESS.md)、[Registry](../capability/CAPABILITY_REGISTRY_STANDARD.md)、[Evaluation](../capability/CAPABILITY_EVALUATION_STANDARD.md) |
 
-Capability Governance 的 `Planned` 仅表示架构归属已登记。本次审查不创建设计标准、注册模板、运行时、插件接入或 Phase 8.2。
+Capability Governance 的文档治理在 Phase 8.2 完成；真实 Capability Record、Runtime、自动选择、插件接入和工具调用仍未实现。`Completed` 不表示已安装或激活任何外部能力。
