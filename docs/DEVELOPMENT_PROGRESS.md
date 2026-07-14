@@ -399,6 +399,12 @@ Phase 9C-5 Mock Codex Capability Implementation（本地 Mock 已实现；等待
 |---|---|---|
 | Requirement 完成 | 2026-07-14 | 定义 Evidence-driven Documentation Assistant 的只读草案与可追溯性 Contract；每次成功输出必须包含 `Draft`、`Source Reference`、`Confidence`、`Evidence`、`Limitations`。未选择 Provider、未创建 Candidate 或 Capability Registry Record、未激活能力、未调用外部工具、未修改 Runtime。 |
 
+## Documentation Capability MVP Implementation Design 状态记录
+
+| 事件 | 日期 | 状态 |
+|---|---|---|
+| Design 与 Test Plan 完成 | 2026-07-14 | 确认专用轻量 Contract + Adapter：请求内 Authorized Source Scope → Evidence-first Adapter → Deterministic Documentation Assistant → 五项 DocumentationResult → Audit Evidence。实现 Gate 为 `CHANGES_REQUIRED`，等待用户编码授权；不修改通用 Runtime Core、不读取文件系统、不创建 Candidate 或 Capability Registry Record。 |
+
 ## 最后更新时间
 
 2026-07-14
