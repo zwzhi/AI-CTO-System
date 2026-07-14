@@ -132,6 +132,7 @@ Phase 8.6 Delivery & Environment Governance（文档治理已完成；未实现 
 - ADR-0014：Execution Routing Governance 作为独立 Layer 5 Module；Module Registry、Master Plan、SKILL、Project Memory 与 Progress 已同步，未创建 Runtime、Router、模型切换、真实调用或自动化
 - Phase 8.5：Intent Gateway 总体、分类、触发、Confidence、映射、冲突、主动介入、Evidence 八份治理规则与 ADR-0015；五个治理入口已同步，未创建 Runtime、Classifier、模型调用或自动执行
 - Phase 8.6：Delivery、Environment、Compatibility、Configuration、Package、User Documentation、Diagnostic、Readiness Gate、Asset Registry 九份规范与 ADR-0016；未创建 CI/CD、Installer、部署工具或 Runtime
+- Governance Completion Review：五层、Phase、Module、Authority、Runtime 前置条件与风险已审查，结果为 `READY_FOR_RUNTIME`（仅治理结论，未进入 Phase 9）
 
 ## 进行中
 
