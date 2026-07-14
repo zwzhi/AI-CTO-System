@@ -76,7 +76,8 @@
 - Knowledge Governance Pilot 选择 AI-CTO-System 作为唯一证据源；Knowledge Admission Review 必须先于实际迁移和生命周期推进。
 - Pilot 创建 `KN-ARC-0001`、`KN-ENG-0001`、`KN-FAIL-0001`；前两项为 `VALIDATED`，失败经验因因果泛化只有 L2 Confidence 而保持 `VALIDATING`，三项均未进入 `ACTIVE`。
 - 单项目多次采用不构成 L4 或通用最佳实践；复用模拟的 `ADAPT`、`ADOPT`、`REFERENCE_ONLY` 不改变 Knowledge Status，也不产生工程 Gate 授权。
-- Phase 8.4 `Intelligent Resource & Execution Routing Governance` 是基于模型耗时、Token 效率和流程过载风险的 `PROPOSED` 路线；它不是 Module、Lifecycle State 或实施授权。任何准入前都必须收集可比较的任务、模型、Token、时延、质量、安全、成本和人工介入证据，并完成 Mission Alignment、Admission、Feature Classification 与受影响 Gate 分析。
+- Phase 8.4 `Intelligent Resource & Execution Routing Governance` 是 Layer 5 的 `Completed` 文档治理 Module：它根据 User Intent、Task Context、Project Context、偏好和 Evidence 输出建议性 Execution Plan，治理复杂度、Workflow、Capability / Skill / Tool、模型类别、Reasoning、Context 与升级条件；不执行、不调用、不切换、不改变 Codex 行为，也不覆盖安全、ADR、Gate、权限或人类决策。
+- EFF-001 是路由治理的单案例 Problem Validation Evidence，Confidence 为 L3 / 中等，部分指标为 `NOT_CAPTURED`；它不能固化默认流程、模型、Git 偏好或自动化规则。Runtime、自动模型切换、真实工具调用与自动化仍需多个案例、独立准入、评审、ADR 和受影响 Gate。
 
 ## 历史修改
 
@@ -96,11 +97,12 @@
 - 2026-07-13：完成 Phase 8.3 Knowledge Governance Pilot，建立 Record 模板、Admission Review、三条受控知识、Registry、复用模拟与 Pilot Report。
 - 2026-07-14：完成 Master Architecture Sync，建立 AI CTO System Master Plan 并同步 README、SKILL、Module Registry、Project Memory 与 Development Progress。
 - 2026-07-14：同步 Phase 8.4 为 Intelligent Resource & Execution Routing Governance；仅记录路线边界、反馈来源和未来证据要求，不创建 Module、ADR 或运行时实现。
+- 2026-07-14：完成 Phase 8.4 Execution Routing Governance 文档治理，建立 L0–L4、Workflow、Skill、Tool、Model、Reasoning、Context、偏好、Evidence 规则与 ADR-0014，并登记 Layer 5 Module；未创建 Runtime 或自动化。
 
 ## 当前状态
 
-Master Architecture Sync 已完成。Phase 8.3 Knowledge Governance Pilot 验收结果为 `PASSED_WITH_CONSTRAINTS`：2 条 `VALIDATED`、1 条 `VALIDATING`、0 条 `ACTIVE`。当前没有开发 Agent、RAG 或向量数据库；Phase 8.4 `Intelligent Resource & Execution Routing Governance` 为 `PROPOSED`、尚未启动，不存在资源路由或执行实现。
+Master Architecture Sync 已完成。Phase 8.3 Knowledge Governance Pilot 验收结果为 `PASSED_WITH_CONSTRAINTS`：2 条 `VALIDATED`、1 条 `VALIDATING`、0 条 `ACTIVE`。Phase 8.4 `Intelligent Resource & Execution Routing Governance` 的文档治理已完成：Execution Routing Governance 已登记为 Layer 5 Module，但当前没有 Runtime、Router 代码、Agent、模型调用、工具调用或自动化实现。
 
 ## 未来计划
 
-等待用户确认本次 Phase 8.4 路线同步。后续任何系统级需求必须先以 Master Plan 完成 Mission Alignment、Module Admission 与 Feature Classification；Knowledge 的下一次试点应使用独立真实软件项目，任何 Activation、自动检索或 RAG 均须独立准入。若研究 Phase 8.4，先建立可比较的时延、Token、质量、成本、风险和人工介入证据；当前不进入 Phase 8.4。
+等待用户确认 Phase 8.4 文档治理。后续任何系统级需求必须先以 Master Plan 完成 Mission Alignment、Module Admission 与 Feature Classification；Knowledge 的下一次试点应使用独立真实软件项目，任何 Activation、自动检索或 RAG 均须独立准入。若研究 Execution Routing Runtime 或自动化，先收集多个可比较案例的时延、Token、质量、成本、风险和人工介入 Evidence，并完成独立准入、评审、ADR 与受影响 Gate；当前不进入 Phase 8.5。

@@ -2,7 +2,7 @@
 
 ## 当前阶段
 
-Phase 8.4 Intelligent Resource & Execution Routing Governance（路线同步已完成；仍为 `PROPOSED`，未进入 Phase 8.4）
+Phase 8.4 Intelligent Resource & Execution Routing Governance（文档治理已完成；未实现 Runtime、Router 或自动化，未进入 Phase 8.5）
 
 ## 已完成
 
@@ -128,16 +128,18 @@ Phase 8.4 Intelligent Resource & Execution Routing Governance（路线同步已�
 - Phase 8.4 已调整为 `Intelligent Resource & Execution Routing Governance`：记录模型耗时、Token 效率和流程过载风险作为路线研究输入，并明确其 `PROPOSED`、非授权边界与后续证据要求
 - Master Plan、README、SKILL、Project Memory 与 Development Progress 已同步；未创建 Module、ADR、运行时、模型路由、队列或自动化
 - `EFF-001` Execution Efficiency Review 已建立为 Phase 8.4 的 Problem Validation Evidence：记录路线同步任务的理论 / 实际复杂度差异、未捕获数据与轻量路由假设；不改变任何 Skill、Git 策略、Module、ADR 或 Phase 状态
+- Phase 8.4：Execution Routing Governance 总体规范、L0–L4 复杂度、Instant / Engineering / CTO Workflow、Skill、Tool、Model、Reasoning、Context、用户偏好和 Evidence 十份治理规则
+- ADR-0014：Execution Routing Governance 作为独立 Layer 5 Module；Module Registry、Master Plan、SKILL、Project Memory 与 Progress 已同步，未创建 Runtime、Router、模型切换、真实调用或自动化
 
 ## 进行中
 
-- 无。Phase 8.4 仅保留为 `PROPOSED` 路线，未开始 Module Admission、设计或实现。
+- 无。Phase 8.4 文档治理已完成；Runtime 或自动化方向未启动。
 
 ## 待处理
 
-- 等待用户确认 Phase 8.4 路线同步结果
-- 如需研究该方向，先建立任务、模型、Token、时延、成功/失败、成本、队列/重试/阻塞/人工介入以及质量、安全权衡证据
-- 未完成 Mission Alignment、Admission、Feature Classification 和受影响 Gate 分析前，不进入 Phase 8.4，不新增功能、Module、Layer、Agent 或自动化
+- 等待用户确认 Phase 8.4 文档治理
+- 如需研究 Runtime 或自动化，先建立多个可比较案例的任务、模型、Token、时延、成功/失败、成本、队列/重试/阻塞/人工介入以及质量、安全权衡证据
+- 未完成独立 Mission Alignment、Evidence Review、Admission、Feature Classification、Architecture Review、必要 ADR 和受影响 Gate 分析前，不进入 Phase 8.5，不新增 Runtime、Router、Agent、模型调用、工具调用或自动化
 
 ## 阻塞与风险
 
@@ -147,6 +149,7 @@ Phase 8.4 Intelligent Resource & Execution Routing Governance（路线同步已�
 - Pilot 的全部 Evidence 来自 AI-CTO-System；两条 `VALIDATED` 尚无 `ACTIVE` 授权，`KN-FAIL-0001` 仍需独立因果复现。
 - Phase 8.4 的输入来自真实使用反馈但尚无量化基线；不得将单次耗时、Token 或流程负担观察固化为通用路由规则，后续必须收集可比较证据并保留人工决策点。
 - `EFF-001` 只有单次真实执行样本，且精确时长、Token、成本、内部推理和工具调用次数为 `NOT_CAPTURED`；它只能支持待验证假设，不能作为自动路由、流程跳过或 Git 偏好自动应用的依据。
+- Execution Routing Governance 目前只有建议性规则，无法执行或验证真实模型 / 工具 / Skill / Git 路由效果；文档完成不能解释为自动切换、自动调用或自动授权。
 - 当前决策规范尚未由具体 Agent 自动执行；Phase 3 按要求不包含 Agent 代码。
 - 评分结果依赖证据质量，必须与 Confidence 分开报告。
 - 设计完整不等于开发授权；必须通过 Design Approval Gate。
@@ -340,6 +343,13 @@ Phase 8.4 Intelligent Resource & Execution Routing Governance（路线同步已�
 |---|---|---|
 | 路线规格确认 | 2026-07-14 | 用户确认将原 Resource Governance 调整为 `Intelligent Resource & Execution Routing Governance`；来源为模型耗时、Token 效率与流程过载风险反馈 |
 | 路线同步完成 | 2026-07-14 | Master Plan、README、SKILL、Project Memory 与 Progress 已同步；状态为 `PROPOSED`，未创建 Module、ADR、运行时或自动化，也未进入 Phase 8.4 |
+
+## Phase 8.4 Execution Routing Governance 状态记录
+
+| 事件 | 日期 | 状态 |
+|---|---|---|
+| Phase 8.4 开始 | 2026-07-14 | 用户批准建立 Layer 5 Execution Routing Governance；只建立治理规范、决策模型和 Evidence 规则，不开发 Runtime 或 Router 代码 |
+| Phase 8.4 完成 | 2026-07-14 | 十份路由治理规则、ADR-0014、Layer 5 Module Registry 与五个治理入口同步完成；未实现模型切换、工具调用、Codex 行为变更、自动化或 Phase 8.5 工作 |
 
 ## 最后更新时间
 

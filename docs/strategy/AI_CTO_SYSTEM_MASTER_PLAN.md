@@ -78,9 +78,9 @@ Layer 定义稳定职责边界，Module 定义层内可独立治理的能力，P
 
 | 路线状态 | 内容 | 授权含义 |
 |---|---|---|
-| 已完成治理基线 | Phase 1–8.3、Architecture Review、Strategic Alignment、Knowledge Governance Pilot | 仅证明相应治理文档或试点已完成 |
-| 当前工作 | Master Architecture Sync | 建立总体规划与入口同步；不新增功能 |
-| 未启动 | Phase 8.4 Intelligent Resource & Execution Routing Governance（`PROPOSED`）及所有后续能力 | 没有 Module Admission、设计、开发或执行授权 |
+| 已完成治理基线 | Phase 1–8.4、Architecture Review、Strategic Alignment、Knowledge Governance Pilot | 仅证明相应治理文档或试点已完成 |
+| 当前工作 | Phase 8.4 Execution Routing Governance 文档治理 | 建立建议性 Execution Plan 合同；不新增 Runtime 或自动化 |
+| 未启动 | 所有后续能力 | 没有 Module Admission、设计、开发或执行授权 |
 
 Phase 只是历史交付标签和路线元数据，不是 Module、Layer、Lifecycle State 或自动授权。未来候选路线可以标记为 `PROPOSED`、`UNDER_REVIEW`、`APPROVED_FOR_DESIGN` 或 `DEFERRED`，但这些仅为规划结果，不能写入 Module Registry 状态或项目生命周期。
 
@@ -88,15 +88,15 @@ Phase 只是历史交付标签和路线元数据，不是 Module、Layer、Lifec
 
 ### Phase 8.4：Intelligent Resource & Execution Routing Governance
 
-状态：`PROPOSED`，未启动。
+状态：文档治理已完成；Runtime、Router 代码、自动化、模型切换与真实调用均未启动。
 
-来源：用户确认的真实使用反馈包括模型耗时、Token 效率与流程过载风险。这些反馈是路线研究输入，不构成量化性能结论、Module Admission 或实现授权。
+来源：用户确认的真实使用反馈包括模型耗时、Token 效率与流程过载风险；[EFF-001](../governance/execution_cases/EFF-001-phase-8-4-route-sync-review.md) 提供单案例验证。这些反馈是路线研究输入，不构成量化性能结论或实现授权。
 
-拟研究边界：在任务类型、风险、质量、预算和时延约束下，形成资源与执行路径的建议；记录并比较 Token、时延、成功/失败、成本、队列/重试/阻塞和人工介入证据；在需要时建议降级、拆分、排队、限流、暂停或请求人工决策。该方向仅可消费 Layer 1 的经验与成本证据、Layer 2 的优先级和投资约束、Layer 3 的任务基线及 Layer 4 的运行证据，且不得绕过任何 Gate。
+治理边界：在任务类型、风险、质量、预算和时延约束下，输出建议性的 Execution Plan；定义复杂度、Workflow、Capability / Skill / Tool、模型类别、Reasoning、Context、偏好和 Evidence 的选择规则。该方向只消费 Layer 1 的经验与成本证据、Layer 2 的优先级和投资约束、Layer 3 的任务基线及 Layer 4 的运行证据，且不得绕过任何 Gate。
 
-明确排除：本路线不实现或接入模型路由、直接模型调用、任务队列、限流、Agent Runtime、工具调用、自动化、监控服务或外部集成。
+明确排除：本阶段不实现或接入 Router 代码、模型路由、直接模型调用、任务队列、限流、Agent Runtime、工具调用、自动化、监控服务或外部集成，也不修改 Codex 行为。
 
-未来如需进入 `UNDER_REVIEW` 或申请 Module Admission，必须先提供可比较的任务类型、模型、Token、时延、成功/失败、成本、队列/重试/阻塞/人工介入，以及质量、成本、时延和安全权衡证据；同时完成 Mission Alignment、Capability / Module Admission、Feature Classification 与受影响 Gate 分析。
+未来如需实现 Runtime 或自动化，必须先提供多个可比较的任务类型、模型、Token、时延、成功/失败、成本、队列/重试/阻塞/人工介入，以及质量、成本、时延和安全权衡证据；同时完成 Mission Alignment、Evidence Review、Feature Classification、Architecture Review、必要 Admission / ADR 与受影响 Gate 分析。
 
 任何后续路线必须先回答“为什么值得进入 AI CTO System”，再回答“属于哪里、如何安全实施”。当前可预见的长期方向仅用于规划检索，不构成承诺或实现计划：
 
@@ -154,7 +154,7 @@ flowchart TD
 7. 让 Layer 5 自动化决定业务价值、绕过人类批准、改变 Layer 2 决策或跳过 Layer 3 / Layer 4 证据与门禁。
 8. 通过删除、覆盖或静默改写 ADR、Knowledge、Project Memory 或 Registry 来解决冲突。
 9. 在未完成 Architecture Review、必要 ADR、Registry 同步和受影响 Gate 的情况下改变系统边界。
-10. 在本次同步中进入 Phase 8.4 或实施任何新功能。
+10. 将 Phase 8.4 的文档治理完成解释为 Router Runtime、自动化、模型切换、真实工具调用或新的执行授权。
 
 ## 10. 核心 ADR 索引
 
@@ -172,6 +172,7 @@ flowchart TD
 | [ADR-0010](../adr/ADR-0010-AI-CTO-SYSTEM-MISSION-ALIGNMENT.md) | 战略使命对齐 | Mission Alignment 先于架构分类 |
 | [ADR-0011](../adr/ADR-0011-CAPABILITY-GOVERNANCE.md) | Capability Governance | 能力必须准入、注册、评估和激活后才可调用 |
 | [ADR-0012](../adr/ADR-0012-KNOWLEDGE-GOVERNANCE.md) | Knowledge Governance | 知识必须有 Evidence、状态、质量、范围与冲突治理 |
+| [ADR-0014](../adr/ADR-0014-EXECUTION-ROUTING-GOVERNANCE.md) | Execution Routing Governance | 路由只输出建议性 Execution Plan；不执行、不绕过 Gate |
 
 ### 使用与维护
 
@@ -179,4 +180,4 @@ flowchart TD
 
 每次涉及系统边界、Module 状态、完成能力、路线或核心 ADR 的变化，都必须复核本 Master Plan。若无需更新，记录检查结论；若需要更新，必须与 Manifesto、ADR、Module Registry、SKILL、Project Memory 和 Development Progress 保持一致。
 
-本 Master Plan 当前版本已建立同步基线。后续系统级需求必须继续按本文件完成 Mission Alignment、Module Admission 与 Feature Classification；Phase 8.4 保持 `PROPOSED`，不进入实施。
+本 Master Plan 当前版本已建立同步基线。后续系统级需求必须继续按本文件完成 Mission Alignment、Module Admission 与 Feature Classification；Phase 8.4 的文档治理已完成，但不进入 Runtime 或自动化实施。

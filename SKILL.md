@@ -231,12 +231,21 @@ Project Table 对每个项目使用以下固定字段和词汇：
 6. Layer 5 只负责未来执行与编排，不得覆盖 Layer 2 决策、Layer 3 工程基线、Layer 4 生命周期门禁或 Layer 1 记忆规则。
 7. 按 `docs/architecture/ARCHITECTURE_EVOLUTION_STANDARD.md` 管理结构变化。新 Layer、Module 移动 / 合并 / 拆分、跨层权威或核心 Gate 变化必须完成架构评审并创建 ADR。
 
-对于 Phase 8.4 `Intelligent Resource & Execution Routing Governance` 的任何后续请求，先记录任务类型、模型、Token、时延、成功/失败、成本、队列/重试/阻塞/人工介入以及质量与安全权衡证据，再执行 Mission Alignment、Admission 和 Feature Classification。该路线当前仅为 `PROPOSED`：不得仅凭耗时、Token 效率或流程过载反馈直接实现模型路由、直接调用、任务队列、限流、Runtime、工具调用或自动化。
+Phase 8.4 `Intelligent Resource & Execution Routing Governance` 已完成文档治理并登记为 Layer 5 Module。它只输出建议性的 `Execution Plan`：先判断 L0–L4、Workflow、Capability / Skill / Tool、模型类别、R0–R4、最小 Context、用户偏好、Evidence 与升级条件；不执行、不调用、不切换、不提交、不合并，也不覆盖安全、ADR、Gate、权限或当前用户指令。
 8. 结构变化同步 System Architecture、Module Registry、SKILL、PROJECT_MEMORY 和 DEVELOPMENT_PROGRESS，并保留兼容、迁移、废弃和回滚记录。
 
 每次未来需求归类必须按以下固定顺序输出：Feature / Request、Owning Layer、Existing Module、Classification Result、Cross-Layer Inputs / Outputs、Architecture Review Required、ADR Required、Registry Update、Next Action。Classification Result 只允许 `USE_EXISTING_MODULE`、`EXTEND_EXISTING_MODULE`、`CREATE_MODULE_IN_EXISTING_LAYER`、`PROPOSE_NEW_LAYER` 或 `REJECT_OR_DEFER`。
 
 Capability Governance 当前是 Layer 5 的 `Completed` 文档治理 Module；其 Agent Runtime、真实接入、自动选择和工具调用仍为 `Planned`。
+
+## EXECUTION ROUTING GOVERNANCE 规则
+
+1. 使用 `docs/governance/EXECUTION_ROUTING_GOVERNANCE_STANDARD.md` 生成建议性 Execution Plan，并使用 `docs/governance/TASK_COMPLEXITY_MODEL.md` 先判定 L0–L4；L0 不进入 AI CTO 流程。
+2. 低风险 Level 1 默认 Instant Workflow，禁止仅为流程完整启动完整 CTO Workflow；Level 2 使用 Engineering，Level 3–4 使用适用的设计与 CTO 流程。升级只因风险、未知、Gate、ADR、数据、权限或影响范围，不因效率目标降级红线。
+3. Skill、Tool、Model、Reasoning 与 Context 分别遵循对应 `docs/governance/` 政策：禁止无任务需求加载 Skill、禁止为流程完整调用工具、不是所有任务使用最高能力模型、采用最低充分推理与最小必要上下文。
+4. 用户长期偏好只能在明确、可撤销、当前适用且不冲突时影响建议；不得覆盖安全规则、项目 Gate、ADR、权限、数据政策或当前用户指令。
+5. Execution Routing Evidence 使用 `docs/governance/EXECUTION_ROUTING_EVIDENCE_STANDARD.md`；未捕获数据写 `NOT_CAPTURED`。EFF-001 是单案例 Problem Validation Evidence，不能自动固化默认流程、模型、Git 偏好或自动化规则。
+6. Phase 8.4 文档治理不实现 Runtime、Router 代码、Agent、模型调用、工具调用、队列、自动化或 Codex 行为变更；这些方向仍需独立准入、评审、ADR 与适用 Gate。
 
 ## CAPABILITY GOVERNANCE 规则
 

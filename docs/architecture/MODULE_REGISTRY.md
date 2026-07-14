@@ -101,5 +101,8 @@ Module 状态变化、Owning Layer 变化、Module 新增 / 合并 / 拆分或�
 | Codex Integration | Layer 5 | 管理 AI CTO 与 Codex 执行面的集成 | Planned | [System Architecture](./AI_CTO_SYSTEM_ARCHITECTURE.md) |
 | Automation | Layer 5 | 编排经授权的重复流程和状态同步 | Planned | [System Architecture](./AI_CTO_SYSTEM_ARCHITECTURE.md) |
 | Capability Governance | Layer 5 | 管理内部 / 外部能力的准入、注册、评估、选择、权限和生命周期 | Completed | [Governance](../capability/CAPABILITY_GOVERNANCE_STANDARD.md)、[Admission](../capability/CAPABILITY_ADMISSION_PROCESS.md)、[Registry](../capability/CAPABILITY_REGISTRY_STANDARD.md)、[Evaluation](../capability/CAPABILITY_EVALUATION_STANDARD.md) |
+| Execution Routing Governance | Layer 5 | 根据任务特征生成建议性 Execution Plan，治理复杂度、Workflow、资源、上下文、偏好和 Evidence | Completed | [Routing Standard](../governance/EXECUTION_ROUTING_GOVERNANCE_STANDARD.md)、[Complexity](../governance/TASK_COMPLEXITY_MODEL.md)、[Evidence](../governance/EXECUTION_ROUTING_EVIDENCE_STANDARD.md)、[ADR-0014](../adr/ADR-0014-EXECUTION-ROUTING-GOVERNANCE.md) |
 
 Capability Governance 的文档治理在 Phase 8.2 完成；真实 Capability Record、Runtime、自动选择、插件接入和工具调用仍未实现。`Completed` 不表示已安装或激活任何外部能力。
+
+Execution Routing Governance 的文档治理在 Phase 8.4 完成；它只输出建议性 Execution Plan。Intent Gateway、Agent Runtime、Tool Calling、Codex Integration 与 Automation 仍为 `Planned`，没有 Router 代码、自动模型切换、真实工具调用或执行授权。
