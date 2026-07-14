@@ -79,7 +79,7 @@ Layer 定义稳定职责边界，Module 定义层内可独立治理的能力，P
 | 路线状态 | 内容 | 授权含义 |
 |---|---|---|
 | 已完成治理基线 | Phase 1–8.5、Architecture Review、Strategic Alignment、Knowledge Governance Pilot | 仅证明相应治理文档或试点已完成 |
-| 当前工作 | Phase 9C-2 Runtime Foundation Implementation | 已实现单 Workflow、单 Task、Mock Capability、In-memory Port、Guard、Execution / Audit 与 12 项本地测试；不接入真实工具或 Agent |
+| 当前工作 | Phase 9C-2 Runtime Foundation Review | 实现质量审查已完成，结果为 `APPROVED_FOR_NEXT_PHASE`；仅允许在用户确认后考虑下一阶段设计，不接入真实工具或 Agent |
 | 未启动 | 真实 Capability、Agent、Tool Calling、Codex/MCP、持久化、生产交付与自动执行 | 没有相应开发或执行授权 |
 
 Phase 只是历史交付标签和路线元数据，不是 Module、Layer、Lifecycle State 或自动授权。未来候选路线可以标记为 `PROPOSED`、`UNDER_REVIEW`、`APPROVED_FOR_DESIGN` 或 `DEFERRED`，但这些仅为规划结果，不能写入 Module Registry 状态或项目生命周期。
@@ -187,4 +187,4 @@ flowchart TD
 
 每次涉及系统边界、Module 状态、完成能力、路线或核心 ADR 的变化，都必须复核本 Master Plan。若无需更新，记录检查结论；若需要更新，必须与 Manifesto、ADR、Module Registry、SKILL、Project Memory 和 Development Progress 保持一致。
 
-本 Master Plan 当前版本已建立同步基线。Phase 9A、9B 与 9C-1 分别完成 Runtime 架构、MVP 范围和实施设计；Phase 9C-2 已在独立分支实现并测试 Runtime Foundation MVP：TypeScript + Node.js 24、Repository Port + In-memory Adapter、单 Workflow / Task、Mock Capability、Guard、Execution / Audit 与 12 项本地测试。该实现不含真实 Agent、Codex/MCP、外部工具、数据库、Web 框架、生产环境或自动执行；这些能力仍须单独准入、设计与授权。
+本 Master Plan 当前版本已建立同步基线。Phase 9A、9B 与 9C-1 分别完成 Runtime 架构、MVP 范围和实施设计；Phase 9C-2 已在独立分支实现并测试 Runtime Foundation MVP：TypeScript + Node.js 24、Repository Port + In-memory Adapter、单 Workflow / Task、Mock Capability、Guard、Execution / Audit 与 12 项本地测试。随后的 [Runtime Foundation Review](../runtime/RUNTIME_FOUNDATION_REVIEW_REPORT.md) 结论为 `APPROVED_FOR_NEXT_PHASE`，并登记了 In-memory 持久化、类型校验、状态路径覆盖和未来集成边界等风险。该结论仅允许在用户确认后考虑下一阶段设计，不表示生产可用，也不授权真实 Agent、Codex/MCP、外部工具、数据库、Web 框架、生产环境或自动执行；这些能力仍须单独准入、设计与授权。
