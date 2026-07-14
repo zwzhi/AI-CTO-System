@@ -111,11 +111,12 @@
 - 2026-07-14：完成 Phase 9C-3 Single Agent Execution Design 与 ADR-0022；在既有 Agent Runtime Module 内定义 Planner-first 合同、Agent 生命周期、最小权限、预算、审计、失败与人类控制。Planner 只返回 Proposed Execution Plan + Evidence，默认 `CONFIRM` 并由 Workflow 进入 `WAITING_APPROVAL`；未创建真实 Agent、工具调用、Codex/MCP 或自动执行。
 - 2026-07-14：完成 Phase 9C-4 Single Agent Runtime Implementation Design 与 ADR-0023；定义 `PlannerAgentPort → DeterministicPlanner`、版本化 `ExecutionPlan` Contract、AgentTask、审批、审计、测试和实现 Gate。DeterministicPlanner 只用固定输入与封闭模板生成可预测计划；未写代码、未创建真实 Agent、未调用模型/网络/工具或自动执行。
 - 2026-07-14：完成 Phase 9C-4 Single Agent Runtime 本地 MVP 实现；以 `PlannerAgentPort → DeterministicPlanner`、AgentTask 生命周期、版本化 ExecutionPlan、Workflow `WAITING_APPROVAL`、Permission / Budget 预检和 Agent Audit 形成受控闭环，并通过 21 项本地 `node:test`。未接入模型、网络、Codex/MCP、外部工具、多 Agent、持久化或自动执行。
+- 2026-07-14：完成 Phase 9C-4 Deterministic Planner Runtime Review；21 项本地测试重新通过，未发现外部调用、Planner 直接推进 Workflow 或审批绕过。Review Gate 为 `CHANGES_REQUIRED`：Audit 尚缺输入/输出引用、权限/预算快照和失败字段，Planner 预检也尚未强制 `CONFIRM` 模式；未授权进入下一阶段。
 
 ## 当前状态
 
-Master Architecture Sync 已完成。Phase 8.3 Knowledge Governance Pilot 验收结果为 `PASSED_WITH_CONSTRAINTS`：2 条 `VALIDATED`、1 条 `VALIDATING`、0 条 `ACTIVE`。Phase 9A、9B、9C-1、9C-2 实现/Review、9C-3 Agent Contract 和 9C-4 受控本地 Deterministic Planner MVP 已完成；当前仍没有 Router、Classifier、真实 Agent、模型调用、真实工具调用、持久化或自动化实现。
+Master Architecture Sync 已完成。Phase 8.3 Knowledge Governance Pilot 验收结果为 `PASSED_WITH_CONSTRAINTS`：2 条 `VALIDATED`、1 条 `VALIDATING`、0 条 `ACTIVE`。Phase 9A、9B、9C-1、9C-2 实现/Review、9C-3 Agent Contract 和 9C-4 受控本地 Deterministic Planner MVP / Review 已完成；当前 Review Gate 为 `CHANGES_REQUIRED`，且仍没有 Router、Classifier、真实 Agent、模型调用、真实工具调用、持久化或自动化实现。
 
 ## 未来计划
 
-等待用户确认 Phase 9C-4 Single Agent Runtime Implementation 的 Review / 合并。后续任何真实 Agent 或 Runtime 扩展必须先复核本地 In-memory MVP 的证据边界、Review 报告风险、Planner/Plan/AgentTask 合同和缺失覆盖，并通过受影响的 Single Agent Gate、Mission Alignment、Module Admission、Feature Classification、Architecture Review、必要 ADR、Capability / Permission / Safety 审查；不得把本次本地 MVP 推广为真实 Agent、LLM、Codex/MCP、外部工具、数据库、生产环境或自动执行授权。
+等待用户确认 Phase 9C-4 Review 结论。若要修正，应先创建独立的修正设计与授权，至少解决 Audit 输入/输出引用、权限/预算快照、失败字段、`CONFIRM`-only 预检和对应测试；不得直接进入 Phase 9C-5。后续任何真实 Agent 或 Runtime 扩展必须先复核本地 In-memory MVP 的证据边界、Review 报告风险、Planner/Plan/AgentTask 合同和缺失覆盖，并通过受影响的 Single Agent Gate、Mission Alignment、Module Admission、Feature Classification、Architecture Review、必要 ADR、Capability / Permission / Safety 审查；不得把本次本地 MVP 推广为真实 Agent、LLM、Codex/MCP、外部工具、数据库、生产环境或自动执行授权。
