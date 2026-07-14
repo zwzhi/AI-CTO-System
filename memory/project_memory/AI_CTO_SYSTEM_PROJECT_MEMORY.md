@@ -52,6 +52,7 @@
 - 新 Layer 必须通过系统级架构评审；Module 移动、合并、拆分、跨层权威或核心 Gate 变化必须创建 ADR。
 - Layer 5 是未来执行与智能层，目前全部为 `Planned`；它不得覆盖 Layer 2 决策、Layer 3 工程基线、Layer 4 生命周期门禁或 Layer 1 记忆规则。
 - Capability Governance 归属 Layer 5；Phase 8.2 已完成文档治理，真实 Capability、Runtime、自动选择、外部接入和工具调用仍为 `Planned`。
+- Documentation Capability MVP 仅提供本地、确定性、只读的 `GENERATE_DRAFT`：每次调用只使用请求内不可变 Authorized Source Scope，先形成 Evidence，再返回含 Draft、Source References、Confidence、Evidence 与 Limitations 的包，并仅追加 Audit。它不读取或写入文件、不接入 Provider/LLM/网络/MCP/CLI、不写入或激活 Knowledge，且绝不推进 Workflow、Task、Agent 或 Registry 状态；Capability Registry Record 保持 `ABSENT`。
 - AI CTO System 的使命基线由 Manifesto 定义：提高想法到产品的长期转化能力，沉淀技术资产，形成研发复利并增强用户技术能力。
 - 系统不是单纯代码生成工具、聊天机器人、普通项目管理工具或无约束自动化机器人；通用邻近 AI 功能不自动成为核心 Module。
 - Strategic Alignment 与 Module Admission 位于 Feature Classification 之前；先证明能力应该进入系统，再判断属于哪个 Layer。
@@ -123,11 +124,12 @@
 - 2026-07-14：完成 Engineering Capability Roadmap & Priority Assessment；将七类工程能力按 P0–P3、硬/控制/支持依赖、三阶段成熟路线和 `AUTO / NOTIFY / CONFIRM / BLOCK` 控制建议排序。推荐下一步仅为 Documentation Capability Requirement 设计；未创建 Provider Candidate 或 Capability Registry Record，未激活能力、未修改 Runtime。
 - 2026-07-14：完成 Documentation Capability Requirement；将第一个 P0 能力定义为 Evidence-driven Documentation Assistant，固定 `Draft`、`Source Reference`、`Confidence`、`Evidence`、`Limitations` 五项输出和只读、无写入、无 Provider、无外部工具、无 Runtime 变更边界。Candidate 为 `NONE`，Registry Record 保持 `ABSENT`，Selection 为 `PROHIBITED`，Activation 为 `NONE`。
 - 2026-07-14：完成 Documentation Capability MVP Implementation Design 与 Test Plan；采用专用轻量 Contract + Adapter，计划以请求内的 Authorized Source Scope、确定性本地 Assistant、Permission / Budget Guard 和仅追加 Audit 验证 Evidence-first 闭环。实现 Gate 为 `CHANGES_REQUIRED`，等待用户授权；不修改通用 Runtime Core、不读取文件系统、不创建 Candidate 或 Registry Record。
+- 2026-07-14：完成 Documentation Capability MVP Implementation：新增专用 Contract、Invocation Port、确定性内存执行体、不可变来源快照、Evidence-first Adapter、仅追加 Audit 的 Runtime Service 与 20 项本地测试；全量 53 项测试通过。端口异常、越级 Confidence 与 Draft / Evidence / Limitations 来源正文回显均会成为受控失败或被阻断。未创建 Candidate 或 Capability Registry Record，未接入 Provider/LLM/网络/MCP/CLI，未读取或写入文件，未改变 Workflow、Task、Agent、Registry 或 Knowledge 状态。
 
 ## 当前状态
 
-Master Architecture Sync 已完成。Phase 8.3 Knowledge Governance Pilot 验收结果为 `PASSED_WITH_CONSTRAINTS`：2 条 `VALIDATED`、1 条 `VALIDATING`、0 条 `ACTIVE`。Phase 9A、9B、9C-1、9C-2 实现/Review、9C-3 Agent Contract、9C-4 受控本地 Deterministic Planner MVP / Correction / Review，以及 9C-5 Codex Capability 合同/Review/Mock-only Implementation Design 已完成；Codex 当前仍不可选择或激活。Engineering Capability Strategy、Roadmap、Documentation Capability Requirement 及其 MVP Implementation Design / Test Plan 已为未来能力建设和 Phase 10 简化提供 Provider 无关的需求、优先级、依赖、控制与策略生命周期；Documentation MVP 仍未获编码授权，Requirement 不是 Candidate 或 Capability Record。系统仍没有 Router、Classifier、真实 Agent、模型调用、真实 Codex/MCP/工具调用、持久化或自动化实现。
+Master Architecture Sync 已完成。Phase 8.3 Knowledge Governance Pilot 验收结果为 `PASSED_WITH_CONSTRAINTS`：2 条 `VALIDATED`、1 条 `VALIDATING`、0 条 `ACTIVE`。Phase 9A、9B、9C-1、9C-2 实现/Review、9C-3 Agent Contract、9C-4 受控本地 Deterministic Planner MVP / Correction / Review、9C-5 Codex Capability 合同/Review/Mock-only Implementation Design，以及独立的 Documentation Capability MVP Implementation 已完成；Codex 当前仍不可选择或激活。Documentation MVP 只提供不具外部副作用的本地草案与审计闭环，Requirement 不是 Candidate 或 Capability Record。系统仍没有 Router、Classifier、真实 Agent、模型调用、真实 Codex/MCP/工具调用、持久化或自动化实现。
 
 ## 未来计划
 
-Documentation MVP 的下一步仅可在用户授权后实现专用 Contract、确定性本地 Assistant、Adapter、Audit 与测试；它必须继续只使用请求内来源并保持无文件/网络/Provider/Knowledge 写入。后续任何真实 Codex 或其他 Engineering Capability 集成必须先完成 Capability Admission、Evaluation、Registry、Activation、受控集成测试、权限/安全/成本审查及用户授权；不得把 Mock 实现、Strategy、Roadmap、Documentation Requirement 或 MVP 设计推广为 Codex API/CLI/MCP、网络、外部工具、文件修改、Commit、数据库、生产环境或自动执行授权。Documentation Capability 如进入 Provider Evaluation，必须保留只读范围、五项输出、权威文件 `BLOCK` 和独立证据审查。未来 Phase 10 如讨论自我优化与简化，应以本策略的 `Adopt / Improve / Merge / Deprecate / Remove` 动作、真实 Evidence 与既有治理 Gate 为输入，而非自动改变能力状态。
+Documentation MVP 已完成本地实现；等待用户后续确认，不自动创建新的 Phase 或 Review 流程，且必须继续只使用请求内来源并保持无文件/网络/Provider/Knowledge 写入。后续任何真实 Codex 或其他 Engineering Capability 集成必须先完成 Capability Admission、Evaluation、Registry、Activation、受控集成测试、权限/安全/成本审查及用户授权；不得把 Mock 实现、Strategy、Roadmap、Documentation Requirement 或 MVP 实现推广为 Codex API/CLI/MCP、网络、外部工具、文件修改、Commit、数据库、生产环境或自动执行授权。Documentation Capability 如进入 Provider Evaluation，必须保留只读范围、五项输出、权威文件 `BLOCK` 和独立证据审查。未来 Phase 10 如讨论自我优化与简化，应以本策略的 `Adopt / Improve / Merge / Deprecate / Remove` 动作、真实 Evidence 与既有治理 Gate 为输入，而非自动改变能力状态。

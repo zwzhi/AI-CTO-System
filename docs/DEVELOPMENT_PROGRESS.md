@@ -2,7 +2,7 @@
 
 ## 当前阶段
 
-Phase 9C-5 Mock Codex Capability Implementation（本地 Mock 已实现；等待 Mock Capability Review）
+Documentation Capability MVP Implementation（本地确定性 Evidence-driven Documentation Assistant 已实现；等待用户后续确认）
 
 ## 已完成
 
@@ -147,12 +147,13 @@ Phase 9C-5 Mock Codex Capability Implementation（本地 Mock 已实现；等待
 - Phase 9C-5 Design Review：已审查 Capability 边界、Adapter / Workflow 权威、Permission、Human Control、Audit、Failure Handling 与 Registry 状态；Review Gate 为 `APPROVED_FOR_NEXT_PHASE`，只允许后续 Codex Capability Implementation Design，`ADR Not Required`
 - Phase 9C-5 Implementation Design：已完成受控 Adapter、Mock Codex Capability、Execution Contract、`CONFIRM_REQUIRED` Approval、Registry Flow、Mock Test Plan、Implementation Gate 与 ADR-0025。Gate 为 `APPROVED_FOR_IMPLEMENTATION`，仅限 Local Mock；未写代码、未激活 Capability、未接入真实 Codex/API/CLI/MCP、网络或外部工具
 - Phase 9C-5 Mock Capability Implementation：已实现 Local Mock Contract/Port、Mock Codex、Permission/Budget/Approval Adapter 与 Runtime→Audit 服务；33 项本地测试通过，范围扫描未发现外部集成。Gate 为 `APPROVED_FOR_MOCK_CAPABILITY_REVIEW`，Registry 仍为 `ABSENT`
+- Documentation Capability MVP Implementation：已实现只读、内存级 `GENERATE_DRAFT` Contract、不可变 Authorized Source Scope 预检与快照、Evidence-first Adapter、Deterministic Documentation Assistant 与仅追加 Audit 的 Runtime Service；新增 20 项本地测试，全部 53 项测试通过。实现不读取或写入文件、不接入 Provider/LLM/网络/MCP/CLI、不修改 Workflow、Task、Agent、Registry 或 Knowledge；Capability Registry Record 保持 `ABSENT`。
 - Codex Capability Evaluation：真实 Provider 的 Source、Version、License、安全、成本与兼容性 Evidence 均为 `UNKNOWN`；Evaluation Result 为 `BLOCKED`，Admission Result 为 `REJECT_OR_DEFER`，候选仅建议 `DISCOVERED`，Registry Record 保持 `ABSENT`
 - Codex Capability Evidence Acquisition：已收集官方公开 Provider/Terms/费用模型 Evidence（L2）与本地 Mock Runtime Evidence（L3）；精确 Artifact/Version、License 适用性、真实权限/安全/成本/兼容性仍为 `UNKNOWN`。Re-evaluation Readiness 为 `NOT_READY_FOR_REEVALUATION`，Registry Record 保持 `ABSENT`
 
 ## 进行中
 
-- 无。Phase 9C-5 Codex Capability Implementation Design 已完成；等待用户决定是否开始 Local Mock 代码实现。真实 Codex、LLM、MCP、真实工具、持久化、生产环境和自动化仍未启动。
+- 无。Documentation Capability MVP Implementation 已完成；等待用户后续确认，未自动进入任何新 Phase 或 Review 流程。真实 Codex、LLM、MCP、真实工具、持久化、生产环境和自动化仍未启动。
 
 ## 待处理
 
@@ -180,6 +181,7 @@ Phase 9C-5 Mock Codex Capability Implementation（本地 Mock 已实现；等待
 - Phase 9C-4 Correction 已关闭上述 Review 差异；遗留边界仍为 In-memory、封闭模板、本地测试和无独立 TypeScript 类型检查。真实 Agent、LLM、网络、工具、持久化、多 Agent、确认后执行与生产安全仍须独立设计、授权和验证。
 - Phase 9C-5 只有 Codex Capability 合同设计，尚无来源、License、供应商版本、质量、真实安全、成本、延迟、权限、兼容性或可替换性 Evidence；Registry Record 保持 `ABSENT`，不得选择、激活或调用。
 - Phase 9C-5 Mock-only Gate 只验证实现设计完整性；Mock 不能证明真实 Codex Provider 的质量、安全、性能、成本、兼容性、License 或可靠性，也不能产生真实文件变更、Commit 或 Capability Activation Evidence。
+- Documentation Capability MVP 仅处理调用方以内存传入并显式授权的来源；它不验证来源内容的外部真实性，也不构成文档写入、知识激活、Provider 评估、Capability 注册或自动化授权。
 - 当前决策规范尚未由具体 Agent 自动执行；Phase 3 按要求不包含 Agent 代码。
 - 评分结果依赖证据质量，必须与 Confidence 分开报告。
 - 设计完整不等于开发授权；必须通过 Design Approval Gate。
@@ -404,6 +406,12 @@ Phase 9C-5 Mock Codex Capability Implementation（本地 Mock 已实现；等待
 | 事件 | 日期 | 状态 |
 |---|---|---|
 | Design 与 Test Plan 完成 | 2026-07-14 | 确认专用轻量 Contract + Adapter：请求内 Authorized Source Scope → Evidence-first Adapter → Deterministic Documentation Assistant → 五项 DocumentationResult → Audit Evidence。实现 Gate 为 `CHANGES_REQUIRED`，等待用户编码授权；不修改通用 Runtime Core、不读取文件系统、不创建 Candidate 或 Capability Registry Record。 |
+
+## Documentation Capability MVP Implementation 状态记录
+
+| 事件 | 日期 | 状态 |
+|---|---|---|
+| MVP 实现完成 | 2026-07-14 | 已实现 `GENERATE_DRAFT` 唯一操作、不可变请求内 Authorized Source Scope、权限/预算/取消预检、Evidence-first 确定性草案、五项成功输出校验与仅追加 Audit；端口异常、越级 Confidence 与 Draft / Evidence / Limitations 来源正文回显会转为受控审计失败。20 项新增测试与既有 33 项测试通过；无文件系统、网络、Provider、LLM、MCP、CLI、Knowledge 写入或 Workflow 状态推进。Registry Record 仍为 `ABSENT`。 |
 
 ## 最后更新时间
 
