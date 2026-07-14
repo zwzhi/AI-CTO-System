@@ -2,7 +2,7 @@
 
 ## 当前阶段
 
-AI CTO System Master Architecture Sync（已完成，等待用户确认；未进入 Phase 8.4）
+Phase 8.4 Intelligent Resource & Execution Routing Governance（路线调整设计已确认，书面规格待复核；仍为 `PROPOSED`，未进入 Phase 8.4）
 
 ## 已完成
 
@@ -128,13 +128,14 @@ AI CTO System Master Architecture Sync（已完成，等待用户确认；未进
 
 ## 进行中
 
-无；Master Architecture Sync 已完成，等待用户确认。
+- Phase 8.4 路线名称和规划边界调整为 Intelligent Resource & Execution Routing Governance。
+- 用户确认的模型耗时、Token 效率与流程过载反馈已形成书面规格，等待复核；没有 Module、功能或执行实现。
 
 ## 待处理
 
-- 等待用户确认 Master Architecture Sync
-- 后续系统级需求先读取 Master Plan，并执行 Mission Alignment、Module Admission 与 Feature Classification
-- 确认前不进入 Phase 8.4，不新增功能、Module、Layer、Agent 或自动化
+- 等待用户复核 Phase 8.4 路线调整书面规格
+- 复核通过后同步 Master Plan、README、SKILL、Project Memory 和 Development Progress
+- 完成并确认前不进入 Phase 8.4，不新增功能、Module、Layer、Agent 或自动化
 
 ## 阻塞与风险
 
