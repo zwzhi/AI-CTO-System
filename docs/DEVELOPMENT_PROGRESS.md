@@ -2,7 +2,7 @@
 
 ## 当前阶段
 
-Phase 9C-5 Codex Capability Implementation Design（Mock-only Gate：`APPROVED_FOR_IMPLEMENTATION`；未开始代码实现）
+Phase 9C-5 Mock Codex Capability Implementation（本地 Mock 已实现；等待 Mock Capability Review）
 
 ## 已完成
 
@@ -146,6 +146,7 @@ Phase 9C-5 Codex Capability Implementation Design（Mock-only Gate：`APPROVED_F
 - Phase 9C-5：已完成 Codex Capability Architecture、Contract、Adapter、Permission、Human Control、Audit、Failure Handling、Mock Test Plan 与 ADR-0024。Codex 只作为经 Adapter 使用的可替换 Engineering Capability；当前 `Registry Record: ABSENT`、`Selection: PROHIBITED`、`Activation Scope: NONE`，未接入真实 Codex/API/CLI/MCP、网络或外部工具
 - Phase 9C-5 Design Review：已审查 Capability 边界、Adapter / Workflow 权威、Permission、Human Control、Audit、Failure Handling 与 Registry 状态；Review Gate 为 `APPROVED_FOR_NEXT_PHASE`，只允许后续 Codex Capability Implementation Design，`ADR Not Required`
 - Phase 9C-5 Implementation Design：已完成受控 Adapter、Mock Codex Capability、Execution Contract、`CONFIRM_REQUIRED` Approval、Registry Flow、Mock Test Plan、Implementation Gate 与 ADR-0025。Gate 为 `APPROVED_FOR_IMPLEMENTATION`，仅限 Local Mock；未写代码、未激活 Capability、未接入真实 Codex/API/CLI/MCP、网络或外部工具
+- Phase 9C-5 Mock Capability Implementation：已实现 Local Mock Contract/Port、Mock Codex、Permission/Budget/Approval Adapter 与 Runtime→Audit 服务；33 项本地测试通过，范围扫描未发现外部集成。Gate 为 `APPROVED_FOR_MOCK_CAPABILITY_REVIEW`，Registry 仍为 `ABSENT`
 
 ## 进行中
 

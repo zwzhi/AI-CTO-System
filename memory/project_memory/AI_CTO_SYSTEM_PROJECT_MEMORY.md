@@ -116,6 +116,7 @@
 - 2026-07-14：完成 Phase 9C-5 Codex Capability Integration Design 与 ADR-0024；将 Codex 定义为经 Capability Adapter 使用的可替换 Engineering Capability，明确合同、最小权限、`CONFIRM` 人工控制、审计、失败与 Mock 测试边界。当前 `Registry Record: ABSENT`，未进行准入、评估、激活或真实 Codex/API/CLI/MCP/网络接入。
 - 2026-07-14：完成 Phase 9C-5 Codex Capability Design Review；七项边界审查均通过，Review Gate 为 `APPROVED_FOR_NEXT_PHASE`，只允许进入后续 Codex Capability Implementation Design。Review 不改变 ADR-0024，`Registry Record` 继续保持 `ABSENT`，不授权真实接入或 Capability Activation。
 - 2026-07-14：完成 Phase 9C-5 Codex Capability Implementation Design 与 ADR-0025；设计 Local Mock Codex Capability、provider-neutral Adapter Port、Execution Contract、`CONFIRM_REQUIRED` Approval、Registry Flow、Test Plan 和 Mock-only Gate。Gate 为 `APPROVED_FOR_IMPLEMENTATION`，但未写代码，Registry Record 仍为 `ABSENT`，未激活或接入真实 Codex。
+- 2026-07-14：完成 Phase 9C-5 Mock Codex Capability Implementation；实现 Local Mock Contract/Port、Mock、Guarded Adapter 和仅追加 Audit 的 Runtime Service。33 项本地测试通过且范围扫描未发现外部集成；Gate 为 `APPROVED_FOR_MOCK_CAPABILITY_REVIEW`，Registry Record 仍为 `ABSENT`。
 
 ## 当前状态
 
