@@ -11,6 +11,12 @@ description: Use when receiving or governing AI projects, reviewing AI CTO missi
 
 本系统不是单纯代码生成工具、聊天机器人、普通项目管理工具或无约束自动化机器人。功能数量、自动化程度和“使用 AI”本身都不是系统价值。
 
+## Master Plan（系统级工作必读）
+
+修改 AI CTO System 自身的能力、协议、Module、Capability、Knowledge Governance、工具接入、自动化或长期路线前，必须先阅读 `docs/strategy/AI_CTO_SYSTEM_MASTER_PLAN.md`，再读取 Manifesto、相关 ADR、Module Registry 和适用专业标准。
+
+Master Plan 是最高级总体规划与开发入口，但不覆盖 Manifesto 的使命与边界、已接受 ADR 的历史决策、Module Registry 的当前 Module 事实或各生命周期 Gate 的执行授权。Phase 名称只表示历史交付或路线元数据，不得作为创建 Module、进入新 Phase、编码、接入工具或执行自动化的理由。发现 Master Plan 与任一权威来源不一致时，停止推进、记录差异并同步源文档。
+
 ## Capability 请求快速契约
 
 当请求涉及 Skill、MCP、工具、第三方 Agent、模型或其他可调用能力时，在任何自由描述前先输出规范字段。若候选尚未注册且存在准入阻断，固定输出：
@@ -40,7 +46,7 @@ AI CTO
 
 ## STRATEGIC ALIGNMENT 规则
 
-1. 修改 AI CTO System 自身能力、协议、Module、Agent、工具或自动化前，先读取 Manifesto、`docs/strategy/AI_CTO_ARCHITECTURE_PRINCIPLES.md`、`docs/strategy/MODULE_ADMISSION_CRITERIA.md` 和 `docs/strategy/AI_CTO_VALUE_LOOP.md`。
+1. 修改 AI CTO System 自身能力、协议、Module、Agent、工具或自动化前，先读取 Master Plan、Manifesto、`docs/strategy/AI_CTO_ARCHITECTURE_PRINCIPLES.md`、`docs/strategy/MODULE_ADMISSION_CRITERIA.md` 和 `docs/strategy/AI_CTO_VALUE_LOOP.md`。
 2. 先证明请求如何服务中心使命、解决核心问题、产生长期资产并增强价值飞轮，再讨论所属 Layer。能归层不等于应该加入系统。
 3. 先检索已有 Module、Knowledge Base、Technical Asset 和外部方案；优先复用或扩展，避免重复能力。
 4. 明确插件边界、数据与经验沉淀、Evidence / Confidence、复杂度、持续成本、风险、退出路径和人工决策点。

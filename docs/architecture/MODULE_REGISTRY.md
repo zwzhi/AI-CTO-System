@@ -2,7 +2,9 @@
 
 ## 1. 使用规则
 
-本注册表是 Module 名称、Owning Layer、用途和状态的权威索引。新增或调整模块前必须执行[需求归类规则](./FEATURE_CLASSIFICATION_RULES.md)；重大结构变化按[架构演进标准](./ARCHITECTURE_EVOLUTION_STANDARD.md)创建 ADR。
+本注册表是 Module 名称、Owning Layer、用途和状态的权威索引。[AI CTO System Master Plan](../strategy/AI_CTO_SYSTEM_MASTER_PLAN.md) 是最高级总体规划与开发入口；本注册表是其当前 Module 事实投影。新增或调整模块前必须先阅读 Master Plan，再执行[需求归类规则](./FEATURE_CLASSIFICATION_RULES.md)；重大结构变化按[架构演进标准](./ARCHITECTURE_EVOLUTION_STANDARD.md)创建 ADR。
+
+Module 状态变化、Owning Layer 变化、Module 新增 / 合并 / 拆分或核心边界变化后，必须同步更新 Master Plan、SKILL、Project Memory 和 Development Progress。Master Plan 是战略 Artifact，不作为 Module 登记，也不覆盖本注册表的当前事实。
 
 状态只使用：
 

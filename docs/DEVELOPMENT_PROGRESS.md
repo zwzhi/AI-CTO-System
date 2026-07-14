@@ -2,7 +2,7 @@
 
 ## 当前阶段
 
-AI CTO System Master Architecture Sync（设计方案 A 已确认，书面规格待复核；未进入 Phase 8.4）
+AI CTO System Master Architecture Sync（已完成，等待用户确认；未进入 Phase 8.4）
 
 ## 已完成
 
@@ -123,17 +123,18 @@ AI CTO System Master Architecture Sync（设计方案 A 已确认，书面规格
 - Knowledge Registry 元数据目录和三条受控记录
 - AI Content Workflow Platform 复用模拟：`ADAPT`、`ADOPT`、`REFERENCE_ONLY`
 - Knowledge Governance Pilot Report：`PASSED_WITH_CONSTRAINTS`
+- AI CTO System Master Plan：使命、权威关系、五层职责、能力现状、路线、扩展规则、分类流程、禁止事项与 ADR 索引
+- README、SKILL、Module Registry、Project Memory 与 Development Progress 的 Master Plan 入口同步
 
 ## 进行中
 
-- Master Architecture Sync 采用“权威总纲 + 深层文档引用”方案。
-- Master Plan 的权威关系、十章结构、同步范围和验证标准已形成书面规格，等待用户复核。
+无；Master Architecture Sync 已完成，等待用户确认。
 
 ## 待处理
 
-- 等待用户复核 Master Architecture Sync 书面规格
-- 复核通过后创建 Master Plan，并同步 README、SKILL、Module Registry、Project Memory 和 Progress
-- 完成并确认前不进入 Phase 8.4，不新增功能、Module、Layer、Agent 或自动化
+- 等待用户确认 Master Architecture Sync
+- 后续系统级需求先读取 Master Plan，并执行 Mission Alignment、Module Admission 与 Feature Classification
+- 确认前不进入 Phase 8.4，不新增功能、Module、Layer、Agent 或自动化
 
 ## 阻塞与风险
 
@@ -225,8 +226,12 @@ AI CTO System Master Architecture Sync（设计方案 A 已确认，书面规格
 - 三条质量分维度分别合计 86、84、73；生命周期均从 `CAPTURED` 进入 `VALIDATING`，其中两条有证据进入 `VALIDATED`，一条保持 `VALIDATING`，没有记录进入 `ACTIVE`。
 - Commit `8666495`、`201b446`、`2ea04e2` 与全部文件 Evidence 可核验；全仓相对 Markdown 链接、占位符、根 SKILL 和 Git diff 检查通过。
 - 复用模拟得到 `ADAPT`、受控 `ADOPT` 和 `REFERENCE_ONLY`；未改变 Knowledge Status，未创建真实项目或任何 Architecture、Development、Testing、Release 授权。
+- Master Plan 的十个指定章节、五层职责、ADR-0001 至 ADR-0012 索引、Module 状态口径、路线和 Phase 8.4 未启动边界均可结构化检索。
+- README、SKILL、Module Registry、Project Memory 和 Development Progress 已同步 Master Plan 入口；Master Plan 不覆盖 Manifesto、ADR、Registry 或 Gate 的专门权威。
 
 ## 下一步
+
+等待用户确认 Master Architecture Sync。确认前不进入 Phase 8.4；后续系统级需求先读取 Master Plan，并按 Mission Alignment、Module Admission 与 Feature Classification 推进。
 
 等待用户确认 Phase 8.3。确认后如提出历史知识迁移、检索或自动化能力，先作为独立后续需求执行 Mission Alignment、Module Admission、设计和适用 Gate；不自动进入 Phase 8.4。
 
@@ -315,6 +320,13 @@ AI CTO System Master Architecture Sync（设计方案 A 已确认，书面规格
 | Knowledge Admission Review | 2026-07-13 | 三条候选完成范围、反例、误用风险和验证要求审查；取消预设 `ACTIVE` |
 | Pilot 完成 | 2026-07-13 | 2 条 `VALIDATED`、1 条 `VALIDATING`、0 条 `ACTIVE`；验收为 `PASSED_WITH_CONSTRAINTS`，未进入 Phase 8.4 |
 
+## Master Architecture Sync 状态记录
+
+| 事件 | 日期 | 状态 |
+|---|---|---|
+| Master Plan 设计确认 | 2026-07-14 | 采用“权威总纲 + 深层文档引用”；不新增功能、Module、Layer 或自动化 |
+| Master Architecture Sync 完成 | 2026-07-14 | Master Plan、四个指定治理入口和 Progress 已同步；等待用户确认，未进入 Phase 8.4 |
+
 ## 最后更新时间
 
-2026-07-13
+2026-07-14

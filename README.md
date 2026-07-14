@@ -4,7 +4,7 @@
 
 AI CTO System 帮助个人或组织建立可持续运作的 AI 技术组织，将想法持续转化为可交付、可维护、可进化的产品资产，并把每次项目实践沉淀为下一次研发的复利。
 
-任何 Agent、Codex 或贡献者进入本项目时，必须先阅读 [AI CTO System Manifesto](./docs/strategy/AI_CTO_SYSTEM_MANIFESTO.md)，再理解工作规则、架构和具体任务。功能数量和自动化程度不能替代使命对齐。
+任何 Agent、Codex 或贡献者进入本项目时，必须先阅读 [AI CTO System Master Plan](./docs/strategy/AI_CTO_SYSTEM_MASTER_PLAN.md) 与 [AI CTO System Manifesto](./docs/strategy/AI_CTO_SYSTEM_MANIFESTO.md)，再理解工作规则、架构和具体任务。功能数量和自动化程度不能替代使命对齐。
 
 ## 项目介绍
 
@@ -32,6 +32,7 @@ Phase 只记录历史交付批次，Module 表示可独立治理的能力，Life
 
 ## 战略与治理入口
 
+- [AI CTO System Master Plan](./docs/strategy/AI_CTO_SYSTEM_MASTER_PLAN.md)
 - [系统使命与边界](./docs/strategy/AI_CTO_SYSTEM_MANIFESTO.md)
 - [架构设计原则](./docs/strategy/AI_CTO_ARCHITECTURE_PRINCIPLES.md)
 - [模块加入评估规则](./docs/strategy/MODULE_ADMISSION_CRITERIA.md)
@@ -44,7 +45,7 @@ Phase 只记录历史交付批次，Module 表示可独立治理的能力，Life
 - [Knowledge Registry](./docs/knowledge/KNOWLEDGE_REGISTRY_STANDARD.md)
 - [Governed Knowledge Base](./knowledge_base/)
 
-未来系统能力先证明 Mission Alignment 和长期价值，取得 `ADMIT_FOR_CLASSIFICATION` 后，才能进入 Layer / Module 分类。无法证明使命价值的功能不进入 AI CTO System。
+未来系统能力先以 Master Plan 核对当前架构和路线，再证明 Mission Alignment 和长期价值；取得 `ADMIT_FOR_CLASSIFICATION` 后，才能进入 Layer / Module 分类。无法证明使命价值的功能不进入 AI CTO System。
 
 ## 系统边界
 
@@ -52,4 +53,4 @@ AI CTO System 不是单纯代码生成工具、聊天机器人、普通项目管
 
 ## 当前状态
 
-Phase 1–8、Architecture Review、Strategic Alignment Review、Phase 8.2 Capability Governance 和 Phase 8.3 Knowledge Governance 的文档治理已经建立。当前没有具体 Agent Runtime、自动化执行、正式 Capability Record、RAG 或向量数据库，也没有安装、接入或调用外部 Skill、MCP、Agent 或工具。
+Phase 1–8、Architecture Review、Strategic Alignment Review、Phase 8.2 Capability Governance、Phase 8.3 Knowledge Governance、Knowledge Governance Pilot 和 Master Architecture Sync 的文档治理已经建立。当前没有具体 Agent Runtime、自动化执行、正式 Capability Record、RAG 或向量数据库，也没有安装、接入或调用外部 Skill、MCP、Agent 或工具；Phase 8.4 尚未启动。
