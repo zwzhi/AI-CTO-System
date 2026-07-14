@@ -230,6 +230,8 @@ Project Table 对每个项目使用以下固定字段和词汇：
 5. 每个 Module 必须有且只有一个 Owning Layer。跨层能力通过版本化输入输出合同连接，不复制权威数据或 Gate。
 6. Layer 5 只负责未来执行与编排，不得覆盖 Layer 2 决策、Layer 3 工程基线、Layer 4 生命周期门禁或 Layer 1 记忆规则。
 7. 按 `docs/architecture/ARCHITECTURE_EVOLUTION_STANDARD.md` 管理结构变化。新 Layer、Module 移动 / 合并 / 拆分、跨层权威或核心 Gate 变化必须完成架构评审并创建 ADR。
+
+对于 Phase 8.4 `Intelligent Resource & Execution Routing Governance` 的任何后续请求，先记录任务类型、模型、Token、时延、成功/失败、成本、队列/重试/阻塞/人工介入以及质量与安全权衡证据，再执行 Mission Alignment、Admission 和 Feature Classification。该路线当前仅为 `PROPOSED`：不得仅凭耗时、Token 效率或流程过载反馈直接实现模型路由、直接调用、任务队列、限流、Runtime、工具调用或自动化。
 8. 结构变化同步 System Architecture、Module Registry、SKILL、PROJECT_MEMORY 和 DEVELOPMENT_PROGRESS，并保留兼容、迁移、废弃和回滚记录。
 
 每次未来需求归类必须按以下固定顺序输出：Feature / Request、Owning Layer、Existing Module、Classification Result、Cross-Layer Inputs / Outputs、Architecture Review Required、ADR Required、Registry Update、Next Action。Classification Result 只允许 `USE_EXISTING_MODULE`、`EXTEND_EXISTING_MODULE`、`CREATE_MODULE_IN_EXISTING_LAYER`、`PROPOSE_NEW_LAYER` 或 `REJECT_OR_DEFER`。

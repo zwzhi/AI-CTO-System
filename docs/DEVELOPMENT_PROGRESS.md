@@ -2,7 +2,7 @@
 
 ## 当前阶段
 
-Phase 8.4 Intelligent Resource & Execution Routing Governance（路线调整设计已确认，书面规格待复核；仍为 `PROPOSED`，未进入 Phase 8.4）
+Phase 8.4 Intelligent Resource & Execution Routing Governance（路线同步已完成；仍为 `PROPOSED`，未进入 Phase 8.4）
 
 ## 已完成
 
@@ -125,17 +125,18 @@ Phase 8.4 Intelligent Resource & Execution Routing Governance（路线调整设�
 - Knowledge Governance Pilot Report：`PASSED_WITH_CONSTRAINTS`
 - AI CTO System Master Plan：使命、权威关系、五层职责、能力现状、路线、扩展规则、分类流程、禁止事项与 ADR 索引
 - README、SKILL、Module Registry、Project Memory 与 Development Progress 的 Master Plan 入口同步
+- Phase 8.4 已调整为 `Intelligent Resource & Execution Routing Governance`：记录模型耗时、Token 效率和流程过载风险作为路线研究输入，并明确其 `PROPOSED`、非授权边界与后续证据要求
+- Master Plan、README、SKILL、Project Memory 与 Development Progress 已同步；未创建 Module、ADR、运行时、模型路由、队列或自动化
 
 ## 进行中
 
-- Phase 8.4 路线名称和规划边界调整为 Intelligent Resource & Execution Routing Governance。
-- 用户确认的模型耗时、Token 效率与流程过载反馈已形成书面规格，等待复核；没有 Module、功能或执行实现。
+- 无。Phase 8.4 仅保留为 `PROPOSED` 路线，未开始 Module Admission、设计或实现。
 
 ## 待处理
 
-- 等待用户复核 Phase 8.4 路线调整书面规格
-- 复核通过后同步 Master Plan、README、SKILL、Project Memory 和 Development Progress
-- 完成并确认前不进入 Phase 8.4，不新增功能、Module、Layer、Agent 或自动化
+- 等待用户确认 Phase 8.4 路线同步结果
+- 如需研究该方向，先建立任务、模型、Token、时延、成功/失败、成本、队列/重试/阻塞/人工介入以及质量、安全权衡证据
+- 未完成 Mission Alignment、Admission、Feature Classification 和受影响 Gate 分析前，不进入 Phase 8.4，不新增功能、Module、Layer、Agent 或自动化
 
 ## 阻塞与风险
 
@@ -143,6 +144,7 @@ Phase 8.4 Intelligent Resource & Execution Routing Governance（路线调整设�
 - `memory/knowledge_base/` 的历史目录尚未迁移；它只能作为 Legacy Capture Area，禁止与根 `knowledge_base/` 形成双重权威。
 - Quality Score、Evidence Level、Confidence、Status 和当前项目适用性必须分别判断；任何高分或历史 L4 都不能替代当前工程 Gate。
 - Pilot 的全部 Evidence 来自 AI-CTO-System；两条 `VALIDATED` 尚无 `ACTIVE` 授权，`KN-FAIL-0001` 仍需独立因果复现。
+- Phase 8.4 的输入来自真实使用反馈但尚无量化基线；不得将单次耗时、Token 或流程负担观察固化为通用路由规则，后续必须收集可比较证据并保留人工决策点。
 - 当前决策规范尚未由具体 Agent 自动执行；Phase 3 按要求不包含 Agent 代码。
 - 评分结果依赖证据质量，必须与 Confidence 分开报告。
 - 设计完整不等于开发授权；必须通过 Design Approval Gate。
@@ -232,9 +234,9 @@ Phase 8.4 Intelligent Resource & Execution Routing Governance（路线调整设�
 
 ## 下一步
 
-等待用户确认 Master Architecture Sync。确认前不进入 Phase 8.4；后续系统级需求先读取 Master Plan，并按 Mission Alignment、Module Admission 与 Feature Classification 推进。
+等待用户确认 Phase 8.4 路线同步。确认不等于进入 Phase 8.4；后续系统级需求先读取 Master Plan，并按 Mission Alignment、Module Admission 与 Feature Classification 推进。
 
-等待用户确认 Phase 8.3。确认后如提出历史知识迁移、检索或自动化能力，先作为独立后续需求执行 Mission Alignment、Module Admission、设计和适用 Gate；不自动进入 Phase 8.4。
+如提出资源或执行路径相关需求，先作为独立研究请求收集可比较证据并完成准入与分类；不自动实现模型路由、队列、Runtime、工具调用或自动化。
 
 ## Phase 3 状态记录
 
@@ -326,7 +328,14 @@ Phase 8.4 Intelligent Resource & Execution Routing Governance（路线调整设�
 | 事件 | 日期 | 状态 |
 |---|---|---|
 | Master Plan 设计确认 | 2026-07-14 | 采用“权威总纲 + 深层文档引用”；不新增功能、Module、Layer 或自动化 |
-| Master Architecture Sync 完成 | 2026-07-14 | Master Plan、四个指定治理入口和 Progress 已同步；等待用户确认，未进入 Phase 8.4 |
+| Master Architecture Sync 完成 | 2026-07-14 | Master Plan、四个指定治理入口和 Progress 已同步；已建立总体规划基线，未进入 Phase 8.4 |
+
+## Phase 8.4 路线同步状态记录
+
+| 事件 | 日期 | 状态 |
+|---|---|---|
+| 路线规格确认 | 2026-07-14 | 用户确认将原 Resource Governance 调整为 `Intelligent Resource & Execution Routing Governance`；来源为模型耗时、Token 效率与流程过载风险反馈 |
+| 路线同步完成 | 2026-07-14 | Master Plan、README、SKILL、Project Memory 与 Progress 已同步；状态为 `PROPOSED`，未创建 Module、ADR、运行时或自动化，也未进入 Phase 8.4 |
 
 ## 最后更新时间
 

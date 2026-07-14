@@ -80,13 +80,25 @@ Layer 定义稳定职责边界，Module 定义层内可独立治理的能力，P
 |---|---|---|
 | 已完成治理基线 | Phase 1–8.3、Architecture Review、Strategic Alignment、Knowledge Governance Pilot | 仅证明相应治理文档或试点已完成 |
 | 当前工作 | Master Architecture Sync | 建立总体规划与入口同步；不新增功能 |
-| 未启动 | Phase 8.4 及所有后续能力 | 没有 Module Admission、设计、开发或执行授权 |
+| 未启动 | Phase 8.4 Intelligent Resource & Execution Routing Governance（`PROPOSED`）及所有后续能力 | 没有 Module Admission、设计、开发或执行授权 |
 
 Phase 只是历史交付标签和路线元数据，不是 Module、Layer、Lifecycle State 或自动授权。未来候选路线可以标记为 `PROPOSED`、`UNDER_REVIEW`、`APPROVED_FOR_DESIGN` 或 `DEFERRED`，但这些仅为规划结果，不能写入 Module Registry 状态或项目生命周期。
 
 ## 6. 未来 Phase 规划
 
-Phase 8.4 尚未定义、未启动。任何后续路线必须先回答“为什么值得进入 AI CTO System”，再回答“属于哪里、如何安全实施”。当前可预见的长期方向仅用于规划检索，不构成承诺或实现计划：
+### Phase 8.4：Intelligent Resource & Execution Routing Governance
+
+状态：`PROPOSED`，未启动。
+
+来源：用户确认的真实使用反馈包括模型耗时、Token 效率与流程过载风险。这些反馈是路线研究输入，不构成量化性能结论、Module Admission 或实现授权。
+
+拟研究边界：在任务类型、风险、质量、预算和时延约束下，形成资源与执行路径的建议；记录并比较 Token、时延、成功/失败、成本、队列/重试/阻塞和人工介入证据；在需要时建议降级、拆分、排队、限流、暂停或请求人工决策。该方向仅可消费 Layer 1 的经验与成本证据、Layer 2 的优先级和投资约束、Layer 3 的任务基线及 Layer 4 的运行证据，且不得绕过任何 Gate。
+
+明确排除：本路线不实现或接入模型路由、直接模型调用、任务队列、限流、Agent Runtime、工具调用、自动化、监控服务或外部集成。
+
+未来如需进入 `UNDER_REVIEW` 或申请 Module Admission，必须先提供可比较的任务类型、模型、Token、时延、成功/失败、成本、队列/重试/阻塞/人工介入，以及质量、成本、时延和安全权衡证据；同时完成 Mission Alignment、Capability / Module Admission、Feature Classification 与受影响 Gate 分析。
+
+任何后续路线必须先回答“为什么值得进入 AI CTO System”，再回答“属于哪里、如何安全实施”。当前可预见的长期方向仅用于规划检索，不构成承诺或实现计划：
 
 1. 在 Evidence、Mission Alignment 与 Architecture Review 支持下，逐步评估 Layer 5 的运行时和自动化能力。
 2. 在独立真实项目中继续验证 Knowledge Governance 的跨项目适用性；不把单项目试点直接提升为通用规则。
@@ -167,4 +179,4 @@ flowchart TD
 
 每次涉及系统边界、Module 状态、完成能力、路线或核心 ADR 的变化，都必须复核本 Master Plan。若无需更新，记录检查结论；若需要更新，必须与 Manifesto、ADR、Module Registry、SKILL、Project Memory 和 Development Progress 保持一致。
 
-本 Master Plan 当前版本只建立同步基线，等待用户确认；不进入 Phase 8.4。
+本 Master Plan 当前版本已建立同步基线。后续系统级需求必须继续按本文件完成 Mission Alignment、Module Admission 与 Feature Classification；Phase 8.4 保持 `PROPOSED`，不进入实施。
