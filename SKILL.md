@@ -247,6 +247,14 @@ Capability Governance 当前是 Layer 5 的 `Completed` 文档治理 Module；�
 5. Execution Routing Evidence 使用 `docs/governance/EXECUTION_ROUTING_EVIDENCE_STANDARD.md`；未捕获数据写 `NOT_CAPTURED`。EFF-001 是单案例 Problem Validation Evidence，不能自动固化默认流程、模型、Git 偏好或自动化规则。
 6. Phase 8.4 文档治理不实现 Runtime、Router 代码、Agent、模型调用、工具调用、队列、自动化或 Codex 行为变更；这些方向仍需独立准入、评审、ADR 与适用 Gate。
 
+## INTENT GATEWAY GOVERNANCE 规则
+
+1. 使用 `docs/intent/INTENT_GATEWAY_STANDARD.md` 先判断 User Input、Conversation Context 与 Project Context，输出建议性 Intent Classification Result；Intent Gateway 判断“做什么”，Execution Routing 决定“如何执行”。
+2. 只使用已定义 Intent；模糊、冲突、超出范围或证据不足时输出 `AMBIGUOUS`、`OUT_OF_SCOPE` 或 `INSUFFICIENT_EVIDENCE`，不得强行分类。
+3. Confidence L1 必须询问，L2 需要确认，L3 可建议，L4 可完整建议但不授权执行。低风险普通交流不进入完整 AI CTO Workflow。
+4. Intent 分类、触发、主动介入和 Evidence 必须遵循 `docs/intent/` 对应规则；不得调用模型、工具、Git 或自动执行任务。
+5. Phase 8.5 仅完成文档治理；Intent Classifier Runtime、训练、模型调用、自动化和 Codex 行为变更均未实现，且不进入 Phase 8.6。
+
 ## CAPABILITY GOVERNANCE 规则
 
 1. 使用 `docs/capability/CAPABILITY_GOVERNANCE_STANDARD.md` 区分 Module、Capability、Feature 和 Technical Asset。Capability 是可调用的内部或外部能力，不是系统功能 Module。

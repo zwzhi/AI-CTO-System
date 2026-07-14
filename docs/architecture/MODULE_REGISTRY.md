@@ -95,7 +95,7 @@ Module 状态变化、Owning Layer 变化、Module 新增 / 合并 / 拆分或�
 
 | Module Name | Layer | Purpose | Current Status | Related Documents |
 |---|---|---|---|---|
-| Intent Gateway | Layer 5 | 将自然语言意图转换为结构化、可路由请求 | Planned | [System Architecture](./AI_CTO_SYSTEM_ARCHITECTURE.md) |
+| Intent Gateway | Layer 5 | 将用户输入转换为建议性 Intent Classification Result，并判断触发、置信度与确认需求 | Completed | [Gateway](../intent/INTENT_GATEWAY_STANDARD.md)、[Classification](../intent/INTENT_CLASSIFICATION_STANDARD.md)、[Evidence](../intent/INTENT_EVIDENCE_STANDARD.md)、[ADR-0015](../adr/ADR-0015-INTENT-GATEWAY-GOVERNANCE.md) |
 | Agent Runtime | Layer 5 | 管理未来 Agent 的执行、状态、隔离和审计 | Planned | [System Architecture](./AI_CTO_SYSTEM_ARCHITECTURE.md) |
 | Tool Calling | Layer 5 | 管理未来工具调用、权限、结果和副作用 | Planned | [System Architecture](./AI_CTO_SYSTEM_ARCHITECTURE.md) |
 | Codex Integration | Layer 5 | 管理 AI CTO 与 Codex 执行面的集成 | Planned | [System Architecture](./AI_CTO_SYSTEM_ARCHITECTURE.md) |
@@ -106,3 +106,5 @@ Module 状态变化、Owning Layer 变化、Module 新增 / 合并 / 拆分或�
 Capability Governance 的文档治理在 Phase 8.2 完成；真实 Capability Record、Runtime、自动选择、插件接入和工具调用仍未实现。`Completed` 不表示已安装或激活任何外部能力。
 
 Execution Routing Governance 的文档治理在 Phase 8.4 完成；它只输出建议性 Execution Plan。Intent Gateway、Agent Runtime、Tool Calling、Codex Integration 与 Automation 仍为 `Planned`，没有 Router 代码、自动模型切换、真实工具调用或执行授权。
+
+Intent Gateway 的文档治理在 Phase 8.5 完成；它只输出建议性 Intent Classification Result。Intent Classifier Runtime、模型调用、自动任务执行、Agent Runtime、Tool Calling、Codex Integration 与 Automation 均未实现。

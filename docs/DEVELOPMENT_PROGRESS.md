@@ -2,7 +2,7 @@
 
 ## 当前阶段
 
-Phase 8.4 Intelligent Resource & Execution Routing Governance（文档治理已完成；未实现 Runtime、Router 或自动化，未进入 Phase 8.5）
+Phase 8.5 Intent Gateway Governance（文档治理已完成；未实现 Runtime、Classifier 或自动化，未进入 Phase 8.6）
 
 ## 已完成
 
@@ -130,16 +130,17 @@ Phase 8.4 Intelligent Resource & Execution Routing Governance（文档治理已�
 - `EFF-001` Execution Efficiency Review 已建立为 Phase 8.4 的 Problem Validation Evidence：记录路线同步任务的理论 / 实际复杂度差异、未捕获数据与轻量路由假设；不改变任何 Skill、Git 策略、Module、ADR 或 Phase 状态
 - Phase 8.4：Execution Routing Governance 总体规范、L0–L4 复杂度、Instant / Engineering / CTO Workflow、Skill、Tool、Model、Reasoning、Context、用户偏好和 Evidence 十份治理规则
 - ADR-0014：Execution Routing Governance 作为独立 Layer 5 Module；Module Registry、Master Plan、SKILL、Project Memory 与 Progress 已同步，未创建 Runtime、Router、模型切换、真实调用或自动化
+- Phase 8.5：Intent Gateway 总体、分类、触发、Confidence、映射、冲突、主动介入、Evidence 八份治理规则与 ADR-0015；五个治理入口已同步，未创建 Runtime、Classifier、模型调用或自动执行
 
 ## 进行中
 
-- 无。Phase 8.4 文档治理已完成；Runtime 或自动化方向未启动。
+- 无。Phase 8.5 文档治理已完成；Runtime、Classifier 或自动化方向未启动。
 
 ## 待处理
 
-- 等待用户确认 Phase 8.4 文档治理
+- 等待用户确认 Phase 8.5 文档治理
 - 如需研究 Runtime 或自动化，先建立多个可比较案例的任务、模型、Token、时延、成功/失败、成本、队列/重试/阻塞/人工介入以及质量、安全权衡证据
-- 未完成独立 Mission Alignment、Evidence Review、Admission、Feature Classification、Architecture Review、必要 ADR 和受影响 Gate 分析前，不进入 Phase 8.5，不新增 Runtime、Router、Agent、模型调用、工具调用或自动化
+- 未完成独立 Mission Alignment、Evidence Review、Admission、Feature Classification、Architecture Review、必要 ADR 和受影响 Gate 分析前，不进入 Phase 8.6，不新增 Runtime、Classifier、Agent、模型调用、工具调用或自动化
 
 ## 阻塞与风险
 
@@ -150,6 +151,7 @@ Phase 8.4 Intelligent Resource & Execution Routing Governance（文档治理已�
 - Phase 8.4 的输入来自真实使用反馈但尚无量化基线；不得将单次耗时、Token 或流程负担观察固化为通用路由规则，后续必须收集可比较证据并保留人工决策点。
 - `EFF-001` 只有单次真实执行样本，且精确时长、Token、成本、内部推理和工具调用次数为 `NOT_CAPTURED`；它只能支持待验证假设，不能作为自动路由、流程跳过或 Git 偏好自动应用的依据。
 - Execution Routing Governance 目前只有建议性规则，无法执行或验证真实模型 / 工具 / Skill / Git 路由效果；文档完成不能解释为自动切换、自动调用或自动授权。
+- Intent Gateway 目前只有分类与确认治理规则，没有 Classifier Runtime、训练数据、模型调用或真实分类效果 Evidence；文档完成不能解释为自动识别或自动执行。
 - 当前决策规范尚未由具体 Agent 自动执行；Phase 3 按要求不包含 Agent 代码。
 - 评分结果依赖证据质量，必须与 Confidence 分开报告。
 - 设计完整不等于开发授权；必须通过 Design Approval Gate。
