@@ -103,6 +103,7 @@
 - 2026-07-14：完成 Phase 8.5 Intent Gateway Governance 文档治理，建立分类、触发、置信度、映射、冲突、主动介入、Evidence 与 ADR-0015，并登记 Layer 5 Module；未创建 Runtime 或 Classifier。
 - 2026-07-14：完成 Phase 8.6 Delivery & Environment Governance 文档治理，建立九份交付规范与 ADR-0016，并登记 Layer 4 Module；未进入 Phase 9。
 - 2026-07-14：完成 Governance Completion Review 与 ADR-0017；治理前置条件结论为 `READY_FOR_RUNTIME`，不授权 Phase 9 或 Runtime 实现。
+- 2026-07-14：完成 Phase 9A Runtime Architecture Design 与 ADR-0018；仅建立 Control Plane First 架构合同，未实现 Runtime 或进入 Phase 9B。
 
 ## 当前状态
 

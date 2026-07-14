@@ -262,6 +262,10 @@ Capability Governance 当前是 Layer 5 的 `Completed` 文档治理 Module；�
 3. 只有 Delivery Readiness Gate 的 `READY_FOR_DELIVERY` 可表示交付准备就绪；不等于部署、上线或用户成功使用。
 4. Phase 8.6 不实现 CI/CD、Installer、部署工具或 Runtime，也不进入 Phase 9。
 
+## PHASE 9A RUNTIME ARCHITECTURE 规则
+
+Runtime 只按 `docs/runtime/` 架构合同设计；Agent 经 Workflow Engine 流转，工具经 Capability Adapter，执行受 Permission、Approval、Budget、Audit、Kill Switch 和 Gate 约束。Phase 9A 不实现 Runtime、Agent、Codex、MCP、工具调用或自动执行，不进入 Phase 9B。
+
 ## CAPABILITY GOVERNANCE 规则
 
 1. 使用 `docs/capability/CAPABILITY_GOVERNANCE_STANDARD.md` 区分 Module、Capability、Feature 和 Technical Asset。Capability 是可调用的内部或外部能力，不是系统功能 Module。

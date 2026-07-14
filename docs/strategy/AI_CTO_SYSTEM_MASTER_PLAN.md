@@ -176,6 +176,7 @@ flowchart TD
 | [ADR-0015](../adr/ADR-0015-INTENT-GATEWAY-GOVERNANCE.md) | Intent Gateway Governance | 意图分类先于执行路由；低置信度先询问 |
 | [ADR-0016](../adr/ADR-0016-DELIVERY-AND-ENVIRONMENT-GOVERNANCE.md) | Delivery & Environment Governance | 交付须覆盖用户环境、配置、文档与支持；不等于部署成功 |
 | [ADR-0017](../adr/ADR-0017-AI-CTO-GOVERNANCE-COMPLETION-REVIEW.md) | Governance Completion Review | Runtime 前先验证治理前置条件；不授权实现 |
+| [ADR-0018](../adr/ADR-0018-AI-CTO-RUNTIME-ARCHITECTURE.md) | Runtime Architecture | Control Plane First；仅架构合同 |
 
 ### 使用与维护
 

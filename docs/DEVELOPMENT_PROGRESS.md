@@ -133,6 +133,7 @@ Phase 8.6 Delivery & Environment Governance（文档治理已完成；未实现 
 - Phase 8.5：Intent Gateway 总体、分类、触发、Confidence、映射、冲突、主动介入、Evidence 八份治理规则与 ADR-0015；五个治理入口已同步，未创建 Runtime、Classifier、模型调用或自动执行
 - Phase 8.6：Delivery、Environment、Compatibility、Configuration、Package、User Documentation、Diagnostic、Readiness Gate、Asset Registry 九份规范与 ADR-0016；未创建 CI/CD、Installer、部署工具或 Runtime
 - Governance Completion Review：五层、Phase、Module、Authority、Runtime 前置条件与风险已审查，结果为 `READY_FOR_RUNTIME`（仅治理结论，未进入 Phase 9）
+- Phase 9A：Runtime、Workflow、Agent、Control、Permission、Adapter、Memory、Audit、Budget、Safety 十份架构文档与 ADR-0018 已完成；未实现 Runtime、Agent、Codex、MCP、外部工具或自动执行，未进入 Phase 9B
 
 ## 进行中
 

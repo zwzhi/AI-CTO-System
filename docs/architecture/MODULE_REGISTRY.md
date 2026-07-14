@@ -98,6 +98,7 @@ Module 状态变化、Owning Layer 变化、Module 新增 / 合并 / 拆分或�
 |---|---|---|---|---|
 | Intent Gateway | Layer 5 | 将用户输入转换为建议性 Intent Classification Result，并判断触发、置信度与确认需求 | Completed | [Gateway](../intent/INTENT_GATEWAY_STANDARD.md)、[Classification](../intent/INTENT_CLASSIFICATION_STANDARD.md)、[Evidence](../intent/INTENT_EVIDENCE_STANDARD.md)、[ADR-0015](../adr/ADR-0015-INTENT-GATEWAY-GOVERNANCE.md) |
 | Agent Runtime | Layer 5 | 管理未来 Agent 的执行、状态、隔离和审计 | Planned | [System Architecture](./AI_CTO_SYSTEM_ARCHITECTURE.md) |
+| AI CTO Runtime Architecture | Layer 5 | 定义未来受控执行面、Workflow、权限、审批、预算、审计与 Adapter 合同 | Completed | [Runtime](../runtime/AI_CTO_RUNTIME_ARCHITECTURE.md)、[Workflow](../runtime/WORKFLOW_ENGINE_DESIGN.md)、[ADR-0018](../adr/ADR-0018-AI-CTO-RUNTIME-ARCHITECTURE.md) |
 | Tool Calling | Layer 5 | 管理未来工具调用、权限、结果和副作用 | Planned | [System Architecture](./AI_CTO_SYSTEM_ARCHITECTURE.md) |
 | Codex Integration | Layer 5 | 管理 AI CTO 与 Codex 执行面的集成 | Planned | [System Architecture](./AI_CTO_SYSTEM_ARCHITECTURE.md) |
 | Automation | Layer 5 | 编排经授权的重复流程和状态同步 | Planned | [System Architecture](./AI_CTO_SYSTEM_ARCHITECTURE.md) |
