@@ -255,6 +255,13 @@ Capability Governance 当前是 Layer 5 的 `Completed` 文档治理 Module；�
 4. Intent 分类、触发、主动介入和 Evidence 必须遵循 `docs/intent/` 对应规则；不得调用模型、工具、Git 或自动执行任务。
 5. Phase 8.5 仅完成文档治理；Intent Classifier Runtime、训练、模型调用、自动化和 Codex 行为变更均未实现，且不进入 Phase 8.6。
 
+## DELIVERY & ENVIRONMENT GOVERNANCE 规则
+
+1. 交付必须按 `docs/delivery/` 记录环境规格、兼容性、配置、交付包、用户文档、诊断、Known Issues 和 Support；Delivery 不是复制代码。
+2. 敏感信息不得进入代码、提交、公开日志或交付包；使用 `.example`、模板、最小权限和脱敏诊断。
+3. 只有 Delivery Readiness Gate 的 `READY_FOR_DELIVERY` 可表示交付准备就绪；不等于部署、上线或用户成功使用。
+4. Phase 8.6 不实现 CI/CD、Installer、部署工具或 Runtime，也不进入 Phase 9。
+
 ## CAPABILITY GOVERNANCE 规则
 
 1. 使用 `docs/capability/CAPABILITY_GOVERNANCE_STANDARD.md` 区分 Module、Capability、Feature 和 Technical Asset。Capability 是可调用的内部或外部能力，不是系统功能 Module。

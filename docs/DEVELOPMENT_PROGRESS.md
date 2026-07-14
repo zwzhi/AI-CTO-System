@@ -2,7 +2,7 @@
 
 ## 当前阶段
 
-Phase 8.5 Intent Gateway Governance（文档治理已完成；未实现 Runtime、Classifier 或自动化，未进入 Phase 8.6）
+Phase 8.6 Delivery & Environment Governance（文档治理已完成；未实现 CI/CD、Installer、部署工具或 Runtime，未进入 Phase 9）
 
 ## 已完成
 
@@ -131,6 +131,7 @@ Phase 8.5 Intent Gateway Governance（文档治理已完成；未实现 Runtime�
 - Phase 8.4：Execution Routing Governance 总体规范、L0–L4 复杂度、Instant / Engineering / CTO Workflow、Skill、Tool、Model、Reasoning、Context、用户偏好和 Evidence 十份治理规则
 - ADR-0014：Execution Routing Governance 作为独立 Layer 5 Module；Module Registry、Master Plan、SKILL、Project Memory 与 Progress 已同步，未创建 Runtime、Router、模型切换、真实调用或自动化
 - Phase 8.5：Intent Gateway 总体、分类、触发、Confidence、映射、冲突、主动介入、Evidence 八份治理规则与 ADR-0015；五个治理入口已同步，未创建 Runtime、Classifier、模型调用或自动执行
+- Phase 8.6：Delivery、Environment、Compatibility、Configuration、Package、User Documentation、Diagnostic、Readiness Gate、Asset Registry 九份规范与 ADR-0016；未创建 CI/CD、Installer、部署工具或 Runtime
 
 ## 进行中
 

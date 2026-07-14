@@ -174,6 +174,7 @@ flowchart TD
 | [ADR-0012](../adr/ADR-0012-KNOWLEDGE-GOVERNANCE.md) | Knowledge Governance | 知识必须有 Evidence、状态、质量、范围与冲突治理 |
 | [ADR-0014](../adr/ADR-0014-EXECUTION-ROUTING-GOVERNANCE.md) | Execution Routing Governance | 路由只输出建议性 Execution Plan；不执行、不绕过 Gate |
 | [ADR-0015](../adr/ADR-0015-INTENT-GATEWAY-GOVERNANCE.md) | Intent Gateway Governance | 意图分类先于执行路由；低置信度先询问 |
+| [ADR-0016](../adr/ADR-0016-DELIVERY-AND-ENVIRONMENT-GOVERNANCE.md) | Delivery & Environment Governance | 交付须覆盖用户环境、配置、文档与支持；不等于部署成功 |
 
 ### 使用与维护
 
@@ -181,4 +182,4 @@ flowchart TD
 
 每次涉及系统边界、Module 状态、完成能力、路线或核心 ADR 的变化，都必须复核本 Master Plan。若无需更新，记录检查结论；若需要更新，必须与 Manifesto、ADR、Module Registry、SKILL、Project Memory 和 Development Progress 保持一致。
 
-本 Master Plan 当前版本已建立同步基线。后续系统级需求必须继续按本文件完成 Mission Alignment、Module Admission 与 Feature Classification；Phase 8.4 与 Phase 8.5 的文档治理已完成，但不进入 Runtime、Classifier 或自动化实施。
+本 Master Plan 当前版本已建立同步基线。Phase 8.4–8.6 的文档治理已完成；Delivery & Environment Governance 不实现 CI/CD、Installer、部署工具或 Runtime，且不进入 Phase 9。

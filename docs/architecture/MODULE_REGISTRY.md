@@ -76,6 +76,7 @@ Module 状态变化、Owning Layer 变化、Module 新增 / 合并 / 拆分或�
 | Security Review | Layer 4 | 审核密钥、数据、权限、第三方和日志安全 | Completed | [Security Review](../testing/SECURITY_REVIEW_STANDARD.md) |
 | Release Approval & Gate | Layer 4 | 授权 TESTING → RELEASE | Completed | [Release Approval](../release/RELEASE_APPROVAL_GATE.md)、[Testing Release Gate](../release/TESTING_RELEASE_GATE.md) |
 | Deployment & Rollback | Layer 4 | 管理部署、配置、迁移、恢复和回滚 | Completed | [Deployment Standard](../release/DEPLOYMENT_ROLLBACK_STANDARD.md) |
+| Delivery & Environment Governance | Layer 4 | 管理用户环境、配置、交付包、文档、诊断、交付 Gate 与资产复用 | Completed | [Delivery](../delivery/DELIVERY_GOVERNANCE_STANDARD.md)、[Environment](../delivery/ENVIRONMENT_SPECIFICATION_STANDARD.md)、[Gate](../delivery/DELIVERY_READINESS_GATE.md)、[ADR-0016](../adr/ADR-0016-DELIVERY-AND-ENVIRONMENT-GOVERNANCE.md) |
 | Monitoring | Layer 4 | 管理上线后状态、错误、性能、反馈与 AI 指标 | Completed | [Monitoring](../release/MONITORING_STANDARD.md) |
 | Release Reporting | Layer 4 | 保存发布内容、验证、风险和下一计划 | Completed | [Release Report Template](../../templates/RELEASE_REPORT_TEMPLATE.md) |
 | Existing Project Onboarding | Layer 4 | 接管已有软件项目并纳入治理 | Completed | [Onboarding Protocol](../onboarding/PROJECT_ONBOARDING_PROTOCOL.md) |

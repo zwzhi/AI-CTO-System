@@ -79,6 +79,7 @@
 - Phase 8.4 `Intelligent Resource & Execution Routing Governance` 是 Layer 5 的 `Completed` 文档治理 Module：它根据 User Intent、Task Context、Project Context、偏好和 Evidence 输出建议性 Execution Plan，治理复杂度、Workflow、Capability / Skill / Tool、模型类别、Reasoning、Context 与升级条件；不执行、不调用、不切换、不改变 Codex 行为，也不覆盖安全、ADR、Gate、权限或人类决策。
 - EFF-001 是路由治理的单案例 Problem Validation Evidence，Confidence 为 L3 / 中等，部分指标为 `NOT_CAPTURED`；它不能固化默认流程、模型、Git 偏好或自动化规则。Runtime、自动模型切换、真实工具调用与自动化仍需多个案例、独立准入、评审、ADR 和受影响 Gate。
 - Phase 8.5 Intent Gateway 是 Layer 5 的 `Completed` 文档治理 Module：它识别 Intent、Confidence、Risk、Trigger 和 Confirmation，并向 Execution Routing 提供建议输入；不执行、不调用模型或工具、不训练分类器、不改变 Codex 行为，也不覆盖 Gate 或用户授权。
+- Phase 8.6 Delivery & Environment Governance 是 Layer 4 的 `Completed` 文档治理 Module：它管理环境、配置、交付包、用户文档、诊断和 Delivery Gate；不实现 CI/CD、Installer、部署工具或 Runtime。
 
 ## 历史修改
 
@@ -100,6 +101,7 @@
 - 2026-07-14：同步 Phase 8.4 为 Intelligent Resource & Execution Routing Governance；仅记录路线边界、反馈来源和未来证据要求，不创建 Module、ADR 或运行时实现。
 - 2026-07-14：完成 Phase 8.4 Execution Routing Governance 文档治理，建立 L0–L4、Workflow、Skill、Tool、Model、Reasoning、Context、偏好、Evidence 规则与 ADR-0014，并登记 Layer 5 Module；未创建 Runtime 或自动化。
 - 2026-07-14：完成 Phase 8.5 Intent Gateway Governance 文档治理，建立分类、触发、置信度、映射、冲突、主动介入、Evidence 与 ADR-0015，并登记 Layer 5 Module；未创建 Runtime 或 Classifier。
+- 2026-07-14：完成 Phase 8.6 Delivery & Environment Governance 文档治理，建立九份交付规范与 ADR-0016，并登记 Layer 4 Module；未进入 Phase 9。
 
 ## 当前状态
 
