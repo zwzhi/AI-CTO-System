@@ -79,7 +79,7 @@ Layer 定义稳定职责边界，Module 定义层内可独立治理的能力，P
 | 路线状态 | 内容 | 授权含义 |
 |---|---|---|
 | 已完成治理基线 | Phase 1–8.5、Architecture Review、Strategic Alignment、Knowledge Governance Pilot | 仅证明相应治理文档或试点已完成 |
-| 当前工作 | Phase 9C-4 Deterministic Planner Runtime Review | 本地确定性 Planner MVP 已实现；Review Gate 为 `CHANGES_REQUIRED`，需先解决审计合同与 `CONFIRM` 控制模式差异，不能进入下一阶段 |
+| 当前工作 | Phase 9C-4 Deterministic Planner Runtime Correction | 本地确定性 Planner MVP 修正与复核已完成；Review Gate 为 `APPROVED_FOR_NEXT_PHASE`，但不自动进入下一阶段 |
 | 未启动 | 真实 Capability、Agent、Tool Calling、Codex/MCP、持久化、生产交付与自动执行 | 没有相应开发或执行授权 |
 
 Phase 只是历史交付标签和路线元数据，不是 Module、Layer、Lifecycle State 或自动授权。未来候选路线可以标记为 `PROPOSED`、`UNDER_REVIEW`、`APPROVED_FOR_DESIGN` 或 `DEFERRED`，但这些仅为规划结果，不能写入 Module Registry 状态或项目生命周期。
@@ -189,4 +189,4 @@ flowchart TD
 
 每次涉及系统边界、Module 状态、完成能力、路线或核心 ADR 的变化，都必须复核本 Master Plan。若无需更新，记录检查结论；若需要更新，必须与 Manifesto、ADR、Module Registry、SKILL、Project Memory 和 Development Progress 保持一致。
 
-本 Master Plan 当前版本已建立同步基线。Phase 9A、9B 与 9C-1 分别完成 Runtime 架构、MVP 范围和实施设计；Phase 9C-2 已实现并测试 Runtime Foundation MVP：TypeScript + Node.js 24、Repository Port + In-memory Adapter、单 Workflow / Task、Mock Capability、Guard、Execution / Audit 与 12 项本地测试。随后的 [Runtime Foundation Review](../runtime/RUNTIME_FOUNDATION_REVIEW_REPORT.md) 结论为 `APPROVED_FOR_NEXT_PHASE`，并登记了 In-memory 持久化、类型校验、状态路径覆盖和未来集成边界等风险。Phase 9C-3 定义 Planner-first Agent Contract；Phase 9C-4 已实现本地 `PlannerAgentPort → DeterministicPlanner` MVP，包含版本化 `ExecutionPlan`、AgentTask、审批阻断、审计和 21 项本地测试。随后的 [Deterministic Planner Runtime Review](../runtime/DETERMINISTIC_PLANNER_RUNTIME_REVIEW_REPORT.md) 结论为 `CHANGES_REQUIRED`：审计合同字段和 `CONFIRM`-only 控制模式需要在后续获授权的修正工作中解决。该本地 MVP 不表示生产可用，也不授权真实 Agent、LLM、Codex/MCP、外部工具、数据库、Web 框架、生产环境、自动执行或 Phase 9C-5；这些能力仍须单独准入、设计与授权。
+本 Master Plan 当前版本已建立同步基线。Phase 9A、9B 与 9C-1 分别完成 Runtime 架构、MVP 范围和实施设计；Phase 9C-2 已实现并测试 Runtime Foundation MVP：TypeScript + Node.js 24、Repository Port + In-memory Adapter、单 Workflow / Task、Mock Capability、Guard、Execution / Audit 与 12 项本地测试。随后的 [Runtime Foundation Review](../runtime/RUNTIME_FOUNDATION_REVIEW_REPORT.md) 结论为 `APPROVED_FOR_NEXT_PHASE`，并登记了 In-memory 持久化、类型校验、状态路径覆盖和未来集成边界等风险。Phase 9C-3 定义 Planner-first Agent Contract；Phase 9C-4 已实现本地 `PlannerAgentPort → DeterministicPlanner` MVP，并完成针对 Audit 合同、`CONFIRM`-only 预检、约束验证和失败路径的受控修正。更新后的 [Deterministic Planner Runtime Review](../runtime/DETERMINISTIC_PLANNER_RUNTIME_REVIEW_REPORT.md) 以 25 项本地测试将 Gate 更新为 `APPROVED_FOR_NEXT_PHASE`；这不自动进入后续 Phase。该本地 MVP 不表示生产可用，也不授权真实 Agent、LLM、Codex/MCP、外部工具、数据库、Web 框架、生产环境、自动执行或 Phase 9C-5；这些能力仍须单独准入、设计与授权。

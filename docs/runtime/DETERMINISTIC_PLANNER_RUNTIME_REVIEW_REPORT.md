@@ -115,3 +115,19 @@ Propose one candidate only; do not create or activate a Knowledge record automat
 | Evidence / confidence | Local implementation plus 21 tests; L3 for the AI CTO Runtime MVP scope. |
 | Applicable scenario | Controlled AI CTO governance/runtime prototypes with a non-executing Planner. |
 | Limitation | Not a general Agent, LLM, production, or autonomous-execution pattern. |
+
+## 11. Corrective verification
+
+The accepted Phase 9C-4 correction was implemented without adding a model, Codex, MCP, external tool, network path, multi-Agent behavior, confirmation action, or post-approval execution.
+
+- `AuditEvent` now records `inputRefs`, `outputRef`, immutable permission/budget snapshots, `failureReason`, and `failureStage` for applicable Agent events.
+- `ExecutionPlan.constraintRefs` is copied from the assigned Execution Context and validated before a plan is accepted.
+- Planner preflight accepts `CONFIRM` only; `AUTO` and `BLOCK` receive controlled denial before Planner execution.
+- New tests cover invalid versioned Plan output, an unassigned constraint reference, integration-level Planner failure, `AUTO` denial, and the new Audit fields.
+- Fresh `npm.cmd test` evidence: 25 passed, 0 failed.
+
+## 12. Updated Single Agent Runtime Review Gate
+
+`APPROVED_FOR_NEXT_PHASE`
+
+The Phase 9C-4 Review findings are closed within the local deterministic MVP boundary. This result permits only a later, separately authorized next-phase **design** discussion. It does not authorize Phase 9C-5 execution, a real Agent, LLM, Codex, MCP, external tool, network access, production use, or automatic execution.

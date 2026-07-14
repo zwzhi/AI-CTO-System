@@ -6,6 +6,7 @@ import { AgentTaskService } from '../agent/agent-task-service.ts';
 import { DeterministicPlanner } from '../agent/deterministic-planner.ts';
 import { InMemoryAuditRepository } from '../audit/in-memory-audit-repository.ts';
 import { AuditService } from '../audit/audit-service.ts';
+import type { PlannerAgentPort, PlannerExecutionInput } from '../agent/planner-agent-port.ts';
 import { PermissionBudgetGuard } from '../permission/permission-budget-guard.ts';
 import { SingleAgentRuntimeService } from '../services/single-agent-runtime-service.ts';
 import { InMemoryWorkflowRepository } from '../workflow/in-memory-workflow-repository.ts';
@@ -49,19 +50,31 @@ function createPlannerInput(overrides: Record<string, unknown> = {}) {
   };
 }
 
-function createRuntime() {
+function createRuntime(planner: PlannerAgentPort = new DeterministicPlanner({
+  plannerVersion: '1.0.0',
+  planSchemaVersion: '1.0',
+  now: () => timestamp,
+})) {
   return new SingleAgentRuntimeService({
     workflowService: new WorkflowService(new InMemoryWorkflowRepository(), () => timestamp),
     agentTaskService: new AgentTaskService(new InMemoryAgentTaskRepository()),
     guard: new PermissionBudgetGuard(),
-    planner: new DeterministicPlanner({
-      plannerVersion: '1.0.0',
-      planSchemaVersion: '1.0',
-      now: () => timestamp,
-    }),
+    planner,
     auditService: new AuditService(new InMemoryAuditRepository()),
     now: () => timestamp,
   });
+}
+
+function createPlannerPort(
+  execute: (input: PlannerExecutionInput) => ReturnType<PlannerAgentPort['execute']>,
+): PlannerAgentPort {
+  return {
+    agentId: 'planner-test-double',
+    agentType: 'PLANNER',
+    plannerVersion: '1.0.0',
+    planSchemaVersion: '1.0',
+    execute,
+  };
 }
 
 test('DeterministicPlanner returns the same versioned plan for the same input', () => {
@@ -183,6 +196,100 @@ test('SingleAgentRuntimeService records complete agent audit evidence for a prop
   assert.equal(proposed?.approvalStatus, 'WAITING_APPROVAL');
   assert.ok((proposed?.executionDurationMs ?? 0) >= 0);
   assert.ok((proposed?.evidence.length ?? 0) > 0);
+  assert.deepEqual(proposed?.inputRefs, ['intent-result-1', 'context-1']);
+  assert.equal(proposed?.outputRef, result.executionPlan?.executionPlanId);
+  assert.deepEqual(proposed?.permissionSnapshot, createPlannerInput().permissionScope);
+  assert.deepEqual(proposed?.budgetSnapshot, createWorkflowInput().budget);
+});
+
+test('SingleAgentRuntimeService rejects AUTO because Planner is CONFIRM-only', () => {
+  const result = createRuntime().plan(
+    createWorkflowInput({ controlMode: 'AUTO' }),
+    createPlannerInput(),
+  );
+
+  assert.equal(result.workflow.state, 'FAILED');
+  assert.equal(result.agentTask.status, 'FAILED');
+  assert.equal(result.executionPlan, undefined);
+  const denied = result.auditEvents.find((event) => event.eventType === 'AGENT_GUARD_DENIED');
+  assert.equal(denied?.failureStage, 'PREFLIGHT');
+  assert.equal(denied?.failureReason, 'GUARD_DENIED');
+});
+
+test('SingleAgentRuntimeService rejects an invalid Plan returned by a Planner Port', () => {
+  const deterministic = new DeterministicPlanner({
+    plannerVersion: '1.0.0',
+    planSchemaVersion: '1.0',
+    now: () => timestamp,
+  });
+  const planner = createPlannerPort((input) => {
+    const result = deterministic.execute(input);
+    return {
+      ...result,
+      executionPlan: {
+        ...result.executionPlan!,
+        plannerVersion: 'invalid-version',
+      },
+    };
+  });
+
+  const result = createRuntime(planner).plan(createWorkflowInput(), createPlannerInput());
+
+  assert.equal(result.workflow.state, 'FAILED');
+  assert.equal(result.agentTask.status, 'FAILED');
+  const failure = result.auditEvents.find((event) => event.eventType === 'PLANNER_FAILED');
+  assert.equal(failure?.failureStage, 'VALIDATION');
+  assert.equal(failure?.failureReason, 'invalid execution plan contract');
+});
+
+test('SingleAgentRuntimeService rejects a Planner constraint outside Execution Context', () => {
+  const deterministic = new DeterministicPlanner({
+    plannerVersion: '1.0.0',
+    planSchemaVersion: '1.0',
+    now: () => timestamp,
+  });
+  const planner = createPlannerPort((input) => {
+    const result = deterministic.execute(input);
+    return {
+      ...result,
+      executionPlan: {
+        ...result.executionPlan!,
+        constraintRefs: ['unassigned-constraint'],
+      },
+    };
+  });
+
+  const result = createRuntime(planner).plan(createWorkflowInput(), createPlannerInput());
+
+  assert.equal(result.workflow.state, 'FAILED');
+  assert.equal(result.agentTask.status, 'FAILED');
+  const failure = result.auditEvents.find((event) => event.eventType === 'PLANNER_FAILED');
+  assert.equal(failure?.failureStage, 'VALIDATION');
+  assert.equal(failure?.failureReason, 'invalid execution plan contract');
+});
+
+test('SingleAgentRuntimeService records an integration-level Planner failure', () => {
+  const planner = createPlannerPort(() => ({
+    status: 'FAILED',
+    evidence: [{
+      evidenceId: 'planner-failure-evidence',
+      source: 'planner-test-double',
+      summary: 'planner adapter failed',
+      confidence: 'L3',
+      timestamp,
+    }],
+    confidence: 'L3',
+    timestamp,
+    failure: 'planner adapter failed',
+  }));
+
+  const result = createRuntime(planner).plan(createWorkflowInput(), createPlannerInput());
+
+  assert.equal(result.workflow.state, 'FAILED');
+  assert.equal(result.agentTask.status, 'FAILED');
+  const failure = result.auditEvents.find((event) => event.eventType === 'PLANNER_FAILED');
+  assert.equal(failure?.failureStage, 'EXECUTION');
+  assert.equal(failure?.failureReason, 'planner adapter failed');
 });
 
 test('SingleAgentRuntimeService cancels AgentTask before Planner execution when Workflow is cancelled', () => {

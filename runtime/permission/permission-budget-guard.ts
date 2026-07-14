@@ -57,7 +57,7 @@ export class PermissionBudgetGuard {
       return { kind: 'DENY', reasonCode: 'BUDGET_EXCEEDED' };
     }
 
-    if (request.controlMode === 'BLOCK') {
+    if (request.controlMode !== 'CONFIRM') {
       return { kind: 'DENY', reasonCode: 'GUARD_DENIED' };
     }
 

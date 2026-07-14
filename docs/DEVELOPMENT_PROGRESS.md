@@ -2,7 +2,7 @@
 
 ## 当前阶段
 
-Phase 9C-4 Deterministic Planner Runtime Review（Review Gate：`CHANGES_REQUIRED`；本地 MVP 的审计合同与 `CONFIRM` 控制模式差异待后续获授权修正）
+Phase 9C-4 Deterministic Planner Runtime Correction / Review（Review Gate：`APPROVED_FOR_NEXT_PHASE`；不自动进入 Phase 9C-5）
 
 ## 已完成
 
@@ -142,14 +142,15 @@ Phase 9C-4 Deterministic Planner Runtime Review（Review Gate：`CHANGES_REQUIRE
 - Phase 9C-4：已完成 Single Agent Runtime 实施设计、Agent Runtime 集成、AgentTask、DeterministicPlanner、实现生命周期、审批、审计扩展、测试计划、实现 Gate 与 ADR-0023；ExecutionPlan 为版本化 `PROPOSED` Contract，Planner 默认进入 `WAITING_APPROVAL`
 - Phase 9C-4 Implementation：已实现 `AgentTask` 生命周期、`PlannerAgentPort`、本地 `DeterministicPlanner`、版本化 `ExecutionPlan`、Workflow 与 AgentTask 协调、`WAITING_APPROVAL` 阻断、Agent Audit、Permission / Budget 预检与 In-memory AgentTask Repository；21 项本地 `node:test` 覆盖确定性输出、生命周期、权限、预算、取消、失败、审批阻断与审计。未接入模型、网络、Codex/MCP、外部工具、多 Agent、持久化或自动执行
 - Phase 9C-4 Review：已对实现与 Phase 9C-3 / 9C-4 设计进行范围、Agent 边界、Workflow 权限、Plan 合同、审批、审计、测试与风险审查；21 项本地测试重新通过。Review Gate 为 `CHANGES_REQUIRED`，不进入 Phase 9C-5
+- Phase 9C-4 Correction：已补齐 Audit 输入/输出引用、权限/预算快照、失败原因/阶段；Planner 预检限制为 `CONFIRM`；新增并通过无效 Plan、约束越界、集成失败、`AUTO` 拒绝及 Audit 合同测试。25 项本地 `node:test` 通过，Review Gate 更新为 `APPROVED_FOR_NEXT_PHASE`，不自动进入 Phase 9C-5
 
 ## 进行中
 
-- 无。Phase 9C-4 Review 已完成，等待用户确认其 `CHANGES_REQUIRED` 结论；真实 Agent、LLM、Codex/MCP、真实工具、持久化、生产环境和自动化仍未启动。
+- 无。Phase 9C-4 Correction / Review 已完成，等待用户确认 Gate 结果；真实 Agent、LLM、Codex/MCP、真实工具、持久化、生产环境和自动化仍未启动。
 
 ## 待处理
 
-- 等待用户确认 Phase 9C-4 Review；后续仅可在单独授权的修正设计中处理 Audit 合同字段、`CONFIRM`-only 预检、约束语义和缺失测试，不能直接进入 Phase 9C-5
+- 等待用户确认 Phase 9C-4 Correction / Review；`APPROVED_FOR_NEXT_PHASE` 不构成 Phase 9C-5 开始或实现授权
 - 如提出真实 Capability、Agent、Codex/MCP、工具、数据库、持久化、生产环境或自动执行需求，必须作为新系统级请求重新完成准入、分类、架构、ADR、风险、安全与 Gate 分析
 - 不得将本地 In-memory MVP 的测试结果解释为外部工具、生产环境、成本、权限或安全效果 Evidence
 
@@ -170,6 +171,7 @@ Phase 9C-4 Deterministic Planner Runtime Review（Review Gate：`CHANGES_REQUIRE
 - Phase 9C-3 仅定义 Planner Agent Contract；`CONFIRM`、`WAITING_APPROVAL`、预算和审计尚未接入真实 Agent。低风险 `AUTO`、`NOTIFY`、多 Agent、Capability 调用、Codex/MCP 和外部工具均未设计为可执行能力。
 - Phase 9C-4 已实现确定性本地 Planner MVP；模板覆盖仍限 `NEW_PROJECT`、`FEATURE_REQUEST`、`BUG_FIX`，并且 In-memory AgentTask 数据会在进程结束后丢失。任何 LLM Planner、网络、工具、持久化、多 Agent 或后续执行仍为独立风险与授权问题。
 - Phase 9C-4 Review 识别：Audit 未记录设计要求的输入/输出引用、权限/预算快照和失败字段；`evaluatePlannerPreflight` 未拒绝 `AUTO`，与此阶段 `CONFIRM`-only 规则不一致；约束只作为 assumptions 复制，且缺少无效 Plan、集成失败、控制模式与 Audit 合同的直接测试。这些问题使 Review Gate 保持 `CHANGES_REQUIRED`。
+- Phase 9C-4 Correction 已关闭上述 Review 差异；遗留边界仍为 In-memory、封闭模板、本地测试和无独立 TypeScript 类型检查。真实 Agent、LLM、网络、工具、持久化、多 Agent、确认后执行与生产安全仍须独立设计、授权和验证。
 - 当前决策规范尚未由具体 Agent 自动执行；Phase 3 按要求不包含 Agent 代码。
 - 评分结果依赖证据质量，必须与 Confidence 分开报告。
 - 设计完整不等于开发授权；必须通过 Design Approval Gate。

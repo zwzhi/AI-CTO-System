@@ -55,6 +55,7 @@ export class DeterministicPlanner implements PlannerAgentPort {
         },
         orderedSteps: template,
         dependencies: [],
+        constraintRefs: input.executionContext.constraintRefs,
         assumptions: input.executionContext.constraintRefs,
         risks: ['Human confirmation is required before follow-up execution.'],
         requiredCapabilityTypes: [],

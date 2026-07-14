@@ -28,6 +28,7 @@ export type ApprovalStatus =
   | 'CONFIRMED'
   | 'REJECTED'
   | 'CANCELLED';
+export type AgentFailureStage = 'PREFLIGHT' | 'EXECUTION' | 'VALIDATION';
 export type CapabilityStatus = 'SUCCESS' | 'FAILURE' | 'CANCELLED' | 'BLOCKED';
 export type GuardDecisionKind = 'ALLOW' | 'CONFIRM_REQUIRED' | 'DENY';
 export type ControlMode = 'AUTO' | 'CONFIRM' | 'BLOCK';
@@ -133,6 +134,7 @@ export interface ExecutionPlan {
   };
   readonly orderedSteps: readonly string[];
   readonly dependencies: readonly string[];
+  readonly constraintRefs: readonly string[];
   readonly assumptions: readonly string[];
   readonly risks: readonly string[];
   readonly requiredCapabilityTypes: readonly string[];
@@ -203,4 +205,10 @@ export interface AuditEvent {
   };
   readonly approvalStatus?: ApprovalStatus;
   readonly executionDurationMs?: number;
+  readonly inputRefs?: readonly string[];
+  readonly outputRef?: string;
+  readonly permissionSnapshot?: AgentPermissionScope;
+  readonly budgetSnapshot?: BudgetSnapshot;
+  readonly failureReason?: string;
+  readonly failureStage?: AgentFailureStage;
 }

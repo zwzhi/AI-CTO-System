@@ -3,6 +3,8 @@ import type { AgentTaskService } from '../agent/agent-task-service.ts';
 import type { PlannerAgentPort } from '../agent/planner-agent-port.ts';
 import type {
   AgentTask,
+  AgentFailureStage,
+  AgentPermissionScope,
   ApprovalStatus,
   AuditEvent,
   Evidence,
@@ -34,6 +36,12 @@ export interface PlannerRunResult {
   readonly capabilityInvocation?: undefined;
   readonly executionRecord?: undefined;
   readonly followUpExecutionCreated: false;
+}
+
+interface AgentAuditDetails {
+  readonly outputRef?: string;
+  readonly failureReason?: string;
+  readonly failureStage?: AgentFailureStage;
 }
 
 export class SingleAgentRuntimeService {
@@ -77,7 +85,10 @@ export class SingleAgentRuntimeService {
     if (!this.#hasPlannerPermission(agentTask)) {
       agentTask = this.#agentTaskService.transition(agentTask.agentTaskId, 'FAILED');
       workflow = this.#workflowService.transition(workflow.workflowId, 'FAILED');
-      this.#audit(workflow, 'AGENT_PERMISSION_DENIED', agentTask.status, 'planner lacks GENERATE_PLAN permission', agentTask);
+      this.#audit(workflow, 'AGENT_PERMISSION_DENIED', agentTask.status, 'planner lacks GENERATE_PLAN permission', agentTask, undefined, 'NOT_REQUESTED', undefined, {
+        failureReason: 'planner lacks GENERATE_PLAN permission',
+        failureStage: 'PREFLIGHT',
+      });
       return this.#result(workflow, agentTask);
     }
 
@@ -90,7 +101,10 @@ export class SingleAgentRuntimeService {
       if (decision.reasonCode === 'OPERATION_CANCELLED') {
         agentTask = this.#agentTaskService.transition(agentTask.agentTaskId, 'CANCELLED');
         workflow = this.#workflowService.transition(workflow.workflowId, 'CANCELLED');
-        this.#audit(workflow, 'PLANNER_CANCELLED', agentTask.status, decision.reasonCode, agentTask);
+        this.#audit(workflow, 'PLANNER_CANCELLED', agentTask.status, decision.reasonCode, agentTask, undefined, 'CANCELLED', undefined, {
+          failureReason: decision.reasonCode,
+          failureStage: 'PREFLIGHT',
+        });
       } else {
         agentTask = this.#agentTaskService.transition(agentTask.agentTaskId, 'FAILED');
         workflow = this.#workflowService.transition(workflow.workflowId, 'FAILED');
@@ -100,6 +114,10 @@ export class SingleAgentRuntimeService {
           agentTask.status,
           decision.reasonCode,
           agentTask,
+          undefined,
+          'NOT_REQUESTED',
+          undefined,
+          { failureReason: decision.reasonCode, failureStage: 'PREFLIGHT' },
         );
       }
       return this.#result(workflow, agentTask);
@@ -119,7 +137,10 @@ export class SingleAgentRuntimeService {
     if (plannerResult.status !== 'COMPLETED' || plannerResult.executionPlan === undefined) {
       agentTask = this.#agentTaskService.transition(agentTask.agentTaskId, 'FAILED');
       workflow = this.#workflowService.transition(workflow.workflowId, 'FAILED');
-      this.#audit(workflow, 'PLANNER_FAILED', agentTask.status, plannerResult.failure ?? 'planner failed', agentTask, plannerResult.evidence, 'NOT_REQUESTED', this.#duration(startedAt, endedAt));
+      this.#audit(workflow, 'PLANNER_FAILED', agentTask.status, plannerResult.failure ?? 'planner failed', agentTask, plannerResult.evidence, 'NOT_REQUESTED', this.#duration(startedAt, endedAt), {
+        failureReason: plannerResult.failure ?? 'planner failed',
+        failureStage: 'EXECUTION',
+      });
       return this.#result(workflow, agentTask);
     }
 
@@ -127,15 +148,22 @@ export class SingleAgentRuntimeService {
     if (!this.#isValidPlan(plannerResult.executionPlan, workflow, agentTask)) {
       agentTask = this.#agentTaskService.transition(agentTask.agentTaskId, 'FAILED');
       workflow = this.#workflowService.transition(workflow.workflowId, 'FAILED');
-      this.#audit(workflow, 'PLANNER_FAILED', agentTask.status, 'invalid execution plan contract', agentTask, plannerResult.evidence, 'NOT_REQUESTED', this.#duration(startedAt, endedAt));
+      this.#audit(workflow, 'PLANNER_FAILED', agentTask.status, 'invalid execution plan contract', agentTask, plannerResult.evidence, 'NOT_REQUESTED', this.#duration(startedAt, endedAt), {
+        failureReason: 'invalid execution plan contract',
+        failureStage: 'VALIDATION',
+      });
       return this.#result(workflow, agentTask);
     }
 
     agentTask = this.#agentTaskService.complete(agentTask.agentTaskId, plannerResult);
     workflow = this.#workflowService.transition(workflow.workflowId, 'WAITING_APPROVAL');
     const duration = this.#duration(startedAt, endedAt);
-    this.#audit(workflow, 'PLAN_PROPOSED', agentTask.status, 'deterministic plan proposed', agentTask, plannerResult.evidence, 'WAITING_APPROVAL', duration);
-    this.#audit(workflow, 'WORKFLOW_WAITING_APPROVAL', workflow.state, 'human confirmation required', agentTask, plannerResult.evidence, 'WAITING_APPROVAL', duration);
+    this.#audit(workflow, 'PLAN_PROPOSED', agentTask.status, 'deterministic plan proposed', agentTask, plannerResult.evidence, 'WAITING_APPROVAL', duration, {
+      outputRef: plannerResult.executionPlan.executionPlanId,
+    });
+    this.#audit(workflow, 'WORKFLOW_WAITING_APPROVAL', workflow.state, 'human confirmation required', agentTask, plannerResult.evidence, 'WAITING_APPROVAL', duration, {
+      outputRef: plannerResult.executionPlan.executionPlanId,
+    });
     return this.#result(workflow, agentTask, plannerResult.executionPlan);
   }
 
@@ -161,6 +189,7 @@ export class SingleAgentRuntimeService {
       && plan.agentTaskId === agentTask.agentTaskId
       && plan.plannerVersion === this.#planner.plannerVersion
       && plan.planSchemaVersion === this.#planner.planSchemaVersion
+      && plan.constraintRefs.every((constraintRef) => workflow.executionContext.constraintRefs.includes(constraintRef))
       && plan.evidence.length > 0;
   }
 
@@ -173,6 +202,7 @@ export class SingleAgentRuntimeService {
     evidence: readonly Evidence[] = [this.#evidence(summary)],
     approvalStatus: ApprovalStatus = 'NOT_REQUESTED',
     executionDurationMs?: number,
+    details: AgentAuditDetails = {},
   ): void {
     this.#auditService.append({
       auditId: `agent-audit-${this.#nextAuditId++}`,
@@ -185,6 +215,9 @@ export class SingleAgentRuntimeService {
           plannerVersion: this.#planner.plannerVersion,
           planSchemaVersion: this.#planner.planSchemaVersion,
         },
+        inputRefs: [agentTask.input.intentResultRef, ...workflow.executionContext.allowedContextRefs],
+        permissionSnapshot: this.#permissionSnapshot(agentTask.permissionScope),
+        budgetSnapshot: { ...workflow.budget },
       }),
       eventType,
       status,
@@ -193,6 +226,9 @@ export class SingleAgentRuntimeService {
       result: summary,
       approvalStatus,
       ...(executionDurationMs === undefined ? {} : { executionDurationMs }),
+      ...(details.outputRef === undefined ? {} : { outputRef: details.outputRef }),
+      ...(details.failureReason === undefined ? {} : { failureReason: details.failureReason }),
+      ...(details.failureStage === undefined ? {} : { failureStage: details.failureStage }),
     });
   }
 
@@ -208,5 +244,12 @@ export class SingleAgentRuntimeService {
 
   #duration(startedAt: string, endedAt: string): number {
     return Math.max(0, Date.parse(endedAt) - Date.parse(startedAt));
+  }
+
+  #permissionSnapshot(scope: AgentPermissionScope): AgentPermissionScope {
+    return {
+      allowedActions: [...scope.allowedActions],
+      deniedActions: [...scope.deniedActions],
+    };
   }
 }
