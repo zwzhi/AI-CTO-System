@@ -129,10 +129,11 @@ export class CodeAnalysisCapabilityAdapter {
     const expectedConfidence = this.contextConfidence(request);
     const evidenceMatches = [result.evidence, outcomeEvidence].every((items) => this.sameEvidenceSequence(expectedEvidence, items));
     const outputDoesNotEchoSourceContent = [
+      result.resultRef,
       result.analysisReport,
-      ...result.architectureFindings.map((finding) => finding.summary),
-      ...result.riskFindings.map((finding) => finding.summary),
-      ...result.technicalDebt.map((finding) => finding.summary),
+      ...result.architectureFindings.flatMap((finding) => [finding.findingId, finding.summary]),
+      ...result.riskFindings.flatMap((finding) => [finding.findingId, finding.summary]),
+      ...result.technicalDebt.flatMap((finding) => [finding.findingId, finding.summary]),
       ...result.limitations,
       ...result.evidence.map((item) => item.summary),
       ...outcomeEvidence.map((item) => item.summary),

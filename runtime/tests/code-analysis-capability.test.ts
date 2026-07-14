@@ -132,7 +132,7 @@ test('CA-04 blocks missing or expired read-only permission before invocation', (
 });
 
 test('CA-04b blocks expired and malformed permission timestamps before invocation', () => {
-  for (const expiresAt of ['2026-07-13T23:59:59.000Z', 'not-a-timestamp']) {
+  for (const expiresAt of ['2026-07-13T23:59:59.000Z', 'not-a-timestamp', '2026-07-32T00:00:00.000Z']) {
     const port = new CountingPort();
     const outcome = createAdapter(port).invoke(createRequest({
       permissionGrant: { ...createRequest().permissionGrant, expiresAt },
@@ -266,6 +266,22 @@ test('CA-08g accepts a repository context without a revision reference', () => {
   }));
 
   assert.equal(outcome.status, 'SUCCESS');
+});
+
+test('CA-08h rejects a port result that leaks a nontrivial source body through an identifier', () => {
+  const sourceContent = 'private-source-body-must-not-appear';
+  const leakingPort: CodeAnalysisInvocationPort = {
+    invoke: (invocation) => {
+      const outcome = new DeterministicCodeAnalysisAssistant(() => NOW).invoke(invocation);
+      return { ...outcome, result: { ...outcome.result!, resultRef: sourceContent } };
+    },
+  };
+  const outcome = createAdapter(leakingPort).invoke(createRequest({
+    authorizedCodeContexts: [{ ...createRequest().authorizedCodeContexts[0]!, content: sourceContent }],
+  }));
+
+  assert.equal(outcome.status, 'FAILURE');
+  assert.equal(outcome.failure?.category, 'OUTPUT_INVALID');
 });
 
 test('CA-09 writes complete audit evidence for success and preflight rejection', () => {
