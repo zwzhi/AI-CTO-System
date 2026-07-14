@@ -118,6 +118,7 @@
 - 2026-07-14：完成 Phase 9C-5 Codex Capability Implementation Design 与 ADR-0025；设计 Local Mock Codex Capability、provider-neutral Adapter Port、Execution Contract、`CONFIRM_REQUIRED` Approval、Registry Flow、Test Plan 和 Mock-only Gate。Gate 为 `APPROVED_FOR_IMPLEMENTATION`，但未写代码，Registry Record 仍为 `ABSENT`，未激活或接入真实 Codex。
 - 2026-07-14：完成 Phase 9C-5 Mock Codex Capability Implementation；实现 Local Mock Contract/Port、Mock、Guarded Adapter 和仅追加 Audit 的 Runtime Service。33 项本地测试通过且范围扫描未发现外部集成；Gate 为 `APPROVED_FOR_MOCK_CAPABILITY_REVIEW`，Registry Record 仍为 `ABSENT`。
 - 2026-07-14：完成 Codex Capability Evaluation；真实 Provider 的 Source、Version、License、权限实现、安全、成本、维护与兼容性 Evidence 均缺失，Evaluation Result 为 `BLOCKED`，Admission Result 为 `REJECT_OR_DEFER`。候选仅可建议为 `DISCOVERED`，Registry Record 继续保持 `ABSENT`，Selection 为 `PROHIBITED`，Activation Scope 为 `NONE`。
+- 2026-07-14：完成 Codex Capability Evidence Acquisition；收集官方公开 Provider/Terms/费用模型 Evidence（L2）及本地 Mock Runtime Evidence（L3）。精确 Source Artifact、Version、License 适用性、真实权限/安全/成本/兼容性仍为 `UNKNOWN`；重新 Evaluation Readiness 为 `NOT_READY_FOR_REEVALUATION`，Registry Record 保持 `ABSENT`。
 
 ## 当前状态
 
