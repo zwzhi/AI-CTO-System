@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node --experimental-strip-types --test runtime/tests/runtime-foundation.test.ts runtime/tests/single-agent-runtime.test.ts"
+    "test": "node --experimental-strip-types --test runtime/tests/runtime-foundation.test.ts runtime/tests/single-agent-runtime.test.ts runtime/tests/mock-codex-capability.test.ts"
   },
   "engines": {
     "node": ">=24"

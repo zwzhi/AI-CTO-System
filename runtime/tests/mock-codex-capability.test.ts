@@ -6,6 +6,9 @@ import { CODEX_OPERATIONS } from '../capability/codex-execution-contract.ts';
 import { MockCodexCapability } from '../capability/mock-codex-capability.ts';
 import { CodexCapabilityAdapter } from '../capability/codex-capability-adapter.ts';
 import { PermissionBudgetGuard } from '../permission/permission-budget-guard.ts';
+import { AuditService } from '../audit/audit-service.ts';
+import { InMemoryAuditRepository } from '../audit/in-memory-audit-repository.ts';
+import { CodexCapabilityRuntimeService } from '../services/codex-capability-runtime-service.ts';
 
 function createRequest(overrides: Partial<CodexExecutionRequest> = {}): CodexExecutionRequest {
   return {
@@ -101,4 +104,16 @@ test('Adapter rejects an exceeded budget before Mock invocation', () => {
   const outcome = adapter.invoke(createRequest({ budget: { ...createRequest().budget, tokenLimit: 1, tokenUsed: 2 } }));
   assert.equal(outcome.status, 'BLOCKED');
   assert.equal(outcome.failure?.category, 'BUDGET_EXCEEDED');
+});
+
+test('Codex runtime appends Result and Evidence audit without changing workflow state', () => {
+  const service = new CodexCapabilityRuntimeService(
+    new CodexCapabilityAdapter(new MockCodexCapability(), new PermissionBudgetGuard(), () => '2026-07-14T00:00:00.000Z'),
+    new AuditService(new InMemoryAuditRepository()),
+    () => '2026-07-14T00:00:00.000Z',
+  );
+  const result = service.execute(createRequest());
+  assert.equal(result.outcome.status, 'SUCCESS');
+  assert.equal(result.auditEvent.eventType, 'CODEX_CAPABILITY_COMPLETED');
+  assert.equal(result.auditEvent.outputRef, result.outcome.result.resultRef);
 });
