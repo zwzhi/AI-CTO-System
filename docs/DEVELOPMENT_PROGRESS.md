@@ -2,7 +2,7 @@
 
 ## 当前阶段
 
-Phase 9C-4 Deterministic Planner Runtime Correction / Review（Review Gate：`APPROVED_FOR_NEXT_PHASE`；不自动进入 Phase 9C-5）
+Phase 9C-5 Codex Capability Integration Design（仅完成合同与控制边界设计；未进入真实 Codex 接入）
 
 ## 已完成
 
@@ -143,14 +143,15 @@ Phase 9C-4 Deterministic Planner Runtime Correction / Review（Review Gate：`AP
 - Phase 9C-4 Implementation：已实现 `AgentTask` 生命周期、`PlannerAgentPort`、本地 `DeterministicPlanner`、版本化 `ExecutionPlan`、Workflow 与 AgentTask 协调、`WAITING_APPROVAL` 阻断、Agent Audit、Permission / Budget 预检与 In-memory AgentTask Repository；21 项本地 `node:test` 覆盖确定性输出、生命周期、权限、预算、取消、失败、审批阻断与审计。未接入模型、网络、Codex/MCP、外部工具、多 Agent、持久化或自动执行
 - Phase 9C-4 Review：已对实现与 Phase 9C-3 / 9C-4 设计进行范围、Agent 边界、Workflow 权限、Plan 合同、审批、审计、测试与风险审查；21 项本地测试重新通过。Review Gate 为 `CHANGES_REQUIRED`，不进入 Phase 9C-5
 - Phase 9C-4 Correction：已补齐 Audit 输入/输出引用、权限/预算快照、失败原因/阶段；Planner 预检限制为 `CONFIRM`；新增并通过无效 Plan、约束越界、集成失败、`AUTO` 拒绝及 Audit 合同测试。25 项本地 `node:test` 通过，Review Gate 更新为 `APPROVED_FOR_NEXT_PHASE`，不自动进入 Phase 9C-5
+- Phase 9C-5：已完成 Codex Capability Architecture、Contract、Adapter、Permission、Human Control、Audit、Failure Handling、Mock Test Plan 与 ADR-0024。Codex 只作为经 Adapter 使用的可替换 Engineering Capability；当前 `Registry Record: ABSENT`、`Selection: PROHIBITED`、`Activation Scope: NONE`，未接入真实 Codex/API/CLI/MCP、网络或外部工具
 
 ## 进行中
 
-- 无。Phase 9C-4 Correction / Review 已完成，等待用户确认 Gate 结果；真实 Agent、LLM、Codex/MCP、真实工具、持久化、生产环境和自动化仍未启动。
+- 无。Phase 9C-5 Codex Capability Integration Design 已完成，等待用户确认；真实 Codex、LLM、MCP、真实工具、持久化、生产环境和自动化仍未启动。
 
 ## 待处理
 
-- 等待用户确认 Phase 9C-4 Correction / Review；`APPROVED_FOR_NEXT_PHASE` 不构成 Phase 9C-5 开始或实现授权
+- 等待用户确认 Phase 9C-5 Codex Capability Integration Design；合同设计不构成真实 Capability 准入、激活或实现授权
 - 如提出真实 Capability、Agent、Codex/MCP、工具、数据库、持久化、生产环境或自动执行需求，必须作为新系统级请求重新完成准入、分类、架构、ADR、风险、安全与 Gate 分析
 - 不得将本地 In-memory MVP 的测试结果解释为外部工具、生产环境、成本、权限或安全效果 Evidence
 
@@ -172,6 +173,7 @@ Phase 9C-4 Deterministic Planner Runtime Correction / Review（Review Gate：`AP
 - Phase 9C-4 已实现确定性本地 Planner MVP；模板覆盖仍限 `NEW_PROJECT`、`FEATURE_REQUEST`、`BUG_FIX`，并且 In-memory AgentTask 数据会在进程结束后丢失。任何 LLM Planner、网络、工具、持久化、多 Agent 或后续执行仍为独立风险与授权问题。
 - Phase 9C-4 Review 识别：Audit 未记录设计要求的输入/输出引用、权限/预算快照和失败字段；`evaluatePlannerPreflight` 未拒绝 `AUTO`，与此阶段 `CONFIRM`-only 规则不一致；约束只作为 assumptions 复制，且缺少无效 Plan、集成失败、控制模式与 Audit 合同的直接测试。这些问题使 Review Gate 保持 `CHANGES_REQUIRED`。
 - Phase 9C-4 Correction 已关闭上述 Review 差异；遗留边界仍为 In-memory、封闭模板、本地测试和无独立 TypeScript 类型检查。真实 Agent、LLM、网络、工具、持久化、多 Agent、确认后执行与生产安全仍须独立设计、授权和验证。
+- Phase 9C-5 只有 Codex Capability 合同设计，尚无来源、License、供应商版本、质量、真实安全、成本、延迟、权限、兼容性或可替换性 Evidence；Registry Record 保持 `ABSENT`，不得选择、激活或调用。
 - 当前决策规范尚未由具体 Agent 自动执行；Phase 3 按要求不包含 Agent 代码。
 - 评分结果依赖证据质量，必须与 Confidence 分开报告。
 - 设计完整不等于开发授权；必须通过 Design Approval Gate。

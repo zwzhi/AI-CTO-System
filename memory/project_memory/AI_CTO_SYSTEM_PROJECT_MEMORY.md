@@ -113,11 +113,12 @@
 - 2026-07-14：完成 Phase 9C-4 Single Agent Runtime 本地 MVP 实现；以 `PlannerAgentPort → DeterministicPlanner`、AgentTask 生命周期、版本化 ExecutionPlan、Workflow `WAITING_APPROVAL`、Permission / Budget 预检和 Agent Audit 形成受控闭环，并通过 21 项本地 `node:test`。未接入模型、网络、Codex/MCP、外部工具、多 Agent、持久化或自动执行。
 - 2026-07-14：完成 Phase 9C-4 Deterministic Planner Runtime Review；21 项本地测试重新通过，未发现外部调用、Planner 直接推进 Workflow 或审批绕过。Review Gate 为 `CHANGES_REQUIRED`：Audit 尚缺输入/输出引用、权限/预算快照和失败字段，Planner 预检也尚未强制 `CONFIRM` 模式；未授权进入下一阶段。
 - 2026-07-14：完成 Phase 9C-4 Correction；Audit 已补齐输入/输出引用、权限/预算快照、失败原因与阶段，Planner 预检已限制为 `CONFIRM`，Plan 约束引用已在 Runtime 验证，并新增无效 Plan、约束越界和集成失败测试。25 项本地测试通过，Review Gate 更新为 `APPROVED_FOR_NEXT_PHASE`；未自动进入下一阶段。
+- 2026-07-14：完成 Phase 9C-5 Codex Capability Integration Design 与 ADR-0024；将 Codex 定义为经 Capability Adapter 使用的可替换 Engineering Capability，明确合同、最小权限、`CONFIRM` 人工控制、审计、失败与 Mock 测试边界。当前 `Registry Record: ABSENT`，未进行准入、评估、激活或真实 Codex/API/CLI/MCP/网络接入。
 
 ## 当前状态
 
-Master Architecture Sync 已完成。Phase 8.3 Knowledge Governance Pilot 验收结果为 `PASSED_WITH_CONSTRAINTS`：2 条 `VALIDATED`、1 条 `VALIDATING`、0 条 `ACTIVE`。Phase 9A、9B、9C-1、9C-2 实现/Review、9C-3 Agent Contract 和 9C-4 受控本地 Deterministic Planner MVP / Correction / Review 已完成；当前 Review Gate 为 `APPROVED_FOR_NEXT_PHASE`，且仍没有 Router、Classifier、真实 Agent、模型调用、真实工具调用、持久化或自动化实现。
+Master Architecture Sync 已完成。Phase 8.3 Knowledge Governance Pilot 验收结果为 `PASSED_WITH_CONSTRAINTS`：2 条 `VALIDATED`、1 条 `VALIDATING`、0 条 `ACTIVE`。Phase 9A、9B、9C-1、9C-2 实现/Review、9C-3 Agent Contract、9C-4 受控本地 Deterministic Planner MVP / Correction / Review，以及 9C-5 Codex Capability 合同设计已完成；Codex 当前仍不可选择或激活。系统仍没有 Router、Classifier、真实 Agent、模型调用、真实 Codex/MCP/工具调用、持久化或自动化实现。
 
 ## 未来计划
 
-等待用户确认 Phase 9C-4 Correction / Review 结果。`APPROVED_FOR_NEXT_PHASE` 只允许讨论和设计后续阶段，不自动进入或实现 Phase 9C-5。后续任何真实 Agent 或 Runtime 扩展必须先复核本地 In-memory MVP 的证据边界、Review 报告风险、Planner/Plan/AgentTask 合同和缺失覆盖，并通过受影响的 Single Agent Gate、Mission Alignment、Module Admission、Feature Classification、Architecture Review、必要 ADR、Capability / Permission / Safety 审查；不得把本次本地 MVP 推广为真实 Agent、LLM、Codex/MCP、外部工具、数据库、生产环境或自动执行授权。
+等待用户确认 Phase 9C-5 Codex Capability Integration Design。该设计不自动进入真实接入或后续阶段。后续任何 Codex 或其他真实 Capability 集成必须先完成 Capability Admission、Evaluation、Registry、Activation、实施设计、Mock 与集成测试、权限/安全/成本审查及用户授权；不得把本次合同设计推广为 Codex API/CLI/MCP、网络、外部工具、文件修改、Commit、数据库、生产环境或自动执行授权。

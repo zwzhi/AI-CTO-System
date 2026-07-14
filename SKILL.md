@@ -284,11 +284,19 @@ Phase 9C-3 只建立 Layer 5 `Agent Runtime` 的 Single Agent Contract，不创�
 
 第一个 Agent 为 Planner：只生成 Proposed Execution Plan + Plan Evidence，默认 `CONFIRM`。Planner 完成后由 Workflow Engine 记录 Audit 并进入 `WAITING_APPROVAL`；只有用户确认后，未来经独立授权的 Workflow 才能考虑后续任务。Planner 禁止推进 `EXECUTING`、调用 Capability/外部工具/Codex/MCP、修改代码/治理文件/Project Memory、写入 `ACTIVE` Knowledge、创建 Task、分配 Agent 或绕过 Gate。`AUTO`、`NOTIFY`、低风险自动化、多 Agent 协作和 Agent 代码均不属于本阶段。
 
-## PHASE 9C-4 SINGLE AGENT RUNTIME IMPLEMENTATION DESIGN 规则
+## PHASE 9C-4 SINGLE AGENT RUNTIME IMPLEMENTATION 规则
 
-Phase 9C-4 只定义未来本地 Planner Runtime 的实现方案，不写代码或创建真实 Agent。实现边界固定为 `PlannerAgentPort → DeterministicPlanner`：该 Adapter 仅根据明确、固定输入和封闭模板生成可预测的 Proposed `ExecutionPlan` + Evidence；禁止模型、网络、外部工具、Capability 调用、Codex/MCP、文件写入、数据库和自动执行。`ExecutionPlan` 必须包含 `planner_version`、`plan_schema_version`、`PROPOSED` 状态、Evidence、Confidence 和 `approval_required: true`。
+Phase 9C-4 已实现并复核本地 `PlannerAgentPort → DeterministicPlanner` MVP：该本地 Planner 仅根据明确、固定输入和封闭模板生成可预测的 Proposed `ExecutionPlan` + Evidence；禁止模型、网络、外部工具、Capability 调用、Codex/MCP、文件写入、数据库和自动执行。`ExecutionPlan` 包含 `planner_version`、`plan_schema_version`、`PROPOSED` 状态、Evidence、Confidence 和 `approval_required: true`。
 
-未来 AgentTask 只通过 Agent Runtime domain service 管理；Workflow Engine 独占 `PLANNING → WAITING_APPROVAL`、审批、取消和后续状态。Planner/Port 只能返回结果，不能改变 Workflow、创建后续 Task、确认计划或执行计划。实现 Gate 当前为 `CHANGES_REQUIRED`，除非 Agent Contract、AgentTask、Plan Contract、Permission/Budget、Approval、Audit 和 Test Plan 全部确认且用户另行授权代码实现。不得进入 Phase 9C-5。
+AgentTask 只通过 Agent Runtime domain service 管理；Workflow Engine 独占 `PLANNING → WAITING_APPROVAL`、审批、取消和后续状态。Planner/Port 只能返回结果，不能改变 Workflow、创建后续 Task、确认计划或执行计划。Correction 已补齐 Audit、Plan 约束校验、`CONFIRM`-only 预检和测试，Review Gate 为 `APPROVED_FOR_NEXT_PHASE`；该结果不等于真实模型、工具或自动执行授权。
+
+## PHASE 9C-5 CODEX CAPABILITY INTEGRATION DESIGN 规则
+
+1. Codex 是可替换的 `Engineering Capability`，不是 AI CTO Core、Agent Manager 或 Workflow Controller；只能经 Capability Adapter 接收 Runtime 的受控调用。
+2. Workflow 保持唯一状态推进权；Runtime 保留任务分配、Permission / Budget / Approval 检查、取消、审计与 Gate 边界。Codex 只能返回 Result + Evidence。
+3. `APPLY_CHANGE` 与 `CREATE_COMMIT` 默认并且仅能为 `CONFIRM`；核心治理文件、Manifesto、ADR、Master Plan、SKILL、Gate、Capability Registry 与 ACTIVE Knowledge 为禁止范围。
+4. Phase 9C-5 只完成合同设计。`Registry Record: ABSENT`、`Registry Status: N/A`、`Proposed Registry Status: DISCOVERED`、`Selection: PROHIBITED`、`Activation Scope: NONE`；未完成 Capability Admission、Evaluation、Activation 或真实接入。
+5. 禁止把本阶段文档视为 Codex API/CLI/MCP、网络、外部工具、文件修改、Commit、自动执行或生产授权；任何真实接入必须先通过独立准入、实现设计、权限/安全/成本审查、测试与用户授权。
 
 ## CAPABILITY GOVERNANCE 规则
 
