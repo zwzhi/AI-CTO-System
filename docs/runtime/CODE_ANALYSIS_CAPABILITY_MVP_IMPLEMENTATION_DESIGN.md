@@ -46,7 +46,7 @@ A successful `CodeAnalysisResult` has non-empty:
 6. `confidence`
 7. `limitations`
 
-`L3` requires every context to contain a non-empty `versionRef`; otherwise the highest possible result is `L2`. The adapter rejects a port result with missing fields, unapproved references, altered evidence, or confidence above this bound.
+`L3` requires every context to contain a non-empty `versionRef`; otherwise the highest possible result is `L2`. The adapter rejects a port result with missing fields, unapproved references, altered evidence, or confidence above this bound. `revisionRef` is optional descriptive metadata and is not a repository access mechanism.
 
 ## Evidence-first and Safety
 
@@ -56,7 +56,7 @@ A successful `CodeAnalysisResult` has non-empty:
 4. Invoke the deterministic port with only the frozen request and prebuilt evidence.
 5. Validate the complete result and append it to audit.
 
-Failure is returned as `BLOCKED` for preflight rejection and `FAILURE` for invocation or result-validation failure. No successful result is returned for a failed validation. Evidence summaries and result text must not echo full authorised source content.
+Failure is returned as `BLOCKED` for preflight rejection and `FAILURE` for invocation or result-validation failure. A non-success outcome from the invocation port is normalised to a controlled invocation failure. No successful result is returned for a failed validation. Canonical evidence is frozen before port invocation and must be returned as the same ordered set. Evidence summaries and result text must not echo a nontrivial full authorised source body; short common code fragments are not treated as secret values.
 
 The service has no filesystem, network, LLM, Codex, MCP, Provider, Patch, Commit, Deployment, Knowledge, or Registry dependency.
 

@@ -131,6 +131,19 @@ test('CA-04 blocks missing or expired read-only permission before invocation', (
   assert.equal(port.calls, 0);
 });
 
+test('CA-04b blocks expired and malformed permission timestamps before invocation', () => {
+  for (const expiresAt of ['2026-07-13T23:59:59.000Z', 'not-a-timestamp']) {
+    const port = new CountingPort();
+    const outcome = createAdapter(port).invoke(createRequest({
+      permissionGrant: { ...createRequest().permissionGrant, expiresAt },
+    }));
+
+    assert.equal(outcome.status, 'BLOCKED');
+    assert.equal(outcome.failure?.category, 'PERMISSION_DENIED');
+    assert.equal(port.calls, 0);
+  }
+});
+
 test('CA-05 blocks an exceeded budget before invocation', () => {
   const port = new CountingPort();
   const outcome = createAdapter(port).invoke(createRequest({
@@ -187,6 +200,72 @@ test('CA-08b rejects confidence above the supplied evidence bound', () => {
 
   assert.equal(outcome.status, 'FAILURE');
   assert.equal(outcome.failure?.category, 'OUTPUT_INVALID');
+});
+
+test('CA-08c preserves canonical evidence when a port attempts mutation', () => {
+  const mutatingPort: CodeAnalysisInvocationPort = {
+    invoke: (invocation) => {
+      assert.throws(() => {
+        (invocation.evidence as Array<{ reference?: string }>)[0]!.reference = 'unapproved-source';
+      }, TypeError);
+      return new DeterministicCodeAnalysisAssistant(() => NOW).invoke(invocation);
+    },
+  };
+  const outcome = createAdapter(mutatingPort).invoke(createRequest());
+
+  assert.equal(outcome.status, 'SUCCESS');
+  assert.equal(outcome.evidence[0]?.reference, 'source-runtime-1');
+});
+
+test('CA-08d rejects a port that returns duplicate evidence instead of the canonical evidence set', () => {
+  const duplicateEvidencePort: CodeAnalysisInvocationPort = {
+    invoke: (invocation) => {
+      const outcome = new DeterministicCodeAnalysisAssistant(() => NOW).invoke(invocation);
+      const duplicated = [invocation.evidence[0]!, invocation.evidence[0]!];
+      return { ...outcome, evidence: duplicated, result: { ...outcome.result!, evidence: duplicated } };
+    },
+  };
+  const request = createRequest({
+    authorizedCodeContexts: [
+      ...createRequest().authorizedCodeContexts,
+      { sourceRef: 'source-runtime-2', location: 'runtime/other.ts', content: 'export const other = true;', versionRef: 'v2' },
+    ],
+    executionContext: { ...createRequest().executionContext, allowedContextRefs: ['source-runtime-1', 'source-runtime-2'] },
+  });
+  const outcome = createAdapter(duplicateEvidencePort).invoke(request);
+
+  assert.equal(outcome.status, 'FAILURE');
+  assert.equal(outcome.failure?.category, 'OUTPUT_INVALID');
+});
+
+test('CA-08e permits short ordinary code context without treating a common character as a source leak', () => {
+  const outcome = createAdapter().invoke(createRequest({
+    authorizedCodeContexts: [{ ...createRequest().authorizedCodeContexts[0]!, content: 'a' }],
+  }));
+
+  assert.equal(outcome.status, 'SUCCESS');
+});
+
+test('CA-08f normalises a non-successful port result into a controlled execution failure', () => {
+  const failingPort: CodeAnalysisInvocationPort = {
+    invoke: () => ({
+      status: 'BLOCKED', evidence: [], confidence: 'L4', timestamp: NOW,
+      usage: { tokenUsed: 99, toolUsed: 99, timeUsedMs: 99, costUsed: 99 },
+    }),
+  };
+  const outcome = createAdapter(failingPort).invoke(createRequest());
+
+  assert.equal(outcome.status, 'FAILURE');
+  assert.equal(outcome.failure?.category, 'EXECUTION_FAILED');
+  assert.deepEqual(outcome.usage, { tokenUsed: 0, toolUsed: 0, timeUsedMs: 0, costUsed: 0 });
+});
+
+test('CA-08g accepts a repository context without a revision reference', () => {
+  const outcome = createAdapter().invoke(createRequest({
+    repositoryContext: { repositoryRef: 'repo-ai-cto', revisionRef: undefined },
+  }));
+
+  assert.equal(outcome.status, 'SUCCESS');
 });
 
 test('CA-09 writes complete audit evidence for success and preflight rejection', () => {

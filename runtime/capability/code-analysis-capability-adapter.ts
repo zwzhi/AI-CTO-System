@@ -32,7 +32,9 @@ export class CodeAnalysisCapabilityAdapter {
     } catch {
       return this.failed(immutableRequest, 'EXECUTION_FAILED', 'INVOCATION', 'local code analysis invocation failed');
     }
-    if (outcome.status !== 'SUCCESS') return outcome;
+    if (outcome.status !== 'SUCCESS') {
+      return this.failed(immutableRequest, 'EXECUTION_FAILED', 'INVOCATION', 'invocation port returned a non-success result');
+    }
     if (!this.hasValidResult(immutableRequest, outcome.result, evidence, outcome.evidence, outcome.confidence)) {
       return this.failed(immutableRequest, 'OUTPUT_INVALID', 'VALIDATION', 'successful analysis output is incomplete, lacks authorised evidence, or exceeds the confidence bound');
     }
@@ -44,11 +46,11 @@ export class CodeAnalysisCapabilityAdapter {
     if (
       request.operation !== 'ANALYZE_READ_ONLY_CODE'
       || !request.permissionGrant.allowedOperations.includes('ANALYZE_READ_ONLY_CODE')
-      || request.permissionGrant.expiresAt <= this.now()
+      || this.isMissingOrExpired(request.permissionGrant.expiresAt)
     ) return this.blocked(request, 'PERMISSION_DENIED', 'read-only analysis permission is missing or expired');
     if (request.authorizedCodeContexts.length === 0) return this.blocked(request, 'SOURCE_SCOPE_INVALID', 'authorised code scope is empty');
-    if (request.repositoryContext.repositoryRef.trim() === '' || request.repositoryContext.revisionRef.trim() === '') {
-      return this.blocked(request, 'SOURCE_SCOPE_INVALID', 'repository context must identify a repository and revision without granting repository access');
+    if (request.repositoryContext.repositoryRef.trim() === '') {
+      return this.blocked(request, 'SOURCE_SCOPE_INVALID', 'repository context must identify a repository without granting repository access');
     }
     if (request.authorizedCodeContexts.some((context) =>
       context.sourceRef.trim() === ''
@@ -77,17 +79,23 @@ export class CodeAnalysisCapabilityAdapter {
     return Object.freeze({ ...request, authorizedCodeContexts, repositoryContext, executionContext, permissionGrant, budget });
   }
 
-  private buildEvidence(request: CodeAnalysisExecutionRequest): Evidence[] {
+  private isMissingOrExpired(expiresAt: string): boolean {
+    const expiresAtMs = Date.parse(expiresAt);
+    const nowMs = Date.parse(this.now());
+    return !Number.isFinite(expiresAtMs) || !Number.isFinite(nowMs) || expiresAtMs <= nowMs;
+  }
+
+  private buildEvidence(request: CodeAnalysisExecutionRequest): readonly Evidence[] {
     const confidence = this.contextConfidence(request);
     const timestamp = this.now();
-    return request.authorizedCodeContexts.map((context, index) => ({
+    return Object.freeze(request.authorizedCodeContexts.map((context, index) => Object.freeze({
       evidenceId: `code-analysis-source-evidence-${request.taskId}-${index + 1}`,
       source: 'authorised-code-context',
       summary: `Authorised in-memory code context reviewed at ${context.location}.`,
       confidence,
       timestamp,
       reference: context.sourceRef,
-    }));
+    })));
   }
 
   private contextConfidence(request: CodeAnalysisExecutionRequest): 'L2' | 'L3' {
@@ -119,9 +127,7 @@ export class CodeAnalysisCapabilityAdapter {
       ...result.technicalDebt,
     ].every((finding) => finding.findingId.trim() !== '' && finding.summary.trim() !== '' && finding.evidenceRefs.length > 0 && finding.evidenceRefs.every((reference) => contextsByRef.has(reference)));
     const expectedConfidence = this.contextConfidence(request);
-    const evidenceMatches = [result.evidence, outcomeEvidence].every((items) =>
-      items.length === expectedEvidence.length && items.every((item) => expectedEvidence.some((expected) => this.sameEvidence(expected, item))),
-    );
+    const evidenceMatches = [result.evidence, outcomeEvidence].every((items) => this.sameEvidenceSequence(expectedEvidence, items));
     const outputDoesNotEchoSourceContent = [
       result.analysisReport,
       ...result.architectureFindings.map((finding) => finding.summary),
@@ -130,7 +136,9 @@ export class CodeAnalysisCapabilityAdapter {
       ...result.limitations,
       ...result.evidence.map((item) => item.summary),
       ...outcomeEvidence.map((item) => item.summary),
-    ].every((text) => request.authorizedCodeContexts.every((context) => !text.includes(context.content)));
+    ].every((text) => request.authorizedCodeContexts
+      .filter((context) => context.content.length >= 16)
+      .every((context) => !text.includes(context.content)));
     return findingReferencesAreAuthorised
       && evidenceMatches
       && result.confidence === expectedConfidence
@@ -145,6 +153,13 @@ export class CodeAnalysisCapabilityAdapter {
       && expected.confidence === actual.confidence
       && expected.timestamp === actual.timestamp
       && expected.reference === actual.reference;
+  }
+
+  private sameEvidenceSequence(expected: readonly Evidence[], actual: readonly Evidence[]): boolean {
+    return expected.length === actual.length && expected.every((item, index) => {
+      const candidate = actual[index];
+      return candidate !== undefined && this.sameEvidence(item, candidate);
+    });
   }
 
   private blocked(request: CodeAnalysisExecutionRequest, category: Extract<CodeAnalysisFailureCategory, 'PERMISSION_DENIED' | 'BUDGET_EXCEEDED' | 'CANCELLED' | 'SOURCE_SCOPE_INVALID'>, reason: string): CodeAnalysisExecutionOutcome {

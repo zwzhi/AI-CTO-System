@@ -26,7 +26,7 @@ export interface AuthorizedCodeContext {
 
 export interface RepositoryContext {
   readonly repositoryRef: string;
-  readonly revisionRef: string;
+  readonly revisionRef?: string;
 }
 
 export interface CodeAnalysisPermissionGrant {
