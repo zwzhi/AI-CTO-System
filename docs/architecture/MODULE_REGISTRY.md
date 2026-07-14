@@ -98,7 +98,7 @@ Module 状态变化、Owning Layer 变化、Module 新增 / 合并 / 拆分或�
 |---|---|---|---|---|
 | Intent Gateway | Layer 5 | 将用户输入转换为建议性 Intent Classification Result，并判断触发、置信度与确认需求 | Completed | [Gateway](../intent/INTENT_GATEWAY_STANDARD.md)、[Classification](../intent/INTENT_CLASSIFICATION_STANDARD.md)、[Evidence](../intent/INTENT_EVIDENCE_STANDARD.md)、[ADR-0015](../adr/ADR-0015-INTENT-GATEWAY-GOVERNANCE.md) |
 | Agent Runtime | Layer 5 | 管理未来 Agent 的执行、状态、隔离和审计 | Planned | [System Architecture](./AI_CTO_SYSTEM_ARCHITECTURE.md) |
-| AI CTO Runtime Architecture | Layer 5 | 定义未来受控执行面、Workflow、权限、审批、预算、审计与 Adapter 合同 | Completed | [Runtime](../runtime/AI_CTO_RUNTIME_ARCHITECTURE.md)、[Workflow](../runtime/WORKFLOW_ENGINE_DESIGN.md)、[ADR-0018](../adr/ADR-0018-AI-CTO-RUNTIME-ARCHITECTURE.md) |
+| AI CTO Runtime Architecture | Layer 5 | 定义未来受控执行面、Workflow、权限、审批、预算、审计与 Adapter 合同，以及 Phase 9B 的最小闭环范围 | Completed | [Runtime](../runtime/AI_CTO_RUNTIME_ARCHITECTURE.md)、[MVP Scope](../runtime/RUNTIME_MVP_SCOPE.md)、[MVP Data Model](../runtime/RUNTIME_DATA_MODEL.md)、[ADR-0018](../adr/ADR-0018-AI-CTO-RUNTIME-ARCHITECTURE.md)、[ADR-0019](../adr/ADR-0019-RUNTIME-MVP-SCOPE.md) |
 | Tool Calling | Layer 5 | 管理未来工具调用、权限、结果和副作用 | Planned | [System Architecture](./AI_CTO_SYSTEM_ARCHITECTURE.md) |
 | Codex Integration | Layer 5 | 管理 AI CTO 与 Codex 执行面的集成 | Planned | [System Architecture](./AI_CTO_SYSTEM_ARCHITECTURE.md) |
 | Automation | Layer 5 | 编排经授权的重复流程和状态同步 | Planned | [System Architecture](./AI_CTO_SYSTEM_ARCHITECTURE.md) |
@@ -110,3 +110,5 @@ Capability Governance 的文档治理在 Phase 8.2 完成；真实 Capability Re
 Execution Routing Governance 的文档治理在 Phase 8.4 完成；它只输出建议性 Execution Plan。Intent Gateway、Agent Runtime、Tool Calling、Codex Integration 与 Automation 仍为 `Planned`，没有 Router 代码、自动模型切换、真实工具调用或执行授权。
 
 Intent Gateway 的文档治理在 Phase 8.5 完成；它只输出建议性 Intent Classification Result。Intent Classifier Runtime、模型调用、自动任务执行、Agent Runtime、Tool Calling、Codex Integration 与 Automation 均未实现。
+
+Phase 9B 已完成 Runtime MVP 范围、数据合同、Mock Capability、人工控制、审计、约束和未来实施计划的文档设计；Runtime 代码、真实 Agent、真实工具、Codex/MCP 与自动执行仍未实现。该记录不创建新的 Module，也不改变 `Agent Runtime`、`Tool Calling`、`Codex Integration` 或 `Automation` 的 `Planned` 状态。

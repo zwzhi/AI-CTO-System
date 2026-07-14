@@ -2,7 +2,7 @@
 
 ## 当前阶段
 
-Phase 8.6 Delivery & Environment Governance（文档治理已完成；未实现 CI/CD、Installer、部署工具或 Runtime，未进入 Phase 9）
+Phase 9B Runtime MVP Scope Design（范围与架构规格已完成；未开发 Runtime 代码、未创建真实 Agent、未接入 Codex/MCP、真实工具或自动执行）
 
 ## 已完成
 
@@ -134,16 +134,17 @@ Phase 8.6 Delivery & Environment Governance（文档治理已完成；未实现 
 - Phase 8.6：Delivery、Environment、Compatibility、Configuration、Package、User Documentation、Diagnostic、Readiness Gate、Asset Registry 九份规范与 ADR-0016；未创建 CI/CD、Installer、部署工具或 Runtime
 - Governance Completion Review：五层、Phase、Module、Authority、Runtime 前置条件与风险已审查，结果为 `READY_FOR_RUNTIME`（仅治理结论，未进入 Phase 9）
 - Phase 9A：Runtime、Workflow、Agent、Control、Permission、Adapter、Memory、Audit、Budget、Safety 十份架构文档与 ADR-0018 已完成；未实现 Runtime、Agent、Codex、MCP、外部工具或自动执行，未进入 Phase 9B
+- Phase 9B：Runtime MVP 的 Scope、Boundary、Data Model、Workflow、Agent Contract、Capability Adapter、Human Control、Audit、Technical Constraints、Implementation Plan 与 ADR-0019 已完成；定义单 Workflow、单 Task、Mock Capability、Audit Evidence、`AUTO` / `CONFIRM` / `BLOCK`、Success Criteria 和四类场景，未开发 Runtime 代码或接入真实执行面
 
 ## 进行中
 
-- 无。Phase 8.5 文档治理已完成；Runtime、Classifier 或自动化方向未启动。
+- 无。Phase 9B 仅完成最小闭环范围设计；Runtime 实现、真实 Agent、Codex/MCP、真实工具和自动化未启动。
 
 ## 待处理
 
-- 等待用户确认 Phase 8.5 文档治理
-- 如需研究 Runtime 或自动化，先建立多个可比较案例的任务、模型、Token、时延、成功/失败、成本、队列/重试/阻塞/人工介入以及质量、安全权衡证据
-- 未完成独立 Mission Alignment、Evidence Review、Admission、Feature Classification、Architecture Review、必要 ADR 和受影响 Gate 分析前，不进入 Phase 8.6，不新增 Runtime、Classifier、Agent、模型调用、工具调用或自动化
+- 等待用户确认 Phase 9B Runtime MVP Scope Design
+- 如获后续实现授权，先按 `docs/runtime/RUNTIME_MVP_IMPLEMENTATION_PLAN.md` 复核数据合同、状态、预算、控制、审计、四类场景和安全约束；不得扩大为真实工具或生产执行
+- 未完成独立授权、受影响 Gate、安全审查和实现计划前，不新增 Runtime 代码、真实 Agent、Codex/MCP、模型调用、工具调用或自动化
 
 ## 阻塞与风险
 
@@ -155,6 +156,7 @@ Phase 8.6 Delivery & Environment Governance（文档治理已完成；未实现 
 - `EFF-001` 只有单次真实执行样本，且精确时长、Token、成本、内部推理和工具调用次数为 `NOT_CAPTURED`；它只能支持待验证假设，不能作为自动路由、流程跳过或 Git 偏好自动应用的依据。
 - Execution Routing Governance 目前只有建议性规则，无法执行或验证真实模型 / 工具 / Skill / Git 路由效果；文档完成不能解释为自动切换、自动调用或自动授权。
 - Intent Gateway 目前只有分类与确认治理规则，没有 Classifier Runtime、训练数据、模型调用或真实分类效果 Evidence；文档完成不能解释为自动识别或自动执行。
+- Phase 9B 的 Mock Capability 只能验证控制合同，不能证明真实工具、模型、Agent 协作、持久化或生产环境可靠性；四类失败场景仍未经过 Runtime 代码验证。
 - 当前决策规范尚未由具体 Agent 自动执行；Phase 3 按要求不包含 Agent 代码。
 - 评分结果依赖证据质量，必须与 Confidence 分开报告。
 - 设计完整不等于开发授权；必须通过 Design Approval Gate。

@@ -266,6 +266,10 @@ Capability Governance 当前是 Layer 5 的 `Completed` 文档治理 Module；�
 
 Runtime 只按 `docs/runtime/` 架构合同设计；Agent 经 Workflow Engine 流转，工具经 Capability Adapter，执行受 Permission、Approval、Budget、Audit、Kill Switch 和 Gate 约束。Phase 9A 不实现 Runtime、Agent、Codex、MCP、工具调用或自动执行，不进入 Phase 9B。
 
+## PHASE 9B RUNTIME MVP SCOPE 规则
+
+Phase 9B 只定义最小 Runtime 验证闭环：单一 Workflow、单一 Task、经 Adapter Contract 的 Mock Capability、Audit Evidence 与 `AUTO` / `CONFIRM` / `BLOCK` 人工控制。必须覆盖正常完成、Capability 失败、用户取消与预算超限；状态、权限、预算、Kill Switch 和 Gate 不得被绕过。该阶段不开发 Runtime 代码，不创建真实 Agent，不接入 Codex、MCP 或真实工具，不自动执行、改码、部署或进入生产环境；Phase 9B 范围设计完成不构成 Runtime 实现授权。
+
 ## CAPABILITY GOVERNANCE 规则
 
 1. 使用 `docs/capability/CAPABILITY_GOVERNANCE_STANDARD.md` 区分 Module、Capability、Feature 和 Technical Asset。Capability 是可调用的内部或外部能力，不是系统功能 Module。
