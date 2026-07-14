@@ -79,7 +79,7 @@ Layer 定义稳定职责边界，Module 定义层内可独立治理的能力，P
 | 路线状态 | 内容 | 授权含义 |
 |---|---|---|
 | 已完成治理基线 | Phase 1–8.5、Architecture Review、Strategic Alignment、Knowledge Governance Pilot | 仅证明相应治理文档或试点已完成 |
-| 当前工作 | Phase 9C-5 Codex Capability Design Review | 合同设计 Review Gate 为 `APPROVED_FOR_NEXT_PHASE`；只允许讨论后续实现设计，尚未进入真实接入 |
+| 当前工作 | Phase 9C-5 Codex Capability Implementation Design | Mock-only 实现设计与 Gate 已完成；尚未进入代码实现、Capability Activation 或真实接入 |
 | 未启动 | 真实 Capability 激活、真实 Codex/MCP/Tool Calling、持久化、生产交付与自动执行 | 没有相应开发或执行授权 |
 
 Phase 只是历史交付标签和路线元数据，不是 Module、Layer、Lifecycle State 或自动授权。未来候选路线可以标记为 `PROPOSED`、`UNDER_REVIEW`、`APPROVED_FOR_DESIGN` 或 `DEFERRED`，但这些仅为规划结果，不能写入 Module Registry 状态或项目生命周期。
@@ -105,6 +105,8 @@ Phase 只是历史交付标签和路线元数据，不是 Module、Layer、Lifec
 已定义：Capability Contract、Adapter、最小权限、`CONFIRM` 人工控制、Audit、失败处理和只使用 Mock Adapter 的测试计划。[ADR-0024](../adr/ADR-0024-CODEX-CAPABILITY-INTEGRATION.md) 记录该架构决策。
 
 明确排除：未完成 Capability Admission、Evaluation、Registry 或 Activation；未调用 Codex API/CLI、MCP、网络或外部工具；未执行代码分析、修改文件、创建 Commit、接入生产环境或实现自动执行。
+
+后续实现设计：已定义 Local Mock Capability、Adapter Port、Execution Contract、`CONFIRM_REQUIRED` Approval、Registry Flow、Test Plan 和 Mock-only Implementation Gate，并由 [ADR-0025](../adr/ADR-0025-CODEX-CAPABILITY-IMPLEMENTATION.md) 记录。Gate 为 `APPROVED_FOR_IMPLEMENTATION`，但仅限本地 Mock；不构成真实 Codex、Capability Activation、网络、文件修改、Commit 或自动执行授权。
 
 未来如需实现 Runtime 或自动化，必须先提供多个可比较的任务类型、模型、Token、时延、成功/失败、成本、队列/重试/阻塞/人工介入，以及质量、成本、时延和安全权衡证据；同时完成 Mission Alignment、Evidence Review、Feature Classification、Architecture Review、必要 Admission / ADR 与受影响 Gate 分析。
 
@@ -193,6 +195,7 @@ flowchart TD
 | [ADR-0022](../adr/ADR-0022-SINGLE-AGENT-EXECUTION-DESIGN.md) | Single Agent Execution Design | Planner-first、默认确认；Agent 不拥有执行授权或 Workflow 状态权威 |
 | [ADR-0023](../adr/ADR-0023-SINGLE-AGENT-RUNTIME-IMPLEMENTATION.md) | Single Agent Runtime Implementation | 先以确定性 Planner 验证 Agent Runtime 闭环；Plan 版本化且默认等待确认 |
 | [ADR-0024](../adr/ADR-0024-CODEX-CAPABILITY-INTEGRATION.md) | Codex Capability Integration | Codex 经可替换 Adapter 作为受控 Capability 接入；真实接入仍需独立准入、实现与授权 |
+| [ADR-0025](../adr/ADR-0025-CODEX-CAPABILITY-IMPLEMENTATION.md) | Codex Capability Implementation Design | 先以无副作用 Local Mock 验证 Adapter、Guard 与 Audit 合同；不激活或连接真实 Provider |
 
 ### 使用与维护
 
@@ -200,4 +203,4 @@ flowchart TD
 
 每次涉及系统边界、Module 状态、完成能力、路线或核心 ADR 的变化，都必须复核本 Master Plan。若无需更新，记录检查结论；若需要更新，必须与 Manifesto、ADR、Module Registry、SKILL、Project Memory 和 Development Progress 保持一致。
 
-本 Master Plan 当前版本已建立同步基线。Phase 9A、9B 与 9C-1 分别完成 Runtime 架构、MVP 范围和实施设计；Phase 9C-2 已实现并测试 Runtime Foundation MVP：TypeScript + Node.js 24、Repository Port + In-memory Adapter、单 Workflow / Task、Mock Capability、Guard、Execution / Audit 与 12 项本地测试。随后的 [Runtime Foundation Review](../runtime/RUNTIME_FOUNDATION_REVIEW_REPORT.md) 结论为 `APPROVED_FOR_NEXT_PHASE`，并登记了 In-memory 持久化、类型校验、状态路径覆盖和未来集成边界等风险。Phase 9C-3 定义 Planner-first Agent Contract；Phase 9C-4 已实现本地 `PlannerAgentPort → DeterministicPlanner` MVP，并完成针对 Audit 合同、`CONFIRM`-only 预检、约束验证和失败路径的受控修正。更新后的 [Deterministic Planner Runtime Review](../runtime/DETERMINISTIC_PLANNER_RUNTIME_REVIEW_REPORT.md) 以 25 项本地测试将 Gate 更新为 `APPROVED_FOR_NEXT_PHASE`。Phase 9C-5 随后完成 Codex Capability 的合同设计，并由 [Codex Capability Design Review](../runtime/CODEX_CAPABILITY_DESIGN_REVIEW_REPORT.md) 给出 `APPROVED_FOR_NEXT_PHASE`：Codex 只能经 Adapter 作为受控 Capability 使用，且其 Registry Record 仍为 `ABSENT`。该 Gate 只允许后续实现设计，不表示生产可用，也不授权真实 Codex、LLM、MCP、外部工具、数据库、Web 框架、生产环境、自动执行或真实实现；这些能力仍须单独准入、设计与授权。
+本 Master Plan 当前版本已建立同步基线。Phase 9A、9B 与 9C-1 分别完成 Runtime 架构、MVP 范围和实施设计；Phase 9C-2 已实现并测试 Runtime Foundation MVP：TypeScript + Node.js 24、Repository Port + In-memory Adapter、单 Workflow / Task、Mock Capability、Guard、Execution / Audit 与 12 项本地测试。随后的 [Runtime Foundation Review](../runtime/RUNTIME_FOUNDATION_REVIEW_REPORT.md) 结论为 `APPROVED_FOR_NEXT_PHASE`，并登记了 In-memory 持久化、类型校验、状态路径覆盖和未来集成边界等风险。Phase 9C-3 定义 Planner-first Agent Contract；Phase 9C-4 已实现本地 `PlannerAgentPort → DeterministicPlanner` MVP，并完成针对 Audit 合同、`CONFIRM`-only 预检、约束验证和失败路径的受控修正。更新后的 [Deterministic Planner Runtime Review](../runtime/DETERMINISTIC_PLANNER_RUNTIME_REVIEW_REPORT.md) 以 25 项本地测试将 Gate 更新为 `APPROVED_FOR_NEXT_PHASE`。Phase 9C-5 随后完成 Codex Capability 合同设计与 Review，并完成 Mock-only Implementation Design：Codex 只能经 Adapter 作为受控 Capability 使用，Registry Record 仍为 `ABSENT`。Mock-only Gate 为 `APPROVED_FOR_IMPLEMENTATION`，但不表示生产可用，也不授权真实 Codex、LLM、MCP、外部工具、数据库、Web 框架、生产环境、自动执行、文件修改、Commit 或 Capability Activation；这些能力仍须单独准入、设计与授权。

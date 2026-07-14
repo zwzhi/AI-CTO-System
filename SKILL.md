@@ -298,6 +298,14 @@ AgentTask 只通过 Agent Runtime domain service 管理；Workflow Engine 独占
 4. Phase 9C-5 只完成合同设计。`Registry Record: ABSENT`、`Registry Status: N/A`、`Proposed Registry Status: DISCOVERED`、`Selection: PROHIBITED`、`Activation Scope: NONE`；未完成 Capability Admission、Evaluation、Activation 或真实接入。
 5. 禁止把本阶段文档视为 Codex API/CLI/MCP、网络、外部工具、文件修改、Commit、自动执行或生产授权；任何真实接入必须先通过独立准入、实现设计、权限/安全/成本审查、测试与用户授权。
 
+## PHASE 9C-5 CODEX CAPABILITY IMPLEMENTATION DESIGN 规则
+
+1. 本阶段只定义 Local Mock Codex Capability 的实现边界，不写代码、不调用真实 Codex/API/CLI/MCP/网络/外部工具，也不读取或修改真实项目。
+2. Mock 只模拟 `ANALYZE_CODE` 与 `PROPOSE_CHANGE`；Changed Files 只能为 `PROPOSED` 引用。`APPLY_CHANGE` 与 `CREATE_COMMIT` 必须拒绝，不能形成任何文件或 Git 副作用。
+3. Adapter 仅负责合同转换、Permission / Budget / Approval 检查、Mock Invocation Port、结果转换与 Evidence；不得绕过 Workflow、Approval、Gate 或直接修改状态。
+4. 第一版所有代码/文件/Commit 请求均为 `CONFIRM_REQUIRED`；无 `AUTO` 路径。Approval 只能绑定一次明确 Task、操作、范围、版本、Permission、Budget 和有效期。
+5. Mock-only Implementation Gate 为 `APPROVED_FOR_IMPLEMENTATION`，但 Capability Registry 仍固定为 `Registry Record: ABSENT`、`Selection: PROHIBITED`、`Activation Scope: NONE`。此 Gate 不授权真实 Provider 接入、Activation、代码执行、文件修改、Commit 或生产使用。
+
 ## CAPABILITY GOVERNANCE 规则
 
 1. 使用 `docs/capability/CAPABILITY_GOVERNANCE_STANDARD.md` 区分 Module、Capability、Feature 和 Technical Asset。Capability 是可调用的内部或外部能力，不是系统功能 Module。

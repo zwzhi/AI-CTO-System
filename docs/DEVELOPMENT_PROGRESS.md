@@ -2,7 +2,7 @@
 
 ## 当前阶段
 
-Phase 9C-5 Codex Capability Design Review（Review Gate：`APPROVED_FOR_NEXT_PHASE`；仅允许后续实现设计）
+Phase 9C-5 Codex Capability Implementation Design（Mock-only Gate：`APPROVED_FOR_IMPLEMENTATION`；未开始代码实现）
 
 ## 已完成
 
@@ -145,14 +145,15 @@ Phase 9C-5 Codex Capability Design Review（Review Gate：`APPROVED_FOR_NEXT_PHA
 - Phase 9C-4 Correction：已补齐 Audit 输入/输出引用、权限/预算快照、失败原因/阶段；Planner 预检限制为 `CONFIRM`；新增并通过无效 Plan、约束越界、集成失败、`AUTO` 拒绝及 Audit 合同测试。25 项本地 `node:test` 通过，Review Gate 更新为 `APPROVED_FOR_NEXT_PHASE`，不自动进入 Phase 9C-5
 - Phase 9C-5：已完成 Codex Capability Architecture、Contract、Adapter、Permission、Human Control、Audit、Failure Handling、Mock Test Plan 与 ADR-0024。Codex 只作为经 Adapter 使用的可替换 Engineering Capability；当前 `Registry Record: ABSENT`、`Selection: PROHIBITED`、`Activation Scope: NONE`，未接入真实 Codex/API/CLI/MCP、网络或外部工具
 - Phase 9C-5 Design Review：已审查 Capability 边界、Adapter / Workflow 权威、Permission、Human Control、Audit、Failure Handling 与 Registry 状态；Review Gate 为 `APPROVED_FOR_NEXT_PHASE`，只允许后续 Codex Capability Implementation Design，`ADR Not Required`
+- Phase 9C-5 Implementation Design：已完成受控 Adapter、Mock Codex Capability、Execution Contract、`CONFIRM_REQUIRED` Approval、Registry Flow、Mock Test Plan、Implementation Gate 与 ADR-0025。Gate 为 `APPROVED_FOR_IMPLEMENTATION`，仅限 Local Mock；未写代码、未激活 Capability、未接入真实 Codex/API/CLI/MCP、网络或外部工具
 
 ## 进行中
 
-- 无。Phase 9C-5 Codex Capability Design Review 已完成；等待用户决定是否开始后续 Implementation Design。真实 Codex、LLM、MCP、真实工具、持久化、生产环境和自动化仍未启动。
+- 无。Phase 9C-5 Codex Capability Implementation Design 已完成；等待用户决定是否开始 Local Mock 代码实现。真实 Codex、LLM、MCP、真实工具、持久化、生产环境和自动化仍未启动。
 
 ## 待处理
 
-- 如用户授权，可仅开始 Codex Capability Implementation Design；Review Gate 不构成真实 Capability 准入、激活或代码实现授权
+- 如用户授权，可仅开始 Local Mock Codex Capability 代码实现；Mock-only Gate 不构成真实 Capability 准入、激活或真实 Provider 接入授权
 - 如提出真实 Capability、Agent、Codex/MCP、工具、数据库、持久化、生产环境或自动执行需求，必须作为新系统级请求重新完成准入、分类、架构、ADR、风险、安全与 Gate 分析
 - 不得将本地 In-memory MVP 的测试结果解释为外部工具、生产环境、成本、权限或安全效果 Evidence
 
@@ -175,6 +176,7 @@ Phase 9C-5 Codex Capability Design Review（Review Gate：`APPROVED_FOR_NEXT_PHA
 - Phase 9C-4 Review 识别：Audit 未记录设计要求的输入/输出引用、权限/预算快照和失败字段；`evaluatePlannerPreflight` 未拒绝 `AUTO`，与此阶段 `CONFIRM`-only 规则不一致；约束只作为 assumptions 复制，且缺少无效 Plan、集成失败、控制模式与 Audit 合同的直接测试。这些问题使 Review Gate 保持 `CHANGES_REQUIRED`。
 - Phase 9C-4 Correction 已关闭上述 Review 差异；遗留边界仍为 In-memory、封闭模板、本地测试和无独立 TypeScript 类型检查。真实 Agent、LLM、网络、工具、持久化、多 Agent、确认后执行与生产安全仍须独立设计、授权和验证。
 - Phase 9C-5 只有 Codex Capability 合同设计，尚无来源、License、供应商版本、质量、真实安全、成本、延迟、权限、兼容性或可替换性 Evidence；Registry Record 保持 `ABSENT`，不得选择、激活或调用。
+- Phase 9C-5 Mock-only Gate 只验证实现设计完整性；Mock 不能证明真实 Codex Provider 的质量、安全、性能、成本、兼容性、License 或可靠性，也不能产生真实文件变更、Commit 或 Capability Activation Evidence。
 - 当前决策规范尚未由具体 Agent 自动执行；Phase 3 按要求不包含 Agent 代码。
 - 评分结果依赖证据质量，必须与 Confidence 分开报告。
 - 设计完整不等于开发授权；必须通过 Design Approval Gate。

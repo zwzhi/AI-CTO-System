@@ -115,11 +115,12 @@
 - 2026-07-14：完成 Phase 9C-4 Correction；Audit 已补齐输入/输出引用、权限/预算快照、失败原因与阶段，Planner 预检已限制为 `CONFIRM`，Plan 约束引用已在 Runtime 验证，并新增无效 Plan、约束越界和集成失败测试。25 项本地测试通过，Review Gate 更新为 `APPROVED_FOR_NEXT_PHASE`；未自动进入下一阶段。
 - 2026-07-14：完成 Phase 9C-5 Codex Capability Integration Design 与 ADR-0024；将 Codex 定义为经 Capability Adapter 使用的可替换 Engineering Capability，明确合同、最小权限、`CONFIRM` 人工控制、审计、失败与 Mock 测试边界。当前 `Registry Record: ABSENT`，未进行准入、评估、激活或真实 Codex/API/CLI/MCP/网络接入。
 - 2026-07-14：完成 Phase 9C-5 Codex Capability Design Review；七项边界审查均通过，Review Gate 为 `APPROVED_FOR_NEXT_PHASE`，只允许进入后续 Codex Capability Implementation Design。Review 不改变 ADR-0024，`Registry Record` 继续保持 `ABSENT`，不授权真实接入或 Capability Activation。
+- 2026-07-14：完成 Phase 9C-5 Codex Capability Implementation Design 与 ADR-0025；设计 Local Mock Codex Capability、provider-neutral Adapter Port、Execution Contract、`CONFIRM_REQUIRED` Approval、Registry Flow、Test Plan 和 Mock-only Gate。Gate 为 `APPROVED_FOR_IMPLEMENTATION`，但未写代码，Registry Record 仍为 `ABSENT`，未激活或接入真实 Codex。
 
 ## 当前状态
 
-Master Architecture Sync 已完成。Phase 8.3 Knowledge Governance Pilot 验收结果为 `PASSED_WITH_CONSTRAINTS`：2 条 `VALIDATED`、1 条 `VALIDATING`、0 条 `ACTIVE`。Phase 9A、9B、9C-1、9C-2 实现/Review、9C-3 Agent Contract、9C-4 受控本地 Deterministic Planner MVP / Correction / Review，以及 9C-5 Codex Capability 合同设计已完成；Codex 当前仍不可选择或激活。系统仍没有 Router、Classifier、真实 Agent、模型调用、真实 Codex/MCP/工具调用、持久化或自动化实现。
+Master Architecture Sync 已完成。Phase 8.3 Knowledge Governance Pilot 验收结果为 `PASSED_WITH_CONSTRAINTS`：2 条 `VALIDATED`、1 条 `VALIDATING`、0 条 `ACTIVE`。Phase 9A、9B、9C-1、9C-2 实现/Review、9C-3 Agent Contract、9C-4 受控本地 Deterministic Planner MVP / Correction / Review，以及 9C-5 Codex Capability 合同/Review/Mock-only Implementation Design 已完成；Codex 当前仍不可选择或激活。系统仍没有 Router、Classifier、真实 Agent、模型调用、真实 Codex/MCP/工具调用、持久化或自动化实现。
 
 ## 未来计划
 
-Phase 9C-5 Design Review 已允许讨论后续 Codex Capability Implementation Design，但不自动进入真实接入或代码实现。后续任何 Codex 或其他真实 Capability 集成必须先完成 Capability Admission、Evaluation、Registry、Activation、实施设计、Mock 与集成测试、权限/安全/成本审查及用户授权；不得把本次合同设计推广为 Codex API/CLI/MCP、网络、外部工具、文件修改、Commit、数据库、生产环境或自动执行授权。
+等待用户确认是否开始 Mock-only Codex Capability 代码实现。当前 `APPROVED_FOR_IMPLEMENTATION` 只适用于本地 Mock Adapter、合同、Guard 与 Audit 测试，且不自动开始。后续任何真实 Codex 或其他 Capability 集成必须先完成 Capability Admission、Evaluation、Registry、Activation、受控集成测试、权限/安全/成本审查及用户授权；不得把本次实现设计推广为 Codex API/CLI/MCP、网络、外部工具、文件修改、Commit、数据库、生产环境或自动执行授权。
