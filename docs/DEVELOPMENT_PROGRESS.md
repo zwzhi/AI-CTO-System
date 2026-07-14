@@ -2,7 +2,7 @@
 
 ## 当前阶段
 
-Phase 8.3 Knowledge Governance Pilot（已完成，`PASSED_WITH_CONSTRAINTS`，等待用户确认；未进入 Phase 8.4）
+AI CTO System Master Architecture Sync（设计方案 A 已确认，书面规格待复核；未进入 Phase 8.4）
 
 ## 已完成
 
@@ -126,13 +126,14 @@ Phase 8.3 Knowledge Governance Pilot（已完成，`PASSED_WITH_CONSTRAINTS`，�
 
 ## 进行中
 
-无；Knowledge Governance Pilot 已完成，等待用户确认。
+- Master Architecture Sync 采用“权威总纲 + 深层文档引用”方案。
+- Master Plan 的权威关系、十章结构、同步范围和验证标准已形成书面规格，等待用户复核。
 
 ## 待处理
 
-- 等待用户确认 Knowledge Governance Pilot
-- 后续跨项目验证必须选择独立真实软件项目，不把单项目经验升级为通用最佳实践
-- 确认前不进入 Phase 8.4，不开发 Agent、不实现 RAG、不接入向量数据库
+- 等待用户复核 Master Architecture Sync 书面规格
+- 复核通过后创建 Master Plan，并同步 README、SKILL、Module Registry、Project Memory 和 Progress
+- 完成并确认前不进入 Phase 8.4，不新增功能、Module、Layer、Agent 或自动化
 
 ## 阻塞与风险
 
