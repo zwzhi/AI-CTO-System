@@ -86,13 +86,38 @@ test('CA-02 builds authorised evidence before deterministic analysis', () => {
   assert.ok(outcome.result?.evidence.every((evidence) => request.executionContext.allowedContextRefs.includes(evidence.reference ?? '')));
 });
 
-test('CA-03 blocks empty, unauthorised, and unlocatable source scope before invocation', () => {
+test('CA-03a blocks empty source scope before invocation', () => {
   const port = new CountingPort();
   const outcome = createAdapter(port).invoke(createRequest({ authorizedCodeContexts: [] }));
 
   assert.equal(outcome.status, 'BLOCKED');
   assert.equal(outcome.failure?.category, 'SOURCE_SCOPE_INVALID');
   assert.equal(port.calls, 0);
+});
+
+test('CA-03b blocks a source context that is absent from allowedContextRefs before invocation', () => {
+  const port = new CountingPort();
+  const outcome = createAdapter(port).invoke(createRequest({
+    executionContext: { ...createRequest().executionContext, allowedContextRefs: [] },
+  }));
+
+  assert.equal(outcome.status, 'BLOCKED');
+  assert.equal(outcome.failure?.category, 'SOURCE_SCOPE_INVALID');
+  assert.equal(port.calls, 0);
+});
+
+test('CA-03c blocks source contexts with an empty sourceRef or location before invocation', () => {
+  for (const invalidContext of [
+    { ...createRequest().authorizedCodeContexts[0]!, sourceRef: '' },
+    { ...createRequest().authorizedCodeContexts[0]!, location: '' },
+  ]) {
+    const port = new CountingPort();
+    const outcome = createAdapter(port).invoke(createRequest({ authorizedCodeContexts: [invalidContext] }));
+
+    assert.equal(outcome.status, 'BLOCKED');
+    assert.equal(outcome.failure?.category, 'SOURCE_SCOPE_INVALID');
+    assert.equal(port.calls, 0);
+  }
 });
 
 test('CA-04 blocks missing or expired read-only permission before invocation', () => {
@@ -145,6 +170,25 @@ test('CA-08 limits confidence to the evidence available from supplied contexts',
   assert.equal(outcome.result?.confidence, 'L2');
 });
 
+test('CA-08b rejects confidence above the supplied evidence bound', () => {
+  const overconfidentPort: CodeAnalysisInvocationPort = {
+    invoke: (invocation) => ({
+      status: 'SUCCESS', timestamp: NOW, usage: { tokenUsed: 0, toolUsed: 0, timeUsedMs: 0, costUsed: 0 }, confidence: 'L4', evidence: invocation.evidence,
+      result: {
+        resultRef: 'overconfident-result', analysisReport: 'Read-only report.', confidence: 'L4', evidence: invocation.evidence,
+        architectureFindings: [{ findingId: 'architecture-1', summary: 'Architecture observation.', evidenceRefs: ['source-runtime-1'] }],
+        riskFindings: [{ findingId: 'risk-1', severity: 'LOW', summary: 'Risk observation.', evidenceRefs: ['source-runtime-1'] }],
+        technicalDebt: [{ findingId: 'debt-1', summary: 'Debt observation.', evidenceRefs: ['source-runtime-1'] }],
+        limitations: ['No external verification.'],
+      },
+    }),
+  };
+  const outcome = createAdapter(overconfidentPort).invoke(createRequest());
+
+  assert.equal(outcome.status, 'FAILURE');
+  assert.equal(outcome.failure?.category, 'OUTPUT_INVALID');
+});
+
 test('CA-09 writes complete audit evidence for success and preflight rejection', () => {
   const repository = new InMemoryAuditRepository();
   const service = new CodeAnalysisCapabilityRuntimeService(createAdapter(), new AuditService(repository), () => NOW);
@@ -173,6 +217,18 @@ test('CA-10 passes immutable in-memory scope and does not expose external side e
   assert.equal(outcome.status, 'SUCCESS');
   assert.ok(Object.isFrozen(received?.request));
   assert.ok(Object.isFrozen(received?.request.authorizedCodeContexts));
+  assert.ok(Object.isFrozen(received?.request.authorizedCodeContexts[0]));
+  assert.ok(Object.isFrozen(received?.request.executionContext));
+  assert.ok(Object.isFrozen(received?.request.executionContext.allowedContextRefs));
+  assert.throws(() => {
+    (received!.request.authorizedCodeContexts as Array<{ content: string }>)[0]!.content = 'attempted-mutation';
+  }, TypeError);
+  assert.throws(() => {
+    (received!.request.executionContext.allowedContextRefs as string[]).push('unapproved-source');
+  }, TypeError);
+  assert.throws(() => {
+    (received!.request.executionContext as { intentRef: string }).intentRef = 'mutated-intent';
+  }, TypeError);
   assert.doesNotMatch(outcome.result?.analysisReport ?? '', /private-value-must-not-appear/);
   assert.deepEqual(CODE_ANALYSIS_OPERATIONS, ['ANALYZE_READ_ONLY_CODE']);
 });

@@ -2,7 +2,7 @@
 
 ## 当前阶段
 
-Documentation Capability MVP Implementation（本地确定性 Evidence-driven Documentation Assistant 已实现；等待用户后续确认）
+Code Analysis Capability MVP Implementation（本地确定性、只读、Evidence-first 代码分析闭环已实现；等待用户后续确认）
 
 ## 已完成
 
@@ -148,12 +148,13 @@ Documentation Capability MVP Implementation（本地确定性 Evidence-driven Do
 - Phase 9C-5 Implementation Design：已完成受控 Adapter、Mock Codex Capability、Execution Contract、`CONFIRM_REQUIRED` Approval、Registry Flow、Mock Test Plan、Implementation Gate 与 ADR-0025。Gate 为 `APPROVED_FOR_IMPLEMENTATION`，仅限 Local Mock；未写代码、未激活 Capability、未接入真实 Codex/API/CLI/MCP、网络或外部工具
 - Phase 9C-5 Mock Capability Implementation：已实现 Local Mock Contract/Port、Mock Codex、Permission/Budget/Approval Adapter 与 Runtime→Audit 服务；33 项本地测试通过，范围扫描未发现外部集成。Gate 为 `APPROVED_FOR_MOCK_CAPABILITY_REVIEW`，Registry 仍为 `ABSENT`
 - Documentation Capability MVP Implementation：已实现只读、内存级 `GENERATE_DRAFT` Contract、不可变 Authorized Source Scope 预检与快照、Evidence-first Adapter、Deterministic Documentation Assistant 与仅追加 Audit 的 Runtime Service；新增 20 项本地测试，全部 53 项测试通过。实现不读取或写入文件、不接入 Provider/LLM/网络/MCP/CLI、不修改 Workflow、Task、Agent、Registry 或 Knowledge；Capability Registry Record 保持 `ABSENT`。
+- Code Analysis Capability MVP Implementation：已实现唯一 `ANALYZE_READ_ONLY_CODE` Contract、请求内不可变 Authorized Code Context、Repository Context 元数据、Evidence-first Adapter、Deterministic Code Analysis Assistant 与仅追加 Audit 的 Runtime Service；新增 13 项本地测试，全部 66 项测试通过。实现不扫描或读写文件系统、不访问网络、不接入 Provider/LLM/Codex/MCP、不生成 Patch/Commit/Deployment，且不修改 Runtime Core、Workflow、Task、Agent、Registry 或 Knowledge；Registry Record 保持 `ABSENT`，Activation 保持 `NONE`。
 - Codex Capability Evaluation：真实 Provider 的 Source、Version、License、安全、成本与兼容性 Evidence 均为 `UNKNOWN`；Evaluation Result 为 `BLOCKED`，Admission Result 为 `REJECT_OR_DEFER`，候选仅建议 `DISCOVERED`，Registry Record 保持 `ABSENT`
 - Codex Capability Evidence Acquisition：已收集官方公开 Provider/Terms/费用模型 Evidence（L2）与本地 Mock Runtime Evidence（L3）；精确 Artifact/Version、License 适用性、真实权限/安全/成本/兼容性仍为 `UNKNOWN`。Re-evaluation Readiness 为 `NOT_READY_FOR_REEVALUATION`，Registry Record 保持 `ABSENT`
 
 ## 进行中
 
-- 无。Documentation Capability MVP Implementation 已完成；等待用户后续确认，未自动进入任何新 Phase 或 Review 流程。真实 Codex、LLM、MCP、真实工具、持久化、生产环境和自动化仍未启动。
+- 无。Documentation Capability MVP 与 Code Analysis Capability MVP Implementation 已完成；等待用户后续确认，未自动进入任何新 Phase 或 Review 流程。真实 Codex、LLM、MCP、真实工具、持久化、生产环境和自动化仍未启动。
 
 ## 待处理
 
