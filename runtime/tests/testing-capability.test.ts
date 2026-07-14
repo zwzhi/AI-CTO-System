@@ -1,11 +1,16 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
+import { TestingCapabilityAdapter } from '../capability/testing-capability-adapter.ts';
 import { DeterministicTestingAssistant } from '../capability/deterministic-testing-assistant.ts';
 import {
   TESTING_OPERATIONS,
+  type TestingExecutionOutcome,
+  type TestingExecutionRequest,
   type TestingInvocationRequest,
 } from '../capability/testing-execution-contract.ts';
+import type { TestingInvocationPort } from '../capability/testing-invocation-port.ts';
+import { PermissionBudgetGuard } from '../permission/permission-budget-guard.ts';
 
 const NOW = '2026-07-15T00:00:00.000Z';
 
@@ -57,6 +62,30 @@ function createInvocation(overrides: Partial<TestingInvocationRequest> = {}): Te
   };
 }
 
+function createRequest(overrides: Partial<TestingExecutionRequest> = {}): TestingExecutionRequest {
+  return { ...createInvocation().request, ...overrides };
+}
+
+class CountingPort implements TestingInvocationPort {
+  calls = 0;
+  lastInvocation?: TestingInvocationRequest;
+  private readonly delegate: TestingInvocationPort;
+
+  constructor(delegate: TestingInvocationPort = new DeterministicTestingAssistant(() => NOW)) {
+    this.delegate = delegate;
+  }
+
+  invoke(invocation: TestingInvocationRequest): TestingExecutionOutcome {
+    this.calls += 1;
+    this.lastInvocation = invocation;
+    return this.delegate.invoke(invocation);
+  }
+}
+
+function createAdapter(port: TestingInvocationPort = new DeterministicTestingAssistant(() => NOW)): TestingCapabilityAdapter {
+  return new TestingCapabilityAdapter(port, new PermissionBudgetGuard(), () => NOW);
+}
+
 test('TC-01 declares the sole read-only testing operation', () => {
   assert.deepEqual(TESTING_OPERATIONS, ['ANALYZE_TEST_CONTEXT']);
 });
@@ -90,4 +119,153 @@ test('TC-03 caps confidence at L2 when a test context lacks a version reference'
   assert.equal(outcome.status, 'SUCCESS');
   assert.equal(outcome.result!.confidence, 'L2');
   assert.match(outcome.result!.limitations.join(' '), /L2/);
+});
+
+test('TC-04 blocks empty, duplicate, blank, and out-of-scope test contexts before the port is invoked', () => {
+  const context = createRequest().authorizedTestContexts[0]!;
+  const invalidRequests = [
+    createRequest({ authorizedTestContexts: [] }),
+    createRequest({ authorizedTestContexts: [context, { ...context, location: 'runtime/tests/duplicate.test.ts' }] }),
+    createRequest({ authorizedTestContexts: [{ ...context, sourceRef: '' }] }),
+    createRequest({ authorizedTestContexts: [{ ...context, location: '' }] }),
+    createRequest({ authorizedTestContexts: [{ ...context, content: '  ' }] }),
+    createRequest({ executionContext: { ...createRequest().executionContext, allowedContextRefs: [] } }),
+  ];
+
+  for (const request of invalidRequests) {
+    const port = new CountingPort();
+    const outcome = createAdapter(port).invoke(request);
+
+    assert.equal(outcome.status, 'BLOCKED');
+    assert.equal(outcome.failure?.category, 'SOURCE_SCOPE_INVALID');
+    assert.equal(port.calls, 0);
+  }
+});
+
+test('TC-05 blocks wrong operation, permission, expiration, blank objective, budget, and cancellation before invocation', () => {
+  const request = createRequest();
+  const blockedRequests = [
+    createRequest({ operation: 'NOT_A_TESTING_OPERATION' as TestingExecutionRequest['operation'] }),
+    createRequest({ permissionGrant: { ...request.permissionGrant, allowedOperations: [] } }),
+    createRequest({ permissionGrant: { ...request.permissionGrant, expiresAt: '2026-07-14T23:59:59.999Z' } }),
+    createRequest({ permissionGrant: { ...request.permissionGrant, expiresAt: 'not-a-timestamp' } }),
+    createRequest({ permissionGrant: { ...request.permissionGrant, expiresAt: '2026-02-30T00:00:00.000Z' } }),
+    createRequest({ testingObjective: '  ' }),
+    createRequest({ budget: { ...request.budget, tokenLimit: 0, tokenUsed: 1 } }),
+    createRequest({ cancelled: true }),
+  ];
+
+  for (const blockedRequest of blockedRequests) {
+    const port = new CountingPort();
+    const outcome = createAdapter(port).invoke(blockedRequest);
+
+    assert.equal(outcome.status, 'BLOCKED');
+    assert.equal(port.calls, 0);
+  }
+});
+
+test('TC-06 rejects incomplete, tampered, leaking, and overconfident successful output', () => {
+  const request = createRequest();
+  const sourceContent = request.authorizedTestContexts[0]!.content;
+  const valid = (invocation: TestingInvocationRequest) => new DeterministicTestingAssistant(() => NOW).invoke(invocation);
+  const invalidPorts: readonly TestingInvocationPort[] = [
+    { invoke: (invocation) => ({ ...valid(invocation), result: undefined }) },
+    {
+      invoke: (invocation) => {
+        const outcome = valid(invocation);
+        return { ...outcome, evidence: [] };
+      },
+    },
+    {
+      invoke: (invocation) => {
+        const outcome = valid(invocation);
+        return {
+          ...outcome,
+          confidence: 'L4',
+          result: outcome.result === undefined ? undefined : { ...outcome.result, confidence: 'L4' },
+        };
+      },
+    },
+    {
+      invoke: (invocation) => {
+        const outcome = valid(invocation);
+        return {
+          ...outcome,
+          result: outcome.result === undefined ? undefined : {
+            ...outcome.result,
+            testAnalysisReport: `Static summary: ${sourceContent}`,
+          },
+        };
+      },
+    },
+  ];
+
+  for (const port of invalidPorts) {
+    const outcome = createAdapter(port).invoke(request);
+
+    assert.equal(outcome.status, 'FAILURE');
+    assert.equal(outcome.failure?.category, 'OUTPUT_INVALID');
+  }
+});
+
+test('TC-07 normalises a non-successful port response to an execution failure', () => {
+  const port: TestingInvocationPort = {
+    invoke: (invocation) => ({
+      status: 'FAILURE',
+      evidence: invocation.evidence,
+      confidence: 'L3',
+      timestamp: NOW,
+      usage: { tokenUsed: 0, toolUsed: 0, timeUsedMs: 0, costUsed: 0 },
+    }),
+  };
+
+  const outcome = createAdapter(port).invoke(createRequest());
+
+  assert.equal(outcome.status, 'FAILURE');
+  assert.equal(outcome.failure?.category, 'EXECUTION_FAILED');
+  assert.equal(outcome.failure?.stage, 'INVOCATION');
+});
+
+test('TC-08 passes an immutable request snapshot and canonical evidence to the port', () => {
+  let received: TestingInvocationRequest | undefined;
+  const port: TestingInvocationPort = {
+    invoke: (invocation) => {
+      received = invocation;
+      return new DeterministicTestingAssistant(() => NOW).invoke(invocation);
+    },
+  };
+
+  const outcome = createAdapter(port).invoke(createRequest());
+
+  assert.equal(outcome.status, 'SUCCESS');
+  assert.ok(Object.isFrozen(received?.request));
+  assert.ok(Object.isFrozen(received?.request.authorizedTestContexts));
+  assert.ok(Object.isFrozen(received?.request.authorizedTestContexts[0]));
+  assert.ok(Object.isFrozen(received?.request.executionContext));
+  assert.ok(Object.isFrozen(received?.request.executionContext.allowedContextRefs));
+  assert.ok(Object.isFrozen(received?.request.permissionGrant.allowedOperations));
+  assert.ok(Object.isFrozen(received?.request.budget));
+  assert.ok(Object.isFrozen(received?.evidence));
+  assert.throws(() => {
+    (received!.request.authorizedTestContexts as Array<{ content: string }>)[0]!.content = 'mutated';
+  }, TypeError);
+  assert.throws(() => {
+    (received!.evidence as Array<{ summary: string }>)[0]!.summary = 'mutated';
+  }, TypeError);
+  assert.deepEqual(outcome.evidence, received?.evidence);
+  assert.deepEqual(outcome.result?.evidence, received?.evidence);
+});
+
+test('TC-09 accepts a short ordinary context without treating it as a source leak', () => {
+  const request = createRequest({
+    authorizedTestContexts: [{
+      ...createRequest().authorizedTestContexts[0]!,
+      content: 'ok',
+    }],
+  });
+
+  const outcome = createAdapter().invoke(request);
+
+  assert.equal(outcome.status, 'SUCCESS');
+  assert.equal(outcome.failure, undefined);
 });
