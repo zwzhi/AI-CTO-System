@@ -4,6 +4,8 @@ import assert from 'node:assert/strict';
 import type { CodexExecutionRequest } from '../capability/codex-execution-contract.ts';
 import { CODEX_OPERATIONS } from '../capability/codex-execution-contract.ts';
 import { MockCodexCapability } from '../capability/mock-codex-capability.ts';
+import { CodexCapabilityAdapter } from '../capability/codex-capability-adapter.ts';
+import { PermissionBudgetGuard } from '../permission/permission-budget-guard.ts';
 
 function createRequest(overrides: Partial<CodexExecutionRequest> = {}): CodexExecutionRequest {
   return {
@@ -78,4 +80,25 @@ test('Mock Codex returns proposed files for change proposals without a patch', (
 test('Mock Codex rejects apply and commit operations', () => {
   const outcome = new MockCodexCapability(() => '2026-07-14T00:00:00.000Z').invoke(createRequest({ operation: 'APPLY_CHANGE' }));
   assert.equal(outcome.status, 'BLOCKED');
+});
+
+test('Adapter rejects a missing operation permission before Mock invocation', () => {
+  const adapter = new CodexCapabilityAdapter(new MockCodexCapability(), new PermissionBudgetGuard(), () => '2026-07-14T00:00:00.000Z');
+  const outcome = adapter.invoke(createRequest({ permissionGrant: { ...createRequest().permissionGrant, allowedOperations: [] } }));
+  assert.equal(outcome.status, 'BLOCKED');
+  assert.equal(outcome.failure?.category, 'PERMISSION_DENIED');
+});
+
+test('Adapter rejects an unconfirmed change proposal before Mock invocation', () => {
+  const adapter = new CodexCapabilityAdapter(new MockCodexCapability(), new PermissionBudgetGuard(), () => '2026-07-14T00:00:00.000Z');
+  const outcome = adapter.invoke(createRequest({ operation: 'PROPOSE_CHANGE', permissionGrant: { ...createRequest().permissionGrant, allowedOperations: ['PROPOSE_CHANGE'] }, approval: { ...createRequest().approval, operation: 'PROPOSE_CHANGE', status: 'REJECTED' } }));
+  assert.equal(outcome.status, 'BLOCKED');
+  assert.equal(outcome.failure?.category, 'APPROVAL_REQUIRED');
+});
+
+test('Adapter rejects an exceeded budget before Mock invocation', () => {
+  const adapter = new CodexCapabilityAdapter(new MockCodexCapability(), new PermissionBudgetGuard(), () => '2026-07-14T00:00:00.000Z');
+  const outcome = adapter.invoke(createRequest({ budget: { ...createRequest().budget, tokenLimit: 1, tokenUsed: 2 } }));
+  assert.equal(outcome.status, 'BLOCKED');
+  assert.equal(outcome.failure?.category, 'BUDGET_EXCEEDED');
 });
