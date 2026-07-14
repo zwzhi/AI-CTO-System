@@ -387,6 +387,12 @@ Phase 9C-5 Mock Codex Capability Implementation（本地 Mock 已实现；等待
 |---|---|---|
 | Strategy 完成 | 2026-07-14 | 建立 Provider 无关的 Engineering Capability 分类、合同需求、风险/权限/人类控制/Evidence、优先级与 `Adopt / Improve / Merge / Deprecate / Remove` 策略生命周期；未创建 Capability Registry Record、未激活或评估 Provider、未修改 Runtime。该策略仅为未来 Phase 10 自我优化与简化提供候选输入。 |
 
+## Engineering Capability Roadmap & Priority Assessment 状态记录
+
+| 事件 | 日期 | 状态 |
+|---|---|---|
+| Roadmap 完成 | 2026-07-14 | 建立 P0–P3 优先级、能力依赖、三阶段成熟路线、`AUTO / NOTIFY / CONFIRM / BLOCK` 控制建议、Provider Evaluation Entry 与 Evolution Interface。推荐下一步仅为 Documentation Capability Requirement 设计；未创建 Provider Candidate 或 Capability Registry Record，未激活能力、未修改 Runtime。 |
+
 ## 最后更新时间
 
 2026-07-14
