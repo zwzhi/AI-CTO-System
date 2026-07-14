@@ -39,7 +39,7 @@ export class TestingCapabilityAdapter {
     if (outcome.status !== 'SUCCESS') {
       return this.failed(immutableRequest, 'EXECUTION_FAILED', 'INVOCATION', 'invocation port returned a non-success result');
     }
-    if (!this.hasValidResult(immutableRequest, outcome.result, evidence, outcome.evidence, outcome.confidence)) {
+    if (!this.hasValidResult(immutableRequest, outcome.result, evidence, outcome.evidence, outcome.confidence, outcome.usage)) {
       return this.failed(immutableRequest, 'OUTPUT_INVALID', 'VALIDATION', 'successful testing output is incomplete, lacks canonical evidence, or exceeds the authorised source scope');
     }
     return outcome;
@@ -130,36 +130,72 @@ export class TestingCapabilityAdapter {
     expectedEvidence: readonly Evidence[],
     outcomeEvidence: readonly Evidence[],
     outcomeConfidence: TestingExecutionOutcome['confidence'],
+    usage: TestingExecutionOutcome['usage'],
   ): result is TestingResult {
-    if (
-      result === undefined
-      || result.resultRef.trim() === ''
-      || result.testAnalysisReport.trim() === ''
+    if (!this.isRecord(result)
+      || !this.isNonBlankString(result.resultRef)
+      || !this.isNonBlankString(result.testAnalysisReport)
+      || !Array.isArray(result.coverageFindings)
+      || !Array.isArray(result.riskFindings)
+      || !Array.isArray(result.testRecommendations)
+      || !Array.isArray(result.evidence)
+      || !Array.isArray(result.limitations)
       || result.coverageFindings.length === 0
       || result.riskFindings.length === 0
       || result.testRecommendations.length === 0
       || result.evidence.length === 0
       || result.limitations.length === 0
-      || result.limitations.some((limitation) => limitation.trim() === '')
-    ) return false;
+      || !result.limitations.every((limitation) => this.isNonBlankString(limitation))
+      || !this.hasZeroUsage(usage)) return false;
 
     const contextsByRef = new Map(request.authorizedTestContexts.map((context) => [context.sourceRef, context]));
-    const findingsAreAuthorised = [
-      ...result.coverageFindings,
-      ...result.riskFindings,
-      ...result.testRecommendations,
-    ].every((finding) =>
-      finding.findingId.trim() !== ''
-      && finding.summary.trim() !== ''
-      && finding.evidenceRefs.length > 0
-      && finding.evidenceRefs.every((reference) => contextsByRef.has(reference)),
-    );
+    const coverageFindingsAreAuthorised = result.coverageFindings.every((finding) =>
+      this.hasValidFinding(finding, contextsByRef));
+    const riskFindingsAreAuthorised = result.riskFindings.every((finding) =>
+      this.hasValidFinding(finding, contextsByRef)
+      && this.isValidRiskSeverity((finding as { severity?: unknown }).severity));
+    const recommendationsAreAuthorised = result.testRecommendations.every((finding) =>
+      this.hasValidFinding(finding, contextsByRef));
     const expectedConfidence = this.contextConfidence(request);
     const evidenceMatches = this.sameEvidenceSequence(expectedEvidence, result.evidence)
       && this.sameEvidenceSequence(expectedEvidence, outcomeEvidence);
     const confidenceMatches = result.confidence === expectedConfidence && outcomeConfidence === expectedConfidence;
-    const outputDoesNotLeakSource = this.doesNotLeakSourceContent(request, result, outcomeEvidence);
-    return findingsAreAuthorised && evidenceMatches && confidenceMatches && outputDoesNotLeakSource;
+    const outputDoesNotLeakSource = coverageFindingsAreAuthorised
+      && riskFindingsAreAuthorised
+      && recommendationsAreAuthorised
+      && evidenceMatches
+      && confidenceMatches
+      && this.doesNotLeakSourceContent(request, result, outcomeEvidence);
+    return outputDoesNotLeakSource;
+  }
+
+  private isRecord(value: unknown): value is Record<string, unknown> {
+    return value !== null && typeof value === 'object';
+  }
+
+  private isNonBlankString(value: unknown): value is string {
+    return typeof value === 'string' && value.trim() !== '';
+  }
+
+  private hasValidFinding(finding: unknown, contextsByRef: ReadonlyMap<string, AuthorizedTestContext>): boolean {
+    if (!this.isRecord(finding)
+      || !this.isNonBlankString(finding.findingId)
+      || !this.isNonBlankString(finding.summary)
+      || !Array.isArray(finding.evidenceRefs)
+      || finding.evidenceRefs.length === 0) return false;
+    return finding.evidenceRefs.every((reference) => typeof reference === 'string' && contextsByRef.has(reference));
+  }
+
+  private isValidRiskSeverity(severity: unknown): severity is 'LOW' | 'MEDIUM' | 'HIGH' {
+    return severity === 'LOW' || severity === 'MEDIUM' || severity === 'HIGH';
+  }
+
+  private hasZeroUsage(usage: unknown): boolean {
+    return this.isRecord(usage)
+      && usage.tokenUsed === 0
+      && usage.toolUsed === 0
+      && usage.timeUsedMs === 0
+      && usage.costUsed === 0;
   }
 
   private doesNotLeakSourceContent(
@@ -183,9 +219,10 @@ export class TestingCapabilityAdapter {
   }
 
   private sameEvidenceSequence(expected: readonly Evidence[], actual: readonly Evidence[]): boolean {
-    return expected.length === actual.length && expected.every((item, index) => {
+    if (!Array.isArray(actual) || expected.length !== actual.length) return false;
+    return expected.every((item, index) => {
       const candidate = actual[index];
-      return candidate !== undefined
+      return this.isRecord(candidate)
         && item.evidenceId === candidate.evidenceId
         && item.source === candidate.source
         && item.summary === candidate.summary

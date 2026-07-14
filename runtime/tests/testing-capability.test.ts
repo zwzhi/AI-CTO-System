@@ -269,3 +269,89 @@ test('TC-09 accepts a short ordinary context without treating it as a source lea
   assert.equal(outcome.status, 'SUCCESS');
   assert.equal(outcome.failure, undefined);
 });
+
+test('TC-10 normalises malformed nested result fields into controlled output validation failures', () => {
+  const valid = (invocation: TestingInvocationRequest) => new DeterministicTestingAssistant(() => NOW).invoke(invocation);
+  const malformedPorts: readonly TestingInvocationPort[] = [
+    {
+      invoke: (invocation) => {
+        const outcome = valid(invocation);
+        return {
+          ...outcome,
+          result: outcome.result === undefined ? undefined : {
+            ...outcome.result,
+            coverageFindings: undefined as unknown as typeof outcome.result.coverageFindings,
+          },
+        };
+      },
+    },
+    {
+      invoke: (invocation) => {
+        const outcome = valid(invocation);
+        return {
+          ...outcome,
+          result: outcome.result === undefined ? undefined : {
+            ...outcome.result,
+            riskFindings: [{}] as unknown as typeof outcome.result.riskFindings,
+          },
+        };
+      },
+    },
+    {
+      invoke: (invocation) => {
+        const outcome = valid(invocation);
+        return {
+          ...outcome,
+          result: outcome.result === undefined ? undefined : {
+            ...outcome.result,
+            resultRef: undefined as unknown as string,
+          },
+        };
+      },
+    },
+  ];
+
+  for (const port of malformedPorts) {
+    const outcome = createAdapter(port).invoke(createRequest());
+
+    assert.equal(outcome.status, 'FAILURE');
+    assert.equal(outcome.failure?.category, 'OUTPUT_INVALID');
+  }
+});
+
+test('TC-11 rejects a risk finding outside the LOW, MEDIUM, HIGH severity vocabulary', () => {
+  const port: TestingInvocationPort = {
+    invoke: (invocation) => {
+      const outcome = new DeterministicTestingAssistant(() => NOW).invoke(invocation);
+      return {
+        ...outcome,
+        result: outcome.result === undefined ? undefined : {
+          ...outcome.result,
+          riskFindings: [{
+            ...outcome.result.riskFindings[0]!,
+            severity: 'SEVERE' as unknown as 'LOW',
+          }],
+        },
+      };
+    },
+  };
+
+  const outcome = createAdapter(port).invoke(createRequest());
+
+  assert.equal(outcome.status, 'FAILURE');
+  assert.equal(outcome.failure?.category, 'OUTPUT_INVALID');
+});
+
+test('TC-12 rejects successful static output that reports non-zero resource usage', () => {
+  const port: TestingInvocationPort = {
+    invoke: (invocation) => ({
+      ...new DeterministicTestingAssistant(() => NOW).invoke(invocation),
+      usage: { tokenUsed: 1, toolUsed: 0, timeUsedMs: 0, costUsed: 0 },
+    }),
+  };
+
+  const outcome = createAdapter(port).invoke(createRequest());
+
+  assert.equal(outcome.status, 'FAILURE');
+  assert.equal(outcome.failure?.category, 'OUTPUT_INVALID');
+});
