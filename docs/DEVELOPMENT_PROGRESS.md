@@ -393,6 +393,12 @@ Phase 9C-5 Mock Codex Capability Implementation（本地 Mock 已实现；等待
 |---|---|---|
 | Roadmap 完成 | 2026-07-14 | 建立 P0–P3 优先级、能力依赖、三阶段成熟路线、`AUTO / NOTIFY / CONFIRM / BLOCK` 控制建议、Provider Evaluation Entry 与 Evolution Interface。推荐下一步仅为 Documentation Capability Requirement 设计；未创建 Provider Candidate 或 Capability Registry Record，未激活能力、未修改 Runtime。 |
 
+## Documentation Capability Requirement 状态记录
+
+| 事件 | 日期 | 状态 |
+|---|---|---|
+| Requirement 完成 | 2026-07-14 | 定义 Evidence-driven Documentation Assistant 的只读草案与可追溯性 Contract；每次成功输出必须包含 `Draft`、`Source Reference`、`Confidence`、`Evidence`、`Limitations`。未选择 Provider、未创建 Candidate 或 Capability Registry Record、未激活能力、未调用外部工具、未修改 Runtime。 |
+
 ## 最后更新时间
 
 2026-07-14
