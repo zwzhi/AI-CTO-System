@@ -127,6 +127,7 @@ Phase 8.4 Intelligent Resource & Execution Routing Governance（路线同步已�
 - README、SKILL、Module Registry、Project Memory 与 Development Progress 的 Master Plan 入口同步
 - Phase 8.4 已调整为 `Intelligent Resource & Execution Routing Governance`：记录模型耗时、Token 效率和流程过载风险作为路线研究输入，并明确其 `PROPOSED`、非授权边界与后续证据要求
 - Master Plan、README、SKILL、Project Memory 与 Development Progress 已同步；未创建 Module、ADR、运行时、模型路由、队列或自动化
+- `EFF-001` Execution Efficiency Review 已建立为 Phase 8.4 的 Problem Validation Evidence：记录路线同步任务的理论 / 实际复杂度差异、未捕获数据与轻量路由假设；不改变任何 Skill、Git 策略、Module、ADR 或 Phase 状态
 
 ## 进行中
 
@@ -145,6 +146,7 @@ Phase 8.4 Intelligent Resource & Execution Routing Governance（路线同步已�
 - Quality Score、Evidence Level、Confidence、Status 和当前项目适用性必须分别判断；任何高分或历史 L4 都不能替代当前工程 Gate。
 - Pilot 的全部 Evidence 来自 AI-CTO-System；两条 `VALIDATED` 尚无 `ACTIVE` 授权，`KN-FAIL-0001` 仍需独立因果复现。
 - Phase 8.4 的输入来自真实使用反馈但尚无量化基线；不得将单次耗时、Token 或流程负担观察固化为通用路由规则，后续必须收集可比较证据并保留人工决策点。
+- `EFF-001` 只有单次真实执行样本，且精确时长、Token、成本、内部推理和工具调用次数为 `NOT_CAPTURED`；它只能支持待验证假设，不能作为自动路由、流程跳过或 Git 偏好自动应用的依据。
 - 当前决策规范尚未由具体 Agent 自动执行；Phase 3 按要求不包含 Agent 代码。
 - 评分结果依赖证据质量，必须与 Confidence 分开报告。
 - 设计完整不等于开发授权；必须通过 Design Approval Gate。
@@ -237,6 +239,8 @@ Phase 8.4 Intelligent Resource & Execution Routing Governance（路线同步已�
 等待用户确认 Phase 8.4 路线同步。确认不等于进入 Phase 8.4；后续系统级需求先读取 Master Plan，并按 Mission Alignment、Module Admission 与 Feature Classification 推进。
 
 如提出资源或执行路径相关需求，先作为独立研究请求收集可比较证据并完成准入与分类；不自动实现模型路由、队列、Runtime、工具调用或自动化。
+
+在考虑 Phase 8.4 Module Design 前，至少收集多个不同复杂度与风险的 Execution Case，比较质量、返工率、总耗时、Token、成本、人工交互和安全结果；随后再执行 Mission Alignment、Evidence Review、Module Admission、Feature Classification 与受影响 Gate 分析。
 
 ## Phase 3 状态记录
 
