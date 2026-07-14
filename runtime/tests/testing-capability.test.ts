@@ -374,3 +374,39 @@ test('TC-13 records complete audit evidence for successful and rejected analysis
   assert.equal(blocked.auditEvent.failureStage, 'PREFLIGHT');
   assert.equal(repository.listByWorkflowId('workflow-testing-1').length, 2);
 });
+
+test('TC-14 rejects duplicated canonical evidence across two authorised test contexts', () => {
+  const firstContext = createRequest().authorizedTestContexts[0]!;
+  const secondContext = {
+    ...firstContext,
+    sourceRef: 'source-test-2',
+    location: 'runtime/tests/second.test.ts',
+    versionRef: 'v2',
+  };
+  const request = createRequest({
+    authorizedTestContexts: [firstContext, secondContext],
+    executionContext: {
+      ...createRequest().executionContext,
+      allowedContextRefs: ['source-test-1', 'source-test-2'],
+    },
+  });
+  const port: TestingInvocationPort = {
+    invoke: (invocation) => {
+      const outcome = new DeterministicTestingAssistant(() => NOW).invoke(invocation);
+      const duplicatedEvidence = [invocation.evidence[0]!, invocation.evidence[0]!];
+      return {
+        ...outcome,
+        evidence: duplicatedEvidence,
+        result: outcome.result === undefined ? undefined : {
+          ...outcome.result,
+          evidence: duplicatedEvidence,
+        },
+      };
+    },
+  };
+
+  const outcome = createAdapter(port).invoke(request);
+
+  assert.equal(outcome.status, 'FAILURE');
+  assert.equal(outcome.failure?.category, 'OUTPUT_INVALID');
+});
