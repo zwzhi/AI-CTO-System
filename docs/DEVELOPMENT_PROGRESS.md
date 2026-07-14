@@ -381,6 +381,12 @@ Phase 9C-5 Mock Codex Capability Implementation（本地 Mock 已实现；等待
 | Phase 8.4 开始 | 2026-07-14 | 用户批准建立 Layer 5 Execution Routing Governance；只建立治理规范、决策模型和 Evidence 规则，不开发 Runtime 或 Router 代码 |
 | Phase 8.4 完成 | 2026-07-14 | 十份路由治理规则、ADR-0014、Layer 5 Module Registry 与五个治理入口同步完成；未实现模型切换、工具调用、Codex 行为变更、自动化或 Phase 8.5 工作 |
 
+## Engineering Capability Strategy 状态记录
+
+| 事件 | 日期 | 状态 |
+|---|---|---|
+| Strategy 完成 | 2026-07-14 | 建立 Provider 无关的 Engineering Capability 分类、合同需求、风险/权限/人类控制/Evidence、优先级与 `Adopt / Improve / Merge / Deprecate / Remove` 策略生命周期；未创建 Capability Registry Record、未激活或评估 Provider、未修改 Runtime。该策略仅为未来 Phase 10 自我优化与简化提供候选输入。 |
+
 ## 最后更新时间
 
 2026-07-14

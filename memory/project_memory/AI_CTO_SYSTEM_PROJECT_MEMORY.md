@@ -119,11 +119,12 @@
 - 2026-07-14：完成 Phase 9C-5 Mock Codex Capability Implementation；实现 Local Mock Contract/Port、Mock、Guarded Adapter 和仅追加 Audit 的 Runtime Service。33 项本地测试通过且范围扫描未发现外部集成；Gate 为 `APPROVED_FOR_MOCK_CAPABILITY_REVIEW`，Registry Record 仍为 `ABSENT`。
 - 2026-07-14：完成 Codex Capability Evaluation；真实 Provider 的 Source、Version、License、权限实现、安全、成本、维护与兼容性 Evidence 均缺失，Evaluation Result 为 `BLOCKED`，Admission Result 为 `REJECT_OR_DEFER`。候选仅可建议为 `DISCOVERED`，Registry Record 继续保持 `ABSENT`，Selection 为 `PROHIBITED`，Activation Scope 为 `NONE`。
 - 2026-07-14：完成 Codex Capability Evidence Acquisition；收集官方公开 Provider/Terms/费用模型 Evidence（L2）及本地 Mock Runtime Evidence（L3）。精确 Source Artifact、Version、License 适用性、真实权限/安全/成本/兼容性仍为 `UNKNOWN`；重新 Evaluation Readiness 为 `NOT_READY_FOR_REEVALUATION`，Registry Record 保持 `ABSENT`。
+- 2026-07-14：完成 Engineering Capability Strategy；以 Provider 无关合同定义 Documentation、Code Analysis、Testing、Security、Repository Management、Code Modification 与 Deployment 的能力需求、风险、人类控制、Evidence、优先级与 `Adopt / Improve / Merge / Deprecate / Remove` 策略生命周期。未创建 Capability Registry Record、未激活能力、未评估 Provider、未修改 Runtime；该策略仅为未来 Phase 10 自我优化与简化提供候选输入。
 
 ## 当前状态
 
-Master Architecture Sync 已完成。Phase 8.3 Knowledge Governance Pilot 验收结果为 `PASSED_WITH_CONSTRAINTS`：2 条 `VALIDATED`、1 条 `VALIDATING`、0 条 `ACTIVE`。Phase 9A、9B、9C-1、9C-2 实现/Review、9C-3 Agent Contract、9C-4 受控本地 Deterministic Planner MVP / Correction / Review，以及 9C-5 Codex Capability 合同/Review/Mock-only Implementation Design 已完成；Codex 当前仍不可选择或激活。系统仍没有 Router、Classifier、真实 Agent、模型调用、真实 Codex/MCP/工具调用、持久化或自动化实现。
+Master Architecture Sync 已完成。Phase 8.3 Knowledge Governance Pilot 验收结果为 `PASSED_WITH_CONSTRAINTS`：2 条 `VALIDATED`、1 条 `VALIDATING`、0 条 `ACTIVE`。Phase 9A、9B、9C-1、9C-2 实现/Review、9C-3 Agent Contract、9C-4 受控本地 Deterministic Planner MVP / Correction / Review，以及 9C-5 Codex Capability 合同/Review/Mock-only Implementation Design 已完成；Codex 当前仍不可选择或激活。Engineering Capability Strategy 已为未来能力建设和 Phase 10 简化提供 Provider 无关的需求与策略生命周期，但未创建任何 Capability Record。系统仍没有 Router、Classifier、真实 Agent、模型调用、真实 Codex/MCP/工具调用、持久化或自动化实现。
 
 ## 未来计划
 
-等待用户确认是否开始 Mock-only Codex Capability 代码实现。当前 `APPROVED_FOR_IMPLEMENTATION` 只适用于本地 Mock Adapter、合同、Guard 与 Audit 测试，且不自动开始。后续任何真实 Codex 或其他 Capability 集成必须先完成 Capability Admission、Evaluation、Registry、Activation、受控集成测试、权限/安全/成本审查及用户授权；不得把本次实现设计推广为 Codex API/CLI/MCP、网络、外部工具、文件修改、Commit、数据库、生产环境或自动执行授权。
+后续任何真实 Codex 或其他 Engineering Capability 集成必须先完成 Capability Admission、Evaluation、Registry、Activation、受控集成测试、权限/安全/成本审查及用户授权；不得把 Mock 实现或策略优先级推广为 Codex API/CLI/MCP、网络、外部工具、文件修改、Commit、数据库、生产环境或自动执行授权。未来 Phase 10 如讨论自我优化与简化，应以本策略的 `Adopt / Improve / Merge / Deprecate / Remove` 动作、真实 Evidence 与既有治理 Gate 为输入，而非自动改变能力状态。
