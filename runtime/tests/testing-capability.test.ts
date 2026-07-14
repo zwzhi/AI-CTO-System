@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
+import { AuditService } from '../audit/audit-service.ts';
+import { InMemoryAuditRepository } from '../audit/in-memory-audit-repository.ts';
 import { TestingCapabilityAdapter } from '../capability/testing-capability-adapter.ts';
 import { DeterministicTestingAssistant } from '../capability/deterministic-testing-assistant.ts';
 import {
@@ -11,6 +13,7 @@ import {
 } from '../capability/testing-execution-contract.ts';
 import type { TestingInvocationPort } from '../capability/testing-invocation-port.ts';
 import { PermissionBudgetGuard } from '../permission/permission-budget-guard.ts';
+import { TestingCapabilityRuntimeService } from '../services/testing-capability-runtime-service.ts';
 
 const NOW = '2026-07-15T00:00:00.000Z';
 
@@ -354,4 +357,20 @@ test('TC-12 rejects successful static output that reports non-zero resource usag
 
   assert.equal(outcome.status, 'FAILURE');
   assert.equal(outcome.failure?.category, 'OUTPUT_INVALID');
+});
+
+test('TC-13 records complete audit evidence for successful and rejected analysis without changing runtime state', () => {
+  const repository = new InMemoryAuditRepository();
+  const service = new TestingCapabilityRuntimeService(createAdapter(), new AuditService(repository), () => NOW);
+  const succeeded = service.execute(createRequest());
+  const blocked = service.execute(createRequest({ cancelled: true }));
+
+  assert.equal(succeeded.auditEvent.eventType, 'TESTING_CAPABILITY_COMPLETED');
+  assert.equal(succeeded.auditEvent.result, succeeded.outcome.result?.testAnalysisReport);
+  assert.equal(succeeded.auditEvent.outputRef, succeeded.outcome.result?.resultRef);
+  assert.deepEqual(succeeded.auditEvent.budgetSnapshot, createRequest().budget);
+  assert.equal(blocked.auditEvent.eventType, 'TESTING_CAPABILITY_REJECTED');
+  assert.equal(blocked.auditEvent.failureReason, 'CANCELLED');
+  assert.equal(blocked.auditEvent.failureStage, 'PREFLIGHT');
+  assert.equal(repository.listByWorkflowId('workflow-testing-1').length, 2);
 });
