@@ -4,8 +4,10 @@ import assert from 'node:assert/strict';
 import { RuntimeError } from '../models/runtime-error.ts';
 import { InMemoryAuditRepository } from '../audit/in-memory-audit-repository.ts';
 import { AuditService } from '../audit/audit-service.ts';
+import { InMemoryExecutionRepository } from '../audit/in-memory-execution-repository.ts';
 import { MockCapabilityAdapter } from '../capability/mock-capability-adapter.ts';
 import { PermissionBudgetGuard } from '../permission/permission-budget-guard.ts';
+import { RuntimeFoundationService } from '../services/runtime-foundation-service.ts';
 import { InMemoryTaskRepository } from '../task/in-memory-task-repository.ts';
 import { TaskService } from '../task/task-service.ts';
 import { InMemoryWorkflowRepository } from '../workflow/in-memory-workflow-repository.ts';
@@ -31,6 +33,18 @@ function createWorkflowInput() {
       costUsed: 0,
     },
   };
+}
+
+function createRuntimeFoundationService() {
+  return new RuntimeFoundationService({
+    workflowService: new WorkflowService(new InMemoryWorkflowRepository(), () => '2026-07-14T00:00:00.000Z'),
+    taskService: new TaskService(new InMemoryTaskRepository()),
+    guard: new PermissionBudgetGuard(),
+    capabilityAdapter: new MockCapabilityAdapter(() => '2026-07-14T00:00:00.000Z'),
+    executionRepository: new InMemoryExecutionRepository(),
+    auditService: new AuditService(new InMemoryAuditRepository()),
+    now: () => '2026-07-14T00:00:00.000Z',
+  });
 }
 
 test('RuntimeError preserves code, message, and safe details', () => {
@@ -137,4 +151,65 @@ test('AuditService appends evidence without replacing prior events', () => {
   const events = audit.listByWorkflowId('workflow-1');
   assert.equal(events.length, 2);
   assert.equal(events[1]?.evidence[0]?.confidence, 'L3');
+});
+
+test('RuntimeFoundationService completes the mock capability loop with audit evidence', () => {
+  const result = createRuntimeFoundationService().run(
+    createWorkflowInput(),
+    { request: 'mock', mode: 'success' },
+  );
+
+  assert.equal(result.workflow.state, 'COMPLETED');
+  assert.equal(result.task.result?.status, 'SUCCESS');
+  assert.equal(result.executionRecord?.status, 'SUCCESS');
+  assert.ok(result.auditEvents.some((event) => event.evidence.length > 0));
+});
+
+test('RuntimeFoundationService fails without retry when mock capability fails', () => {
+  const result = createRuntimeFoundationService().run(
+    createWorkflowInput(),
+    { request: 'mock', mode: 'failure' },
+  );
+
+  assert.equal(result.workflow.state, 'FAILED');
+  assert.equal(result.task.result?.status, 'FAILURE');
+  assert.equal(result.auditEvents.filter((event) => event.eventType === 'CAPABILITY_COMPLETED').length, 1);
+});
+
+test('RuntimeFoundationService cancels before invocation when user cancels', () => {
+  const result = createRuntimeFoundationService().run(
+    createWorkflowInput(),
+    { request: 'mock', mode: 'success' },
+    { cancelled: true },
+  );
+
+  assert.equal(result.workflow.state, 'CANCELLED');
+  assert.equal(result.capabilityInvocation, undefined);
+});
+
+test('RuntimeFoundationService cancels before invocation when budget is exceeded', () => {
+  const input = createWorkflowInput();
+  const result = createRuntimeFoundationService().run(
+    {
+      ...input,
+      budget: { ...input.budget, tokenLimit: 1, tokenUsed: 2 },
+    },
+    { request: 'mock', mode: 'success' },
+  );
+
+  assert.equal(result.workflow.state, 'CANCELLED');
+  assert.equal(result.capabilityInvocation, undefined);
+  assert.ok(result.auditEvents.some((event) => event.eventType === 'EXECUTION_DENIED'));
+});
+
+test('RuntimeFoundationService records ROLLING_BACK semantics without external rollback', () => {
+  const result = createRuntimeFoundationService().run(
+    createWorkflowInput(),
+    { request: 'mock', mode: 'success' },
+    { markForRollback: true },
+  );
+
+  assert.equal(result.workflow.state, 'CANCELLED');
+  assert.equal(result.capabilityInvocation, undefined);
+  assert.ok(result.auditEvents.some((event) => event.eventType === 'WORKFLOW_ROLLING_BACK'));
 });
