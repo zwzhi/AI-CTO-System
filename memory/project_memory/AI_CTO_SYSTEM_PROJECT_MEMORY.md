@@ -114,6 +114,7 @@
 - 2026-07-14：完成 Phase 9C-4 Deterministic Planner Runtime Review；21 项本地测试重新通过，未发现外部调用、Planner 直接推进 Workflow 或审批绕过。Review Gate 为 `CHANGES_REQUIRED`：Audit 尚缺输入/输出引用、权限/预算快照和失败字段，Planner 预检也尚未强制 `CONFIRM` 模式；未授权进入下一阶段。
 - 2026-07-14：完成 Phase 9C-4 Correction；Audit 已补齐输入/输出引用、权限/预算快照、失败原因与阶段，Planner 预检已限制为 `CONFIRM`，Plan 约束引用已在 Runtime 验证，并新增无效 Plan、约束越界和集成失败测试。25 项本地测试通过，Review Gate 更新为 `APPROVED_FOR_NEXT_PHASE`；未自动进入下一阶段。
 - 2026-07-14：完成 Phase 9C-5 Codex Capability Integration Design 与 ADR-0024；将 Codex 定义为经 Capability Adapter 使用的可替换 Engineering Capability，明确合同、最小权限、`CONFIRM` 人工控制、审计、失败与 Mock 测试边界。当前 `Registry Record: ABSENT`，未进行准入、评估、激活或真实 Codex/API/CLI/MCP/网络接入。
+- 2026-07-14：完成 Phase 9C-5 Codex Capability Design Review；七项边界审查均通过，Review Gate 为 `APPROVED_FOR_NEXT_PHASE`，只允许进入后续 Codex Capability Implementation Design。Review 不改变 ADR-0024，`Registry Record` 继续保持 `ABSENT`，不授权真实接入或 Capability Activation。
 
 ## 当前状态
 
@@ -121,4 +122,4 @@ Master Architecture Sync 已完成。Phase 8.3 Knowledge Governance Pilot 验收
 
 ## 未来计划
 
-等待用户确认 Phase 9C-5 Codex Capability Integration Design。该设计不自动进入真实接入或后续阶段。后续任何 Codex 或其他真实 Capability 集成必须先完成 Capability Admission、Evaluation、Registry、Activation、实施设计、Mock 与集成测试、权限/安全/成本审查及用户授权；不得把本次合同设计推广为 Codex API/CLI/MCP、网络、外部工具、文件修改、Commit、数据库、生产环境或自动执行授权。
+Phase 9C-5 Design Review 已允许讨论后续 Codex Capability Implementation Design，但不自动进入真实接入或代码实现。后续任何 Codex 或其他真实 Capability 集成必须先完成 Capability Admission、Evaluation、Registry、Activation、实施设计、Mock 与集成测试、权限/安全/成本审查及用户授权；不得把本次合同设计推广为 Codex API/CLI/MCP、网络、外部工具、文件修改、Commit、数据库、生产环境或自动执行授权。

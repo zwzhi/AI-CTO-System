@@ -79,7 +79,7 @@ Layer 定义稳定职责边界，Module 定义层内可独立治理的能力，P
 | 路线状态 | 内容 | 授权含义 |
 |---|---|---|
 | 已完成治理基线 | Phase 1–8.5、Architecture Review、Strategic Alignment、Knowledge Governance Pilot | 仅证明相应治理文档或试点已完成 |
-| 当前工作 | Phase 9C-5 Codex Capability Integration Design | 已完成 Codex Capability、Adapter、权限、人工控制、审计、失败与 Mock 测试合同设计；尚未进入真实接入 |
+| 当前工作 | Phase 9C-5 Codex Capability Design Review | 合同设计 Review Gate 为 `APPROVED_FOR_NEXT_PHASE`；只允许讨论后续实现设计，尚未进入真实接入 |
 | 未启动 | 真实 Capability 激活、真实 Codex/MCP/Tool Calling、持久化、生产交付与自动执行 | 没有相应开发或执行授权 |
 
 Phase 只是历史交付标签和路线元数据，不是 Module、Layer、Lifecycle State 或自动授权。未来候选路线可以标记为 `PROPOSED`、`UNDER_REVIEW`、`APPROVED_FOR_DESIGN` 或 `DEFERRED`，但这些仅为规划结果，不能写入 Module Registry 状态或项目生命周期。
@@ -200,4 +200,4 @@ flowchart TD
 
 每次涉及系统边界、Module 状态、完成能力、路线或核心 ADR 的变化，都必须复核本 Master Plan。若无需更新，记录检查结论；若需要更新，必须与 Manifesto、ADR、Module Registry、SKILL、Project Memory 和 Development Progress 保持一致。
 
-本 Master Plan 当前版本已建立同步基线。Phase 9A、9B 与 9C-1 分别完成 Runtime 架构、MVP 范围和实施设计；Phase 9C-2 已实现并测试 Runtime Foundation MVP：TypeScript + Node.js 24、Repository Port + In-memory Adapter、单 Workflow / Task、Mock Capability、Guard、Execution / Audit 与 12 项本地测试。随后的 [Runtime Foundation Review](../runtime/RUNTIME_FOUNDATION_REVIEW_REPORT.md) 结论为 `APPROVED_FOR_NEXT_PHASE`，并登记了 In-memory 持久化、类型校验、状态路径覆盖和未来集成边界等风险。Phase 9C-3 定义 Planner-first Agent Contract；Phase 9C-4 已实现本地 `PlannerAgentPort → DeterministicPlanner` MVP，并完成针对 Audit 合同、`CONFIRM`-only 预检、约束验证和失败路径的受控修正。更新后的 [Deterministic Planner Runtime Review](../runtime/DETERMINISTIC_PLANNER_RUNTIME_REVIEW_REPORT.md) 以 25 项本地测试将 Gate 更新为 `APPROVED_FOR_NEXT_PHASE`。Phase 9C-5 随后完成 Codex Capability 的合同设计，明确 Codex 只能经 Adapter 作为受控 Capability 使用，且其 Registry Record 仍为 `ABSENT`。这些结论不表示生产可用，也不授权真实 Codex、LLM、MCP、外部工具、数据库、Web 框架、生产环境、自动执行或后续实现；这些能力仍须单独准入、设计与授权。
+本 Master Plan 当前版本已建立同步基线。Phase 9A、9B 与 9C-1 分别完成 Runtime 架构、MVP 范围和实施设计；Phase 9C-2 已实现并测试 Runtime Foundation MVP：TypeScript + Node.js 24、Repository Port + In-memory Adapter、单 Workflow / Task、Mock Capability、Guard、Execution / Audit 与 12 项本地测试。随后的 [Runtime Foundation Review](../runtime/RUNTIME_FOUNDATION_REVIEW_REPORT.md) 结论为 `APPROVED_FOR_NEXT_PHASE`，并登记了 In-memory 持久化、类型校验、状态路径覆盖和未来集成边界等风险。Phase 9C-3 定义 Planner-first Agent Contract；Phase 9C-4 已实现本地 `PlannerAgentPort → DeterministicPlanner` MVP，并完成针对 Audit 合同、`CONFIRM`-only 预检、约束验证和失败路径的受控修正。更新后的 [Deterministic Planner Runtime Review](../runtime/DETERMINISTIC_PLANNER_RUNTIME_REVIEW_REPORT.md) 以 25 项本地测试将 Gate 更新为 `APPROVED_FOR_NEXT_PHASE`。Phase 9C-5 随后完成 Codex Capability 的合同设计，并由 [Codex Capability Design Review](../runtime/CODEX_CAPABILITY_DESIGN_REVIEW_REPORT.md) 给出 `APPROVED_FOR_NEXT_PHASE`：Codex 只能经 Adapter 作为受控 Capability 使用，且其 Registry Record 仍为 `ABSENT`。该 Gate 只允许后续实现设计，不表示生产可用，也不授权真实 Codex、LLM、MCP、外部工具、数据库、Web 框架、生产环境、自动执行或真实实现；这些能力仍须单独准入、设计与授权。

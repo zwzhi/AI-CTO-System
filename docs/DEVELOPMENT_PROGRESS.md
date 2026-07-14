@@ -2,7 +2,7 @@
 
 ## 当前阶段
 
-Phase 9C-5 Codex Capability Integration Design（仅完成合同与控制边界设计；未进入真实 Codex 接入）
+Phase 9C-5 Codex Capability Design Review（Review Gate：`APPROVED_FOR_NEXT_PHASE`；仅允许后续实现设计）
 
 ## 已完成
 
@@ -144,14 +144,15 @@ Phase 9C-5 Codex Capability Integration Design（仅完成合同与控制边界�
 - Phase 9C-4 Review：已对实现与 Phase 9C-3 / 9C-4 设计进行范围、Agent 边界、Workflow 权限、Plan 合同、审批、审计、测试与风险审查；21 项本地测试重新通过。Review Gate 为 `CHANGES_REQUIRED`，不进入 Phase 9C-5
 - Phase 9C-4 Correction：已补齐 Audit 输入/输出引用、权限/预算快照、失败原因/阶段；Planner 预检限制为 `CONFIRM`；新增并通过无效 Plan、约束越界、集成失败、`AUTO` 拒绝及 Audit 合同测试。25 项本地 `node:test` 通过，Review Gate 更新为 `APPROVED_FOR_NEXT_PHASE`，不自动进入 Phase 9C-5
 - Phase 9C-5：已完成 Codex Capability Architecture、Contract、Adapter、Permission、Human Control、Audit、Failure Handling、Mock Test Plan 与 ADR-0024。Codex 只作为经 Adapter 使用的可替换 Engineering Capability；当前 `Registry Record: ABSENT`、`Selection: PROHIBITED`、`Activation Scope: NONE`，未接入真实 Codex/API/CLI/MCP、网络或外部工具
+- Phase 9C-5 Design Review：已审查 Capability 边界、Adapter / Workflow 权威、Permission、Human Control、Audit、Failure Handling 与 Registry 状态；Review Gate 为 `APPROVED_FOR_NEXT_PHASE`，只允许后续 Codex Capability Implementation Design，`ADR Not Required`
 
 ## 进行中
 
-- 无。Phase 9C-5 Codex Capability Integration Design 已完成，等待用户确认；真实 Codex、LLM、MCP、真实工具、持久化、生产环境和自动化仍未启动。
+- 无。Phase 9C-5 Codex Capability Design Review 已完成；等待用户决定是否开始后续 Implementation Design。真实 Codex、LLM、MCP、真实工具、持久化、生产环境和自动化仍未启动。
 
 ## 待处理
 
-- 等待用户确认 Phase 9C-5 Codex Capability Integration Design；合同设计不构成真实 Capability 准入、激活或实现授权
+- 如用户授权，可仅开始 Codex Capability Implementation Design；Review Gate 不构成真实 Capability 准入、激活或代码实现授权
 - 如提出真实 Capability、Agent、Codex/MCP、工具、数据库、持久化、生产环境或自动执行需求，必须作为新系统级请求重新完成准入、分类、架构、ADR、风险、安全与 Gate 分析
 - 不得将本地 In-memory MVP 的测试结果解释为外部工具、生产环境、成本、权限或安全效果 Evidence
 
