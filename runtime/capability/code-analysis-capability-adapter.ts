@@ -80,9 +80,16 @@ export class CodeAnalysisCapabilityAdapter {
   }
 
   private isMissingOrExpired(expiresAt: string): boolean {
-    const expiresAtMs = Date.parse(expiresAt);
-    const nowMs = Date.parse(this.now());
-    return !Number.isFinite(expiresAtMs) || !Number.isFinite(nowMs) || expiresAtMs <= nowMs;
+    const expiresAtMs = this.parseStrictIsoTimestamp(expiresAt);
+    const nowMs = this.parseStrictIsoTimestamp(this.now());
+    return expiresAtMs === undefined || nowMs === undefined || expiresAtMs <= nowMs;
+  }
+
+  private parseStrictIsoTimestamp(value: string): number | undefined {
+    if (!/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/.test(value)) return undefined;
+    const milliseconds = Date.parse(value);
+    if (!Number.isFinite(milliseconds) || new Date(milliseconds).toISOString() !== value) return undefined;
+    return milliseconds;
   }
 
   private buildEvidence(request: CodeAnalysisExecutionRequest): readonly Evidence[] {

@@ -144,6 +144,18 @@ test('CA-04b blocks expired and malformed permission timestamps before invocatio
   }
 });
 
+test('CA-04c blocks a calendar-invalid timestamp that Date.parse would normalise into the future', () => {
+  const port = new CountingPort();
+  const adapter = new CodeAnalysisCapabilityAdapter(port, new PermissionBudgetGuard(), () => '2026-02-01T00:00:00.000Z');
+  const outcome = adapter.invoke(createRequest({
+    permissionGrant: { ...createRequest().permissionGrant, expiresAt: '2026-02-30T00:00:00.000Z' },
+  }));
+
+  assert.equal(outcome.status, 'BLOCKED');
+  assert.equal(outcome.failure?.category, 'PERMISSION_DENIED');
+  assert.equal(port.calls, 0);
+});
+
 test('CA-05 blocks an exceeded budget before invocation', () => {
   const port = new CountingPort();
   const outcome = createAdapter(port).invoke(createRequest({
