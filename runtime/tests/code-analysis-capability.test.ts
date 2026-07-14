@@ -1,0 +1,178 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+
+import type {
+  CodeAnalysisExecutionOutcome,
+  CodeAnalysisExecutionRequest,
+  CodeAnalysisInvocationRequest,
+} from '../capability/code-analysis-execution-contract.ts';
+import { CODE_ANALYSIS_OPERATIONS } from '../capability/code-analysis-execution-contract.ts';
+import type { CodeAnalysisInvocationPort } from '../capability/code-analysis-invocation-port.ts';
+import { CodeAnalysisCapabilityAdapter } from '../capability/code-analysis-capability-adapter.ts';
+import { DeterministicCodeAnalysisAssistant } from '../capability/deterministic-code-analysis-assistant.ts';
+import { PermissionBudgetGuard } from '../permission/permission-budget-guard.ts';
+import { AuditService } from '../audit/audit-service.ts';
+import { InMemoryAuditRepository } from '../audit/in-memory-audit-repository.ts';
+import { CodeAnalysisCapabilityRuntimeService } from '../services/code-analysis-capability-runtime-service.ts';
+
+const NOW = '2026-07-14T00:00:00.000Z';
+
+function createRequest(overrides: Partial<CodeAnalysisExecutionRequest> = {}): CodeAnalysisExecutionRequest {
+  return {
+    taskId: 'task-code-analysis-1',
+    workflowId: 'workflow-code-analysis-1',
+    operation: 'ANALYZE_READ_ONLY_CODE',
+    taskObjective: 'Analyse the supplied module boundaries and risks.',
+    authorizedCodeContexts: [{
+      sourceRef: 'source-runtime-1',
+      location: 'runtime/sample.ts',
+      content: 'export function sample() { return "ok"; }',
+      versionRef: 'v1',
+    }],
+    repositoryContext: { repositoryRef: 'repo-ai-cto', revisionRef: 'main@v1' },
+    executionContext: { intentRef: 'intent-code-analysis-1', constraintRefs: [], allowedContextRefs: ['source-runtime-1'] },
+    permissionGrant: { grantId: 'grant-code-analysis-1', allowedOperations: ['ANALYZE_READ_ONLY_CODE'], expiresAt: '2026-07-15T00:00:00.000Z' },
+    budget: { tokenLimit: 10, tokenUsed: 0, toolLimit: 0, toolUsed: 0, timeLimitMs: 1_000, timeUsedMs: 0, costLimit: 1, costUsed: 0 },
+    ...overrides,
+  };
+}
+
+class CountingPort implements CodeAnalysisInvocationPort {
+  calls = 0;
+  lastInvocation?: CodeAnalysisInvocationRequest;
+  private readonly delegate: CodeAnalysisInvocationPort;
+
+  constructor(delegate: CodeAnalysisInvocationPort = new DeterministicCodeAnalysisAssistant(() => NOW)) {
+    this.delegate = delegate;
+  }
+
+  invoke(invocation: CodeAnalysisInvocationRequest): CodeAnalysisExecutionOutcome {
+    this.calls += 1;
+    this.lastInvocation = invocation;
+    return this.delegate.invoke(invocation);
+  }
+}
+
+function createAdapter(port: CodeAnalysisInvocationPort = new DeterministicCodeAnalysisAssistant(() => NOW)): CodeAnalysisCapabilityAdapter {
+  return new CodeAnalysisCapabilityAdapter(port, new PermissionBudgetGuard(), () => NOW);
+}
+
+test('CA-01 returns a complete read-only analysis for an authorised code context', () => {
+  const outcome = createAdapter().invoke(createRequest());
+
+  assert.equal(outcome.status, 'SUCCESS');
+  assert.ok(outcome.result?.analysisReport);
+  assert.ok(outcome.result?.architectureFindings.length);
+  assert.ok(outcome.result?.riskFindings.length);
+  assert.ok(outcome.result?.technicalDebt.length);
+  assert.ok(outcome.result?.evidence.length);
+  assert.ok(outcome.result?.confidence);
+  assert.ok(outcome.result?.limitations.length);
+});
+
+test('CA-02 builds authorised evidence before deterministic analysis', () => {
+  const request = createRequest({
+    authorizedCodeContexts: [
+      ...createRequest().authorizedCodeContexts,
+      { sourceRef: 'source-runtime-2', location: 'runtime/other.ts', content: 'export const other = true;', versionRef: 'v2' },
+    ],
+    executionContext: { ...createRequest().executionContext, allowedContextRefs: ['source-runtime-1', 'source-runtime-2'] },
+  });
+  const port = new CountingPort();
+  const outcome = createAdapter(port).invoke(request);
+
+  assert.equal(outcome.status, 'SUCCESS');
+  assert.deepEqual(port.lastInvocation?.evidence.map((evidence) => evidence.reference), ['source-runtime-1', 'source-runtime-2']);
+  assert.ok(outcome.result?.evidence.every((evidence) => request.executionContext.allowedContextRefs.includes(evidence.reference ?? '')));
+});
+
+test('CA-03 blocks empty, unauthorised, and unlocatable source scope before invocation', () => {
+  const port = new CountingPort();
+  const outcome = createAdapter(port).invoke(createRequest({ authorizedCodeContexts: [] }));
+
+  assert.equal(outcome.status, 'BLOCKED');
+  assert.equal(outcome.failure?.category, 'SOURCE_SCOPE_INVALID');
+  assert.equal(port.calls, 0);
+});
+
+test('CA-04 blocks missing or expired read-only permission before invocation', () => {
+  const port = new CountingPort();
+  const outcome = createAdapter(port).invoke(createRequest({
+    permissionGrant: { ...createRequest().permissionGrant, allowedOperations: [] },
+  }));
+
+  assert.equal(outcome.status, 'BLOCKED');
+  assert.equal(outcome.failure?.category, 'PERMISSION_DENIED');
+  assert.equal(port.calls, 0);
+});
+
+test('CA-05 blocks an exceeded budget before invocation', () => {
+  const port = new CountingPort();
+  const outcome = createAdapter(port).invoke(createRequest({
+    budget: { ...createRequest().budget, tokenLimit: 1, tokenUsed: 2 },
+  }));
+
+  assert.equal(outcome.status, 'BLOCKED');
+  assert.equal(outcome.failure?.category, 'BUDGET_EXCEEDED');
+  assert.equal(port.calls, 0);
+});
+
+test('CA-06 blocks a cancelled analysis request before invocation', () => {
+  const port = new CountingPort();
+  const outcome = createAdapter(port).invoke(createRequest({ cancelled: true }));
+
+  assert.equal(outcome.status, 'BLOCKED');
+  assert.equal(outcome.failure?.category, 'CANCELLED');
+  assert.equal(port.calls, 0);
+});
+
+test('CA-07 rejects an invalid analysis result from the invocation port', () => {
+  const invalidPort: CodeAnalysisInvocationPort = {
+    invoke: () => ({ status: 'SUCCESS', evidence: [], confidence: 'L3', timestamp: NOW, usage: { tokenUsed: 0, toolUsed: 0, timeUsedMs: 0, costUsed: 0 } }),
+  };
+  const outcome = createAdapter(invalidPort).invoke(createRequest());
+
+  assert.equal(outcome.status, 'FAILURE');
+  assert.equal(outcome.failure?.category, 'OUTPUT_INVALID');
+});
+
+test('CA-08 limits confidence to the evidence available from supplied contexts', () => {
+  const outcome = createAdapter().invoke(createRequest({
+    authorizedCodeContexts: [{ ...createRequest().authorizedCodeContexts[0]!, versionRef: undefined }],
+  }));
+
+  assert.equal(outcome.status, 'SUCCESS');
+  assert.equal(outcome.result?.confidence, 'L2');
+});
+
+test('CA-09 writes complete audit evidence for success and preflight rejection', () => {
+  const repository = new InMemoryAuditRepository();
+  const service = new CodeAnalysisCapabilityRuntimeService(createAdapter(), new AuditService(repository), () => NOW);
+  const succeeded = service.execute(createRequest());
+  const blocked = service.execute(createRequest({ cancelled: true }));
+
+  assert.equal(succeeded.auditEvent.workflowId, 'workflow-code-analysis-1');
+  assert.equal(succeeded.auditEvent.outputRef, succeeded.outcome.result?.resultRef);
+  assert.equal(blocked.auditEvent.failureReason, 'CANCELLED');
+  assert.equal(repository.listByWorkflowId('workflow-code-analysis-1').length, 2);
+});
+
+test('CA-10 passes immutable in-memory scope and does not expose external side effects', () => {
+  let received: CodeAnalysisInvocationRequest | undefined;
+  const observingPort: CodeAnalysisInvocationPort = {
+    invoke: (invocation) => {
+      received = invocation;
+      return new DeterministicCodeAnalysisAssistant(() => NOW).invoke(invocation);
+    },
+  };
+  const source = createRequest().authorizedCodeContexts[0]!;
+  const outcome = createAdapter(observingPort).invoke(createRequest({
+    authorizedCodeContexts: [{ ...source, content: 'private-value-must-not-appear' }],
+  }));
+
+  assert.equal(outcome.status, 'SUCCESS');
+  assert.ok(Object.isFrozen(received?.request));
+  assert.ok(Object.isFrozen(received?.request.authorizedCodeContexts));
+  assert.doesNotMatch(outcome.result?.analysisReport ?? '', /private-value-must-not-appear/);
+  assert.deepEqual(CODE_ANALYSIS_OPERATIONS, ['ANALYZE_READ_ONLY_CODE']);
+});
