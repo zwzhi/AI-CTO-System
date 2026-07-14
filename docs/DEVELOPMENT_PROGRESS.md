@@ -2,7 +2,7 @@
 
 ## 当前阶段
 
-Phase 9B Runtime MVP Scope Design（范围与架构规格已完成；未开发 Runtime 代码、未创建真实 Agent、未接入 Codex/MCP、真实工具或自动执行）
+Phase 9C-1 Runtime Foundation Implementation Design（正式架构文档已完成；未开发 Runtime 代码、未创建真实 Agent、未接入 Codex/MCP、真实工具或自动执行）
 
 ## 已完成
 
@@ -135,16 +135,17 @@ Phase 9B Runtime MVP Scope Design（范围与架构规格已完成；未开发 R
 - Governance Completion Review：五层、Phase、Module、Authority、Runtime 前置条件与风险已审查，结果为 `READY_FOR_RUNTIME`（仅治理结论，未进入 Phase 9）
 - Phase 9A：Runtime、Workflow、Agent、Control、Permission、Adapter、Memory、Audit、Budget、Safety 十份架构文档与 ADR-0018 已完成；未实现 Runtime、Agent、Codex、MCP、外部工具或自动执行，未进入 Phase 9B
 - Phase 9B：Runtime MVP 的 Scope、Boundary、Data Model、Workflow、Agent Contract、Capability Adapter、Human Control、Audit、Technical Constraints、Implementation Plan 与 ADR-0019 已完成；定义单 Workflow、单 Task、Mock Capability、Audit Evidence、`AUTO` / `CONFIRM` / `BLOCK`、Success Criteria 和四类场景，未开发 Runtime 代码或接入真实执行面
+- Phase 9C-1：Runtime Foundation Implementation Plan、Project Structure、Data Model、API Contract、Mock Capability、Test Plan、Failure Handling、Implementation Gate 与 ADR-0020 已完成；采用 Thin Core + Contract First，明确 Execution Context、Evidence Contract、Permission / Budget Guard、Audit Evidence、Workflow State Machine 和 `ROLLING_BACK` 语义，未进入代码开发
 
 ## 进行中
 
-- 无。Phase 9B 仅完成最小闭环范围设计；Runtime 实现、真实 Agent、Codex/MCP、真实工具和自动化未启动。
+- 无。Phase 9C-1 仅完成 Runtime Foundation 实施设计；Runtime 代码、真实 Agent、Codex/MCP、真实工具和自动化未启动。
 
 ## 待处理
 
-- 等待用户确认 Phase 9B Runtime MVP Scope Design
-- 如获后续实现授权，先按 `docs/runtime/RUNTIME_MVP_IMPLEMENTATION_PLAN.md` 复核数据合同、状态、预算、控制、审计、四类场景和安全约束；不得扩大为真实工具或生产执行
-- 未完成独立授权、受影响 Gate、安全审查和实现计划前，不新增 Runtime 代码、真实 Agent、Codex/MCP、模型调用、工具调用或自动化
+- 等待用户确认 Phase 9C-1 Runtime Foundation Implementation Design
+- 如获后续实现授权，先按 `docs/runtime/RUNTIME_IMPLEMENTATION_GATE.md` 复核 Phase 9C-1 的合同、状态、预算、控制、审计、测试、失败场景和安全约束；不得扩大为真实工具或生产执行
+- 未完成独立授权、Gate 批准、安全审查和实现计划前，不新增 Runtime 代码、真实 Agent、Codex/MCP、模型调用、工具调用或自动化
 
 ## 阻塞与风险
 
@@ -157,6 +158,7 @@ Phase 9B Runtime MVP Scope Design（范围与架构规格已完成；未开发 R
 - Execution Routing Governance 目前只有建议性规则，无法执行或验证真实模型 / 工具 / Skill / Git 路由效果；文档完成不能解释为自动切换、自动调用或自动授权。
 - Intent Gateway 目前只有分类与确认治理规则，没有 Classifier Runtime、训练数据、模型调用或真实分类效果 Evidence；文档完成不能解释为自动识别或自动执行。
 - Phase 9B 的 Mock Capability 只能验证控制合同，不能证明真实工具、模型、Agent 协作、持久化或生产环境可靠性；四类失败场景仍未经过 Runtime 代码验证。
+- Phase 9C-1 的 Gate 当前为 `CHANGES_REQUIRED`，因为正式文档完成不等于已获 Phase 9C-2 代码开发授权；`ROLLING_BACK` 仅有状态与审计语义，未实现真实回滚。
 - 当前决策规范尚未由具体 Agent 自动执行；Phase 3 按要求不包含 Agent 代码。
 - 评分结果依赖证据质量，必须与 Confidence 分开报告。
 - 设计完整不等于开发授权；必须通过 Design Approval Gate。

@@ -105,11 +105,12 @@
 - 2026-07-14：完成 Governance Completion Review 与 ADR-0017；治理前置条件结论为 `READY_FOR_RUNTIME`，不授权 Phase 9 或 Runtime 实现。
 - 2026-07-14：完成 Phase 9A Runtime Architecture Design 与 ADR-0018；仅建立 Control Plane First 架构合同，未实现 Runtime 或进入 Phase 9B。
 - 2026-07-14：完成 Phase 9B Runtime MVP Scope Design 与 ADR-0019；定义单 Workflow、单 Task、Mock Capability、Audit Evidence、`AUTO` / `CONFIRM` / `BLOCK`、Success Criteria 和四类失败场景，未开发 Runtime 代码或接入真实 Agent、Codex、MCP、工具和自动执行。
+- 2026-07-14：完成 Phase 9C-1 Runtime Foundation Implementation Design 与 ADR-0020；以 Thin Core + Contract First 建立 Workflow、Task、Mock Capability Adapter、Execution Context、Evidence Contract、Permission / Budget Guard、Audit、失败处理、测试和代码开发 Gate 的技术栈中立设计，未进入 Phase 9C-2 代码开发。
 
 ## 当前状态
 
-Master Architecture Sync 已完成。Phase 8.3 Knowledge Governance Pilot 验收结果为 `PASSED_WITH_CONSTRAINTS`：2 条 `VALIDATED`、1 条 `VALIDATING`、0 条 `ACTIVE`。Phase 9A 与 Phase 9B 已分别完成 Control Plane First 架构和 Runtime MVP 最小闭环范围设计；当前仍没有 Runtime、Router、Classifier、真实 Agent、模型调用、真实工具调用或自动化实现。
+Master Architecture Sync 已完成。Phase 8.3 Knowledge Governance Pilot 验收结果为 `PASSED_WITH_CONSTRAINTS`：2 条 `VALIDATED`、1 条 `VALIDATING`、0 条 `ACTIVE`。Phase 9A、9B 和 9C-1 已完成 Control Plane First 架构、MVP 范围和 Runtime Foundation 实施设计；当前仍没有 Runtime、Router、Classifier、真实 Agent、模型调用、真实工具调用或自动化实现。
 
 ## 未来计划
 
-等待用户确认 Phase 9B Runtime MVP Scope Design。后续 Runtime 代码开发必须先取得独立授权，并以 Phase 9B 的数据合同、预算、人工控制、Audit、Success Criteria 和失败场景为基线；不得先行接入真实 Agent、Codex、MCP、真实工具、生产环境或自动执行。后续任何系统级需求仍必须先以 Master Plan 完成 Mission Alignment、Module Admission 与 Feature Classification。
+等待用户确认 Phase 9C-1 Runtime Foundation Implementation Design。后续 Phase 9C-2 Runtime 代码开发必须先取得独立授权，并以 Phase 9C-1 的 Entity、Interface Contract、Execution Context、Evidence Contract、Permission / Budget Guard、Audit、状态机、测试与 Gate 为基线；不得先行接入真实 Agent、Codex、MCP、真实工具、生产环境或自动执行。后续任何系统级需求仍必须先以 Master Plan 完成 Mission Alignment、Module Admission 与 Feature Classification。

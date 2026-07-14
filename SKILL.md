@@ -270,6 +270,10 @@ Runtime 只按 `docs/runtime/` 架构合同设计；Agent 经 Workflow Engine �
 
 Phase 9B 只定义最小 Runtime 验证闭环：单一 Workflow、单一 Task、经 Adapter Contract 的 Mock Capability、Audit Evidence 与 `AUTO` / `CONFIRM` / `BLOCK` 人工控制。必须覆盖正常完成、Capability 失败、用户取消与预算超限；状态、权限、预算、Kill Switch 和 Gate 不得被绕过。该阶段不开发 Runtime 代码，不创建真实 Agent，不接入 Codex、MCP 或真实工具，不自动执行、改码、部署或进入生产环境；Phase 9B 范围设计完成不构成 Runtime 实现授权。
 
+## PHASE 9C-1 RUNTIME FOUNDATION IMPLEMENTATION DESIGN 规则
+
+Phase 9C-1 采用 Thin Core + Contract First：Workflow Engine 只负责状态、生命周期与任务编排；Task 只负责实体和输入输出；Capability Adapter 只负责能力合同；Audit 只记录 Evidence；Permission / Budget Guard 只作执行前约束检查；Execution Context 只关联受控上下文；Evidence Contract 只保证可追溯并作为未来受控 Knowledge 回写候选。必须使用技术栈中立的 Entity、Interface Contract、Pseudo Type、State Machine 和 Input / Output Definition。仅允许单 Workflow、单 Task 与 Mock Capability；不写 Runtime 代码、不绑定语言/框架/数据库/ORM/部署、不接入 Codex/MCP、不创建真实 Agent、不调用真实工具、不自动执行，也不得以该设计替代业务审批、ADR、项目 Gate 或 Phase 9C-2 独立授权。
+
 ## CAPABILITY GOVERNANCE 规则
 
 1. 使用 `docs/capability/CAPABILITY_GOVERNANCE_STANDARD.md` 区分 Module、Capability、Feature 和 Technical Asset。Capability 是可调用的内部或外部能力，不是系统功能 Module。

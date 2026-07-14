@@ -31,4 +31,4 @@ stateDiagram-v2
 
 ## 暂停、恢复与失败
 
-暂停仅用于预算或显式控制中断。恢复必须重新检查 Permission、Human Control 和剩余预算；没有授权则取消。失败不会自动创建新 Task、重试循环或替换 Capability。若未来动作被标记需回滚，只记录 `ROLLBACK` 状态与待决 Evidence，不在 MVP 执行真实回滚。
+暂停仅用于预算或显式控制中断。恢复必须重新检查 Permission、Human Control 和剩余预算；没有授权则取消。失败不会自动创建新 Task、重试循环或替换 Capability。若未来动作被标记需回滚，只记录 `ROLLING_BACK` 状态与待决 Evidence，不在 MVP 执行真实回滚。
