@@ -284,6 +284,12 @@ Phase 9C-3 只建立 Layer 5 `Agent Runtime` 的 Single Agent Contract，不创�
 
 第一个 Agent 为 Planner：只生成 Proposed Execution Plan + Plan Evidence，默认 `CONFIRM`。Planner 完成后由 Workflow Engine 记录 Audit 并进入 `WAITING_APPROVAL`；只有用户确认后，未来经独立授权的 Workflow 才能考虑后续任务。Planner 禁止推进 `EXECUTING`、调用 Capability/外部工具/Codex/MCP、修改代码/治理文件/Project Memory、写入 `ACTIVE` Knowledge、创建 Task、分配 Agent 或绕过 Gate。`AUTO`、`NOTIFY`、低风险自动化、多 Agent 协作和 Agent 代码均不属于本阶段。
 
+## PHASE 9C-4 SINGLE AGENT RUNTIME IMPLEMENTATION DESIGN 规则
+
+Phase 9C-4 只定义未来本地 Planner Runtime 的实现方案，不写代码或创建真实 Agent。实现边界固定为 `PlannerAgentPort → DeterministicPlanner`：该 Adapter 仅根据明确、固定输入和封闭模板生成可预测的 Proposed `ExecutionPlan` + Evidence；禁止模型、网络、外部工具、Capability 调用、Codex/MCP、文件写入、数据库和自动执行。`ExecutionPlan` 必须包含 `planner_version`、`plan_schema_version`、`PROPOSED` 状态、Evidence、Confidence 和 `approval_required: true`。
+
+未来 AgentTask 只通过 Agent Runtime domain service 管理；Workflow Engine 独占 `PLANNING → WAITING_APPROVAL`、审批、取消和后续状态。Planner/Port 只能返回结果，不能改变 Workflow、创建后续 Task、确认计划或执行计划。实现 Gate 当前为 `CHANGES_REQUIRED`，除非 Agent Contract、AgentTask、Plan Contract、Permission/Budget、Approval、Audit 和 Test Plan 全部确认且用户另行授权代码实现。不得进入 Phase 9C-5。
+
 ## CAPABILITY GOVERNANCE 规则
 
 1. 使用 `docs/capability/CAPABILITY_GOVERNANCE_STANDARD.md` 区分 Module、Capability、Feature 和 Technical Asset。Capability 是可调用的内部或外部能力，不是系统功能 Module。
