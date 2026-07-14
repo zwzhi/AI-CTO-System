@@ -278,6 +278,12 @@ Phase 9C-1 采用 Thin Core + Contract First：Workflow Engine 只负责状态�
 
 Phase 9C-2 已以 TypeScript、Node.js 24、Node Built-in Test Runner 和 Repository Port + In-memory Adapter 实现本地 Runtime Foundation MVP。Core 仍不得依赖具体 Adapter；Workflow 只经 WorkflowService 改变状态，Task 只经 TaskService 处理输入输出，Capability 只通过 Mock Capability Adapter 返回 Result，Audit 只追加 Execution / Evidence，Permission / Budget Guard 只返回约束结论。禁止修改 `agents/`、`tools/`、`integrations/`、`api/`，禁止真实 Agent、Codex/MCP、外部工具、数据库、Web 框架、自动执行、自动治理文件修改和 Evidence 自动写入 Knowledge Base。`APPROVED_FOR_IMPLEMENTATION` 只表示本次本地 MVP 实现 Gate 通过，不授权真实能力或后续阶段。
 
+## PHASE 9C-3 SINGLE AGENT EXECUTION DESIGN 规则
+
+Phase 9C-3 只建立 Layer 5 `Agent Runtime` 的 Single Agent Contract，不创建或调度真实 Agent。Workflow Engine 创建和分配 Agent Task，Agent 只基于明确 Input、Execution Context、Permission 与 Budget 返回结构化 Result + Evidence，Workflow 独占状态、Approval、Audit 协调和后续流转。Agent 不是决策者、Workflow 或 Capability；Agent 之间禁止直接调用。
+
+第一个 Agent 为 Planner：只生成 Proposed Execution Plan + Plan Evidence，默认 `CONFIRM`。Planner 完成后由 Workflow Engine 记录 Audit 并进入 `WAITING_APPROVAL`；只有用户确认后，未来经独立授权的 Workflow 才能考虑后续任务。Planner 禁止推进 `EXECUTING`、调用 Capability/外部工具/Codex/MCP、修改代码/治理文件/Project Memory、写入 `ACTIVE` Knowledge、创建 Task、分配 Agent 或绕过 Gate。`AUTO`、`NOTIFY`、低风险自动化、多 Agent 协作和 Agent 代码均不属于本阶段。
+
 ## CAPABILITY GOVERNANCE 规则
 
 1. 使用 `docs/capability/CAPABILITY_GOVERNANCE_STANDARD.md` 区分 Module、Capability、Feature 和 Technical Asset。Capability 是可调用的内部或外部能力，不是系统功能 Module。

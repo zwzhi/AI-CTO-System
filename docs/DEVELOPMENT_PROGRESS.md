@@ -2,7 +2,7 @@
 
 ## 当前阶段
 
-Phase 9C-2 Runtime Foundation Review（本地 MVP 实现质量审查完成；重新运行的 12 项 node:test 通过，Review Gate 为 `APPROVED_FOR_NEXT_PHASE`；未创建真实 Agent、未接入 Codex/MCP、真实工具、数据库、Web 框架或自动执行）
+Phase 9C-3 Single Agent Execution Design（Planner-first Agent Contract 已完成；默认 `CONFIRM`、Workflow 进入 `WAITING_APPROVAL`；未创建真实 Agent、未接入 Codex/MCP、真实工具、数据库、Web 框架或自动执行）
 
 ## 已完成
 
@@ -138,14 +138,15 @@ Phase 9C-2 Runtime Foundation Review（本地 MVP 实现质量审查完成；重
 - Phase 9C-1：Runtime Foundation Implementation Plan、Project Structure、Data Model、API Contract、Mock Capability、Test Plan、Failure Handling、Implementation Gate 与 ADR-0020 已完成；采用 Thin Core + Contract First，明确 Execution Context、Evidence Contract、Permission / Budget Guard、Audit Evidence、Workflow State Machine 和 `ROLLING_BACK` 语义，未进入代码开发
 - Phase 9C-2：使用 TypeScript + Node.js 24、Node Built-in Test Runner、Repository Port + In-memory Adapter 实现 Runtime Core、Workflow、Task、Mock Capability、Permission / Budget Guard、Execution / Audit 与 RuntimeFoundationService；12 项本地测试覆盖状态、非法转换、单 Task、Guard、Mock 成功/失败、Evidence、取消、预算超限和 `ROLLING_BACK`
 - Phase 9C-2 Review：已完成实现范围、Thin Core + Contract First、Repository Port、In-memory Adapter、领域边界、状态机、12 项测试、风险与 Knowledge Candidate 审查；Review Gate 为 `APPROVED_FOR_NEXT_PHASE`，`ADR Not Required`，只允许在用户确认后考虑下一阶段设计
+- Phase 9C-3：已完成 Agent Execution Model、统一 Agent Contract、Planner Agent、生命周期、权限、Workflow 集成、预算、审计、失败与人类控制设计，以及 ADR-0022；Planner 仅产出 Proposed Execution Plan + Evidence，默认 `CONFIRM`，禁止执行、调用工具、改码或推进 Workflow
 
 ## 进行中
 
-- 无。Phase 9C-2 Runtime Foundation Review 已完成；真实 Agent、Codex/MCP、真实工具、持久化、生产环境和自动化未启动。
+- 无。Phase 9C-3 Single Agent Execution Design 已完成；真实 Agent、Codex/MCP、真实工具、持久化、生产环境和自动化未启动。
 
 ## 待处理
 
-- 等待用户确认 Phase 9C-2 Runtime Foundation Review；`APPROVED_FOR_NEXT_PHASE` 仅表示可考虑下一阶段设计，不代表生产可用或真实执行授权
+- 等待用户确认 Phase 9C-3 Single Agent Execution Design；该设计不代表真实 Agent、生产可用或执行授权，也不进入 Phase 9C-4
 - 如提出真实 Capability、Agent、Codex/MCP、工具、数据库、持久化、生产环境或自动执行需求，必须作为新系统级请求重新完成准入、分类、架构、ADR、风险、安全与 Gate 分析
 - 不得将本地 In-memory MVP 的测试结果解释为外部工具、生产环境、成本、权限或安全效果 Evidence
 
@@ -163,6 +164,7 @@ Phase 9C-2 Runtime Foundation Review（本地 MVP 实现质量审查完成；重
 - Phase 9C-1 的 Gate 当前为 `CHANGES_REQUIRED`，因为正式文档完成不等于已获 Phase 9C-2 代码开发授权；`ROLLING_BACK` 仅有状态与审计语义，未实现真实回滚。
 - Phase 9C-2 的本地开发 Gate 为 `APPROVED_FOR_IMPLEMENTATION`，但 TypeScript 类型剥离没有独立编译期类型检查，In-memory 数据在进程重启后丢失，真实能力、持久化与生产安全仍未验证；`ROLLING_BACK` 仍仅有状态与审计语义。
 - Phase 9C-2 Review 识别：`CONFIRM` / `WAITING_APPROVAL`、`BLOCK`、工具/时间/成本预算、`PAUSED` 恢复、多数状态边和未找到错误缺少直接测试；这些是后续范围扩展前的测试与设计输入，不改变当前 MVP Gate。
+- Phase 9C-3 仅定义 Planner Agent Contract；`CONFIRM`、`WAITING_APPROVAL`、预算和审计尚未接入真实 Agent。低风险 `AUTO`、`NOTIFY`、多 Agent、Capability 调用、Codex/MCP 和外部工具均未设计为可执行能力。
 - 当前决策规范尚未由具体 Agent 自动执行；Phase 3 按要求不包含 Agent 代码。
 - 评分结果依赖证据质量，必须与 Confidence 分开报告。
 - 设计完整不等于开发授权；必须通过 Design Approval Gate。
