@@ -1,0 +1,11 @@
+{
+  "name": "ai-cto-system-runtime-foundation",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "test": "node --experimental-strip-types --test runtime/tests/runtime-foundation.test.ts"
+  },
+  "engines": {
+    "node": ">=24"
+  }
+}
