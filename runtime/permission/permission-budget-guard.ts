@@ -47,4 +47,20 @@ export class PermissionBudgetGuard {
 
     return { kind: 'ALLOW' };
   }
+
+  evaluatePlannerPreflight(request: GuardRequest): GuardDecision {
+    if (request.cancelled === true) {
+      return { kind: 'DENY', reasonCode: 'OPERATION_CANCELLED' };
+    }
+
+    if (exceedsBudget(request.budget)) {
+      return { kind: 'DENY', reasonCode: 'BUDGET_EXCEEDED' };
+    }
+
+    if (request.controlMode === 'BLOCK') {
+      return { kind: 'DENY', reasonCode: 'GUARD_DENIED' };
+    }
+
+    return { kind: 'ALLOW' };
+  }
 }
