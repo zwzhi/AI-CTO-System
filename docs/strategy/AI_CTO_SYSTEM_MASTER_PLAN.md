@@ -70,7 +70,7 @@ Layer 定义稳定职责边界，Module 定义层内可独立治理的能力，P
 | Layer 2 | Idea Intake、Research、Evaluation、Build vs Buy、Confidence、Approval Gate、Portfolio、Priority、Dependency、Asset、Cost、Dashboard、Investment、Health | 评分与建议不自动启动项目或抵消安全、数据、合规和 Gate 红线 |
 | Layer 3 | PRD、需求优先级、Architecture、Database、Agent Design、Traceability、Task、Plan、Git、TDD、Review、Change Impact、Development Gate | 没有任何规则允许跳过 Design、Testing 或人工批准直接编码 |
 | Layer 4 | Lifecycle、Initialization、Testing、Security、Release、Deployment、Monitoring、Onboarding、Health、Maintenance、Incident、Debt、Feedback、Evolution、Retirement | 文档治理不等于真实项目已经通过相应门禁或部署 |
-| Layer 5 | Capability、Execution Routing、Intent Gateway 治理与 Phase 9A / 9B / 9C-1 Runtime 架构、最小闭环和实施设计 | Runtime、Agent、Tool Calling、Codex Integration、Automation 与真实 Capability 接入均未实现 |
+| Layer 5 | Capability、Execution Routing、Intent Gateway 治理与 Phase 9A / 9B / 9C-1 设计、Phase 9C-2 Runtime Foundation MVP 本地实现 | 真实 Agent、Tool Calling、Codex Integration、Automation 与真实 Capability 接入均未实现 |
 
 已完成的历史基线：Phase 1 Kernel、Phase 2 Operating Protocol、Phase 3 Decision Intelligence、Phase 4 Design Intelligence、Phase 5 Development Execution Intelligence、Phase 6 Testing & Release Intelligence、Phase 6.5 Existing Project Onboarding、Phase 7 Maintenance & Evolution、Phase 8 Portfolio Governance、Architecture Review、Strategic Alignment、Phase 8.2 Capability Governance、Phase 8.3 Knowledge Governance 与 Knowledge Governance Pilot。
 
@@ -79,8 +79,8 @@ Layer 定义稳定职责边界，Module 定义层内可独立治理的能力，P
 | 路线状态 | 内容 | 授权含义 |
 |---|---|---|
 | 已完成治理基线 | Phase 1–8.5、Architecture Review、Strategic Alignment、Knowledge Governance Pilot | 仅证明相应治理文档或试点已完成 |
-| 当前工作 | Phase 9C-1 Runtime Foundation Implementation Design | 以 Thin Core + Contract First 定义 Entity、合同、状态、Guard、Context、Evidence、Audit、测试和代码开发 Gate；不开发 Runtime 代码 |
-| 未启动 | Runtime MVP 代码实现及其后的执行能力 | 没有 Runtime 开发、真实 Agent、工具、Codex/MCP 或自动执行授权 |
+| 当前工作 | Phase 9C-2 Runtime Foundation Implementation | 已实现单 Workflow、单 Task、Mock Capability、In-memory Port、Guard、Execution / Audit 与 12 项本地测试；不接入真实工具或 Agent |
+| 未启动 | 真实 Capability、Agent、Tool Calling、Codex/MCP、持久化、生产交付与自动执行 | 没有相应开发或执行授权 |
 
 Phase 只是历史交付标签和路线元数据，不是 Module、Layer、Lifecycle State 或自动授权。未来候选路线可以标记为 `PROPOSED`、`UNDER_REVIEW`、`APPROVED_FOR_DESIGN` 或 `DEFERRED`，但这些仅为规划结果，不能写入 Module Registry 状态或项目生命周期。
 
@@ -179,6 +179,7 @@ flowchart TD
 | [ADR-0018](../adr/ADR-0018-AI-CTO-RUNTIME-ARCHITECTURE.md) | Runtime Architecture | Control Plane First；仅架构合同 |
 | [ADR-0019](../adr/ADR-0019-RUNTIME-MVP-SCOPE.md) | Runtime MVP Scope | 以单 Workflow、单 Task、Mock Capability 和 Audit 验证受控闭环；不授权实现 |
 | [ADR-0020](../adr/ADR-0020-RUNTIME-FOUNDATION-IMPLEMENTATION.md) | Runtime Foundation Implementation | 先以技术栈中立合同验证薄核心，再在独立授权下进入代码开发 |
+| [ADR-0021](../adr/ADR-0021-RUNTIME-FOUNDATION-TECH-STACK.md) | Runtime Foundation Tech Stack | TypeScript + Node.js 24 + node:test + In-memory Port；仅限本地 MVP |
 
 ### 使用与维护
 
@@ -186,4 +187,4 @@ flowchart TD
 
 每次涉及系统边界、Module 状态、完成能力、路线或核心 ADR 的变化，都必须复核本 Master Plan。若无需更新，记录检查结论；若需要更新，必须与 Manifesto、ADR、Module Registry、SKILL、Project Memory 和 Development Progress 保持一致。
 
-本 Master Plan 当前版本已建立同步基线。Phase 9A 已完成 Control Plane First Runtime 架构设计，Phase 9B 已完成 Runtime MVP 范围设计；Phase 9C-1 已完成 Runtime Foundation Implementation Design，明确 Thin Core + Contract First、Execution Context、Evidence Contract、Permission / Budget Guard、Audit Evidence、状态机、测试与 Gate。上述阶段均不实现 Runtime、真实 Agent、Codex/MCP、真实工具或自动执行；Phase 9C-2 代码开发仍需独立用户授权与 Gate 批准。
+本 Master Plan 当前版本已建立同步基线。Phase 9A、9B 与 9C-1 分别完成 Runtime 架构、MVP 范围和实施设计；Phase 9C-2 已在独立分支实现并测试 Runtime Foundation MVP：TypeScript + Node.js 24、Repository Port + In-memory Adapter、单 Workflow / Task、Mock Capability、Guard、Execution / Audit 与 12 项本地测试。该实现不含真实 Agent、Codex/MCP、外部工具、数据库、Web 框架、生产环境或自动执行；这些能力仍须单独准入、设计与授权。

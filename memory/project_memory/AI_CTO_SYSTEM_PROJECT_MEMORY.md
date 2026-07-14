@@ -106,11 +106,12 @@
 - 2026-07-14：完成 Phase 9A Runtime Architecture Design 与 ADR-0018；仅建立 Control Plane First 架构合同，未实现 Runtime 或进入 Phase 9B。
 - 2026-07-14：完成 Phase 9B Runtime MVP Scope Design 与 ADR-0019；定义单 Workflow、单 Task、Mock Capability、Audit Evidence、`AUTO` / `CONFIRM` / `BLOCK`、Success Criteria 和四类失败场景，未开发 Runtime 代码或接入真实 Agent、Codex、MCP、工具和自动执行。
 - 2026-07-14：完成 Phase 9C-1 Runtime Foundation Implementation Design 与 ADR-0020；以 Thin Core + Contract First 建立 Workflow、Task、Mock Capability Adapter、Execution Context、Evidence Contract、Permission / Budget Guard、Audit、失败处理、测试和代码开发 Gate 的技术栈中立设计，未进入 Phase 9C-2 代码开发。
+- 2026-07-14：完成 Phase 9C-2 Runtime Foundation MVP 实现与 ADR-0021；使用 TypeScript + Node.js 24、Repository Port + In-memory Adapter 实现单 Workflow / Task、Mock Capability、Guard、Execution / Audit，并通过 12 项本地测试；未接入真实 Agent、Codex/MCP、外部工具、数据库、Web 框架或自动执行。
 
 ## 当前状态
 
-Master Architecture Sync 已完成。Phase 8.3 Knowledge Governance Pilot 验收结果为 `PASSED_WITH_CONSTRAINTS`：2 条 `VALIDATED`、1 条 `VALIDATING`、0 条 `ACTIVE`。Phase 9A、9B 和 9C-1 已完成 Control Plane First 架构、MVP 范围和 Runtime Foundation 实施设计；当前仍没有 Runtime、Router、Classifier、真实 Agent、模型调用、真实工具调用或自动化实现。
+Master Architecture Sync 已完成。Phase 8.3 Knowledge Governance Pilot 验收结果为 `PASSED_WITH_CONSTRAINTS`：2 条 `VALIDATED`、1 条 `VALIDATING`、0 条 `ACTIVE`。Phase 9A、9B、9C-1 和 9C-2 已完成 Runtime 架构、MVP 范围、实施设计和本地 Runtime Foundation MVP；当前仍没有 Router、Classifier、真实 Agent、模型调用、真实工具调用、持久化或自动化实现。
 
 ## 未来计划
 
-等待用户确认 Phase 9C-1 Runtime Foundation Implementation Design。后续 Phase 9C-2 Runtime 代码开发必须先取得独立授权，并以 Phase 9C-1 的 Entity、Interface Contract、Execution Context、Evidence Contract、Permission / Budget Guard、Audit、状态机、测试与 Gate 为基线；不得先行接入真实 Agent、Codex、MCP、真实工具、生产环境或自动执行。后续任何系统级需求仍必须先以 Master Plan 完成 Mission Alignment、Module Admission 与 Feature Classification。
+等待用户确认 Phase 9C-2 Runtime Foundation MVP 实现。任何后续 Runtime 扩展必须先评估本地 In-memory MVP 的证据边界，并完成 Mission Alignment、Module Admission、Feature Classification、Architecture Review、必要 ADR、Capability / Permission / Safety 审查和受影响 Gate；不得把现有 `APPROVED_FOR_IMPLEMENTATION` 推广为真实 Agent、Codex/MCP、外部工具、数据库、生产环境或自动执行授权。

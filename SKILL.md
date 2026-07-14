@@ -274,6 +274,10 @@ Phase 9B 只定义最小 Runtime 验证闭环：单一 Workflow、单一 Task、
 
 Phase 9C-1 采用 Thin Core + Contract First：Workflow Engine 只负责状态、生命周期与任务编排；Task 只负责实体和输入输出；Capability Adapter 只负责能力合同；Audit 只记录 Evidence；Permission / Budget Guard 只作执行前约束检查；Execution Context 只关联受控上下文；Evidence Contract 只保证可追溯并作为未来受控 Knowledge 回写候选。必须使用技术栈中立的 Entity、Interface Contract、Pseudo Type、State Machine 和 Input / Output Definition。仅允许单 Workflow、单 Task 与 Mock Capability；不写 Runtime 代码、不绑定语言/框架/数据库/ORM/部署、不接入 Codex/MCP、不创建真实 Agent、不调用真实工具、不自动执行，也不得以该设计替代业务审批、ADR、项目 Gate 或 Phase 9C-2 独立授权。
 
+## PHASE 9C-2 RUNTIME FOUNDATION IMPLEMENTATION 规则
+
+Phase 9C-2 已以 TypeScript、Node.js 24、Node Built-in Test Runner 和 Repository Port + In-memory Adapter 实现本地 Runtime Foundation MVP。Core 仍不得依赖具体 Adapter；Workflow 只经 WorkflowService 改变状态，Task 只经 TaskService 处理输入输出，Capability 只通过 Mock Capability Adapter 返回 Result，Audit 只追加 Execution / Evidence，Permission / Budget Guard 只返回约束结论。禁止修改 `agents/`、`tools/`、`integrations/`、`api/`，禁止真实 Agent、Codex/MCP、外部工具、数据库、Web 框架、自动执行、自动治理文件修改和 Evidence 自动写入 Knowledge Base。`APPROVED_FOR_IMPLEMENTATION` 只表示本次本地 MVP 实现 Gate 通过，不授权真实能力或后续阶段。
+
 ## CAPABILITY GOVERNANCE 规则
 
 1. 使用 `docs/capability/CAPABILITY_GOVERNANCE_STANDARD.md` 区分 Module、Capability、Feature 和 Technical Asset。Capability 是可调用的内部或外部能力，不是系统功能 Module。
