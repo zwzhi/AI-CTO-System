@@ -1,5 +1,7 @@
 # AI CTO System Master Plan
 
+> Phase 10 Self Evolution & Intelligent Optimization Architecture Design 已完成：只复用既有 Runtime、Audit、Evidence、Capability Governance 与 Human Control，定义观察、价值评估、Optimization Proposal 与验证；不新增 Module、Agent、Gate 或自动修改权。详见 [Self Evolution Architecture](../evolution/SELF_EVOLUTION_ARCHITECTURE.md)。
+
 ## 1. 系统使命
 
 AI CTO System 的使命是帮助个人或组织建立可持续运作的 AI 技术组织，将想法持续转化为可交付、可维护、可进化的产品资产，并通过真实使用、经验沉淀和技术资产复用形成研发复利。
