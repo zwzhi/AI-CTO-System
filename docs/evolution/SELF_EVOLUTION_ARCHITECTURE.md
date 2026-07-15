@@ -1,5 +1,39 @@
 # Self Evolution Architecture
 
+## Optimization Autonomy Model
+
+Phase 10 不要求每一项优化都等待人工决策。未来执行遵循以下风险驱动路径：
+
+```text
+Observation
+  → Analysis
+  → Optimization Proposal
+  → Risk Assessment
+  → Autonomy Decision
+  → Execute / Confirm
+  → Validation Evidence
+```
+
+### Risk Assessment（风险评估）
+
+未来 Proposal 进入执行路径前，必须评估：影响范围、可逆性、数据与权限影响、外部副作用、Gate 影响和 Evidence 完整度。风险未知、Evidence 不完整或冲突、验证方法不可用、回滚路径不明确时，必须升级为 `CONFIRM_REQUIRED` 或 `MANDATORY_APPROVAL`。
+
+### Autonomy Decision（自主决策）
+
+| 决策 | 适用条件 | 未来执行边界 |
+| --- | --- | --- |
+| `AUTO_EXECUTE` | 低风险、无外部副作用、仅影响非权威内部资产、可逆且不影响 Gate。 | 仅可由未来已授权的 Runtime 实现使用；必须保留 Audit 与结果 Evidence。 |
+| `AUTO_WITH_VALIDATION` | 低至中风险、影响受限且可逆，并具有明确验证方法。 | 必须生成 Validation Evidence；验证失败时停止后续动作，并在适用时安全回滚。 |
+| `NOTIFY` | 中风险、影响受限且执行范围明确。 | 未来获得授权的执行必须通知用户或责任人，并保留 Evidence。 |
+| `CONFIRM_REQUIRED` | 影响项目行为、文件、配置、用户体验或跨模块接口。 | 执行前必须获得明确确认；确认不能替代任何适用 Gate。 |
+| `MANDATORY_APPROVAL` | Runtime Core、Permission Model、Manifesto、ADR、核心生命周期、安全边界、大规模架构变化、生产发布或不可逆影响。 | 必须经授权人批准，并满足全部适用的既有 Gate。 |
+
+自主决策不能覆盖既有 Gate、核心权威、安全或审批规则。前三种决策是未来执行策略，不是当前授权。
+
+### Current MVP Boundary（当前边界）
+
+当前 Self Evolution MVP 保持仅分析与提案。`OptimizationProposal.executionAuthorization` 仍为 `NONE`；当前 Proposal 不得执行、通知、写入、激活或删除任何内容。Execution Authorization 属于未来 Runtime 设计事项，本模型不向当前 Contract 或代码加入该能力。
+
 ## 1. Self Evolution 定位
 
 Phase 10 是优化能力框架，不是自动修改自己：它从现有 Runtime、Audit、Evidence、Capability Governance 记录中进行 Self Observation、Analysis、Optimization Proposal 和 Validation。它不新增管理模块、Agent、Gate 或审批流程，也不拥有最终决策权。

@@ -73,7 +73,7 @@ Module 状态变化、Owning Layer 变化、Module 新增 / 合并 / 拆分或�
 | Test Strategy | Layer 4 | 管理测试范围、类型、环境、数据和证据 | Completed | [Test Strategy](../testing/TEST_STRATEGY_STANDARD.md) |
 | Bug Management | Layer 4 | 管理 Bug 生命周期和 P0–P3 分级 | Completed | [Bug Standard](../testing/BUG_MANAGEMENT_STANDARD.md) |
 | AI Evaluation | Layer 4 | 验证发布候选的 AI 效果、成本与稳定性 | Completed | [AI Evaluation](../testing/AI_EVALUATION_STANDARD.md) |
-| Self Evolution Framework | Layer 4 | 基于既有 Runtime、Audit、Evidence 与 Capability Governance 形成价值优先的优化建议；不新增控制体系或自动修改权 | Architecture Complete | [Self Evolution Architecture](../evolution/SELF_EVOLUTION_ARCHITECTURE.md) |
+| Self Evolution Framework | Layer 4 | 基于既有 Runtime、Audit、Evidence 与 Capability Governance 形成价值优先的优化建议，并定义未来风险驱动的自主策略；不新增控制体系或当前自动修改权 | Architecture Complete | [Self Evolution Architecture](../evolution/SELF_EVOLUTION_ARCHITECTURE.md)；当前 MVP 仅分析与提案，`executionAuthorization: NONE` |
 | Security Review | Layer 4 | 审核密钥、数据、权限、第三方和日志安全 | Completed | [Security Review](../testing/SECURITY_REVIEW_STANDARD.md) |
 | Release Approval & Gate | Layer 4 | 授权 TESTING → RELEASE | Completed | [Release Approval](../release/RELEASE_APPROVAL_GATE.md)、[Testing Release Gate](../release/TESTING_RELEASE_GATE.md) |
 | Deployment & Rollback | Layer 4 | 管理部署、配置、迁移、恢复和回滚 | Completed | [Deployment Standard](../release/DEPLOYMENT_ROLLBACK_STANDARD.md) |
