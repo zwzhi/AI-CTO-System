@@ -3,7 +3,7 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "test": "node --experimental-strip-types --test runtime/tests/runtime-foundation.test.ts runtime/tests/single-agent-runtime.test.ts runtime/tests/mock-codex-capability.test.ts runtime/tests/documentation-capability.test.ts runtime/tests/code-analysis-capability.test.ts runtime/tests/testing-capability.test.ts runtime/tests/code-modification-capability.test.ts"
+    "test": "node --experimental-strip-types --test runtime/tests/runtime-foundation.test.ts runtime/tests/single-agent-runtime.test.ts runtime/tests/mock-codex-capability.test.ts runtime/tests/documentation-capability.test.ts runtime/tests/code-analysis-capability.test.ts runtime/tests/testing-capability.test.ts runtime/tests/code-modification-capability.test.ts self-evolution/self-evolution-mvp.test.ts"
   },
   "engines": {
     "node": ">=24"
