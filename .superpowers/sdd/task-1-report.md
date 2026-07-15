@@ -1,69 +1,55 @@
-# Task 1 Report
+# Phase 10 Self Evolution MVP — Task 1 Report
 
-## Implementation
+## Scope and change set
 
-Created the testing capability's contract boundary only. The contract exposes the sole read-only operation, request and permission records, static finding records, result and failure shapes, and the invocation outcome shape. It imports the shared runtime primitives from `runtime/models/runtime-types.ts` and performs no runtime work, tool execution, filesystem access, network access, or external invocation.
+Starting HEAD: `0131a02856439599af926ed45d5770a3fc5f6d83`.
 
-Created `TestingInvocationPort`, whose only method accepts a `TestingInvocationRequest` and returns a `TestingExecutionOutcome`.
+Implemented only Task 1 in the new `self-evolution/` directory:
 
-Added the focused Node built-in test path to the existing `npm test` command.
+- `self-evolution/self-evolution-contract.ts` — read-only snapshot and observation contracts, re-exporting the required Runtime model types as types only.
+- `self-evolution/self-observation-service.ts` — in-memory snapshot validation and observation service. It validates source metadata, runtime metrics, evidence IDs/references, and capability IDs; it groups failed audit events and returns copied, frozen facts.
+- `self-evolution/self-evolution-mvp.test.ts` — SE-01 and SE-02 behavior tests from the task brief.
 
-## TDD Evidence
+No Runtime Core, Workflow, Task, Agent, Permission, governance, Registry, Knowledge, repository, provider, database, or persistence code was modified. The service has no I/O dependencies and performs no execution, activation, workflow changes, or asset deletion.
 
-### RED
+## TDD evidence
 
-1. Created `runtime/tests/testing-capability.test.ts` first, containing only `TC-01 declares the sole read-only testing operation`.
-2. Ran:
+Red (before contracts/service existed):
 
-   ```powershell
-   node --experimental-strip-types --test runtime/tests/testing-capability.test.ts
-   ```
+```text
+node --experimental-strip-types --test self-evolution/self-evolution-mvp.test.ts
+```
 
-3. Observed the expected failure before production code existed:
+Result: failed as expected with `ERR_MODULE_NOT_FOUND` for `self-observation-service.ts`.
 
-   ```text
-   Error [ERR_MODULE_NOT_FOUND]: Cannot find module '.../runtime/capability/testing-execution-contract.ts'
-   ```
+Green:
 
-   Exit code: 1. The failure was solely the missing contract module imported by the new test.
+```text
+node --experimental-strip-types --test self-evolution/self-evolution-mvp.test.ts
+```
 
-### GREEN
+Result: 2 passed, 0 failed (`SE-01`, `SE-02`).
 
-1. Added the minimal execution contract and invocation-port type declarations required by the task boundary.
-2. Added the new test file to `package.json`'s existing Node built-in test command.
-3. Re-ran the focused test:
+## Full verification
 
-   ```powershell
-   node --experimental-strip-types --test runtime/tests/testing-capability.test.ts
-   ```
+```text
+node --experimental-strip-types --test self-evolution/self-evolution-mvp.test.ts && npm.cmd test
+```
 
-   Result: 1 passing, 0 failing.
+Result: focused suite: 2 passed, 0 failed. Existing Runtime suite: 97 passed, 0 failed.
 
-4. Ran the complete suite:
+## Commit
 
-   ```powershell
-   npm.cmd test
-   ```
+Implementation commit: `03a6471107aa5bbb8c71b5ac5b3cb024e1bedda9` (`feat: add self evolution observation`).
 
-   Result: 75 passing, 0 failing, 0 skipped, 0 cancelled.
+## Self-check
 
-## Changed Files
-
-- `runtime/capability/testing-execution-contract.ts` (created)
-- `runtime/capability/testing-invocation-port.ts` (created)
-- `runtime/tests/testing-capability.test.ts` (created)
-- `package.json` (appended the focused test path only)
-- `.superpowers/sdd/task-1-report.md` (this report)
-
-## Self-Review
-
-- Confirmed `TESTING_OPERATIONS` contains exactly `ANALYZE_TEST_CONTEXT`.
-- Confirmed every requested shared runtime type is imported from `runtime/models/runtime-types.ts`.
-- Confirmed the request, result, failure, invocation, outcome, permission, and static finding records are all readonly and follow the established Code Analysis contract shape.
-- Confirmed the result has only the eight requested MVP output categories.
-- Confirmed the invocation port has no implementation and no side effects.
-- Ran `git diff --check`; no whitespace errors were reported.
+- Confirmed the input is only read and is not mutated (SE-01 clones it before observation).
+- Confirmed all four required source references are returned and audit events are counted from the provided audit snapshot only.
+- Confirmed blank snapshot source and missing audit evidence references are rejected (SE-02).
+- Reviewed the implementation for the remaining brief constraints: distinct, timestamped sources; non-negative finite Runtime metrics; duplicate Evidence IDs; blank capability IDs; capability/audit evidence references; failed-event grouping; deduplicated evidence references; frozen copied output; explicit bounded-observation limitation.
+- Ran `git diff --check` before the implementation commit; it reported no whitespace errors.
 
 ## Concerns
 
-None. This task intentionally defines contracts only; adapters, runtime services, validation, and test execution behavior remain out of scope.
+None. Git emitted standard Windows line-ending conversion warnings while staging the three new TypeScript files; no content or test issue resulted.
