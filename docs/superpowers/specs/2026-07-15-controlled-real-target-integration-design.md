@@ -79,6 +79,8 @@ Proposal Routing 不改变现有 `OptimizationProposal` Contract。它为 Propos
 - Validation Evidence、结果、失败阶段与回滚结果；
 - Stop Control 事件（如触发）。
 
+第一版持久化位置固定为项目根目录的 `.ai-cto/audit/`。每次请求向一个追加式 JSON Lines 文件写入事件；该目录属于本地运行数据并由 `.gitignore` 排除，不进入 Git 历史，也不构成新的 Module。
+
 Audit 内容必须是可追溯元数据与 Evidence 引用；不应把完整敏感内容写入审计。审计写入失败时，执行必须停止，且在已经写入目标时进入回滚路径。
 
 ## Stop Control 与失败处理

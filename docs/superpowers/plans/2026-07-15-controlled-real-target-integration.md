@@ -6,7 +6,7 @@
 
 **Architecture:** 建立独立的真实目标路由与安全执行适配层，消费既有 Proposal、Audit、Validation 与内存优化器。路由、文件边界、快照/漂移检查、确认、持久审计和停止控制分别负责单一职责；不修改 Self Evolution MVP 或 Runtime Core。
 
-**Tech Stack:** TypeScript、Node.js 24、Node.js Built-in Test Runner、既有 AuditService；具体持久化适配器在实施授权时确定。
+**Tech Stack:** TypeScript、Node.js 24、Node.js Built-in Test Runner、既有 AuditService、项目本地 `.ai-cto/audit/` JSON Lines 审计目录。
 
 ## Global Constraints
 
@@ -14,6 +14,7 @@
 - 真实写入一律在单次明确确认后进行；`AUTO_EXECUTE` 不构成文件写入授权。
 - 仅项目根目录内、显式白名单、非权威 Markdown 文件；禁止 Manifesto、ADR、Master Plan、Module Registry、Project Memory、Development Progress、README、Gate、生命周期/权限/安全/Runtime 文件。
 - 保持 `OptimizationProposal.executionAuthorization = NONE`，不改变 Self Evolution MVP、Runtime Core、Permission 或系统边界。
+- `.ai-cto/audit/` 是本地运行数据，必须加入 `.gitignore`；Audit 只保存引用、摘要、授权、范围、验证和结果，禁止保存完整目标文件内容。
 
 ---
 
@@ -54,7 +55,9 @@
 
 **Files:**
 - Create: `optimization-execution/real-target/real-target-execution-service.ts`
+- Create: `optimization-execution/real-target/jsonl-persistent-audit-adapter.ts`
 - Create: `optimization-execution/real-target/persistent-audit-port.ts`
+- Modify: `.gitignore`
 - Modify: `optimization-execution/real-target/real-target-integration.test.ts`
 
 **Interfaces:**
@@ -63,6 +66,6 @@
 
 - [ ] 先写失败测试：Audit 写入失败、Kill Switch、验证失败与漂移均停止并恢复 Before Snapshot。
 - [ ] 实现单次有界写入：写入前再次检查摘要；写后验证失败必须回滚；不得执行第二个 Proposal。
-- [ ] 持久审计仅保存引用、摘要、授权、范围、结果和 Evidence；不保存敏感完整内容。
+- [ ] 实现 JSON Lines 持久审计：仅向 `.ai-cto/audit/` 追加引用、摘要、授权、范围、结果和 Evidence；不保存完整目标内容，并将 `.ai-cto/` 加入 `.gitignore`。
 - [ ] 运行全量测试、范围扫描并验证 Self Evolution/Runtime Core 无差异。
 - [ ] 提交：`feat: add confirmed real target execution`。
