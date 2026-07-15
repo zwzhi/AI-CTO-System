@@ -41,9 +41,23 @@ Optimization Proposal
 
 不支持修改事实、规则、决策、版本、状态、日期、标识符、引用指向、责任归属或行为要求。任何需要解释、推断或补充语义的动作都不属于该 MVP。
 
-## 3. Risk Boundary
+## 3. Eligibility Check
 
-只有 `AUTO_EXECUTE` 和 `AUTO_WITH_VALIDATION` 候选可被未来 MVP 考虑；两者都是未来执行策略，不是当前授权。
+未来执行前必须通过 Execution Eligibility Check。检查至少确认：
+
+- Proposal、Risk Assessment、Autonomy Decision 与授权目标完整且彼此一致；
+- `authorizedTargetReferences` 是明确的非权威 Markdown 文档白名单；
+- 操作属于本 MVP 允许的 `SIMPLIFY` 类型；
+- 基线与可恢复的回滚路径在执行前可用；
+- 验证方式明确、可执行，且能生成 Validation Evidence。
+
+以下任一情况必须停止并升级为 `CONFIRM_REQUIRED`，不得自动执行：Proposal、风险结论、授权目标或动作范围不完整；Evidence 不足、冲突或不适用；语义存在歧义；验证失败或不可执行；回滚不可用；目标涉及代码、配置、数据、权限、网络、Git、外部系统、项目行为或权威文件。
+
+涉及 Runtime Core、Permission Model、Manifesto、ADR、核心生命周期、安全边界、系统边界、模块删除或大规模架构变化的 Proposal 始终是 `MANDATORY_APPROVAL`，不属于本 MVP。
+
+## 4. AUTO_EXECUTE Boundary
+
+只有 `AUTO_EXECUTE` 候选可在未来被本 MVP 考虑；它是未来执行策略，不是当前授权。
 
 `AUTO_EXECUTE` 仅适用于完全确定、机械化、可逆的格式规范化或精确重复清理，并且必须同时满足：
 
@@ -53,6 +67,12 @@ Optimization Proposal
 - 基线和回滚路径可用；
 - 自动验证能够确认其属于允许的动作并保持结构有效。
 
+任何可能改变语义、规则、决策、项目状态或系统行为的动作都禁止使用 `AUTO_EXECUTE`。
+
+## 5. AUTO_WITH_VALIDATION Boundary
+
+`AUTO_WITH_VALIDATION` 是未来执行策略，不是当前授权。
+
 `AUTO_WITH_VALIDATION` 仅适用于影响受限、可逆、但需要额外语义保持验证的结构整理或重复信息合并，并且必须同时满足：
 
 - 变化边界和允许动作明确；
@@ -60,11 +80,9 @@ Optimization Proposal
 - 执行后能生成 Validation Evidence；
 - 回滚路径在执行前已准备完成。
 
-以下任一情况必须停止并升级为 `CONFIRM_REQUIRED`，不得自动执行：Proposal、风险结论、授权目标或动作范围不完整；Evidence 不足、冲突或不适用；语义存在歧义；验证失败或不可执行；回滚不可用；目标涉及代码、配置、数据、权限、网络、Git、外部系统、项目行为或权威文件。
+执行后必须生成 Before/After Evidence、Structure Validation 和 Semantic Preservation Evidence；任何一项缺失、失败或冲突时都不得将结果视为成功。
 
-涉及 Runtime Core、Permission Model、Manifesto、ADR、核心生命周期、安全边界、系统边界、模块删除或大规模架构变化的 Proposal 始终是 `MANDATORY_APPROVAL`，不属于本 MVP。
-
-## 4. Execution Contract
+## 6. Execution Contract
 
 未来 Runtime 实现应以独立执行合同消费既有 Proposal，不扩展或修改当前 `OptimizationProposal` Contract。该未来合同至少需要以下字段：
 
@@ -81,7 +99,16 @@ Optimization Proposal
 
 Execution Eligibility Check 必须验证以上字段完整一致，并验证自主等级与目标资产、动作类型相匹配。未来执行实现不得自行扩大目标、改变动作类型、提升自主等级、绕过 Human Control 或替代既有 Gate。
 
-## 5. Validation Model
+未来执行合同的输出必须包含：
+
+| 输出 | 用途 |
+| --- | --- |
+| `optimizationResult` | 说明执行是否完成、停止、失败或已回滚。 |
+| `changedScope` | 记录实际发生变化的授权目标范围。 |
+| `validationEvidence` | 记录范围、结构、语义保持与回滚可用性验证结果。 |
+| `auditRecord` | 记录 Proposal、动作、范围、授权、结果与 Evidence 引用。 |
+
+## 7. Validation Model
 
 未来执行成功前，必须产生以下 Validation Evidence：
 
@@ -93,13 +120,27 @@ Execution Eligibility Check 必须验证以上字段完整一致，并验证自�
 
 任何验证缺失、失败或发生冲突时，未来执行必须停止。`AUTO_WITH_VALIDATION` 不得将失败或不确定结果解释为成功，也不得继续处理后续目标。
 
-## 6. Rollback Strategy
+## 8. Rollback Strategy
 
 未来执行开始前，必须已获得每个目标资产的基线引用。执行或验证失败时，应立即停止后续动作，恢复所有已变更目标到基线，生成恢复结果的 Evidence，并将执行结果记录为未完成。
 
 本 MVP 不支持删除、迁移、覆盖不可恢复内容或跨资产的部分成功继续执行。任何无法安全回滚的候选优化都不得进入自动执行。
 
-## 7. Human Control Boundary
+## 9. Audit Model
+
+未来每次候选执行都必须通过既有 Audit 体系保留可追溯记录，至少包括：
+
+- Proposal ID；
+- 实际动作类型；
+- 授权范围与实际 `changedScope`；
+- Before/After 基线引用；
+- Validation Evidence；
+- Autonomy Decision 与当前 Execution Authorization；
+- 执行结果、失败原因或回滚结果。
+
+Audit 只记录事实与 Evidence，不授予执行权限、不替代 Eligibility Check，也不改变当前 `executionAuthorization = NONE` 的边界。
+
+## 10. Human Control Boundary
 
 本设计不创建新的审批系统，继续复用现有 Human Control、Runtime Safety Boundary、Audit 和适用 Gate：
 
@@ -108,3 +149,9 @@ Execution Eligibility Check 必须验证以上字段完整一致，并验证自�
 - 人类可在未来实现中停止、要求确认或否决任何候选动作；自主等级不得覆盖该控制权。
 - `CONFIRM_REQUIRED` 与 `MANDATORY_APPROVAL` Proposal 永远不得进入本 MVP 的自动执行链路。
 - 未来执行必须保留 Audit、Evidence、Validation Evidence 和可恢复基线；不得绕过既有 Gate 或修改核心治理权威。
+
+## 11. Future Extension Boundary
+
+未来可在新的风险评估、设计确认和授权后扩展其他低风险优化类型；扩展仍必须复用现有 Runtime、Audit、Evidence、Human Control、Capability Governance 和 Gate。
+
+当前不支持权威文件修改、Runtime 修改、Permission 修改、Capability 删除、模块删除、项目状态变更或任何自动化系统边界调整。扩展不得修改本 MVP 的核心限制，也不得把 `executionAuthorization = NONE` 解释为执行许可。
