@@ -1,5 +1,19 @@
 # AI CTO System Project Memory
 
+> 2026-07-15：AI Matrix 仓库拆分完成。独立仓库位于 `D:\AI Project\AI-Matrix`，通过 subtree split 保留历史，分支为 `main`、remote 未配置；产品源码已使用最小应用侧 Contract / Port 解除 AI CTO Runtime 相对路径依赖，39 / 39 测试和 0 漏洞审计通过。AI CTO System 已移出业务源码、Knowledge、Pilot 数据和产品专属文档，仅保留 ADR-0031、拆分设计 / 计划和外部项目记录，状态为 `AI_MATRIX_EXTERNAL_REPOSITORY_GOVERNED`。
+
+> 2026-07-15：AI Matrix Product Foundation 已完成。应用侧实现能力项目生命周期、四类角色、Repository Port、SQLite 内部 Pilot 持久化、版本化迁移、持久 Core Audit、项目 / Audit 原子事务、受控本地 JSON API 和重启持久化 Composition Root；`AM-R-001`～`AM-R-006` 已绑定真实提交与 `AM-PF-01`～`AM-PF-24`，ADR-0030 更新为 `Accepted`。应用 37 / 37、根回归 126 / 126，合计 163 / 163，依赖审计 0 项漏洞。未修改 Core / Runtime Contract / Phase / Module / Module Registry，未接入模型、Provider、冷启动训练、独立评分或多 Agent；真实 Pilot 仍为 `NOT_RUN`。
+
+> 2026-07-15：用户确认 AI Matrix 完整需求应包含 AI 生成与独立 AI 评分，并授权使用 AI CTO System 推进。已创建 `AI_MATRIX_FULL_PRODUCT_DESIGN.md` 与 Proposed ADR-0029：采用短视频策划垂直闭环，覆盖冷启动训练、Knowledge / Rule 确认、独立生成与评分、最多一次返修、能力主体 / 龚锐双角色评价、差异诊断、Evolution Proposal、Web / API 与应用持久化。生成和评分是同一业务能力下的两个独立操作，不进入多 Agent；不修改 Core、Runtime Contract、Phase、Module 或 Module Registry。当前等待用户评审书面设计，尚未开始完整产品功能编码。
+
+> 2026-07-15：用户澄清龚锐仅负责检查 AI Matrix 工具产出的内容是否符合需求，与工具开发无关。AI Matrix Pilot 因此明确区分两类人工责任：能力主体负责九维判断一致性评分，龚锐负责业务需求符合性和采用 / 修改 / 拒绝结论；龚锐不承担 Knowledge 提取、架构、开发或技术决策。该澄清登记为 `AM-SRC-003` / `L3_CONFIRMED`，真实 Pilot 仍未运行。
+
+> 2026-07-15：用户明确授权以 AI CTO 角色开始开发 AI Matrix 应用层 MVP。已完成 Implementation Design 与 ADR-0028，在 `projects/ai-matrix/` 实现 Provider-neutral Contract、单 Agent Invocation Port、确定性本地执行体、Permission / Budget / Knowledge 预检、输出验证、复用现有 Audit Service 的运行服务和 20 任务评估器；13 项应用测试通过。纳入两份用户资料并登记完整 SHA-256，建立 11 条 `VALIDATING` Knowledge 候选、20 个 `DATA_REQUIRED` 任务槽位和评价模板。未修改 Core / Runtime / Module Registry，未新增 Phase / Module，未接入真实 Provider、网络、RAG、工具或多 Agent。确定性测试不构成能力复制 Evidence，真实 Pilot 仍为 `NOT_RUN`。
+
+> 2026-07-15：用户进入 AI Matrix Pilot Design，视为确认应用战略与 ADR-0026。已建立独立 `projects/ai-matrix/` 项目记忆和进度基线，并完成 `AI-MATRIX-PILOT-001` 设计：默认复制发起人本人的短视频选题与内容策划能力，使用 `AM-CAP-001`、单 Agent `AM-AGENT-001`、单 Workflow `AM-WF-001` 和 20 个真实任务验证可用率、人工修改、专家评价、时间节省、Evidence 完整与边界安全。ADR-0027 保持 `Proposed`，等待用户评审；未编码、未改 Core、未新增 Phase / Module、未进入多 Agent。
+
+> 2026-07-15：完成第一个真实业务应用方向的战略设计。AI Matrix 被定义为 AI CTO System 之上的独立应用，而不是新的核心 Phase、Module 或 Layer；采用 Knowledge → Capability → Agent → Workflow → Execution → Evolution 六层应用能力栈。首个 MVP 聚焦单一内容能力复制闭环，以真实任务、Evidence、首次通过率和人工节省验证价值；未授权编码、模型接入、Capability 激活、外部工具调用或自动化。重大边界决策记录于 ADR-0026。
+
 > 2026-07-15：Phase 10 Self Evolution 架构设计完成。仅基于既有 Runtime、Audit、Evidence 与 Capability Governance 提出价值优先的优化建议；不自动修改核心、不自动删除资产、不新增 Evolution 管理体系。其后完成 Optimization Autonomy Model 治理设计：未来按风险选择 `AUTO_EXECUTE`、`AUTO_WITH_VALIDATION`、`NOTIFY`、`CONFIRM_REQUIRED` 或 `MANDATORY_APPROVAL`；当前 MVP 仍仅分析与提案，`executionAuthorization: NONE`，未实现自动执行或修改 Runtime/Permission/核心治理。
 
 ## 项目目标
@@ -57,6 +71,11 @@
 - Documentation Capability MVP 仅提供本地、确定性、只读的 `GENERATE_DRAFT`：每次调用只使用请求内不可变 Authorized Source Scope，先形成 Evidence，再返回含 Draft、Source References、Confidence、Evidence 与 Limitations 的包，并仅追加 Audit。它不读取或写入文件、不接入 Provider/LLM/网络/MCP/CLI、不写入或激活 Knowledge，且绝不推进 Workflow、Task、Agent 或 Registry 状态；Capability Registry Record 保持 `ABSENT`。
 - Code Analysis Capability MVP 仅提供本地、确定性、只读的 `ANALYZE_READ_ONLY_CODE`：每次调用只使用请求内不可变 Authorized Code Context 与描述性 Repository Context，先形成 Evidence，再返回 Analysis Report、Architecture Findings、Risk Findings、Technical Debt、Confidence 与 Limitations，并仅追加 Audit。它不扫描、读取或写入文件系统，不接入 Provider/LLM/Codex/MCP/网络，不生成 Patch、Commit 或 Deployment，也绝不推进或修改 Runtime Core、Workflow、Task、Agent、Registry 或 Knowledge；Registry Record 保持 `ABSENT`，Activation 保持 `NONE`。
 - AI CTO System 的使命基线由 Manifesto 定义：提高想法到产品的长期转化能力，沉淀技术资产，形成研发复利并增强用户技术能力。
+- AI CTO System 是通用治理与受控执行的基础操作系统；AI Matrix 是第一个真实业务应用，不进入 AI CTO System Module Registry，也不新增核心 Phase、Module 或 Layer。
+- AI Matrix 的 Knowledge、Capability、Agent、Workflow、Execution、Evolution 是应用逻辑能力栈；行业知识、业务能力目录、岗位 Agent、业务 Workflow、业务数据与指标归应用，通用治理、权限、Audit、Evidence 与 Self Evolution 合同归 AI CTO System。
+- AI Matrix 第一版只验证单一内容能力复制闭环；业务应用产生的通用需求只能作为核心演进候选，不能自动回写或修改 Core。
+- `AI-MATRIX-PILOT-001` 选择短视频选题与内容策划作为唯一复制能力；只使用一个 Agent 和一个 Workflow，输出建议性 Content Planning Package，不生成完整脚本、不发布、不写回 Knowledge。
+- Pilot 必须使用 20 个真实任务和独立专家基线；Evidence 完整率与边界安全是硬条件，业务分数不能抵消未授权数据、虚假引用、自动外发或越权写入。
 - 系统不是单纯代码生成工具、聊天机器人、普通项目管理工具或无约束自动化机器人；通用邻近 AI 功能不自动成为核心 Module。
 - Strategic Alignment 与 Module Admission 位于 Feature Classification 之前；先证明能力应该进入系统，再判断属于哪个 Layer。
 - Module Admission 必须评估使命贡献、核心问题、Layer 候选、复用、长期资产与复杂度，结果只使用 `ADMIT_FOR_CLASSIFICATION`、`CONDITIONAL_ADMISSION` 或 `REJECT_OR_DEFER`。
@@ -129,11 +148,13 @@
 - 2026-07-14：完成 Documentation Capability MVP Implementation Design 与 Test Plan；采用专用轻量 Contract + Adapter，计划以请求内的 Authorized Source Scope、确定性本地 Assistant、Permission / Budget Guard 和仅追加 Audit 验证 Evidence-first 闭环。实现 Gate 为 `CHANGES_REQUIRED`，等待用户授权；不修改通用 Runtime Core、不读取文件系统、不创建 Candidate 或 Registry Record。
 - 2026-07-14：完成 Documentation Capability MVP Implementation：新增专用 Contract、Invocation Port、确定性内存执行体、不可变来源快照、Evidence-first Adapter、仅追加 Audit 的 Runtime Service 与 20 项本地测试；全量 53 项测试通过。端口异常、越级 Confidence 与 Draft / Evidence / Limitations 来源正文回显均会成为受控失败或被阻断。未创建 Candidate 或 Capability Registry Record，未接入 Provider/LLM/网络/MCP/CLI，未读取或写入文件，未改变 Workflow、Task、Agent、Registry 或 Knowledge 状态。
 - 2026-07-14：完成 Code Analysis Capability MVP Implementation：新增专用 Contract、Invocation Port、确定性只读分析器、不可变授权代码上下文与 Canonical Evidence 快照、Evidence-first Adapter、仅追加 Audit 的 Runtime Service 与 21 项本地测试；全量 74 项测试通过。未授权/不可定位上下文、严格无效/过期权限时间（包括日期解析器会归一化的无效日期）、预算超限、取消、无效输出、越级 Confidence、篡改或重复 Evidence、通过 Result Reference / Finding Identifier 回显的非平凡源码，以及端口非成功结果均会被阻断或转为受控失败；实现没有文件系统、网络、Provider/LLM/Codex/MCP、Patch、Commit、Deployment、Registry 或 Knowledge 副作用。
+- 2026-07-15：完成 AI Matrix Application Strategy 与 ADR-0026；明确“AI CTO System = 基础操作系统，AI Matrix = 业务应用”，设计六层应用能力栈、五类业务能力需求、单一内容闭环 MVP、系统 / 应用边界和母婴、电商、内容、企业培训扩展路线。未修改核心架构、Module Registry、Runtime 或 Capability 状态，未新增 Phase / Module，未编码。
+- 2026-07-15：用户进入 AI Matrix Pilot Design，ADR-0026 更新为 `Accepted`；完成 `AI_MATRIX_PILOT_DESIGN.md` 与 ADR-0027，并初始化独立 AI Matrix PROJECT_MEMORY / Development Progress。Pilot 只设计单一短视频策划能力、单 Agent、单 Workflow 与 20 个真实任务验证，未授权代码或真实运行。
 
 ## 当前状态
 
-Master Architecture Sync 已完成。Phase 8.3 Knowledge Governance Pilot 验收结果为 `PASSED_WITH_CONSTRAINTS`：2 条 `VALIDATED`、1 条 `VALIDATING`、0 条 `ACTIVE`。Phase 9A、9B、9C-1、9C-2 实现/Review、9C-3 Agent Contract、9C-4 受控本地 Deterministic Planner MVP / Correction / Review、9C-5 Codex Capability 合同/Review/Mock-only Implementation Design，以及独立的 Documentation Capability MVP 与 Code Analysis Capability MVP Implementation 已完成；Codex 当前仍不可选择或激活。两个低风险能力均只提供本地、确定性、无外部副作用的结果与审计闭环，不构成 Candidate 或 Capability Record。系统仍没有 Router、Classifier、真实 Agent、模型调用、真实 Codex/MCP/工具调用、持久化或自动化实现。
+AI Matrix 已迁移到 `D:\AI Project\AI-Matrix` 独立仓库并继续由 AI CTO System 提供开发治理，当前组合状态为 `AI_MATRIX_EXTERNAL_REPOSITORY_GOVERNED`。产品的 Strategy、Pilot Design、MVP 与 Product Foundation 已完成，但能力主体、已验证 Knowledge、真实 Provider、20 个真实任务和专家基线尚未冻结，不能宣称能力复制成功。AI CTO System Core 状态未改变，业务代码不再位于本仓库。
 
 ## 未来计划
 
-Documentation MVP 已完成本地实现；等待用户后续确认，不自动创建新的 Phase 或 Review 流程，且必须继续只使用请求内来源并保持无文件/网络/Provider/Knowledge 写入。后续任何真实 Codex 或其他 Engineering Capability 集成必须先完成 Capability Admission、Evaluation、Registry、Activation、受控集成测试、权限/安全/成本审查及用户授权；不得把 Mock 实现、Strategy、Roadmap、Documentation Requirement 或 MVP 实现推广为 Codex API/CLI/MCP、网络、外部工具、文件修改、Commit、数据库、生产环境或自动执行授权。Documentation Capability 如进入 Provider Evaluation，必须保留只读范围、五项输出、权威文件 `BLOCK` 和独立证据审查。未来 Phase 10 如讨论自我优化与简化，应以本策略的 `Adopt / Improve / Merge / Deprecate / Remove` 动作、真实 Evidence 与既有治理 Gate 为输入，而非自动改变能力状态。
+通过外部项目记录持续治理 AI Matrix。下一步在独立仓库冻结 Subject Profile 与资料授权，收集成功、失败和 holdout 案例，确认九维判断规则并准备 20 个真实任务与专家独立基线；不得为此重新把业务源码放回 AI CTO System 或修改 Core。
