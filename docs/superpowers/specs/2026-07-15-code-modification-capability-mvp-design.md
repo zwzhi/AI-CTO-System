@@ -70,7 +70,7 @@ The proposal is a recommendation, not a permission grant. `CONFIRM_REQUIRED` is 
 
 `DeterministicModificationAssistant` receives only a frozen invocation request and frozen canonical evidence. It reads only request-provided strings.
 
-The first implementation may generate one predictable suggestion that replaces an explicitly identified, supported in-memory marker with a predetermined safer alternative. It must produce a paired original summary and display-only unified diff without exposing nontrivial full source bodies.
+The first implementation may generate one predictable suggestion that replaces an explicitly identified, supported in-memory marker with a predetermined safer alternative. It must produce a paired original summary and display-only unified diff. The diff may show only the minimum target excerpt needed for one hunk (one removed line and one added line); it must not reproduce the full authorised context or unrelated surrounding source body.
 
 It must not:
 
@@ -145,4 +145,3 @@ runtime/
 ```
 
 `package.json` may only add the focused Node built-in test file. No `agents/`, `tools/`, `integrations/`, `api/`, Provider SDK, database, filesystem adapter, test runner integration, patch application endpoint, commit operation, or deployment component may be added.
-
