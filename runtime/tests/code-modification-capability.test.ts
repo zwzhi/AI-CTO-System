@@ -94,3 +94,23 @@ test('CM-03 fails when no supported marker exists', () => {
   assert.equal(outcome.status, 'FAILURE');
   assert.equal(outcome.failure?.category, 'EXECUTION_FAILED');
 });
+
+test('CM-04 preserves the authorised source-line indentation in the display-only diff', () => {
+  const originalLine = '  console.log("indented");';
+  const invocation = createInvocation({
+    request: {
+      ...createInvocation().request,
+      authorizedChangeContexts: [{
+        ...createInvocation().request.authorizedChangeContexts[0]!,
+        content: `function sample() {\n${originalLine}\n}`,
+      }],
+    },
+  });
+
+  const outcome = new DeterministicCodeModificationAssistant(() => NOW).invoke(invocation);
+  const lines = outcome.result!.proposedDiff.displayText.split('\n');
+
+  assert.equal(outcome.status, 'SUCCESS');
+  assert.equal(lines[2], `-${originalLine}`);
+  assert.equal(lines[3], '+  logger.info("indented");');
+});

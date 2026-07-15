@@ -14,7 +14,7 @@ function firstSupportedContext(contexts: readonly AuthorizedChangeContext[]): Au
 }
 
 function supportedLine(context: AuthorizedChangeContext): string {
-  return context.content.split(/\r?\n/).find((line) => line.includes('console.log('))!.trim();
+  return context.content.split(/\r?\n/).find((line) => line.includes('console.log('))!;
 }
 
 export class DeterministicCodeModificationAssistant implements CodeModificationInvocationPort {
