@@ -2,7 +2,7 @@
 
 ## Phase 10：Self Evolution & Intelligent Optimization Architecture Design
 
-已完成 Self Evolution Framework 架构文档：Observation、Value Evaluation、Optimization Proposal、Human Control、Capability Evolution 与 Anti-Complexity 原则全部复用既有治理体系；未开发自动优化代码，未新增 Module、Agent、Gate 或子 Phase。
+已完成 Self Evolution Framework 架构文档：Observation、Value Evaluation、Optimization Proposal、Human Control、Capability Evolution 与 Anti-Complexity 原则全部复用既有治理体系；随后完成 Optimization Autonomy Model 治理设计，以 Risk Assessment 将未来执行策略分为 `AUTO_EXECUTE`、`AUTO_WITH_VALIDATION`、`NOTIFY`、`CONFIRM_REQUIRED` 与 `MANDATORY_APPROVAL`。未开发自动优化代码，未新增 Module、Agent、Gate 或子 Phase；当前 MVP 保持分析与提案边界，`executionAuthorization: NONE`。
 
 ## 当前阶段
 
