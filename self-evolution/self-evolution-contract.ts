@@ -100,4 +100,10 @@ export interface OptimizationProposal {
   readonly executionAuthorization: 'NONE';
 }
 
+export interface SelfEvolutionMvpResult {
+  readonly observation: SelfObservation;
+  readonly analyses: readonly OptimizationAnalysis[];
+  readonly proposals: readonly OptimizationProposal[];
+}
+
 export type { AuditEvent, ConfidenceLevel, Evidence };

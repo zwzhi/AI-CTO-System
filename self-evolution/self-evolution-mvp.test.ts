@@ -3,6 +3,7 @@ import test from 'node:test';
 
 import type { SelfEvolutionSnapshotInput, SelfObservation } from './self-evolution-contract.ts';
 import { OptimizationProposalGenerator } from './optimization-proposal-generator.ts';
+import { SelfEvolutionMvpService } from './self-evolution-mvp-service.ts';
 import { SelfObservationService } from './self-observation-service.ts';
 import { ValueComplexityAnalysisService } from './value-complexity-analysis-service.ts';
 
@@ -207,4 +208,24 @@ test('keeps repeated failures with one duplicate Evidence ID at L1 without a pro
 
   assert.equal(analyses[0]!.confidence, 'L1');
   assert.equal(proposals.length, 0);
+});
+
+test('SE-06 executes observation to analysis to proposal without external side effects', () => {
+  const input = withRepeatedFailures();
+  const expected = structuredClone(input);
+  const result = new SelfEvolutionMvpService().evaluate(input);
+
+  assert.equal(result.observation.observedAuditEventCount, 2);
+  assert.equal(result.analyses.length, 1);
+  assert.equal(result.proposals.length, 1);
+  assert.equal(result.proposals[0]!.executionAuthorization, 'NONE');
+  assert.deepEqual(input, expected);
+});
+
+test('SE-07 exposes no execution, persistence, repository, or activation operation', () => {
+  const service = new SelfEvolutionMvpService() as unknown as Record<string, unknown>;
+
+  assert.equal(typeof service.executeProposal, 'undefined');
+  assert.equal(typeof service.persist, 'undefined');
+  assert.equal(typeof service.activateCapability, 'undefined');
 });
