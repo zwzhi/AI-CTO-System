@@ -69,4 +69,35 @@ export interface SelfObservation {
   readonly limitations: readonly string[];
 }
 
+export interface OptimizationAnalysis {
+  readonly analysisId: string;
+  readonly actionType: 'MODIFY' | 'DEPRECATE';
+  readonly problem: string;
+  readonly currentState: string;
+  readonly valueScore: number;
+  readonly complexityScore: number;
+  readonly riskLevel: OptimizationRiskLevel;
+  readonly confidence: ConfidenceLevel;
+  readonly evidenceRefs: readonly string[];
+  readonly limitations: readonly string[];
+}
+
+export interface OptimizationProposal {
+  readonly proposalId: string;
+  readonly actionType: OptimizationActionType;
+  readonly problem: string;
+  readonly currentState: string;
+  readonly recommendation: string;
+  readonly expectedValue: string;
+  readonly risk: string;
+  readonly impact: string;
+  readonly rollback: string;
+  readonly validationMethod: string;
+  readonly evidenceRefs: readonly string[];
+  readonly evidence: readonly Evidence[];
+  readonly confidence: ConfidenceLevel;
+  readonly limitations: readonly string[];
+  readonly executionAuthorization: 'NONE';
+}
+
 export type { AuditEvent, ConfidenceLevel, Evidence };

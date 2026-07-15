@@ -2,7 +2,9 @@ import assert from 'node:assert/strict';
 import test from 'node:test';
 
 import type { SelfEvolutionSnapshotInput } from './self-evolution-contract.ts';
+import { OptimizationProposalGenerator } from './optimization-proposal-generator.ts';
 import { SelfObservationService } from './self-observation-service.ts';
+import { ValueComplexityAnalysisService } from './value-complexity-analysis-service.ts';
 
 function createSnapshotInput(): SelfEvolutionSnapshotInput {
   return {
@@ -74,6 +76,48 @@ function withPrototypeNamedEvidence(): SelfEvolutionSnapshotInput {
   };
 }
 
+function withRepeatedFailures(): SelfEvolutionSnapshotInput {
+  const input = createSnapshotInput();
+  const [firstEvent, secondEvent] = input.auditSnapshot.events;
+  return {
+    ...input,
+    auditSnapshot: {
+      ...input.auditSnapshot,
+      events: [firstEvent, { ...secondEvent, eventType: firstEvent.eventType }],
+    },
+  };
+}
+
+function withUnusedCapability(): SelfEvolutionSnapshotInput {
+  const input = createSnapshotInput();
+  const [capability] = input.capabilitySnapshot.records;
+  return {
+    ...input,
+    capabilitySnapshot: {
+      ...input.capabilitySnapshot,
+      records: [{ ...capability, usageCount: 0 }],
+    },
+  };
+}
+
+function withOneFailure(): SelfEvolutionSnapshotInput {
+  const input = createSnapshotInput();
+  return {
+    ...input,
+    auditSnapshot: {
+      ...input.auditSnapshot,
+      events: [input.auditSnapshot.events[0]!],
+    },
+  };
+}
+
+function runMvp(input: SelfEvolutionSnapshotInput) {
+  const observation = new SelfObservationService().observe(input);
+  const analyses = new ValueComplexityAnalysisService().analyze(observation);
+  const proposals = new OptimizationProposalGenerator().generate(observation, analyses);
+  return { analyses, proposals };
+}
+
 test('SE-01 observes only the four supplied snapshots and preserves their content', () => {
   const input = createSnapshotInput();
   const expected = structuredClone(input);
@@ -95,4 +139,29 @@ test('SE-03 preserves __proto__ evidence IDs and validates their audit reference
 
   assert.equal(Object.getPrototypeOf(result.evidenceById), null);
   assert.equal(result.evidenceById['__proto__']?.source, 'audit');
+});
+
+test('SE-03 creates an L3, evidence-backed MODIFY proposal for two failures of one event type', () => {
+  const result = runMvp(withRepeatedFailures());
+  const proposal = result.proposals[0]!;
+
+  assert.equal(proposal.actionType, 'MODIFY');
+  assert.equal(proposal.executionAuthorization, 'NONE');
+  assert.equal(proposal.confidence, 'L3');
+  assert.deepEqual(proposal.evidenceRefs, ['evidence-1', 'evidence-2']);
+});
+
+test('SE-04 creates only a DEPRECATE candidate for an unused capability with maintenance cost', () => {
+  const proposal = runMvp(withUnusedCapability()).proposals[0]!;
+
+  assert.equal(proposal.actionType, 'DEPRECATE');
+  assert.match(proposal.recommendation, /human/i);
+  assert.notEqual(proposal.actionType, 'REMOVE');
+});
+
+test('SE-05 leaves a single failure as L1 observation rather than a proposal', () => {
+  const result = runMvp(withOneFailure());
+
+  assert.equal(result.proposals.length, 0);
+  assert.equal(result.analyses[0]!.confidence, 'L1');
 });
