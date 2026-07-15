@@ -1,6 +1,8 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
+import { AuditService } from '../audit/audit-service.ts';
+import { InMemoryAuditRepository } from '../audit/in-memory-audit-repository.ts';
 import { CodeModificationCapabilityAdapter } from '../capability/code-modification-capability-adapter.ts';
 import { DeterministicCodeModificationAssistant } from '../capability/deterministic-code-modification-assistant.ts';
 import {
@@ -11,6 +13,7 @@ import {
 } from '../capability/code-modification-execution-contract.ts';
 import type { CodeModificationInvocationPort } from '../capability/code-modification-invocation-port.ts';
 import { PermissionBudgetGuard } from '../permission/permission-budget-guard.ts';
+import { CodeModificationCapabilityRuntimeService } from '../services/code-modification-capability-runtime-service.ts';
 
 const NOW = '2026-07-15T00:00:00.000Z';
 
@@ -300,4 +303,22 @@ test('CM-08 supplies frozen canonical evidence, normalises non-success, and acce
   ]);
   assert.equal(failed.status, 'FAILURE');
   assert.equal(failed.failure?.category, 'EXECUTION_FAILED');
+});
+
+test('CM-09 appends proposal audit evidence without applying a change or changing state', () => {
+  const repository = new InMemoryAuditRepository();
+  const service = new CodeModificationCapabilityRuntimeService(createAdapter(), new AuditService(repository), () => NOW);
+  const succeeded = service.execute(createRequest());
+  const blocked = service.execute(createRequest({ cancelled: true }));
+
+  assert.equal(succeeded.auditEvent.eventType, 'CODE_MODIFICATION_CAPABILITY_PROPOSED');
+  assert.equal(succeeded.auditEvent.outputRef, succeeded.outcome.result?.resultRef);
+  assert.match(succeeded.auditEvent.result ?? '', new RegExp(succeeded.outcome.result!.changeProposal.changeId));
+  assert.match(succeeded.auditEvent.result ?? '', new RegExp(succeeded.outcome.result!.proposedDiff.diffId));
+  assert.match(succeeded.auditEvent.result ?? '', /CONFIRM_REQUIRED/);
+  assert.deepEqual(succeeded.auditEvent.budgetSnapshot, createRequest().budget);
+  assert.equal(blocked.auditEvent.eventType, 'CODE_MODIFICATION_CAPABILITY_REJECTED');
+  assert.equal(blocked.auditEvent.failureReason, 'CANCELLED');
+  assert.equal(blocked.auditEvent.failureStage, 'PREFLIGHT');
+  assert.equal(repository.listByWorkflowId('workflow-code-modification-1').length, 2);
 });
