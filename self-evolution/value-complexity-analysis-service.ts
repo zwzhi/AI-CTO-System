@@ -15,7 +15,7 @@ export class ValueComplexityAnalysisService {
 }
 
 function analyzeFailure(failure: FailureObservation): OptimizationAnalysis {
-  const evidenceRefs = Object.freeze([...failure.evidenceRefs]);
+  const evidenceRefs = Object.freeze([...new Set(failure.evidenceRefs)]);
   const isEvidenceBackedRepeatedFailure = failure.count >= 2 && evidenceRefs.length >= 2;
 
   return Object.freeze({

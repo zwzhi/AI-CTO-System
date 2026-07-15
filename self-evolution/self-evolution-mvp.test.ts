@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
-import type { SelfEvolutionSnapshotInput } from './self-evolution-contract.ts';
+import type { SelfEvolutionSnapshotInput, SelfObservation } from './self-evolution-contract.ts';
 import { OptimizationProposalGenerator } from './optimization-proposal-generator.ts';
 import { SelfObservationService } from './self-observation-service.ts';
 import { ValueComplexityAnalysisService } from './value-complexity-analysis-service.ts';
@@ -111,6 +111,29 @@ function withOneFailure(): SelfEvolutionSnapshotInput {
   };
 }
 
+function withRepeatedFailureObservationUsingOneEvidenceId(): SelfObservation {
+  const input = createSnapshotInput();
+  const [firstEvent, secondEvent] = input.auditSnapshot.events;
+  const repeatedFailuresUsingOneEvidence = {
+    ...input,
+    auditSnapshot: {
+      ...input.auditSnapshot,
+      events: [
+        firstEvent,
+        { ...secondEvent, eventType: firstEvent.eventType, evidence: firstEvent.evidence },
+      ],
+    },
+  };
+  const observation = new SelfObservationService().observe(repeatedFailuresUsingOneEvidence);
+  const [failure] = observation.failuresByEventType;
+  const evidenceId = firstEvent.evidence[0]!.evidenceId;
+
+  return {
+    ...observation,
+    failuresByEventType: [{ ...failure!, evidenceRefs: [evidenceId, evidenceId] }],
+  };
+}
+
 function runMvp(input: SelfEvolutionSnapshotInput) {
   const observation = new SelfObservationService().observe(input);
   const analyses = new ValueComplexityAnalysisService().analyze(observation);
@@ -141,27 +164,47 @@ test('SE-03 preserves __proto__ evidence IDs and validates their audit reference
   assert.equal(result.evidenceById['__proto__']?.source, 'audit');
 });
 
-test('SE-03 creates an L3, evidence-backed MODIFY proposal for two failures of one event type', () => {
+test('creates an L3, evidence-backed MODIFY proposal for two failures of one event type', () => {
   const result = runMvp(withRepeatedFailures());
+  const analysis = result.analyses[0]!;
   const proposal = result.proposals[0]!;
 
+  assert.equal(analysis.valueScore, 75);
+  assert.equal(analysis.complexityScore, 60);
+  assert.equal(analysis.riskLevel, 'MEDIUM');
+  assert.equal(analysis.confidence, 'L3');
   assert.equal(proposal.actionType, 'MODIFY');
   assert.equal(proposal.executionAuthorization, 'NONE');
   assert.equal(proposal.confidence, 'L3');
   assert.deepEqual(proposal.evidenceRefs, ['evidence-1', 'evidence-2']);
 });
 
-test('SE-04 creates only a DEPRECATE candidate for an unused capability with maintenance cost', () => {
-  const proposal = runMvp(withUnusedCapability()).proposals[0]!;
+test('creates only a DEPRECATE candidate for an unused capability with maintenance cost', () => {
+  const result = runMvp(withUnusedCapability());
+  const analysis = result.analyses.find((candidate) => candidate.actionType === 'DEPRECATE')!;
+  const proposal = result.proposals[0]!;
 
+  assert.equal(analysis.valueScore, 55);
+  assert.equal(analysis.complexityScore, 70);
+  assert.equal(analysis.riskLevel, 'MEDIUM');
+  assert.equal(analysis.confidence, 'L2');
   assert.equal(proposal.actionType, 'DEPRECATE');
   assert.match(proposal.recommendation, /human/i);
   assert.notEqual(proposal.actionType, 'REMOVE');
 });
 
-test('SE-05 leaves a single failure as L1 observation rather than a proposal', () => {
+test('leaves a single failure as L1 observation rather than a proposal', () => {
   const result = runMvp(withOneFailure());
 
   assert.equal(result.proposals.length, 0);
   assert.equal(result.analyses[0]!.confidence, 'L1');
+});
+
+test('keeps repeated failures with one duplicate Evidence ID at L1 without a proposal', () => {
+  const observation = withRepeatedFailureObservationUsingOneEvidenceId();
+  const analyses = new ValueComplexityAnalysisService().analyze(observation);
+  const proposals = new OptimizationProposalGenerator().generate(observation, analyses);
+
+  assert.equal(analyses[0]!.confidence, 'L1');
+  assert.equal(proposals.length, 0);
 });
