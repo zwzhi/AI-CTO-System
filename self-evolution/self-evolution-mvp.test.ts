@@ -52,6 +52,28 @@ function withoutAuditEvidence(): SelfEvolutionSnapshotInput {
   return { ...input, evidenceSnapshot: { ...input.evidenceSnapshot, evidence: input.evidenceSnapshot.evidence.slice(1) } };
 }
 
+function withPrototypeNamedEvidence(): SelfEvolutionSnapshotInput {
+  const input = createSnapshotInput();
+  const [firstAuditEvent, secondAuditEvent] = input.auditSnapshot.events;
+  const [firstEvidence, secondEvidence] = input.evidenceSnapshot.evidence;
+  const [capability] = input.capabilitySnapshot.records;
+  return {
+    ...input,
+    auditSnapshot: {
+      ...input.auditSnapshot,
+      events: [{ ...firstAuditEvent, evidence: [{ ...firstAuditEvent.evidence[0], evidenceId: '__proto__' }] }, secondAuditEvent],
+    },
+    evidenceSnapshot: {
+      ...input.evidenceSnapshot,
+      evidence: [{ ...firstEvidence, evidenceId: '__proto__' }, secondEvidence],
+    },
+    capabilitySnapshot: {
+      ...input.capabilitySnapshot,
+      records: [{ ...capability, evidenceRefs: ['__proto__'] }],
+    },
+  };
+}
+
 test('SE-01 observes only the four supplied snapshots and preserves their content', () => {
   const input = createSnapshotInput();
   const expected = structuredClone(input);
@@ -66,4 +88,11 @@ test('SE-01 observes only the four supplied snapshots and preserves their conten
 test('SE-02 rejects an invalid source or an audit evidence reference missing from EvidenceSnapshot', () => {
   assert.throws(() => new SelfObservationService().observe(withBlankRuntimeSource()), /snapshot source/i);
   assert.throws(() => new SelfObservationService().observe(withoutAuditEvidence()), /evidence/i);
+});
+
+test('SE-03 preserves __proto__ evidence IDs and validates their audit references', () => {
+  const result = new SelfObservationService().observe(withPrototypeNamedEvidence());
+
+  assert.equal(Object.getPrototypeOf(result.evidenceById), null);
+  assert.equal(result.evidenceById['__proto__']?.source, 'audit');
 });

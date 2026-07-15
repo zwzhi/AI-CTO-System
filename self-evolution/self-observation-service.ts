@@ -71,7 +71,7 @@ function validateRuntimeMetrics(input: SelfEvolutionSnapshotInput): void {
 }
 
 function collectEvidence(evidence: readonly Evidence[]): Readonly<Record<string, Evidence>> {
-  const evidenceById: Record<string, Evidence> = {};
+  const evidenceById: Record<string, Evidence> = Object.create(null);
   for (const item of evidence) {
     if (!isNonBlankString(item.evidenceId)) {
       throw new SelfEvolutionInputError('Evidence IDs must be non-blank.');

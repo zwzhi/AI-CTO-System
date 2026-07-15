@@ -53,3 +53,25 @@ Implementation commit: `03a6471107aa5bbb8c71b5ac5b3cb024e1bedda9` (`feat: add se
 ## Concerns
 
 None. Git emitted standard Windows line-ending conversion warnings while staging the three new TypeScript files; no content or test issue resulted.
+
+## Review fix: prototype-safe evidence IDs
+
+Review found that the original ordinary-object evidence index could not safely retain a valid evidence ID named `__proto__`: assignment invokes the inherited prototype setter, so later audit-reference validation incorrectly rejects the supplied record.
+
+TDD red:
+
+```text
+node --experimental-strip-types --test self-evolution/self-evolution-mvp.test.ts
+```
+
+Result: `SE-03 preserves __proto__ evidence IDs and validates their audit references` failed as expected with `SelfEvolutionInputError: Evidence reference is absent from EvidenceSnapshot: __proto__`.
+
+Fix: `collectEvidence` now creates its copied, frozen index with `Object.create(null)`. This preserves `__proto__` (and other prototype-collision names) as ordinary own keys while retaining `Object.hasOwn` validation and the existing immutable output boundary.
+
+Green and full regression:
+
+```text
+node --experimental-strip-types --test self-evolution/self-evolution-mvp.test.ts && npm.cmd test
+```
+
+Result: focused suite: 3 passed, 0 failed (including SE-03). Existing Runtime suite: 97 passed, 0 failed.
