@@ -11,12 +11,18 @@ export class OptimizationProposalGenerator {
     analyses: readonly OptimizationAnalysis[],
   ): readonly OptimizationProposal[] {
     return Object.freeze(analyses.flatMap((analysis) => {
-      if ((analysis.confidence !== 'L2' && analysis.confidence !== 'L3') || !hasAllEvidence(analysis, observation)) {
+      if (!isAllowedProposalAction(analysis.actionType)
+        || (analysis.confidence !== 'L2' && analysis.confidence !== 'L3')
+        || !hasAllEvidence(analysis, observation)) {
         return [];
       }
       return [createProposal(analysis, observation)];
     }));
   }
+}
+
+function isAllowedProposalAction(actionType: string): actionType is 'MODIFY' | 'DEPRECATE' {
+  return actionType === 'MODIFY' || actionType === 'DEPRECATE';
 }
 
 function hasAllEvidence(analysis: OptimizationAnalysis, observation: SelfObservation): boolean {

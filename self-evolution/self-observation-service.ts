@@ -93,10 +93,15 @@ function validateAuditEvidenceReferences(events: readonly AuditEvent[], evidence
 }
 
 function validateCapabilityRecords(records: readonly CapabilitySnapshotRecord[], evidenceById: Readonly<Record<string, Evidence>>): void {
+  const capabilityIds = new Set<string>();
   for (const record of records) {
     if (!isNonBlankString(record.capabilityId)) {
       throw new SelfEvolutionInputError('Capability IDs must be non-blank.');
     }
+    if (capabilityIds.has(record.capabilityId)) {
+      throw new SelfEvolutionInputError('Capability IDs must be distinct.');
+    }
+    capabilityIds.add(record.capabilityId);
     for (const evidenceRef of record.evidenceRefs) {
       assertEvidenceReference(evidenceRef, evidenceById);
     }

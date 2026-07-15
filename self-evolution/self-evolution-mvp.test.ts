@@ -1,7 +1,7 @@
 import assert from 'node:assert/strict';
 import test from 'node:test';
 
-import type { SelfEvolutionSnapshotInput, SelfObservation } from './self-evolution-contract.ts';
+import type { OptimizationAnalysis, SelfEvolutionSnapshotInput, SelfObservation } from './self-evolution-contract.ts';
 import { OptimizationProposalGenerator } from './optimization-proposal-generator.ts';
 import { SelfEvolutionMvpService } from './self-evolution-mvp-service.ts';
 import { SelfObservationService } from './self-observation-service.ts';
@@ -97,6 +97,18 @@ function withUnusedCapability(): SelfEvolutionSnapshotInput {
     capabilitySnapshot: {
       ...input.capabilitySnapshot,
       records: [{ ...capability, usageCount: 0 }],
+    },
+  };
+}
+
+function withDuplicateCapabilityId(): SelfEvolutionSnapshotInput {
+  const input = createSnapshotInput();
+  const [capability] = input.capabilitySnapshot.records;
+  return {
+    ...input,
+    capabilitySnapshot: {
+      ...input.capabilitySnapshot,
+      records: [capability!, { ...capability!, evidenceRefs: ['evidence-2'] }],
     },
   };
 }
@@ -228,4 +240,28 @@ test('SE-07 exposes no execution, persistence, repository, or activation operati
   assert.equal(typeof service.executeProposal, 'undefined');
   assert.equal(typeof service.persist, 'undefined');
   assert.equal(typeof service.activateCapability, 'undefined');
+});
+
+test('rejects a duplicate non-blank capability ID in the supplied snapshot', () => {
+  assert.throws(() => new SelfObservationService().observe(withDuplicateCapabilityId()), /capability IDs must be distinct/i);
+});
+
+test('does not generate a proposal for a forged REMOVE L2 analysis with supplied evidence', () => {
+  const observation = new SelfObservationService().observe(createSnapshotInput());
+  const forgedRemoveAnalysis = {
+    analysisId: 'analysis-remove-capability-1',
+    actionType: 'REMOVE',
+    problem: 'A forged removal proposal.',
+    currentState: 'No action is permitted.',
+    valueScore: 55,
+    complexityScore: 70,
+    riskLevel: 'MEDIUM',
+    confidence: 'L2',
+    evidenceRefs: ['evidence-1'],
+    limitations: [],
+  } as unknown as OptimizationAnalysis;
+
+  const proposals = new OptimizationProposalGenerator().generate(observation, [forgedRemoveAnalysis]);
+
+  assert.deepEqual(proposals, []);
 });
