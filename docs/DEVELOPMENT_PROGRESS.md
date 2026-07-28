@@ -491,6 +491,12 @@ AI Matrix 下一步只进入 Subject Profile、Knowledge Validation、真实 Tas
 | Implementation Gate 通过 | 2026-08-06 | Skill 包测试、官方 schema 校验、隔离安装器测试与全量 `npm.cmd test` 均通过；Node 回归为 165/165，`git diff --check main...HEAD` 无错误，变更仅涉及批准的 Skill、安装器、测试和既有治理入口。Gate 为 `APPROVED_FOR_LOCAL_INSTALLATION`；这不等于新对话隐式发现已验证，用户级 Junction 仍需在合并到 `main` 后创建。 |
 | 合并与本地安装完成 | 2026-08-06 | 分支已 fast-forward 合并到 `main`，合并结果再次通过 Skill 包、安装器和 165/165 Node 回归。`2026-08-06T16:58:36+08:00` 从 `main` 创建 `C:\Users\白名单\.codex\skills\ai-cto-system` Junction，目标为 `D:\AI Project\AI-CTO-System\skills\ai-cto-system`；二次安装返回 `ALREADY_INSTALLED`，`SKILL.md` 与 `agents/openai.yaml` 均可读。状态为 `INSTALLED_AWAITING_FRESH_SESSION_PILOT`。 |
 
+## GitHub 远程仓库状态记录
+
+| 事件 | 日期 | 状态 |
+|---|---|---|
+| 私有远程仓库创建 | 2026-08-06 | 已在 GitHub 账户 `zwzhi` 下创建私有仓库 `AI-CTO-System`，配置 `origin=https://github.com/zwzhi/AI-CTO-System.git`，并将本地 `main` 完整历史推送为远程默认分支。创建后验证仓库 `visibility=PRIVATE`，本地与远程 HEAD 一致。 |
+
 ## 最后更新时间
 
 2026-08-06

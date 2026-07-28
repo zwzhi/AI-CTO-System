@@ -168,6 +168,7 @@
 - 2026-08-06：Global AI CTO Skill Gateway 已在独立分支完成仓库权威 Skill 包、Codex UI metadata、显式退出/重新启用契约、渐进 authority routing、幂等 Junction 安装和受控回滚实现。包 schema 与安装安全测试通过；实现不新增 Module、Phase、Plugin、Provider、MCP、Runtime 合同或执行授权。持久 Junction 必须在代码合并到 `main` 后从 canonical repository 创建，当前尚未安装；新对话行为仍是独立验收门禁。
 - 2026-08-06：Global AI CTO Skill Gateway Implementation Gate 为 `APPROVED_FOR_LOCAL_INSTALLATION`：官方 Skill validator、包/安装器测试、165 项 Node 回归与范围扫描通过。该 Gate 只授权在分支合并后从 `main` 创建 user-level Junction；新对话的隐式发现、新项目入口、已有项目入口、显式退出和 ordinary non-trigger 尚需 fresh-session Pilot 才能升级为 `GLOBAL_SKILL_GATEWAY_VALIDATED`。
 - 2026-08-06：Global AI CTO Skill Gateway 已合并到 `main` 并在本机安装。用户级 `C:\Users\白名单\.codex\skills\ai-cto-system` 是指向仓库 `skills\ai-cto-system` 的 NTFS Junction，重复安装验证为幂等，canonical source 和 metadata 可读。当前状态严格保持 `INSTALLED_AWAITING_FRESH_SESSION_PILOT`；当前对话的 Skill catalog 不能充当启动发现 Evidence，需在新 Codex 对话验证四类 Pilot 后再决定是否标记 `GLOBAL_SKILL_GATEWAY_VALIDATED`。
+- 2026-08-06：用户授权创建私有 GitHub 远程仓库。已在 `zwzhi/AI-CTO-System` 创建 `PRIVATE` 仓库，配置本地 `origin` 为 `https://github.com/zwzhi/AI-CTO-System.git`，将 `main` 设为远程默认分支并推送完整提交历史。本记录取代“当前没有 Git remote”的运行状态，但不改写此前设计阶段的历史事实。
 
 ## 当前状态
 
