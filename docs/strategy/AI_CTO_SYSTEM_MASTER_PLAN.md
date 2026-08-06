@@ -83,7 +83,7 @@ Layer 定义稳定职责边界，Module 定义层内可独立治理的能力，P
 | 路线状态 | 内容 | 授权含义 |
 |---|---|---|
 | 已完成治理基线 | Phase 1–8.5、Architecture Review、Strategic Alignment、Knowledge Governance Pilot | 仅证明相应治理文档或试点已完成 |
-| 当前工作 | Phase 9C-5 Codex Capability Implementation Design | Mock-only 实现设计与 Gate 已完成；尚未进入代码实现、Capability Activation 或真实接入 |
+| 当前工作 | Controlled Intent-to-Runtime Handoff Design | 设计复用现有 Intent、Router 与 Runtime建立结构化、确认优先的内部控制平面连接；尚未编码，也不构成用户入口、审批恢复、Capability Activation 或真实执行 |
 | 未启动 | 真实 Capability 激活、真实 Codex/MCP/Tool Calling、持久化、生产交付与自动执行 | 没有相应开发或执行授权 |
 
 Phase 只是历史交付标签和路线元数据，不是 Module、Layer、Lifecycle State 或自动授权。未来候选路线可以标记为 `PROPOSED`、`UNDER_REVIEW`、`APPROVED_FOR_DESIGN` 或 `DEFERRED`，但这些仅为规划结果，不能写入 Module Registry 状态或项目生命周期。

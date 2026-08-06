@@ -1,5 +1,7 @@
 # AI CTO System Project Memory
 
+> 2026-08-06：用户确认 `SYS-L5-HANDOFF-001` Controlled Intent-to-Runtime Handoff 设计：复用现有 Intent Gateway、Execution Routing、Runtime Foundation、Workflow、Task、Guard 与 Audit，以薄 `ControlledRuntimeHandoffService` 接受结构化 Intent；正常和升级审查结果创建单 Workflow / Task 并固定停在 `WAITING_APPROVAL`，超范围/证据不足不创建 Workflow，预算或取消由现有 Guard 阻断。归类为 Layer 5 `AI CTO Runtime Architecture` 的 `EXTEND_EXISTING_MODULE`，不新增 Module/Phase/ADR，不调用 Capability、Agent、模型、工具或网络。该设计完成不等于用户可直接自然语言驱动开发；最小可用开发闭环仍需用户入口、审批恢复、真实受控工程 Capability 与目标项目安全边界。
+
 > 2026-08-06：用户确认将“执行档位与证据新鲜度”作为 Layer 5 `Execution Routing Governance` 的设计扩展，而不是新 Module、Phase 或外部 Skill 接入。书面设计规定：L0–L4 决定默认 R0–R4；风险与可逆性确定最低 `LIGHT` / `STANDARD` / `STRICT`；质量和证据当前性确定验证强度。证据只能在已授权相关范围中标记 `CURRENT`、`STALE` 或 `NOT_CAPTURED`。该设计时点仅完成 ADR-0032；后续只读实现记录见下方。外部 Skills 包仍为 `REJECT_OR_DEFER`，不安装、不复制。
 
 > 2026-08-06：用户已审阅并确认上述设计；已创建技术实现计划 `docs/superpowers/plans/2026-08-06-execution-profile-evidence-freshness-implementation.md`。计划仅设计一个独立、确定性、只读的建议性路由服务和 Evidence Freshness 比较器：不修改 Runtime Core/Workflow/Task/Agent/Capability/Audit Repository，不执行实际模型切换、工具调用或执行授权。编码仍须另行授权。

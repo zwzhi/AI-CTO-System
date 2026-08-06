@@ -1,5 +1,9 @@
 # AI CTO System 开发进度
 
+## Controlled Intent-to-Runtime Handoff Design
+
+用户确认采用薄集成服务，把结构化 `IntentClassificationResult` 经现有 `AdvisoryExecutionRouter` 送入现有 Runtime，并固定创建单 Workflow / Task 后停在 `WAITING_APPROVAL`。设计已明确 Intent拒绝、Routing阻断、Guard阻断、引用链、不可变输出和13项测试边界；不新增 Module/Phase/ADR，不解析自然语言、不恢复审批、不调用 Capability/Agent/模型/工具。该集成完成后仍只是内部控制平面连接；可直接提需求并受控开发还需要用户入口适配、审批后恢复、一个真实已激活工程 Capability 和目标项目安全边界。
+
 ## AI Matrix Repository Separation Completed
 
 AI Matrix 已通过 subtree split 保留历史并迁移到独立仓库 `D:\AI Project\AI-Matrix`。独立仓库分支为 `main`、未配置 remote，产品源码已解除 AI CTO Runtime 相对路径依赖，39 / 39 测试和 0 漏洞审计通过。AI CTO System 已移出 AI Matrix 业务源码、Knowledge、Pilot 数据和产品专属文档，只保留 ADR-0031、拆分设计 / 计划和[外部项目记录](portfolio/AI_MATRIX_EXTERNAL_PROJECT_RECORD.md)。
