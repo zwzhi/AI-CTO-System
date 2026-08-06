@@ -481,6 +481,13 @@ AI Matrix 下一步只进入 Subject Profile、Knowledge Validation、真实 Tas
 | Implementation Plan 完成 | 2026-08-06 | 用户已确认书面设计，已生成独立的 TDD 实现计划：仅新增纯内存、建议性的路由合同/档位政策/证据新鲜度比较器/组合服务与测试。计划明确不改 Runtime Core、Workflow、Task、Agent、Capability、Audit Repository 或 Registry；编码、真实模型选择、工具调用和执行授权仍未获授权。 |
 | Advisory Router 实现完成 | 2026-08-06 | 用户授权后按 TDD 实现 `EvidenceFreshnessService`、`ExecutionProfilePolicy` 与 `AdvisoryExecutionRouter`。11 项目标测试和全量 137 项回归通过；补充锁定 HIGH 风险固定 `STRICT`，以及强制当前证据缺失时返回 `INSUFFICIENT_EVIDENCE`。范围扫描无文件/Git/网络、模型/工具、Workflow 或 Audit Repository 依赖。Development Gate 为 `APPROVED_FOR_TESTING`；不代表真实模型选择、自动切换、工具调用或执行授权。 |
 
+## Global AI CTO Skill Gateway 状态记录
+
+| 事件 | 日期 | 状态 |
+|---|---|---|
+| Design 完成并获确认 | 2026-08-06 | 方案 A 已冻结：仓库内 `skills/ai-cto-system` 为唯一权威来源，用户级 Skill 目录仅通过 NTFS Junction 发现；显式退出优先于隐式触发，按任务渐进加载治理上下文，不新增 Plugin、Module、Phase、Provider、MCP 或 Runtime 合同。 |
+| Implementation Plan 完成 | 2026-08-06 | 已形成 TDD 实施计划，覆盖 Skill 包、官方 schema 校验、Junction 安装/幂等/冲突/回滚测试、主分支后安装及新对话四类 Pilot。当前尚未创建 Skill、尚未安装 Junction；状态为 `PLANNED_AWAITING_IMPLEMENTATION_AUTHORIZATION`。 |
+
 ## 最后更新时间
 
 2026-08-06

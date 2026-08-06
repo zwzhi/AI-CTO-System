@@ -164,6 +164,7 @@
 - 2026-07-14：完成 Code Analysis Capability MVP Implementation：新增专用 Contract、Invocation Port、确定性只读分析器、不可变授权代码上下文与 Canonical Evidence 快照、Evidence-first Adapter、仅追加 Audit 的 Runtime Service 与 21 项本地测试；全量 74 项测试通过。未授权/不可定位上下文、严格无效/过期权限时间（包括日期解析器会归一化的无效日期）、预算超限、取消、无效输出、越级 Confidence、篡改或重复 Evidence、通过 Result Reference / Finding Identifier 回显的非平凡源码，以及端口非成功结果均会被阻断或转为受控失败；实现没有文件系统、网络、Provider/LLM/Codex/MCP、Patch、Commit、Deployment、Registry 或 Knowledge 副作用。
 - 2026-07-15：完成 AI Matrix Application Strategy 与 ADR-0026；明确“AI CTO System = 基础操作系统，AI Matrix = 业务应用”，设计六层应用能力栈、五类业务能力需求、单一内容闭环 MVP、系统 / 应用边界和母婴、电商、内容、企业培训扩展路线。未修改核心架构、Module Registry、Runtime 或 Capability 状态，未新增 Phase / Module，未编码。
 - 2026-07-15：用户进入 AI Matrix Pilot Design，ADR-0026 更新为 `Accepted`；完成 `AI_MATRIX_PILOT_DESIGN.md` 与 ADR-0027，并初始化独立 AI Matrix PROJECT_MEMORY / Development Progress。Pilot 只设计单一短视频策划能力、单 Agent、单 Workflow 与 20 个真实任务验证，未授权代码或真实运行。
+- 2026-08-06：用户确认 Global AI CTO Skill Gateway 方案 A，并批准进入实施规划。全局发现采用“仓库内唯一 Skill 来源 + `%USERPROFILE%\.codex\skills\ai-cto-system` NTFS Junction”，显式 `AI_CTO_MODE: OFF` 等退出指令优先于隐式触发；Skill 只作为既有 Intent Gateway 的轻入口，按请求渐进加载权威文档，不复制治理语料，不声称设计态 Runtime 可直接调用。实施计划已完成，当前尚未创建或安装 Skill，新对话发现与触发仍待实施后的独立 Pilot 验证；本仓库没有 Git remote，本任务不上传 GitHub。
 
 ## 当前状态
 
