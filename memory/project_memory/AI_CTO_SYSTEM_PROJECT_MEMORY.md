@@ -114,6 +114,7 @@
 - Pilot 创建 `KN-ARC-0001`、`KN-ENG-0001`、`KN-FAIL-0001`；前两项为 `VALIDATED`，失败经验因因果泛化只有 L2 Confidence 而保持 `VALIDATING`，三项均未进入 `ACTIVE`。
 - 单项目多次采用不构成 L4 或通用最佳实践；复用模拟的 `ADAPT`、`ADOPT`、`REFERENCE_ONLY` 不改变 Knowledge Status，也不产生工程 Gate 授权。
 - Phase 8.4 `Intelligent Resource & Execution Routing Governance` 是 Layer 5 的 `Completed` 文档治理 Module：它根据 User Intent、Task Context、Project Context、偏好和 Evidence 输出建议性 Execution Plan，治理复杂度、Workflow、Capability / Skill / Tool、模型类别、Reasoning、Context 与升级条件；不执行、不调用、不切换、不改变 Codex 行为，也不覆盖安全、ADR、Gate、权限或人类决策。
+- Global AI CTO Skill Gateway 必须在加载治理权威前先执行最小路由预检：`L0` 普通处理，`L1` 使用 Instant / LIGHT / R1 / TARGETED，`L2` 使用 Engineering / STANDARD / R2，`L3`–`L4` 保留设计、影响分析和适用 Gate。触发 Skill 本身不能提高任务等级；Context 表是允许范围，不是预加载清单；Reasoning 与模型条目仍是建议，不代表宿主模型切换或工具授权。
 - EFF-001 是路由治理的单案例 Problem Validation Evidence，Confidence 为 L3 / 中等，部分指标为 `NOT_CAPTURED`；它不能固化默认流程、模型、Git 偏好或自动化规则。Runtime、自动模型切换、真实工具调用与自动化仍需多个案例、独立准入、评审、ADR 和受影响 Gate。
 - Phase 8.5 Intent Gateway 是 Layer 5 的 `Completed` 文档治理 Module：它识别 Intent、Confidence、Risk、Trigger 和 Confirmation，并向 Execution Routing 提供建议输入；不执行、不调用模型或工具、不训练分类器、不改变 Codex 行为，也不覆盖 Gate 或用户授权。
 - Phase 8.6 Delivery & Environment Governance 是 Layer 4 的 `Completed` 文档治理 Module：它管理环境、配置、交付包、用户文档、诊断和 Delivery Gate；不实现 CI/CD、Installer、部署工具或 Runtime。
@@ -169,10 +170,11 @@
 - 2026-08-06：Global AI CTO Skill Gateway Implementation Gate 为 `APPROVED_FOR_LOCAL_INSTALLATION`：官方 Skill validator、包/安装器测试、165 项 Node 回归与范围扫描通过。该 Gate 只授权在分支合并后从 `main` 创建 user-level Junction；新对话的隐式发现、新项目入口、已有项目入口、显式退出和 ordinary non-trigger 尚需 fresh-session Pilot 才能升级为 `GLOBAL_SKILL_GATEWAY_VALIDATED`。
 - 2026-08-06：Global AI CTO Skill Gateway 已合并到 `main` 并在本机安装。用户级 `C:\Users\白名单\.codex\skills\ai-cto-system` 是指向仓库 `skills\ai-cto-system` 的 NTFS Junction，重复安装验证为幂等，canonical source 和 metadata 可读。当前状态严格保持 `INSTALLED_AWAITING_FRESH_SESSION_PILOT`；当前对话的 Skill catalog 不能充当启动发现 Evidence，需在新 Codex 对话验证四类 Pilot 后再决定是否标记 `GLOBAL_SKILL_GATEWAY_VALIDATED`。
 - 2026-08-06：用户授权创建私有 GitHub 远程仓库。已在 `zwzhi/AI-CTO-System` 创建 `PRIVATE` 仓库，配置本地 `origin` 为 `https://github.com/zwzhi/AI-CTO-System.git`，将 `main` 设为远程默认分支并推送完整提交历史。本记录取代“当前没有 Git remote”的运行状态，但不改写此前设计阶段的历史事实。
+- 2026-08-06：完成 Global AI CTO Skill Routing Preflight：真实使用反馈证明旧 Gateway 的“选择最轻流程”缺少入口硬合同；新增 `L0`–`L4` Route-first 表、`L1` 防流程膨胀、渐进 Context 与单行非阻塞路由提示。路由合同、官方 Skill 校验、安装器与 165 项 Node 回归通过；新上下文抽检覆盖 L1、L4 和显式 OFF。未新增 Module、Phase、ADR、Runtime 或真实模型/工具执行。
 
 ## 当前状态
 
-AI Matrix 已迁移到 `D:\AI Project\AI-Matrix` 独立仓库并继续由 AI CTO System 提供开发治理，当前组合状态为 `AI_MATRIX_EXTERNAL_REPOSITORY_GOVERNED`。产品的 Strategy、Pilot Design、MVP 与 Product Foundation 已完成，但能力主体、已验证 Knowledge、真实 Provider、20 个真实任务和专家基线尚未冻结，不能宣称能力复制成功。AI CTO System Core 状态未改变，业务代码不再位于本仓库。
+AI Matrix 已迁移到 `D:\AI Project\AI-Matrix` 独立仓库并继续由 AI CTO System 提供开发治理，当前组合状态为 `AI_MATRIX_EXTERNAL_REPOSITORY_GOVERNED`。产品的 Strategy、Pilot Design、MVP 与 Product Foundation 已完成，但能力主体、已验证 Knowledge、真实 Provider、20 个真实任务和专家基线尚未冻结，不能宣称能力复制成功。Global AI CTO Skill 的路由入口已完成 Route-first 补强并通过静态、回归和新上下文行为抽检；AI CTO System Core 与 Runtime 边界未改变，业务代码不再位于本仓库。
 
 ## 未来计划
 

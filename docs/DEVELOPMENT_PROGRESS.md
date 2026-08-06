@@ -491,6 +491,13 @@ AI Matrix 下一步只进入 Subject Profile、Knowledge Validation、真实 Tas
 | Implementation Gate 通过 | 2026-08-06 | Skill 包测试、官方 schema 校验、隔离安装器测试与全量 `npm.cmd test` 均通过；Node 回归为 165/165，`git diff --check main...HEAD` 无错误，变更仅涉及批准的 Skill、安装器、测试和既有治理入口。Gate 为 `APPROVED_FOR_LOCAL_INSTALLATION`；这不等于新对话隐式发现已验证，用户级 Junction 仍需在合并到 `main` 后创建。 |
 | 合并与本地安装完成 | 2026-08-06 | 分支已 fast-forward 合并到 `main`，合并结果再次通过 Skill 包、安装器和 165/165 Node 回归。`2026-08-06T16:58:36+08:00` 从 `main` 创建 `C:\Users\白名单\.codex\skills\ai-cto-system` Junction，目标为 `D:\AI Project\AI-CTO-System\skills\ai-cto-system`；二次安装返回 `ALREADY_INSTALLED`，`SKILL.md` 与 `agents/openai.yaml` 均可读。状态为 `INSTALLED_AWAITING_FRESH_SESSION_PILOT`。 |
 
+## Global AI CTO Skill Routing Preflight 状态记录
+
+| 事件 | 日期 | 状态 |
+|---|---|---|
+| Design 与 Implementation Plan 完成 | 2026-08-06 | 用户确认采用最小入口修正：复用既有 Execution Routing，在 Skill 内先判定 `L0`–`L4`，再选择 Workflow、执行档位、Reasoning、Context 与验证强度；不新增 Module、Phase、Runtime、Capability 或 ADR。 |
+| TDD 实现与行为抽检完成 | 2026-08-06 | 新增独立路由合同测试，先在旧 Skill 上观察预期失败，再补充 Route-first 表、`L0` 普通处理、`L1` 防流程膨胀和单行路由提示。路由/包/安装器测试与 165/165 Node 回归通过；新上下文抽检正确区分 L1 局部修改、L4 新项目及显式 OFF，并明确 Context 表是允许范围而非预加载清单。实际模型切换、工具调用和执行授权仍未实现。状态为 `IMPLEMENTED_AND_VERIFIED`。 |
+
 ## GitHub 远程仓库状态记录
 
 | 事件 | 日期 | 状态 |
