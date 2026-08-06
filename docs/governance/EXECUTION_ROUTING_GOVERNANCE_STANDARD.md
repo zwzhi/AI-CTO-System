@@ -36,9 +36,10 @@ Execution Router **只负责决策如何执行，不负责执行**。它不得�
 | Workflow | Instant、Engineering 或 CTO Workflow，或不进入 AI CTO 流程。 |
 | Capability / Skill / Tool | 所需类别、必要性和权限前提；不代表调用。 |
 | Model / Reasoning | 模型类别、R0–R4 预算与质量 / 成本理由；不代表自动选择。 |
+| Execution Profile | `LIGHT`、`STANDARD` 或 `STRICT` 的建议性执行/验证强度；不代表执行授权。 |
 | Context Scope | 最小上下文集合、排除项和加载理由。 |
 | User Preference Application | 已应用、未应用或冲突，及理由。 |
-| Evidence / Confidence | 事实来源、`NOT_CAPTURED` 字段、可信度和适用范围。 |
+| Evidence / Confidence | 事实来源、`CURRENT / STALE / NOT_CAPTURED`、可信度和适用范围。 |
 | Escalation Conditions | 触发更高复杂度、人工审批或现有 Gate 的条件。 |
 
 ## 决策顺序
@@ -61,7 +62,11 @@ flowchart TD
 2. 安全、权限、ADR、项目 Gate、License、数据边界和当前用户指令是不可抵消约束；用户偏好或效率目标不能覆盖它们。
 3. 低复杂度建议不构成跳过设计、测试、审查或发布门禁的授权。
 4. 无法证实的 Duration、Token、成本、质量或调用次数标为 `NOT_CAPTURED`。
-5. 路由建议必须可解释、可复核、可撤销；本标准不创建 Runtime 或自动化能力。
+5. 路由建议必须可解释、可复核、可撤销；当前只读实现不创建执行、模型切换、工具调用或自动化能力。
+
+## 当前只读实现
+
+[Execution Profile & Evidence Freshness Standard](./EXECUTION_PROFILE_EVIDENCE_FRESHNESS_STANDARD.md) 定义确定性 `AdvisoryExecutionRouter`：L0–L4 决定默认 R0–R4，风险、可逆性和 Gate 决定最低 Profile，调用方提供的相关范围与指纹决定 Evidence Freshness。实现只返回建议与 L2 Evidence；不读取文件/Git/网络，不调用模型/工具，不持久化，也不改变任何 Runtime 状态。
 
 ## 与 EFF-001 的关系
 

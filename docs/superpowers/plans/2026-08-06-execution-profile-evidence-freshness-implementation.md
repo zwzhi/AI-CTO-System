@@ -328,7 +328,7 @@ test('ER-08 returns equal output for equal frozen input and never mutates it', (
 test('ER-09 marks stale evidence but does not invoke a validator, tool, audit repository, or model', () => {
   const result = new AdvisoryExecutionRouter(() => NOW).route(request({ requiresCurrentEvidence: false, evidenceObservations: [changedObservation] }));
   assert.equal(result.evidenceFreshness[0]?.currentness, 'STALE');
-  assert.equal(result.validationObligation, 'CHANGE_IMPACT_AND_TARGETED');
+  assert.equal(result.validationObligation, 'FULL_GATE');
 });
 ```
 
@@ -441,7 +441,9 @@ git commit -m "docs: govern advisory execution routing"
 | ER-03 | 缺失指纹或观察为 `NOT_CAPTURED`。 |
 | ER-04 | L1、低风险、可逆任务为 `LIGHT`、R1、`FAST`、定向验证。 |
 | ER-05 | 简单但不可逆/高风险任务升为 `STRICT`，但不虚增推理等级。 |
+| ER-05b | HIGH 风险任务即使可逆也必须使用 `STRICT`。 |
 | ER-06 | 要求当前证据而证据非当前时升级为审查建议。 |
+| ER-06b | 要求当前证据但未提供 Evidence Input 时返回 `INSUFFICIENT_EVIDENCE`。 |
 | ER-07 | 输出有路由 Evidence 与“无执行授权”限制。 |
 | ER-08 | 输入和输出不可变，等输入得到等输出。 |
 | ER-09 | 证据过期只提高验证义务，不触发验证、工具、模型或审计持久化。 |

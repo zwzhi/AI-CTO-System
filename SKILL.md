@@ -245,9 +245,9 @@ Capability Governance 当前是 Layer 5 的 `Completed` 文档治理 Module；�
 3. Skill、Tool、Model、Reasoning 与 Context 分别遵循对应 `docs/governance/` 政策：禁止无任务需求加载 Skill、禁止为流程完整调用工具、不是所有任务使用最高能力模型、采用最低充分推理与最小必要上下文。
 4. 用户长期偏好只能在明确、可撤销、当前适用且不冲突时影响建议；不得覆盖安全规则、项目 Gate、ADR、权限、数据政策或当前用户指令。
 5. Execution Routing Evidence 使用 `docs/governance/EXECUTION_ROUTING_EVIDENCE_STANDARD.md`；未捕获数据写 `NOT_CAPTURED`。EFF-001 是单案例 Problem Validation Evidence，不能自动固化默认流程、模型、Git 偏好或自动化规则。
-6. 执行档位与证据新鲜度目前仅为待实现的设计扩展，见 `docs/superpowers/specs/2026-08-06-execution-profile-evidence-freshness-design.md`：复杂度决定默认 R0–R4，风险与可逆性决定最低 `LIGHT` / `STANDARD` / `STRICT` 档位，质量与证据决定验证强度。档位不授予执行权限，也不替代 Gate、Approval、ADR 或当前用户指令。
+6. 执行档位与证据新鲜度已有确定性、只读的建议实现，遵循 `docs/governance/EXECUTION_PROFILE_EVIDENCE_FRESHNESS_STANDARD.md`：复杂度决定默认 R0–R4，风险与可逆性决定最低 `LIGHT` / `STANDARD` / `STRICT` 档位，质量与证据决定验证强度。档位不授予执行权限，也不替代 Gate、Approval、ADR 或当前用户指令。
 7. Evidence Freshness 只可在已授权的相关范围比较下标记 `CURRENT`、`STALE` 或 `NOT_CAPTURED`；不得将未捕获或无关范围的变化推断为当前性，也不得自动重跑验证、调用工具或切换模型。
-8. Phase 8.4 文档治理不实现 Runtime、Router 代码、Agent、模型调用、工具调用、队列、自动化或 Codex 行为变更；这些方向仍需独立准入、评审、ADR 与适用 Gate。
+8. 当前 `AdvisoryExecutionRouter` 只实现纯内存判断；真实 Agent、模型选择/调用、工具调用、队列、自动化或 Codex 行为变更仍未实现，并继续需要独立准入、评审、ADR 与适用 Gate。
 
 ## INTENT GATEWAY GOVERNANCE 规则
 

@@ -92,15 +92,15 @@ Phase 只是历史交付标签和路线元数据，不是 Module、Layer、Lifec
 
 ### Phase 8.4：Intelligent Resource & Execution Routing Governance
 
-状态：文档治理已完成；Runtime、Router 代码、自动化、模型切换与真实调用均未启动。
+状态：文档治理和确定性只读 `AdvisoryExecutionRouter` 已完成；自动化、实际模型切换、真实模型/工具调用与执行授权均未启动。
 
-2026-08-06 的 [执行档位与证据新鲜度对齐设计](../superpowers/specs/2026-08-06-execution-profile-evidence-freshness-design.md) 是该既有 Module 的待实现设计扩展：以复杂度确定默认 Reasoning、以风险/可逆性确定最低执行档位、以质量/证据当前性确定验证强度。它不创建新 Module，不自动切换模型、调用工具或改变执行授权；长期语义由 [ADR-0032](../adr/ADR-0032-EXECUTION-PROFILE-AND-EVIDENCE-FRESHNESS.md) 记录。
+2026-08-06 的[执行档位与证据新鲜度标准](../governance/EXECUTION_PROFILE_EVIDENCE_FRESHNESS_STANDARD.md)落实了既有 Module 的只读扩展：以复杂度确定默认 Reasoning、以风险/可逆性确定最低执行档位、以质量/证据当前性确定验证强度。它不创建新 Module，不自动切换模型、调用工具或改变执行授权；长期语义由 [ADR-0032](../adr/ADR-0032-EXECUTION-PROFILE-AND-EVIDENCE-FRESHNESS.md) 记录。
 
 来源：用户确认的真实使用反馈包括模型耗时、Token 效率与流程过载风险；[EFF-001](../governance/execution_cases/EFF-001-phase-8-4-route-sync-review.md) 提供单案例验证。这些反馈是路线研究输入，不构成量化性能结论或实现授权。
 
 治理边界：在任务类型、风险、质量、预算和时延约束下，输出建议性的 Execution Plan；定义复杂度、Workflow、Capability / Skill / Tool、模型类别、Reasoning、Context、偏好和 Evidence 的选择规则。该方向只消费 Layer 1 的经验与成本证据、Layer 2 的优先级和投资约束、Layer 3 的任务基线及 Layer 4 的运行证据，且不得绕过任何 Gate。
 
-明确排除：本阶段不实现或接入 Router 代码、模型路由、直接模型调用、任务队列、限流、Agent Runtime、工具调用、自动化、监控服务或外部集成，也不修改 Codex 行为。
+明确排除：当前只读 Router 不接入真实模型路由、直接模型调用、任务队列、限流、Agent 执行、工具调用、自动化、监控服务或外部集成，也不修改 Codex 行为。
 
 ### Phase 9C-5：Codex Capability Integration Design
 

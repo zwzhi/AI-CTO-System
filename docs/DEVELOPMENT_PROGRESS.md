@@ -463,6 +463,7 @@ AI Matrix 下一步只进入 Subject Profile、Knowledge Validation、真实 Tas
 |---|---|---|
 | Design 完成，待书面审阅 | 2026-08-06 | 将轻/中/严执行档位与证据当前性归类为既有 Layer 5 `Execution Routing Governance` 的 `EXTEND_EXISTING_MODULE` 设计；复杂度决定默认 R0–R4，风险/可逆性决定最低档位，质量/证据决定验证强度。ADR-0032 已记录长期语义；未实现 Router、模型切换、自动工具调用、自动验证或执行授权，外部 Skills 包仍 `REJECT_OR_DEFER`。 |
 | Implementation Plan 完成 | 2026-08-06 | 用户已确认书面设计，已生成独立的 TDD 实现计划：仅新增纯内存、建议性的路由合同/档位政策/证据新鲜度比较器/组合服务与测试。计划明确不改 Runtime Core、Workflow、Task、Agent、Capability、Audit Repository 或 Registry；编码、真实模型选择、工具调用和执行授权仍未获授权。 |
+| Advisory Router 实现完成 | 2026-08-06 | 用户授权后按 TDD 实现 `EvidenceFreshnessService`、`ExecutionProfilePolicy` 与 `AdvisoryExecutionRouter`。11 项目标测试和全量 137 项回归通过；补充锁定 HIGH 风险固定 `STRICT`，以及强制当前证据缺失时返回 `INSUFFICIENT_EVIDENCE`。范围扫描无文件/Git/网络、模型/工具、Workflow 或 Audit Repository 依赖。Development Gate 为 `APPROVED_FOR_TESTING`；不代表真实模型选择、自动切换、工具调用或执行授权。 |
 
 ## 最后更新时间
 

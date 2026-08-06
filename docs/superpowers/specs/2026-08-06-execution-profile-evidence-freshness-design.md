@@ -1,11 +1,11 @@
 # 执行档位与证据新鲜度对齐设计
 
-- **状态：** 书面设计，等待用户审阅
+- **状态：** Accepted；确定性只读实现已完成
 - **日期：** 2026-08-06
 - **Owning Layer：** Layer 5 — Execution & Intelligence
 - **Existing Module：** Execution Routing Governance
 - **分类：** `EXTEND_EXISTING_MODULE`
-- **实现状态：** 未实现；不改变当前模型、推理、工具、Skill 或 Runtime 行为
+- **实现状态：** 只读建议实现已完成；不改变当前模型、推理、工具、Skill 或 Runtime 执行行为
 
 ## 1. 目的与问题
 
