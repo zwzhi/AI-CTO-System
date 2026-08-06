@@ -1,6 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 
+import { AdvisoryExecutionRouter } from '../routing/advisory-execution-router.ts';
 import { EvidenceFreshnessService } from '../routing/evidence-freshness-service.ts';
 import { ExecutionProfilePolicy } from '../routing/execution-profile-policy.ts';
 import type {
@@ -105,4 +106,38 @@ test('ER-06 keeps stale evidence non-executable and requests review when current
   assert.equal(decision.decision, 'ESCALATE_FOR_REVIEW');
   assert.equal(decision.profile, 'STRICT');
   assert.equal(decision.validationObligation, 'FULL_GATE');
+});
+
+test('ER-07 returns recommendation evidence without creating an execution authorisation', () => {
+  const result = new AdvisoryExecutionRouter(() => NOW).route(request());
+
+  assert.equal(result.decision, 'ROUTE_RECOMMENDED');
+  assert.equal(result.profile, 'STANDARD');
+  assert.equal(result.evidence[0]?.source, 'execution-routing');
+  assert.ok(result.limitations.includes('Recommendation only; no execution authorisation is created.'));
+  assert.equal('executionAuthorization' in result, false);
+});
+
+test('ER-08 returns equal output for equal frozen input and never mutates it', () => {
+  const input = request();
+  const baseline = structuredClone(input);
+  const router = new AdvisoryExecutionRouter(() => NOW);
+
+  assert.deepEqual(router.route(input), router.route(input));
+  assert.deepEqual(input, baseline);
+  assert.ok(Object.isFrozen(input));
+});
+
+test('ER-09 marks stale evidence but does not invoke a validator, tool, audit repository, or model', () => {
+  const result = new AdvisoryExecutionRouter(() => NOW).route(request({
+    requiresCurrentEvidence: false,
+    evidenceObservations: Object.freeze([Object.freeze({
+      evidenceRef: 'test-1',
+      scopeRefs: Object.freeze(['runtime/a.ts']),
+      fingerprint: Object.freeze({ method: 'CONTENT_HASH', value: 'changed' }),
+    })]),
+  }));
+
+  assert.equal(result.evidenceFreshness[0]?.currentness, 'STALE');
+  assert.equal(result.validationObligation, 'FULL_GATE');
 });
