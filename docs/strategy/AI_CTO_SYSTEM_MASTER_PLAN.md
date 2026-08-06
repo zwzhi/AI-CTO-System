@@ -94,6 +94,8 @@ Phase 只是历史交付标签和路线元数据，不是 Module、Layer、Lifec
 
 状态：文档治理已完成；Runtime、Router 代码、自动化、模型切换与真实调用均未启动。
 
+2026-08-06 的 [执行档位与证据新鲜度对齐设计](../superpowers/specs/2026-08-06-execution-profile-evidence-freshness-design.md) 是该既有 Module 的待实现设计扩展：以复杂度确定默认 Reasoning、以风险/可逆性确定最低执行档位、以质量/证据当前性确定验证强度。它不创建新 Module，不自动切换模型、调用工具或改变执行授权；长期语义由 [ADR-0032](../adr/ADR-0032-EXECUTION-PROFILE-AND-EVIDENCE-FRESHNESS.md) 记录。
+
 来源：用户确认的真实使用反馈包括模型耗时、Token 效率与流程过载风险；[EFF-001](../governance/execution_cases/EFF-001-phase-8-4-route-sync-review.md) 提供单案例验证。这些反馈是路线研究输入，不构成量化性能结论或实现授权。
 
 治理边界：在任务类型、风险、质量、预算和时延约束下，输出建议性的 Execution Plan；定义复杂度、Workflow、Capability / Skill / Tool、模型类别、Reasoning、Context、偏好和 Evidence 的选择规则。该方向只消费 Layer 1 的经验与成本证据、Layer 2 的优先级和投资约束、Layer 3 的任务基线及 Layer 4 的运行证据，且不得绕过任何 Gate。
@@ -189,6 +191,7 @@ flowchart TD
 | [ADR-0011](../adr/ADR-0011-CAPABILITY-GOVERNANCE.md) | Capability Governance | 能力必须准入、注册、评估和激活后才可调用 |
 | [ADR-0012](../adr/ADR-0012-KNOWLEDGE-GOVERNANCE.md) | Knowledge Governance | 知识必须有 Evidence、状态、质量、范围与冲突治理 |
 | [ADR-0014](../adr/ADR-0014-EXECUTION-ROUTING-GOVERNANCE.md) | Execution Routing Governance | 路由只输出建议性 Execution Plan；不执行、不绕过 Gate |
+| [ADR-0032](../adr/ADR-0032-EXECUTION-PROFILE-AND-EVIDENCE-FRESHNESS.md) | Execution Profile 与 Evidence Freshness | 档位与证据当前性扩展既有路由治理；不授予自动执行或模型切换 |
 | [ADR-0015](../adr/ADR-0015-INTENT-GATEWAY-GOVERNANCE.md) | Intent Gateway Governance | 意图分类先于执行路由；低置信度先询问 |
 | [ADR-0016](../adr/ADR-0016-DELIVERY-AND-ENVIRONMENT-GOVERNANCE.md) | Delivery & Environment Governance | 交付须覆盖用户环境、配置、文档与支持；不等于部署成功 |
 | [ADR-0017](../adr/ADR-0017-AI-CTO-GOVERNANCE-COMPLETION-REVIEW.md) | Governance Completion Review | Runtime 前先验证治理前置条件；不授权实现 |

@@ -457,6 +457,12 @@ AI Matrix 下一步只进入 Subject Profile、Knowledge Validation、真实 Tas
 |---|---|---|
 | MVP 实现完成 | 2026-07-14 | 已实现 `GENERATE_DRAFT` 唯一操作、不可变请求内 Authorized Source Scope、权限/预算/取消预检、Evidence-first 确定性草案、五项成功输出校验与仅追加 Audit；端口异常、越级 Confidence 与 Draft / Evidence / Limitations 来源正文回显会转为受控审计失败。20 项新增测试与既有 33 项测试通过；无文件系统、网络、Provider、LLM、MCP、CLI、Knowledge 写入或 Workflow 状态推进。Registry Record 仍为 `ABSENT`。 |
 
+## Execution Profile & Evidence Freshness 设计状态记录
+
+| 事件 | 日期 | 状态 |
+|---|---|---|
+| Design 完成，待书面审阅 | 2026-08-06 | 将轻/中/严执行档位与证据当前性归类为既有 Layer 5 `Execution Routing Governance` 的 `EXTEND_EXISTING_MODULE` 设计；复杂度决定默认 R0–R4，风险/可逆性决定最低档位，质量/证据决定验证强度。ADR-0032 已记录长期语义；未实现 Router、模型切换、自动工具调用、自动验证或执行授权，外部 Skills 包仍 `REJECT_OR_DEFER`。 |
+
 ## 最后更新时间
 
-2026-07-15
+2026-08-06
