@@ -166,6 +166,7 @@
 - 2026-07-15：用户进入 AI Matrix Pilot Design，ADR-0026 更新为 `Accepted`；完成 `AI_MATRIX_PILOT_DESIGN.md` 与 ADR-0027，并初始化独立 AI Matrix PROJECT_MEMORY / Development Progress。Pilot 只设计单一短视频策划能力、单 Agent、单 Workflow 与 20 个真实任务验证，未授权代码或真实运行。
 - 2026-08-06：用户确认 Global AI CTO Skill Gateway 方案 A，并批准进入实施规划。全局发现采用“仓库内唯一 Skill 来源 + `%USERPROFILE%\.codex\skills\ai-cto-system` NTFS Junction”，显式 `AI_CTO_MODE: OFF` 等退出指令优先于隐式触发；Skill 只作为既有 Intent Gateway 的轻入口，按请求渐进加载权威文档，不复制治理语料，不声称设计态 Runtime 可直接调用。实施计划已完成，当前尚未创建或安装 Skill，新对话发现与触发仍待实施后的独立 Pilot 验证；本仓库没有 Git remote，本任务不上传 GitHub。
 - 2026-08-06：Global AI CTO Skill Gateway 已在独立分支完成仓库权威 Skill 包、Codex UI metadata、显式退出/重新启用契约、渐进 authority routing、幂等 Junction 安装和受控回滚实现。包 schema 与安装安全测试通过；实现不新增 Module、Phase、Plugin、Provider、MCP、Runtime 合同或执行授权。持久 Junction 必须在代码合并到 `main` 后从 canonical repository 创建，当前尚未安装；新对话行为仍是独立验收门禁。
+- 2026-08-06：Global AI CTO Skill Gateway Implementation Gate 为 `APPROVED_FOR_LOCAL_INSTALLATION`：官方 Skill validator、包/安装器测试、165 项 Node 回归与范围扫描通过。该 Gate 只授权在分支合并后从 `main` 创建 user-level Junction；新对话的隐式发现、新项目入口、已有项目入口、显式退出和 ordinary non-trigger 尚需 fresh-session Pilot 才能升级为 `GLOBAL_SKILL_GATEWAY_VALIDATED`。
 
 ## 当前状态
 

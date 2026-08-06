@@ -484,7 +484,7 @@ Record:
 - current-session Skill catalog cannot prove new-session discovery;
 - no GitHub remote exists and no upload occurred.
 
-- [ ] **Step 5: Commit governance synchronization**
+- [x] **Step 5: Commit governance synchronization**
 
 ```powershell
 git add docs\strategy\AI_CTO_SYSTEM_MASTER_PLAN.md `
@@ -501,7 +501,7 @@ git commit -m "docs: record global ai cto skill gateway"
 
 ### Task 6: Run complete automated verification
 
-- [ ] **Step 1: Validate the Skill package**
+- [x] **Step 1: Validate the Skill package**
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File tests\ai-cto-skill-package.test.ps1
@@ -510,7 +510,7 @@ python "$env:USERPROFILE\.codex\skills\.system\skill-creator\scripts\quick_valid
 
 Expected: PASS and `Skill is valid!`.
 
-- [ ] **Step 2: Validate the installer in isolation**
+- [x] **Step 2: Validate the installer in isolation**
 
 ```powershell
 powershell -NoProfile -ExecutionPolicy Bypass -File tests\ai-cto-skill-installer.test.ps1
@@ -518,7 +518,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File tests\ai-cto-skill-installer
 
 Expected: create, idempotency, verified rollback, conflict refusal, and unverified rollback refusal all PASS.
 
-- [ ] **Step 3: Run the existing project regression suite**
+- [x] **Step 3: Run the existing project regression suite**
 
 ```powershell
 npm.cmd test
@@ -526,7 +526,7 @@ npm.cmd test
 
 Expected: 165 tests pass, 0 fail.
 
-- [ ] **Step 4: Run forbidden-scope scans**
+- [x] **Step 4: Run forbidden-scope scans**
 
 ```powershell
 git diff --name-only main...HEAD
@@ -536,7 +536,7 @@ git status --short
 
 Expected changed paths are limited to the file map in Section 0; diff check is clean; no generated cache or Junction is tracked.
 
-- [ ] **Step 5: Set the implementation Gate**
+- [x] **Step 5: Set the implementation Gate**
 
 Gate result is `APPROVED_FOR_LOCAL_INSTALLATION` only when all automated checks pass. This result does not mean fresh-session discovery has passed.
 
@@ -675,13 +675,13 @@ Expected: only the verified Junction is removed. The repository source remains i
 
 ## 10. Self-Review Checklist
 
-- [ ] Every approved trigger has a package test assertion.
-- [ ] Every approved opt-out phrase has a package test assertion.
-- [ ] Request-scoped opt-out, conversation-scoped opt-out, and `AI_CTO_MODE: ON` are documented.
-- [ ] New-project and existing-project routes use existing authority documents.
-- [ ] The Skill does not copy the root governance corpus or claim Runtime invocation.
-- [ ] The installer derives its source from the repository and creates only a Junction.
-- [ ] Conflict and rollback tests prove non-destructive behavior.
+- [x] Every approved trigger has a package test assertion.
+- [x] Every approved opt-out phrase has a package test assertion.
+- [x] Request-scoped opt-out, conversation-scoped opt-out, and `AI_CTO_MODE: ON` are documented.
+- [x] New-project and existing-project routes use existing authority documents.
+- [x] The Skill does not copy the root governance corpus or claim Runtime invocation.
+- [x] The installer derives its source from the repository and creates only a Junction.
+- [x] Conflict and rollback tests prove non-destructive behavior.
 - [ ] The persistent Junction is created only after merge to main.
-- [ ] No new Phase, Module, ADR, Capability, Plugin, Provider, MCP, Runtime contract, or Git remote is created.
-- [ ] Automated verification and fresh-session pilot are reported as separate Gates.
+- [x] No new Phase, Module, ADR, Capability, Plugin, Provider, MCP, Runtime contract, or Git remote is created.
+- [x] Automated verification and fresh-session pilot are reported as separate Gates.

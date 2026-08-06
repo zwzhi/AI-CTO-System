@@ -488,6 +488,7 @@ AI Matrix 下一步只进入 Subject Profile、Knowledge Validation、真实 Tas
 | Design 完成并获确认 | 2026-08-06 | 方案 A 已冻结：仓库内 `skills/ai-cto-system` 为唯一权威来源，用户级 Skill 目录仅通过 NTFS Junction 发现；显式退出优先于隐式触发，按任务渐进加载治理上下文，不新增 Plugin、Module、Phase、Provider、MCP 或 Runtime 合同。 |
 | Implementation Plan 完成 | 2026-08-06 | 已形成 TDD 实施计划，覆盖 Skill 包、官方 schema 校验、Junction 安装/幂等/冲突/回滚测试、主分支后安装及新对话四类 Pilot。当前尚未创建 Skill、尚未安装 Junction；状态为 `PLANNED_AWAITING_IMPLEMENTATION_AUTHORIZATION`。 |
 | Skill 与安装器实现完成 | 2026-08-06 | 独立分支按 TDD 完成仓库权威 `skills/ai-cto-system`、`agents/openai.yaml`、幂等 Junction 安装器及两组 PowerShell 测试。官方 `quick_validate.py` 在 `PYTHONUTF8=1` 下通过；包契约、安装、重复安装、冲突拒绝、已验证回滚和未验证回滚拒绝均通过。Windows PowerShell 5.1 的 Junction 删除空引用已通过已验证目标后的 `.NET Directory.Delete(path, false)` 规避。当前状态为 `IMPLEMENTED_AWAITING_FULL_VERIFICATION_AND_LOCAL_INSTALLATION`；尚未修改用户级 Skill 目录。 |
+| Implementation Gate 通过 | 2026-08-06 | Skill 包测试、官方 schema 校验、隔离安装器测试与全量 `npm.cmd test` 均通过；Node 回归为 165/165，`git diff --check main...HEAD` 无错误，变更仅涉及批准的 Skill、安装器、测试和既有治理入口。Gate 为 `APPROVED_FOR_LOCAL_INSTALLATION`；这不等于新对话隐式发现已验证，用户级 Junction 仍需在合并到 `main` 后创建。 |
 
 ## 最后更新时间
 
