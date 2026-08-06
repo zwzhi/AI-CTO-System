@@ -1,5 +1,9 @@
 # AI CTO System 开发进度
 
+## Controlled Documentation Capability Activation Design
+
+用户确认采用“受限激活 + 专用执行桥”：拟将内部确定性 Documentation Capability 登记为 `CAP-DOC-0001`，以当前 Source Commit、`INTERNAL_USE_ONLY`、84/100 / L3 Evaluation、仅 `GENERATE_DRAFT`、`INTERNAL_LOCAL` 与 `CONFIRM_REQUIRED` 为激活边界；审批后由专用执行桥把既有 `WAITING_APPROVAL` Workflow 连接到 Documentation Runtime Service，并生成 Result、Evidence 与 Audit。当前只完成书面设计，尚未创建 Registry Record、尚未改变 `ABSENT / NONE` 状态、尚未编码或实际激活。
+
 ## Controlled Intent-to-Runtime Handoff Implementation
 
 `SYS-L5-HANDOFF-001` 已在既有 Layer 5 `AI CTO Runtime Architecture` 内完成内部实现：结构化 `IntentClassificationResult` 先经不可变边界校验，再进入现有 `AdvisoryExecutionRouter`；只有 `ROUTE_RECOMMENDED` / `ESCALATE_FOR_REVIEW` 会创建单 Workflow / Task，且强制使用 `CONFIRM` 并停在 `WAITING_APPROVAL`。Intent 低置信度、超范围、证据不足、取消和预算超限均在执行前阻断。13 项目标测试与全量 150 项回归通过，范围扫描未发现 Capability、Agent、模型、工具、网络、文件或执行授权调用。
