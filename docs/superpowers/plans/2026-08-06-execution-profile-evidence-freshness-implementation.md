@@ -328,7 +328,7 @@ test('ER-08 returns equal output for equal frozen input and never mutates it', (
 test('ER-09 marks stale evidence but does not invoke a validator, tool, audit repository, or model', () => {
   const result = new AdvisoryExecutionRouter(() => NOW).route(request({ requiresCurrentEvidence: false, evidenceObservations: [changedObservation] }));
   assert.equal(result.evidenceFreshness[0]?.currentness, 'STALE');
-  assert.equal(result.validationObligation, 'CHANGE_IMPACT_AND_TARGETED');
+  assert.equal(result.validationObligation, 'FULL_GATE');
 });
 ```
 
