@@ -548,11 +548,11 @@ Gate result is `APPROVED_FOR_LOCAL_INSTALLATION` only when all automated checks 
 
 The persistent user-level Junction must never point to the disposable feature worktree.
 
-- [ ] **Step 1: Integrate the verified branch into `main`**
+- [x] **Step 1: Integrate the verified branch into `main`**
 
 Use `superpowers:finishing-a-development-branch`. Re-run the complete verification before integration, merge locally, and confirm `main` contains `skills\ai-cto-system`.
 
-- [ ] **Step 2: Install from the canonical main repository**
+- [x] **Step 2: Install from the canonical main repository**
 
 Run from `D:\AI Project\AI-CTO-System` on `main`:
 
@@ -567,7 +567,7 @@ Expected:
 - second call reports `ALREADY_INSTALLED` and exits `0`;
 - both calls print the same canonical source and discovery path.
 
-- [ ] **Step 3: Verify the persistent target**
+- [x] **Step 3: Verify the persistent target**
 
 ```powershell
 $destination = Join-Path $env:USERPROFILE '.codex\skills\ai-cto-system'
@@ -582,7 +582,7 @@ Expected:
 - the target's `SKILL.md` and `agents\openai.yaml` are readable;
 - `git status --short --branch` on `main` remains clean.
 
-- [ ] **Step 4: Record local installation evidence**
+- [x] **Step 4: Record local installation evidence**
 
 Update Development Progress and Project Memory only if the plan is still on a branch that can be safely integrated. If main was already integrated, create one final documentation commit on main containing the exact installation time, source, destination, and `INSTALLED_AWAITING_FRESH_SESSION_PILOT` state. Do not claim `VALIDATED` yet.
 
@@ -682,6 +682,6 @@ Expected: only the verified Junction is removed. The repository source remains i
 - [x] The Skill does not copy the root governance corpus or claim Runtime invocation.
 - [x] The installer derives its source from the repository and creates only a Junction.
 - [x] Conflict and rollback tests prove non-destructive behavior.
-- [ ] The persistent Junction is created only after merge to main.
+- [x] The persistent Junction is created only after merge to main.
 - [x] No new Phase, Module, ADR, Capability, Plugin, Provider, MCP, Runtime contract, or Git remote is created.
 - [x] Automated verification and fresh-session pilot are reported as separate Gates.
