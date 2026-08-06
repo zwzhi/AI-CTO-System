@@ -1,5 +1,9 @@
 # AI CTO System 开发进度
 
+## Global AI CTO Skill Gateway Design
+
+`SYS-L5-SKILL-GATEWAY-001` 已完成设计并经用户选择方案 A：在仓库维护薄 `ai-cto-system` Skill，以用户级 NTFS Junction 提供跨项目、新对话发现；显式 `AI_CTO_MODE: OFF` 或等价自然语言具有最高入口优先级。该设计复用 Layer 5 现有 Intent Gateway、Execution Routing 与 Runtime，不新增 Module、Phase、Plugin、Provider、MCP 或 Runtime 合同。当前仅完成设计，尚未创建或安装用户级 Skill；仓库仍无 Git remote，未上传 GitHub。
+
 ## Controlled Documentation Capability Activation & Execution
 
 `SYS-L5-DOC-ACT-001` 已完成受限内部激活：正式 Registry Record `CAP-DOC-0001` 为 `ACTIVE`，Admission 为 `ACTIVATE_CAPABILITY`，Quality `84/100` / Confidence `L3`。专用 `ApprovedDocumentationExecutionService` 将绑定 Classification、Routing、Workflow、Task、Capability Version、Operation 与 Source Scope Fingerprint 的显式确认连接到既有 Documentation Runtime；Workflow 仍独占状态推进，Capability 仅返回 Draft Package 与 Evidence。15/15 专项测试与 165/165 全量回归通过，禁止范围扫描 0 命中，受保护文件扫描 0 变更。Gate 为 `APPROVED_FOR_RESTRICTED_INTERNAL_ACTIVATION`。
