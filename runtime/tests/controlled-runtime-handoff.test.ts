@@ -9,12 +9,24 @@ import {
 } from '../integration/intent-runtime-handoff-contract.ts';
 import { validateAndFreezeHandoffRequest } from '../integration/intent-runtime-handoff-validation.ts';
 import { ControlledRuntimeHandoffService } from '../integration/controlled-runtime-handoff-service.ts';
+import { AuditService } from '../audit/audit-service.ts';
+import { InMemoryAuditRepository } from '../audit/in-memory-audit-repository.ts';
+import { InMemoryExecutionRepository } from '../audit/in-memory-execution-repository.ts';
+import { MockCapabilityAdapter } from '../capability/mock-capability-adapter.ts';
+import { PermissionBudgetGuard } from '../permission/permission-budget-guard.ts';
+import { AdvisoryExecutionRouter } from '../routing/advisory-execution-router.ts';
 import type {
   RoutingRecommendation,
   RoutingRequest,
 } from '../routing/execution-routing-contract.ts';
-import type { RuntimeRunResult } from '../services/runtime-foundation-service.ts';
-import type { CreateWorkflowInput } from '../workflow/workflow-service.ts';
+import {
+  RuntimeFoundationService,
+  type RuntimeRunResult,
+} from '../services/runtime-foundation-service.ts';
+import { InMemoryTaskRepository } from '../task/in-memory-task-repository.ts';
+import { TaskService } from '../task/task-service.ts';
+import { InMemoryWorkflowRepository } from '../workflow/in-memory-workflow-repository.ts';
+import { WorkflowService, type CreateWorkflowInput } from '../workflow/workflow-service.ts';
 import type { RunOptions } from '../services/runtime-foundation-service.ts';
 import type { TaskInput } from '../models/runtime-types.ts';
 
@@ -167,6 +179,28 @@ class CountingRuntime implements HandoffRuntimePort {
   }
 }
 
+function realService(): ControlledRuntimeHandoffService {
+  const workflowRepository = new InMemoryWorkflowRepository();
+  const taskRepository = new InMemoryTaskRepository();
+  const auditRepository = new InMemoryAuditRepository();
+  const executionRepository = new InMemoryExecutionRepository();
+  const auditService = new AuditService(auditRepository);
+  const runtime = new RuntimeFoundationService({
+    workflowService: new WorkflowService(workflowRepository, () => NOW),
+    taskService: new TaskService(taskRepository),
+    guard: new PermissionBudgetGuard(),
+    capabilityAdapter: new MockCapabilityAdapter(() => NOW),
+    executionRepository,
+    auditService,
+    now: () => NOW,
+  });
+  return new ControlledRuntimeHandoffService({
+    router: new AdvisoryExecutionRouter(() => NOW),
+    runtime,
+    now: () => NOW,
+  });
+}
+
 test('IH-01 reconstructs and deeply freezes a valid handoff request without mutating caller input', () => {
   const input = validHandoffRequest();
   const baseline = structuredClone(input);
@@ -287,4 +321,177 @@ test('IH-05 maps structured intent to routing and controlled runtime without rei
   });
   assert.deepEqual(runtime.lastOptions, { cancelled: undefined });
   assert.equal(result.handoffDecision, 'WAITING_APPROVAL');
+});
+
+test('IH-06 sends a low-risk documentation request through the real control plane to WAITING_APPROVAL', () => {
+  const result = realService().handoff(validHandoffRequest());
+
+  assert.equal(result.handoffDecision, 'WAITING_APPROVAL');
+  assert.equal(result.routingRecommendation?.decision, 'ROUTE_RECOMMENDED');
+  assert.equal(result.routingRecommendation?.profile, 'LIGHT');
+  assert.equal(result.routingRecommendation?.reasoningBudget, 'R1');
+  assert.equal(result.routingRecommendation?.modelCategory, 'FAST');
+  assert.equal(result.workflow?.controlMode, 'CONFIRM');
+  assert.equal(result.workflow?.state, 'WAITING_APPROVAL');
+  assert.equal(result.task?.state, 'CREATED');
+  assert.equal(result.auditEvents.some(event => event.eventType === 'CAPABILITY_COMPLETED'), false);
+});
+
+test('IH-07 escalates high-risk architecture work but still stops at WAITING_APPROVAL', () => {
+  const baseline = validHandoffRequest();
+  const request: ControlledRuntimeHandoffRequest = {
+    ...baseline,
+    intentResult: {
+      ...baseline.intentResult,
+      intentType: 'ARCHITECTURE_CHANGE',
+      complexity: 'L3',
+      taskKind: 'ARCHITECTURE',
+      riskLevel: 'HIGH',
+      suggestedWorkflow: 'CTO',
+    },
+  };
+
+  const result = realService().handoff(request);
+
+  assert.equal(result.routingRecommendation?.decision, 'ESCALATE_FOR_REVIEW');
+  assert.equal(result.routingRecommendation?.profile, 'STRICT');
+  assert.equal(result.routingRecommendation?.reasoningBudget, 'R3');
+  assert.equal(result.routingRecommendation?.modelCategory, 'HIGH_REASONING');
+  assert.equal(result.workflow?.state, 'WAITING_APPROVAL');
+  assert.equal(result.auditEvents.some(event => event.eventType === 'CAPABILITY_COMPLETED'), false);
+});
+
+test('IH-08 blocks missing current evidence before Runtime creates Workflow or Task', () => {
+  const router = new AdvisoryExecutionRouter(() => NOW);
+  const runtime = new CountingRuntime(waitingRuntimeResult());
+  const service = new ControlledRuntimeHandoffService({ router, runtime, now: () => NOW });
+  const baseline = validHandoffRequest();
+  const request: ControlledRuntimeHandoffRequest = {
+    ...baseline,
+    intentResult: {
+      ...baseline.intentResult,
+      requiresCurrentEvidence: true,
+      evidenceInputs: [],
+      evidenceObservations: [],
+    },
+  };
+
+  const result = service.handoff(request);
+
+  assert.equal(result.handoffDecision, 'ROUTING_BLOCKED');
+  assert.equal(result.routingRecommendation?.decision, 'INSUFFICIENT_EVIDENCE');
+  assert.equal(runtime.calls, 0);
+  assert.equal(result.workflow, undefined);
+  assert.equal(result.task, undefined);
+});
+
+test('IH-09 keeps cancellation and budget denial non-executing', () => {
+  const baseline = validHandoffRequest();
+  const requests: readonly ControlledRuntimeHandoffRequest[] = [
+    { ...baseline, cancelled: true },
+    {
+      ...baseline,
+      budget: { ...baseline.budget, tokenUsed: 101 },
+    },
+  ];
+
+  for (const request of requests) {
+    const result = realService().handoff(request);
+    assert.equal(result.handoffDecision, 'RUNTIME_BLOCKED');
+    assert.equal(result.workflow?.state, 'CANCELLED');
+    assert.equal(result.task?.state, 'CREATED');
+    assert.equal(result.auditEvents.some(event => event.eventType === 'CAPABILITY_COMPLETED'), false);
+    assert.equal(result.auditEvents.some(event => event.eventType === 'EXECUTION_DENIED'), true);
+  }
+});
+
+test('IH-10 preserves the classification to routing to workflow to task correlation chain', () => {
+  const result = realService().handoff(validHandoffRequest());
+
+  assert.equal(result.intentResult.classificationId, 'intent-001');
+  assert.equal(result.routingRecommendation?.routingId, 'routing-intent-001');
+  assert.equal(result.workflow?.intentRef, 'intent-001');
+  assert.equal(result.task?.workflowId, result.workflow?.workflowId);
+  assert.match(result.task?.input.request ?? '', /"routingId":"routing-intent-001"/);
+  assert.equal(
+    result.evidence.some(evidence => evidence.reference === 'routing-intent-001'),
+    true,
+  );
+});
+
+test('IH-11 preserves caller input and returns a deeply frozen result', () => {
+  const input = validHandoffRequest();
+  const baseline = structuredClone(input);
+
+  const result = realService().handoff(input);
+
+  assert.deepEqual(input, baseline);
+  assertDeepFrozen(result);
+  assert.equal(Object.isFrozen(input), false);
+});
+
+test('IH-12 rejects Runtime results that cross the approval-only invariant', () => {
+  const resultWithInvocation = {
+    ...waitingRuntimeResult(),
+    capabilityInvocation: {
+      invocationId: 'invocation-1',
+      taskId: 'task-1',
+      adapterId: 'mock',
+      status: 'SUCCESS',
+      result: {
+        status: 'SUCCESS',
+        output: 'unexpected',
+        evidence: [],
+        confidence: 'L3',
+        timestamp: NOW,
+      },
+      tokenUsed: 0,
+    },
+  } as const satisfies RuntimeRunResult;
+  const resultWithExecution = {
+    ...waitingRuntimeResult(),
+    executionRecord: {
+      executionId: 'execution-1',
+      workflowId: 'workflow-1',
+      taskId: 'task-1',
+      status: 'SUCCESS',
+      startedAt: NOW,
+      endedAt: NOW,
+      result: {
+        status: 'SUCCESS',
+        output: 'unexpected',
+        evidence: [],
+        confidence: 'L3',
+        timestamp: NOW,
+      },
+    },
+  } as const satisfies RuntimeRunResult;
+  const resultCompleted = {
+    ...waitingRuntimeResult(),
+    workflow: { ...waitingRuntimeResult().workflow, state: 'COMPLETED' },
+  } as const satisfies RuntimeRunResult;
+
+  for (const runtimeResult of [resultWithInvocation, resultWithExecution, resultCompleted]) {
+    const service = new ControlledRuntimeHandoffService({
+      router: new CountingRouter(routingRecommendation()),
+      runtime: new CountingRuntime(runtimeResult),
+      now: () => NOW,
+    });
+    assert.throws(
+      () => service.handoff(validHandoffRequest()),
+      error => error instanceof HandoffError && error.code === 'HANDOFF_INVARIANT_VIOLATION',
+    );
+  }
+});
+
+test('IH-13 never emits execution authorization or invokes downstream execution', () => {
+  const result = realService().handoff(validHandoffRequest());
+
+  assert.equal('executionAuthorization' in result, false);
+  assert.equal(result.limitations.includes('No execution authorization was created.'), true);
+  assert.equal(
+    result.limitations.includes('No capability, tool, model, or agent was invoked.'),
+    true,
+  );
+  assert.equal(result.auditEvents.some(event => event.eventType === 'CAPABILITY_COMPLETED'), false);
 });
