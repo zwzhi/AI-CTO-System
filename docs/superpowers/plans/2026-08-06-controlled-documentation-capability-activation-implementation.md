@@ -231,11 +231,11 @@ Exact algorithm:
 
 ## 2. Isolated Implementation Workspace
 
-- [ ] **Step 1: Create a dedicated worktree at execution time**
+- [x] **Step 1: Create a dedicated worktree at execution time**
 
 Use `superpowers:using-git-worktrees` and create branch `feat/controlled-documentation-capability-activation`. Do not implement on `main`.
 
-- [ ] **Step 2: Verify the starting baseline**
+- [x] **Step 2: Verify the starting baseline**
 
 Run:
 
@@ -246,7 +246,7 @@ npm.cmd test
 
 Expected: clean worktree and `150/150` tests passing.
 
-- [ ] **Step 3: Verify the source identity**
+- [x] **Step 3: Verify the source identity**
 
 Run:
 
@@ -272,7 +272,7 @@ Expected: source commit exists; the second command exits 0. If the source files 
 - Consumes: Capability Admission, Registry, Evaluation, and Lifecycle standards.
 - Produces: a formal `CAP-DOC-0001` record at `EVALUATING` and a frozen 84/100 evaluation record; it does not yet permit project execution.
 
-- [ ] **Step 1: Create the Registry record at EVALUATING**
+- [x] **Step 1: Create the Registry record at EVALUATING**
 
 Write all Registry Standard fields with these exact values:
 
@@ -302,15 +302,15 @@ Write all Registry Standard fields with these exact values:
 
 Change History must contain separate entries for `ABSENT -> DISCOVERED` and `DISCOVERED -> EVALUATING / ADMIT_FOR_EVALUATION`. Do not write the `ACTIVE` transition yet.
 
-- [ ] **Step 2: Create the frozen Evaluation record**
+- [x] **Step 2: Create the frozen Evaluation record**
 
 Record the exact score breakdown `23/25`, `15/20`, `13/15`, `10/15`, `15/15`, `8/10`, total `84/100`, Confidence `L3`. Record source/version, internal usage terms, permission surface, test evidence, known limitations, rollback/fallback, and the recommendation: `Eligible for restricted internal activation only after the approval-bound Runtime bridge and full regression pass`.
 
-- [ ] **Step 3: Update the capabilities directory status honestly**
+- [x] **Step 3: Update the capabilities directory status honestly**
 
 Replace only the final “no formal Capability Record” statement in `capabilities/README.md` with: one formal Documentation record exists at `EVALUATING`; it is not selectable or active; no external capability is installed.
 
-- [ ] **Step 4: Validate document completeness**
+- [x] **Step 4: Validate document completeness**
 
 Run:
 
@@ -324,7 +324,7 @@ git diff --check
 
 Expected: no exception and no whitespace error.
 
-- [ ] **Step 5: Commit the evaluation admission**
+- [x] **Step 5: Commit the evaluation admission**
 
 ```powershell
 git add capabilities/README.md capabilities/documentation/CAP-DOC-0001.md docs/capability/DOCUMENTATION_CAPABILITY_EVALUATION.md
@@ -349,7 +349,7 @@ git commit -m "docs: admit documentation capability for evaluation"
 - Consumes: `AuthorizedDocumentationSource`, existing Runtime types, and `DocumentationRuntimeExecutionResult`.
 - Produces: immutable activation lookup, exact approval-bound request/result contract, and deterministic fingerprint helper used by Task 3.
 
-- [ ] **Step 1: Write tests AD-01 through AD-04 first**
+- [x] **Step 1: Write tests AD-01 through AD-04 first**
 
 Add four top-level `node:test` cases:
 
@@ -389,7 +389,7 @@ test('AD-04 source fingerprint rejects empty, duplicate, and blank source fields
 
 The test fixture `activeSnapshot()` must use the exact constant values from section 1.1. `sourceA()` and `sourceB()` must return new in-memory objects each call.
 
-- [ ] **Step 2: Run the focused tests and observe red**
+- [x] **Step 2: Run the focused tests and observe red**
 
 ```powershell
 node --experimental-strip-types --test runtime/tests/approved-documentation-execution.test.ts
@@ -397,17 +397,17 @@ node --experimental-strip-types --test runtime/tests/approved-documentation-exec
 
 Expected: module-not-found failure for the new activation or fingerprint files.
 
-- [ ] **Step 3: Implement the minimum activation contract, Port, and Adapter**
+- [x] **Step 3: Implement the minimum activation contract, Port, and Adapter**
 
 Use the exact interfaces in sections 1.1 and 1.2. Validate constructor input once: exact ID/version/source commit, canonical ISO review dates, nonempty unique activation scope, one allowed operation, and `nextReviewAt > lastReviewAt`. Throw `TypeError` for an invalid trusted projection.
 
 Use a local recursive clone/freeze helper. The Adapter must not expose mutators and must not parse the Markdown Registry file.
 
-- [ ] **Step 4: Implement the minimum fingerprint helper and execution contracts**
+- [x] **Step 4: Implement the minimum fingerprint helper and execution contracts**
 
 Use `createHash` from `node:crypto`, UTF-8 strings, the exact canonical object key order, and lowercase hex. Add only the types from sections 1.3 and 1.4; do not add service behavior yet.
 
-- [ ] **Step 5: Verify and commit Task 2**
+- [x] **Step 5: Verify and commit Task 2**
 
 ```powershell
 node --experimental-strip-types --test runtime/tests/approved-documentation-execution.test.ts
@@ -433,7 +433,7 @@ Expected: 4 focused tests and all existing tests pass.
 - Consumes: `WorkflowService`, `TaskService`, `AuditService`, `DocumentationCapabilityActivationPort`, `DocumentationExecutionPort`, approval/fingerprint contracts.
 - Produces: `ApprovedDocumentationExecutionService.execute(request): ApprovedDocumentationExecutionResult` with deterministic preflight outcomes and no Capability call on blocked/cancelled paths.
 
-- [ ] **Step 1: Add counting fakes and tests AD-05 through AD-10**
+- [x] **Step 1: Add counting fakes and tests AD-05 through AD-10**
 
 Create a `CountingDocumentationExecutionPort` whose `execute` increments `calls`. Build Workflow/Task fixtures with real in-memory repositories and this exact setup sequence:
 
@@ -462,7 +462,7 @@ Add:
 
 Each table-driven test is one top-level test and must assert every case; do not create nested `test()` calls, preserving the 15-test target.
 
-- [ ] **Step 2: Run the tests and observe red**
+- [x] **Step 2: Run the tests and observe red**
 
 ```powershell
 node --experimental-strip-types --test runtime/tests/approved-documentation-execution.test.ts
@@ -470,7 +470,7 @@ node --experimental-strip-types --test runtime/tests/approved-documentation-exec
 
 Expected: AD-01..AD-04 pass; AD-05..AD-10 fail because the service is missing.
 
-- [ ] **Step 3: Implement service dependencies and safe result construction**
+- [x] **Step 3: Implement service dependencies and safe result construction**
 
 ```ts
 export interface ApprovedDocumentationExecutionDependencies {
@@ -490,7 +490,7 @@ export class ApprovedDocumentationExecutionService {
 
 Every return value is reconstructed and recursively frozen; caller request, approval, sources, Workflow, Task, and dependency-owned objects are never frozen or mutated in place.
 
-- [ ] **Step 4: Implement the exact preflight order before any state transition**
+- [x] **Step 4: Implement the exact preflight order before any state transition**
 
 1. Get Workflow; map `RuntimeError('WORKFLOW_NOT_FOUND')` to controlled `WORKFLOW_NOT_FOUND`.
 2. Require Workflow state exactly `WAITING_APPROVAL`.
@@ -509,7 +509,7 @@ Every return value is reconstructed and recursively frozen; caller request, appr
 
 For steps 1–13, append `DOCUMENTATION_EXECUTION_BLOCKED`, return `BLOCKED`, preserve `WAITING_APPROVAL` whenever the Workflow exists in that state, and never call the Documentation Port.
 
-- [ ] **Step 5: Use audit fields without changing the Audit contract**
+- [x] **Step 5: Use audit fields without changing the Audit contract**
 
 Bridge audit IDs use `approved-documentation-audit-${counter}`. For preflight rejection:
 
@@ -527,7 +527,7 @@ Bridge audit IDs use `approved-documentation-audit-${counter}`. For preflight re
 
 Evidence source is `approved-documentation-execution`, confidence `L3` only for verified activation/approval/source facts, otherwise `L2`; it must not contain source content or credentials.
 
-- [ ] **Step 6: Verify and commit Task 3**
+- [x] **Step 6: Verify and commit Task 3**
 
 ```powershell
 node --experimental-strip-types --test runtime/tests/approved-documentation-execution.test.ts
@@ -553,7 +553,7 @@ Expected: 10 focused tests pass; all previous tests remain green.
 - Consumes: successful preflight from Task 3 and existing `DocumentationCapabilityRuntimeService` through `DocumentationExecutionPort`.
 - Produces: full success/failure/replay/audit behavior while preserving existing Workflow/Task authority.
 
-- [ ] **Step 1: Add integration composition and tests AD-11 through AD-15**
+- [x] **Step 1: Add integration composition and tests AD-11 through AD-15**
 
 Compose the real capability exactly as follows:
 
@@ -578,11 +578,11 @@ Add:
 - `AD-14`: success audit order contains `DOCUMENTATION_APPROVAL_VERIFIED`, `DOCUMENTATION_EXECUTION_STARTED`, existing `DOCUMENTATION_CAPABILITY_COMPLETED`, and `DOCUMENTATION_WORKFLOW_COMPLETED`; all required IDs, fingerprint, result reference, budget, and Evidence are traceable. Failure audit contains stage/reason.
 - `AD-15`: caller input is unchanged; result is deeply frozen; a test-local side-effect sentinel proves no filesystem, network, Provider, tool, Knowledge, or other Capability call path is exposed.
 
-- [ ] **Step 2: Run the tests and observe red**
+- [x] **Step 2: Run the tests and observe red**
 
 Expected: AD-01..AD-10 pass; AD-11..AD-15 fail because the successful execution branch is incomplete.
 
-- [ ] **Step 3: Implement approval verification and start events**
+- [x] **Step 3: Implement approval verification and start events**
 
 After preflight succeeds:
 
@@ -593,7 +593,7 @@ After preflight succeeds:
 
 The Agent, Adapter, or caller must never receive direct access to Workflow repositories or state mutation.
 
-- [ ] **Step 4: Implement exact success mapping**
+- [x] **Step 4: Implement exact success mapping**
 
 Map the existing outcome to the existing `CapabilityResult` without flattening the returned Draft Package:
 
@@ -617,7 +617,7 @@ For `SUCCESS` with a present result:
 5. Append `DOCUMENTATION_WORKFLOW_COMPLETED` with output reference and result Evidence.
 6. Return decision `COMPLETED`, original `documentationOutcome`, terminal Workflow/Task, combined audit events, and Evidence.
 
-- [ ] **Step 5: Implement exact failure mapping**
+- [x] **Step 5: Implement exact failure mapping**
 
 For any non-success Documentation outcome or invalid success result:
 
@@ -627,7 +627,7 @@ For any non-success Documentation outcome or invalid success result:
 4. Return decision `FAILED` and code `CAPABILITY_FAILED`.
 5. Do not retry, mutate sources, invoke another Provider, or create a fallback Draft.
 
-- [ ] **Step 6: Verify and commit Task 4**
+- [x] **Step 6: Verify and commit Task 4**
 
 ```powershell
 node --experimental-strip-types --test runtime/tests/approved-documentation-execution.test.ts
@@ -653,11 +653,11 @@ Expected: all 15 focused tests and all previous tests pass.
 - Consumes: the completed integration slice.
 - Produces: one repeatable `npm.cmd test` entry, 165 passing tests, and static boundary evidence.
 
-- [ ] **Step 1: Register the new test file**
+- [x] **Step 1: Register the new test file**
 
 Append `runtime/tests/approved-documentation-execution.test.ts` to the existing `test` command; do not reorder or remove prior files.
 
-- [ ] **Step 2: Run focused and full regression**
+- [x] **Step 2: Run focused and full regression**
 
 ```powershell
 node --experimental-strip-types --test runtime/tests/approved-documentation-execution.test.ts
@@ -667,7 +667,7 @@ git diff --check
 
 Expected: `15/15` focused and `165/165` full tests pass.
 
-- [ ] **Step 3: Run the forbidden-scope scan**
+- [x] **Step 3: Run the forbidden-scope scan**
 
 ```powershell
 rg -n "fetch\(|node:http|node:https|node:fs|child_process|Codex|MCP|LLM|ACTIVE Knowledge|writeFile|appendFile|applyPatch|git commit" runtime/integration/approved-documentation-execution-service.ts runtime/integration/documentation-source-scope-fingerprint.ts runtime/capability/documentation-capability-activation-*.ts
@@ -676,7 +676,7 @@ rg -n "class .*Agent|generic dispatcher|CapabilityDispatcher|ApprovalRepository|
 
 Expected: no production-code match indicating a forbidden dependency or behavior. The string `ACTIVE` may appear only as a Registry status check; `node:crypto` is allowed.
 
-- [ ] **Step 4: Verify the protected file set is untouched**
+- [x] **Step 4: Verify the protected file set is untouched**
 
 ```powershell
 git diff main...HEAD --name-only | Where-Object {
@@ -688,7 +688,7 @@ git diff main...HEAD --name-only | Where-Object {
 
 Expected: no output.
 
-- [ ] **Step 5: Commit suite registration**
+- [x] **Step 5: Commit suite registration**
 
 ```powershell
 git add package.json runtime/tests/approved-documentation-execution.test.ts
@@ -715,7 +715,7 @@ git commit -m "test: verify approved documentation execution"
 - Consumes: verified 165-test evidence, scope scan, protected-file scan, current user approval, and the formal Evaluation record.
 - Produces: `ACTIVATE_CAPABILITY` with a restricted `ACTIVE` Registry record; it still requires task-level confirmation for every call.
 
-- [ ] **Step 1: Run the activation preconditions before editing status**
+- [x] **Step 1: Run the activation preconditions before editing status**
 
 ```powershell
 npm.cmd test
@@ -726,7 +726,7 @@ git log -5 --oneline
 
 Required result: 165 tests pass; no unintended change; the implementation commits from Tasks 2–5 are present. If any requirement fails, leave Status `EVALUATING`, record `CHANGES_REQUIRED`, and stop.
 
-- [ ] **Step 2: Update the Registry lifecycle without collapsing concepts**
+- [x] **Step 2: Update the Registry lifecycle without collapsing concepts**
 
 In `CAP-DOC-0001.md`:
 
@@ -742,11 +742,11 @@ In `CAP-DOC-0001.md`:
 
 Do not write `APPROVED`, `BLOCKED`, or a custom Registry status. Do not imply that `ACTIVE` is invocation authorization.
 
-- [ ] **Step 3: Update Evaluation and capability directory status**
+- [x] **Step 3: Update Evaluation and capability directory status**
 
 Record the bridge tests, 165-test regression, scope scan, source commit check, protected-file scan, and final recommendation `ACTIVATE_CAPABILITY for restricted internal use`. Update `capabilities/README.md` to say exactly one internal Documentation record is restricted `ACTIVE`; no external Capability is installed or active.
 
-- [ ] **Step 4: Synchronize existing governance entries only**
+- [x] **Step 4: Synchronize existing governance entries only**
 
 Record:
 
@@ -758,7 +758,7 @@ Record:
 
 Only extend existing `AI CTO Runtime Architecture` and `Capability Governance` module entries. Do not create a new Module or Phase.
 
-- [ ] **Step 5: Run the final gate**
+- [x] **Step 5: Run the final gate**
 
 ```powershell
 npm.cmd test
@@ -775,14 +775,14 @@ Gate result:
 
 This Gate does not mean production-ready, user-ready, externally licensed, persistent, or authorized for file writing or another Capability.
 
-- [ ] **Step 6: Commit the restricted activation evidence**
+- [x] **Step 6: Commit the restricted activation evidence**
 
 ```powershell
 git add capabilities/README.md capabilities/documentation/CAP-DOC-0001.md docs/capability/DOCUMENTATION_CAPABILITY_EVALUATION.md docs/DEVELOPMENT_PROGRESS.md docs/strategy/AI_CTO_SYSTEM_MASTER_PLAN.md docs/architecture/MODULE_REGISTRY.md memory/project_memory/AI_CTO_SYSTEM_PROJECT_MEMORY.md docs/superpowers/plans/2026-08-06-controlled-documentation-capability-activation-implementation.md
 git commit -m "docs: activate restricted documentation capability"
 ```
 
-- [ ] **Step 7: Final branch handoff**
+- [x] **Step 7: Final branch handoff**
 
 Report branch, focused commits, 15/15 focused tests, 165/165 full tests, protected-file scan, forbidden-scope scan, Gate result, Registry state, and explicit limitations. Do not merge automatically.
 
@@ -813,19 +813,19 @@ Report branch, focused commits, 15/15 focused tests, 165/165 full tests, protect
 
 ## 10. Implementation Review Checklist
 
-- [ ] Design object remains `SYS-L5-DOC-ACT-001`; no new Phase or Module.
-- [ ] Registry status progression is `ABSENT -> DISCOVERED -> EVALUATING -> ACTIVE` only after evidence passes.
-- [ ] `ACTIVE`, Admission Result, Evaluation Result, Selection, and per-invocation Approval remain separate concepts.
-- [ ] Runtime never parses the Markdown Registry record.
-- [ ] Request cannot supply or override Capability Registry status.
-- [ ] Approval binds classification, routing, Workflow, Task, capability version, operation, and source fingerprint.
-- [ ] All non-cancel preflight failures preserve `WAITING_APPROVAL` and call no Capability.
-- [ ] WorkflowService is the only Workflow state transition authority.
-- [ ] TaskService is the only Task completion authority.
-- [ ] Existing Documentation Adapter performs defense-in-depth Permission/Budget/Source/Output checks.
-- [ ] Success returns Draft, Source References, Confidence, Evidence, and Limitations.
-- [ ] Audit records facts and correlation only; it grants no authority and writes no Knowledge.
-- [ ] No Provider, LLM, Codex, MCP, network, filesystem, tool, retry, fallback, or document write.
-- [ ] No existing Runtime/Workflow/Task/Agent/Guard/Documentation public contract changes.
-- [ ] 15 focused tests and 165 full tests pass.
-- [ ] Final maturity remains `INTERNAL_ONLY`.
+- [x] Design object remains `SYS-L5-DOC-ACT-001`; no new Phase or Module.
+- [x] Registry status progression is `ABSENT -> DISCOVERED -> EVALUATING -> ACTIVE` only after evidence passes.
+- [x] `ACTIVE`, Admission Result, Evaluation Result, Selection, and per-invocation Approval remain separate concepts.
+- [x] Runtime never parses the Markdown Registry record.
+- [x] Request cannot supply or override Capability Registry status.
+- [x] Approval binds classification, routing, Workflow, Task, capability version, operation, and source fingerprint.
+- [x] All non-cancel preflight failures preserve `WAITING_APPROVAL` and call no Capability.
+- [x] WorkflowService is the only Workflow state transition authority.
+- [x] TaskService is the only Task completion authority.
+- [x] Existing Documentation Adapter performs defense-in-depth Permission/Budget/Source/Output checks.
+- [x] Success returns Draft, Source References, Confidence, Evidence, and Limitations.
+- [x] Audit records facts and correlation only; it grants no authority and writes no Knowledge.
+- [x] No Provider, LLM, Codex, MCP, network, filesystem, tool, retry, fallback, or document write.
+- [x] No existing Runtime/Workflow/Task/Agent/Guard/Documentation public contract changes.
+- [x] 15 focused tests and 165 full tests pass.
+- [x] Final maturity remains `INTERNAL_ONLY`.

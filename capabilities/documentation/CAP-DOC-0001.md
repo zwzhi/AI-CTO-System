@@ -20,7 +20,7 @@
 | Output | Draft、Source References、Confidence、Evidence、Limitations；无写入副作用 |
 | Dependencies | Node.js 24、现有 Permission/Budget Guard、Audit、Documentation Adapter 与 Runtime Service |
 | Permission Requirement | 仅 `GENERATE_DRAFT`；无文件、网络、Provider、Tool、Knowledge 或项目状态写权限 |
-| Status | `EVALUATING` |
+| Status | `ACTIVE` |
 | Quality Score | `84/100`；Confidence `L3`；基线日期 2026-08-06 |
 
 ## Provenance 与使用条款
@@ -38,27 +38,27 @@
 | Domain | Record |
 |---|---|
 | Risk Level | Low，仅适用于当前确定性、只读、内存来源和非生产范围 |
-| Security Review | 当前实现无文件、网络、Provider、Tool、Knowledge 或 Workflow 隐式副作用；调用级审批桥尚在实现中 |
+| Security Review | 当前实现无文件、网络、Provider、Tool、Knowledge 或 Workflow 隐式副作用；调用级审批桥与范围扫描已验证 |
 | Compatibility | Node.js 24、现有 Runtime Foundation、Capability Adapter、Audit、Permission/Budget Guard |
 | Maintenance | 内部维护；缺少长期版本历史、并发、持久化和大规模样本 Evidence |
 | Cost | 确定性本地执行；模型、Token、网络和第三方 API 成本为 0 |
 | Latency | 仅本地同步执行基线；未建立生产延迟 SLO |
 | Human Control | `CONFIRM_REQUIRED`，每次调用必须单独绑定当前任务和来源范围 |
-| Selection | `PROHIBITED`（当前 Status 为 `EVALUATING`） |
-| Activation Scope | `NONE` |
+| Selection | `ELIGIBLE_ONLY_AFTER_TASK_LEVEL_APPROVAL_AND_PREFLIGHT` |
+| Activation Scope | `INTERNAL_NON_PRODUCTION`；`EXPLICIT_CONFIRMATION_REQUIRED`；`AUTHORIZED_IN_MEMORY_SOURCES_ONLY`；`DRAFT_OUTPUT_ONLY`；`NO_FILESYSTEM_NETWORK_PROVIDER_TOOL_OR_KNOWLEDGE_WRITE` |
 
 ## Evaluation
 
-- Evaluation Result：`PASS`，但当前只完成能力本体评估，不等于激活。
-- Admission Result：`ADMIT_FOR_EVALUATION`。
+- Evaluation Result：`PASS`，仅适用于受限内部范围，不等于单次调用授权。
+- Admission Result：`ACTIVATE_CAPABILITY`（restricted internal）。
 - Quality Score：`84/100`，Confidence `L3`。
 - Evaluation Evidence：[Documentation Capability Evaluation](../../docs/capability/DOCUMENTATION_CAPABILITY_EVALUATION.md)。
-- 激活前置：审批绑定 Runtime 桥、Source Scope Fingerprint、失败/取消/重放路径和全量回归必须全部通过。
+- 激活证据：审批绑定 Runtime 桥、Source Scope Fingerprint、失败/取消/重放路径、15 项专项测试和 165 项全量回归均已通过。
 
 ## Activation、Fallback 与停止条件
 
-- 当前不允许项目执行或默认选择。
-- 未来仅允许 `INTERNAL_LOCAL`、`GENERATE_DRAFT`、显式确认、授权内存来源、只返回 Draft Package 的受限范围。
+- 当前仅允许 `INTERNAL_LOCAL`、`GENERATE_DRAFT`、显式任务级确认、授权内存来源、只返回 Draft Package 的受限内部执行。
+- `ACTIVE` 只表示该版本可进入任务级选择；它不构成单次 Invocation Authorization，也不允许默认执行。
 - Fallback：拒绝执行并回到人工草拟；不切换 Provider，不生成无 Evidence 替代结果。
 - Emergency Disable：出现未授权来源、写入副作用、Evidence 漂移、Source Commit 变化或权限越界时立即停止选择并重新进入评估。
 - Rollback：将 Registry 状态保持或恢复到 `EVALUATING`，撤销任务级选择资格；当前无持久化外部状态需要回滚。
@@ -69,9 +69,9 @@
 |---|---|
 | Last Review | `2026-08-06T00:00:00.000Z` |
 | Next Review | `2026-09-05T00:00:00.000Z` |
-| Human Approver | 项目所有者已批准本次设计与实施计划；最终激活仍以实现 Gate Evidence 为条件 |
-| Blockers | 审批执行桥、15 项专项测试、165 项全量回归和最终范围扫描尚未完成 |
-| Next Action | 在隔离分支按 `SYS-L5-DOC-ACT-001` 实现并验证受控审批后执行闭环 |
+| Human Approver | Project owner explicit approval in this task, 2026-08-06 |
+| Blockers | 生产持久化、真实用户身份与确认 Adapter、真实项目隔离试点和生产安全控制仍未完成；不阻断当前受限内部激活 |
+| Next Action | 仅在任务级确认和完整 Preflight 通过后进行内部调用；任何范围扩大必须重新评估 |
 
 ## Change History
 
@@ -79,4 +79,4 @@
 |---|---|---|
 | 2026-08-06 | `ABSENT -> DISCOVERED` | 已确认内部 Capability Identity、Source、Version、Usage Terms 和用途 |
 | 2026-08-06 | `DISCOVERED -> EVALUATING / ADMIT_FOR_EVALUATION` | 84/100、L3 评估基线；批准在隔离分支实现审批绑定桥 |
-
+| 2026-08-06 | `EVALUATING -> ACTIVE / ACTIVATE_CAPABILITY` | 实现提交 `38d7f3c`、`631fda7`、`b89e2a5`、测试注册 `268e8ff`；15/15 专项与 165/165 全量测试、禁止范围及受保护文件扫描通过 |

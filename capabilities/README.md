@@ -26,4 +26,4 @@
 
 ## 当前状态
 
-当前已有一个正式 Documentation Capability Record：`CAP-DOC-0001`，状态为 `EVALUATING`，只获准在隔离范围内完成受控执行桥评估；`Selection: PROHIBITED`，`Activation Scope: NONE`。当前仍没有安装、激活或接入任何外部 Skill、MCP、Agent、Provider 或工具。
+当前有且仅有一个内部 Documentation Capability Record：`CAP-DOC-0001`，状态为受限 `ACTIVE`。它只可在任务级显式确认和完整 Preflight 通过后，于 `INTERNAL_LOCAL` 环境对调用方提供的授权内存来源执行 `GENERATE_DRAFT`；不读取或写入文件，不接入网络、Provider、LLM、Codex、MCP、Agent、工具或 Knowledge 写入。当前没有安装或激活任何外部 Capability。

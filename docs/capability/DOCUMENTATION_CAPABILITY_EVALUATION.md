@@ -11,8 +11,8 @@
 | Evaluation Date | 2026-08-06 |
 | Environment | Node.js 24、AI CTO System 当前仓库、本地非生产 |
 | Evaluation Result | `PASS` |
-| Registry Status | `EVALUATING` |
-| Admission Result | `ADMIT_FOR_EVALUATION` |
+| Registry Status | `ACTIVE`（restricted internal） |
+| Admission Result | `ACTIVATE_CAPABILITY` |
 | Confidence | `L3` |
 
 `PASS` 仅表示当前版本在记录范围内达到受限内部用途的质量阈值；它不等于 `ACTIVE`，也不产生任务级 Invocation Authorization。
@@ -79,24 +79,25 @@ Mission Alignment：`PASS`。
 
 ## 8. Activation Recommendation
 
-当前建议：`Eligible for restricted internal activation only after the approval-bound Runtime bridge and full regression pass`。
+最终建议：`ACTIVATE_CAPABILITY for restricted internal use`。该建议仅适用于 `CAP-DOC-0001` / `1.0.0-internal` / Source Commit `9876764`，且每次调用仍须任务级显式确认与完整 Preflight。
 
-在以下证据完成前保持：
+最终状态：
 
 ```text
-Registry Status: EVALUATING
-Admission Result: ADMIT_FOR_EVALUATION
-Selection: PROHIBITED
-Activation Scope: NONE
+Registry Status: ACTIVE
+Admission Result: ACTIVATE_CAPABILITY
+Selection: ELIGIBLE_ONLY_AFTER_TASK_LEVEL_APPROVAL_AND_PREFLIGHT
+Activation Scope: INTERNAL_NON_PRODUCTION + EXPLICIT_CONFIRMATION_REQUIRED + AUTHORIZED_IN_MEMORY_SOURCES_ONLY + DRAFT_OUTPUT_ONLY + NO_FILESYSTEM_NETWORK_PROVIDER_TOOL_OR_KNOWLEDGE_WRITE
 ```
 
-进入最终激活判断前必须完成：
+已验证 Evidence：
 
-- Approval-bound Runtime bridge；
-- Source Scope Fingerprint；
-- Workflow/Task/Approval/Activation/Permission/Budget/Source 预检；
-- 成功、失败、取消和重放保护；
-- 15 项新增专项测试；
-- 165 项全量回归；
-- 禁止范围和受保护文件扫描。
+- Source Commit `9876764` 存在，且被评估的 Documentation 源文件无漂移；
+- Approval-bound Runtime bridge 与 Source Scope Fingerprint 已实现；
+- Workflow、Task、Approval、Activation、Permission、Budget 与 Source 预检已实现；
+- 成功、失败、取消、审批重放与审计链均有测试；
+- `15/15` 新增专项测试与 `165/165` 全量回归通过；
+- 禁止依赖扫描为 0 命中，受保护文件扫描为 0 变更；
+- 实现提交：`38d7f3c`、`631fda7`、`b89e2a5`；测试注册：`268e8ff`。
 
+该结论不代表生产可用、文件写入授权、外部 Provider 激活或其他 Capability 获得选择资格。

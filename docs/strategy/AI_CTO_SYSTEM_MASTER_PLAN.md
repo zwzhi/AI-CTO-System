@@ -1,5 +1,7 @@
 # AI CTO System Master Plan
 
+> `SYS-L5-DOC-ACT-001` 已完成第一个受限内部 Capability 激活：`CAP-DOC-0001` 只在任务级显式确认和完整 Preflight 通过后，将 `WAITING_APPROVAL` Workflow 连接至确定性 Documentation Runtime，并返回 Draft Package、Evidence 与 Audit。15/15 专项和 165/165 全量测试通过；成熟度仍为 `INTERNAL_ONLY`，不包含文件、网络、Provider、LLM、Codex、MCP、工具或 Knowledge 写入。
+
 > Phase 10 Self Evolution & Intelligent Optimization Architecture Design 已完成：只复用既有 Runtime、Audit、Evidence、Capability Governance 与 Human Control，定义观察、价值评估、Optimization Proposal 与验证；不新增 Module、Agent、Gate 或自动修改权。详见 [Self Evolution Architecture](../evolution/SELF_EVOLUTION_ARCHITECTURE.md)。
 
 > Phase 10 治理设计现已包含风险驱动的 Optimization Autonomy Model：`AUTO_EXECUTE`、`AUTO_WITH_VALIDATION`、`NOTIFY`、`CONFIRM_REQUIRED` 与 `MANDATORY_APPROVAL` 定义未来执行策略。当前 MVP 仍仅分析与提案，`executionAuthorization: NONE`；这不构成 Runtime、自动执行或既有 Gate 变化的授权。
@@ -83,7 +85,7 @@ Layer 定义稳定职责边界，Module 定义层内可独立治理的能力，P
 | 路线状态 | 内容 | 授权含义 |
 |---|---|---|
 | 已完成治理基线 | Phase 1–8.5、Architecture Review、Strategic Alignment、Knowledge Governance Pilot | 仅证明相应治理文档或试点已完成 |
-| 当前工作 | Controlled Intent-to-Runtime Handoff Implementation（`INTERNAL_ONLY`） | 已实现结构化 Intent → Advisory Router → `CONFIRM` Runtime → 单 Workflow / Task → `WAITING_APPROVAL`，并通过 150 项回归；不构成自然语言入口、审批恢复、Capability Activation、工具调用或真实执行 |
+| 当前工作 | Controlled Documentation Capability Activation & Execution（`INTERNAL_ONLY`） | 已实现结构化 Intent / Handoff → `WAITING_APPROVAL` → 绑定式确认 → 受限 `CAP-DOC-0001` → Draft Package / Evidence / Audit，并通过 165 项回归；不构成自然语言入口、持久审批、文件写入、外部工具或生产执行 |
 | 未启动 | 真实 Capability 激活、真实 Codex/MCP/Tool Calling、持久化、生产交付与自动执行 | 没有相应开发或执行授权 |
 
 Phase 只是历史交付标签和路线元数据，不是 Module、Layer、Lifecycle State 或自动授权。未来候选路线可以标记为 `PROPOSED`、`UNDER_REVIEW`、`APPROVED_FOR_DESIGN` 或 `DEFERRED`，但这些仅为规划结果，不能写入 Module Registry 状态或项目生命周期。
