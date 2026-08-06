@@ -162,9 +162,9 @@ export class HandoffError extends Error {
 
 ## 2A. Isolated Implementation Workspace
 
-- [ ] Before changing production code, use the repository's existing worktree convention to create a dedicated branch named `feat/controlled-intent-runtime-handoff`.
-- [ ] Confirm the new worktree starts clean and `npm.cmd test` reports 137/137 passing tests.
-- [ ] All code, test, and implementation-status commits below are made on that feature branch; do not merge it into `main` during implementation.
+- [x] Before changing production code, use the repository's existing worktree convention to create a dedicated branch named `feat/controlled-intent-runtime-handoff`.
+- [x] Confirm the new worktree starts clean and `npm.cmd test` reports 137/137 passing tests.
+- [x] All code, test, and implementation-status commits below are made on that feature branch; do not merge it into `main` during implementation.
 
 ## 3. Task 1 — Immutable Contract and Boundary Validation
 
@@ -176,8 +176,8 @@ export class HandoffError extends Error {
 
 ### Step 1: Write the failing validation tests
 
-- [ ] Add `IH-01` proving a valid request is reconstructed, deeply frozen, and does not mutate the caller input.
-- [ ] Add `IH-02` table cases for invalid schema version, invalid identifier, blank/overlong objective, duplicate references, invalid ISO timestamp, invalid fingerprint, negative/non-finite budget values, and `executionContext.intentRef !== classificationId`.
+- [x] Add `IH-01` proving a valid request is reconstructed, deeply frozen, and does not mutate the caller input.
+- [x] Add `IH-02` table cases for invalid schema version, invalid identifier, blank/overlong objective, duplicate references, invalid ISO timestamp, invalid fingerprint, negative/non-finite budget values, and `executionContext.intentRef !== classificationId`.
 
 Use this valid fixture as the common baseline:
 
@@ -236,7 +236,7 @@ function validHandoffRequest(): ControlledRuntimeHandoffRequest {
 
 ### Step 2: Run the tests and observe red
 
-- [ ] Temporarily run:
+- [x] Temporarily run:
 
 ```powershell
 node --experimental-strip-types --test runtime/tests/controlled-runtime-handoff.test.ts
@@ -246,7 +246,7 @@ Expected: module-not-found failure for the new contract or validator.
 
 ### Step 3: Implement exact validator behavior
 
-- [ ] Implement `validateAndFreezeHandoffRequest(request)` with these explicit rules:
+- [x] Implement `validateAndFreezeHandoffRequest(request)` with these explicit rules:
 
 1. Closed vocabularies are checked with frozen `Set<string>` instances for every union in the input.
 2. IDs and references must match `^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$`.
@@ -277,7 +277,7 @@ export function validateAndFreezeHandoffRequest(
 
 ### Step 4: Verify Task 1
 
-- [ ] Run the target test and all tests:
+- [x] Run the target test and all tests:
 
 ```powershell
 node --experimental-strip-types --test runtime/tests/controlled-runtime-handoff.test.ts
@@ -285,7 +285,7 @@ npm.cmd test
 git diff --check
 ```
 
-- [ ] Commit:
+- [x] Commit:
 
 ```powershell
 git add runtime/integration/intent-runtime-handoff-contract.ts runtime/integration/intent-runtime-handoff-validation.ts runtime/tests/controlled-runtime-handoff.test.ts
@@ -301,10 +301,10 @@ git commit -m "feat: add controlled intent handoff contract"
 
 ### Step 1: Write service boundary tests with counting fakes
 
-- [ ] Add test-local `CountingRouter` and `CountingRuntime` implementing the two ports. Each increments `calls`, stores its last request, and returns a constructor-supplied result.
-- [ ] Add `IH-03`: each non-`CLASSIFIED` status and `CLASSIFIED` confidence `L1`/`L2` returns `INTENT_REJECTED`; Router calls = 0; Runtime calls = 0.
-- [ ] Add `IH-04`: Router decisions `OUT_OF_SCOPE` and `INSUFFICIENT_EVIDENCE` return `ROUTING_BLOCKED`; Runtime calls = 0.
-- [ ] Add `IH-05`: eligible intent maps exactly to a `RoutingRequest` whose `routingId` is `routing-intent-001` and whose risk, complexity, gate, reversibility, and evidence fields are copied without reinterpretation.
+- [x] Add test-local `CountingRouter` and `CountingRuntime` implementing the two ports. Each increments `calls`, stores its last request, and returns a constructor-supplied result.
+- [x] Add `IH-03`: each non-`CLASSIFIED` status and `CLASSIFIED` confidence `L1`/`L2` returns `INTENT_REJECTED`; Router calls = 0; Runtime calls = 0.
+- [x] Add `IH-04`: Router decisions `OUT_OF_SCOPE` and `INSUFFICIENT_EVIDENCE` return `ROUTING_BLOCKED`; Runtime calls = 0.
+- [x] Add `IH-05`: eligible intent maps exactly to a `RoutingRequest` whose `routingId` is `routing-intent-001` and whose risk, complexity, gate, reversibility, and evidence fields are copied without reinterpretation.
 
 Use a fully specified fake Runtime result:
 
@@ -334,12 +334,12 @@ function waitingRuntimeResult(): RuntimeRunResult {
 
 ### Step 2: Run and observe red
 
-- [ ] Run the target test. Expected: missing service export or failed assertions.
+- [x] Run the target test. Expected: missing service export or failed assertions.
 
 ### Step 3: Implement the service
 
-- [ ] Implement `ControlledRuntimeHandoffService` with constructor dependencies `{ router, runtime, now? }`.
-- [ ] Its `handoff(request)` must:
+- [x] Implement `ControlledRuntimeHandoffService` with constructor dependencies `{ router, runtime, now? }`.
+- [x] Its `handoff(request)` must:
 
 1. Call `validateAndFreezeHandoffRequest` first.
 2. Reject non-`CLASSIFIED` and confidence below `L3` without calling Router.
@@ -390,8 +390,8 @@ const runtimeResult = this.runtime.run(
 
 ### Step 4: Verify Task 2
 
-- [ ] Run target tests, all tests, and `git diff --check`.
-- [ ] Commit:
+- [x] Run target tests, all tests, and `git diff --check`.
+- [x] Commit:
 
 ```powershell
 git add runtime/integration/controlled-runtime-handoff-service.ts runtime/tests/controlled-runtime-handoff.test.ts
@@ -407,7 +407,7 @@ git commit -m "feat: connect intent routing to controlled runtime"
 
 ### Step 1: Build a real test composition
 
-- [ ] In the test file, compose:
+- [x] In the test file, compose:
 
 ```ts
 const workflowRepository = new InMemoryWorkflowRepository();
@@ -433,22 +433,22 @@ const service = new ControlledRuntimeHandoffService({
 
 ### Step 2: Add the integration tests
 
-- [ ] `IH-06`: L1 low-risk reversible documentation maps to `LIGHT`/`R1`/`FAST`; Workflow is `CONFIRM` + `WAITING_APPROVAL`; Task is `CREATED`; no `CAPABILITY_COMPLETED` audit event.
-- [ ] `IH-07`: L3 high-risk architecture intent maps to `STRICT` + `ESCALATE_FOR_REVIEW` and still stops at `WAITING_APPROVAL`.
-- [ ] `IH-08`: current evidence required with no evidence returns `ROUTING_BLOCKED`; a counting Runtime port reports zero calls, and the result contains no Workflow or Task.
-- [ ] `IH-09`: cancelled or over-budget request returns `RUNTIME_BLOCKED`, Workflow is `CANCELLED`, and no Capability event exists.
-- [ ] `IH-10`: correlation chain is exact: `classificationId -> routingId -> workflow.intentRef -> task.workflowId`; Task request contains the Routing ID; handoff evidence references the Routing ID.
-- [ ] `IH-11`: input remains deeply equal to its pre-call clone; nested result arrays/objects are frozen.
-- [ ] `IH-12`: fake Runtime results containing a Capability invocation, an Execution record, or state `COMPLETED` each throw `HANDOFF_INVARIANT_VIOLATION`.
-- [ ] `IH-13`: result has no `executionAuthorization` property and contains both non-authorization limitations.
+- [x] `IH-06`: L1 low-risk reversible documentation maps to `LIGHT`/`R1`/`FAST`; Workflow is `CONFIRM` + `WAITING_APPROVAL`; Task is `CREATED`; no `CAPABILITY_COMPLETED` audit event.
+- [x] `IH-07`: L3 high-risk architecture intent maps to `STRICT` + `ESCALATE_FOR_REVIEW` and still stops at `WAITING_APPROVAL`.
+- [x] `IH-08`: current evidence required with no evidence returns `ROUTING_BLOCKED`; a counting Runtime port reports zero calls, and the result contains no Workflow or Task.
+- [x] `IH-09`: cancelled or over-budget request returns `RUNTIME_BLOCKED`, Workflow is `CANCELLED`, and no Capability event exists.
+- [x] `IH-10`: correlation chain is exact: `classificationId -> routingId -> workflow.intentRef -> task.workflowId`; Task request contains the Routing ID; handoff evidence references the Routing ID.
+- [x] `IH-11`: input remains deeply equal to its pre-call clone; nested result arrays/objects are frozen.
+- [x] `IH-12`: fake Runtime results containing a Capability invocation, an Execution record, or state `COMPLETED` each throw `HANDOFF_INVARIANT_VIOLATION`.
+- [x] `IH-13`: result has no `executionAuthorization` property and contains both non-authorization limitations.
 
 ### Step 3: Add the test file to the suite
 
-- [ ] Append `runtime/tests/controlled-runtime-handoff.test.ts` to the `npm test` command in `package.json`.
+- [x] Append `runtime/tests/controlled-runtime-handoff.test.ts` to the `npm test` command in `package.json`.
 
 ### Step 4: Verify behavior and scope
 
-- [ ] Run:
+- [x] Run:
 
 ```powershell
 node --experimental-strip-types --test runtime/tests/controlled-runtime-handoff.test.ts
@@ -463,7 +463,7 @@ Expected:
 - Existing 137 tests plus 13 new tests = 150 total passing tests.
 - Static scan returns no matches in production integration files.
 
-- [ ] Commit:
+- [x] Commit:
 
 ```powershell
 git add package.json runtime/tests/controlled-runtime-handoff.test.ts
@@ -482,12 +482,12 @@ git commit -m "test: verify controlled intent runtime handoff"
 
 ### Step 1: Record only the implemented state
 
-- [ ] Record candidate `SYS-L5-HANDOFF-001` as implemented under the existing Layer 5 Runtime module.
-- [ ] Record status `INTERNAL_ONLY`; explicitly state it is not `PILOT_READY`, `USER_READY`, or `STABLE`.
-- [ ] Record the verified flow: structured Intent → Advisory Router → CONFIRM Runtime → Workflow/Task → `WAITING_APPROVAL`.
-- [ ] Record the verified absence of Capability/Tool/Model/Agent invocation and execution authorization.
-- [ ] Preserve all existing authority hierarchy and Module statuses; update only the existing Runtime module's related document/test references.
-- [ ] Record remaining usability blockers:
+- [x] Record candidate `SYS-L5-HANDOFF-001` as implemented under the existing Layer 5 Runtime module.
+- [x] Record status `INTERNAL_ONLY`; explicitly state it is not `PILOT_READY`, `USER_READY`, or `STABLE`.
+- [x] Record the verified flow: structured Intent → Advisory Router → CONFIRM Runtime → Workflow/Task → `WAITING_APPROVAL`.
+- [x] Record the verified absence of Capability/Tool/Model/Agent invocation and execution authorization.
+- [x] Preserve all existing authority hierarchy and Module statuses; update only the existing Runtime module's related document/test references.
+- [x] Record remaining usability blockers:
   - user-facing input adapter;
   - approval-resume path;
   - at least one admitted, registered, and activated real Engineering Capability;
@@ -496,7 +496,7 @@ git commit -m "test: verify controlled intent runtime handoff"
 
 ### Step 2: Run final gate evidence
 
-- [ ] Run:
+- [x] Run:
 
 ```powershell
 npm.cmd test
@@ -505,7 +505,7 @@ rg -n "fetch\(|node:http|node:https|node:fs|child_process|AUTO_EXECUTE|\.invoke\
 git status --short
 ```
 
-- [ ] Gate result is only one of:
+- [x] Gate result is only one of:
   - `APPROVED_FOR_TESTING`: all 150 tests pass, scan is clean, state stops at `WAITING_APPROVAL`, and no forbidden scope is present.
   - `CHANGES_REQUIRED`: any condition above fails.
 
@@ -513,7 +513,7 @@ This Gate does not mean production-ready, user-ready, model-integrated, or autho
 
 ### Step 3: Commit documentation evidence
 
-- [ ] Commit:
+- [x] Commit:
 
 ```powershell
 git add docs/DEVELOPMENT_PROGRESS.md docs/strategy/AI_CTO_SYSTEM_MASTER_PLAN.md docs/architecture/MODULE_REGISTRY.md memory/project_memory/AI_CTO_SYSTEM_PROJECT_MEMORY.md docs/superpowers/plans/2026-08-06-controlled-intent-runtime-handoff-implementation.md
@@ -522,8 +522,8 @@ git commit -m "docs: record controlled handoff implementation"
 
 ### Step 4: Final branch handoff
 
-- [ ] Confirm the feature branch contains four focused commits and has no uncommitted changes.
-- [ ] Do not merge automatically. Report branch name, commit list, tests, scan result, Gate result, and the explicit non-user-ready limitations.
+- [x] Confirm the feature branch contains four focused commits and has no uncommitted changes.
+- [x] Do not merge automatically. Report branch name, commit list, tests, scan result, Gate result, and the explicit non-user-ready limitations.
 
 ## 7. Requirement-to-Test Matrix
 
@@ -543,11 +543,11 @@ git commit -m "docs: record controlled handoff implementation"
 
 ## 8. Implementation Review Checklist
 
-- [ ] No new Module, Phase, ADR, Agent, Capability, provider, persistence, API, filesystem, or network integration.
-- [ ] No change to existing Runtime, Router, Guard, Workflow, Task, Agent, Capability, Audit, Registry, or Knowledge contracts.
-- [ ] Every Runtime call uses `CONFIRM`.
-- [ ] Every successful handoff stops at `WAITING_APPROVAL`.
-- [ ] No Capability invocation or Execution record exists.
-- [ ] Handoff evidence is traceable but not authorization.
-- [ ] Full regression suite passes.
-- [ ] Governance records remain honest about `INTERNAL_ONLY` maturity.
+- [x] No new Module, Phase, ADR, Agent, Capability, provider, persistence, API, filesystem, or network integration.
+- [x] No change to existing Runtime, Router, Guard, Workflow, Task, Agent, Capability, Audit, Registry, or Knowledge contracts.
+- [x] Every Runtime call uses `CONFIRM`.
+- [x] Every successful handoff stops at `WAITING_APPROVAL`.
+- [x] No Capability invocation or Execution record exists.
+- [x] Handoff evidence is traceable but not authorization.
+- [x] Full regression suite passes.
+- [x] Governance records remain honest about `INTERNAL_ONLY` maturity.
