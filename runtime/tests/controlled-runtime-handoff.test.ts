@@ -4,8 +4,19 @@ import assert from 'node:assert/strict';
 import {
   HandoffError,
   type ControlledRuntimeHandoffRequest,
+  type HandoffRouterPort,
+  type HandoffRuntimePort,
 } from '../integration/intent-runtime-handoff-contract.ts';
 import { validateAndFreezeHandoffRequest } from '../integration/intent-runtime-handoff-validation.ts';
+import { ControlledRuntimeHandoffService } from '../integration/controlled-runtime-handoff-service.ts';
+import type {
+  RoutingRecommendation,
+  RoutingRequest,
+} from '../routing/execution-routing-contract.ts';
+import type { RuntimeRunResult } from '../services/runtime-foundation-service.ts';
+import type { CreateWorkflowInput } from '../workflow/workflow-service.ts';
+import type { RunOptions } from '../services/runtime-foundation-service.ts';
+import type { TaskInput } from '../models/runtime-types.ts';
 
 const NOW = '2026-08-06T00:00:00.000Z';
 
@@ -68,6 +79,94 @@ function assertDeepFrozen(value: unknown): void {
   }
 }
 
+function routingRecommendation(
+  decision: RoutingRecommendation['decision'] = 'ROUTE_RECOMMENDED',
+): RoutingRecommendation {
+  return {
+    routingId: 'routing-intent-001',
+    decision,
+    profile: decision === 'OUT_OF_SCOPE' ? undefined : 'LIGHT',
+    reasoningBudget: decision === 'OUT_OF_SCOPE' ? 'R0' : 'R1',
+    modelCategory: decision === 'OUT_OF_SCOPE' ? 'NONE' : 'FAST',
+    validationObligation: decision === 'OUT_OF_SCOPE' ? 'NONE' : 'TARGETED',
+    escalationConditions: [],
+    evidenceFreshness: [],
+    evidence: [{
+      evidenceId: 'routing-evidence-routing-intent-001',
+      source: 'execution-routing',
+      summary: `Decision ${decision}`,
+      confidence: 'L2',
+      timestamp: NOW,
+      reference: 'routing-intent-001',
+    }],
+    limitations: ['Recommendation only; no execution authorisation is created.'],
+  };
+}
+
+function waitingRuntimeResult(): RuntimeRunResult {
+  return {
+    workflow: {
+      workflowId: 'workflow-1',
+      intentRef: 'intent-001',
+      executionContext: validHandoffRequest().executionContext,
+      controlMode: 'CONFIRM',
+      budget: validHandoffRequest().budget,
+      state: 'WAITING_APPROVAL',
+      createdAt: NOW,
+      updatedAt: NOW,
+    },
+    task: {
+      taskId: 'task-1',
+      workflowId: 'workflow-1',
+      input: {
+        request: 'handoff:v1:{"routingId":"routing-intent-001","objective":"Create a traceable documentation update plan."}',
+      },
+      state: 'CREATED',
+    },
+    auditEvents: [],
+  };
+}
+
+class CountingRouter implements HandoffRouterPort {
+  calls = 0;
+  lastRequest?: RoutingRequest;
+  readonly recommendation: RoutingRecommendation;
+
+  constructor(recommendation: RoutingRecommendation) {
+    this.recommendation = recommendation;
+  }
+
+  route(request: RoutingRequest): RoutingRecommendation {
+    this.calls += 1;
+    this.lastRequest = request;
+    return this.recommendation;
+  }
+}
+
+class CountingRuntime implements HandoffRuntimePort {
+  calls = 0;
+  lastWorkflowInput?: CreateWorkflowInput;
+  lastTaskInput?: TaskInput;
+  lastOptions?: RunOptions;
+  readonly result: RuntimeRunResult;
+
+  constructor(result: RuntimeRunResult) {
+    this.result = result;
+  }
+
+  run(
+    workflowInput: CreateWorkflowInput,
+    taskInput: TaskInput,
+    options: RunOptions = {},
+  ): RuntimeRunResult {
+    this.calls += 1;
+    this.lastWorkflowInput = workflowInput;
+    this.lastTaskInput = taskInput;
+    this.lastOptions = options;
+    return this.result;
+  }
+}
+
 test('IH-01 reconstructs and deeply freezes a valid handoff request without mutating caller input', () => {
   const input = validHandoffRequest();
   const baseline = structuredClone(input);
@@ -112,4 +211,80 @@ test('IH-02 rejects malformed handoff fields at the integration boundary', () =>
       entry.name,
     );
   }
+});
+
+test('IH-03 rejects non-classified or low-confidence intent before routing and runtime', () => {
+  const cases = [
+    { status: 'AMBIGUOUS', confidence: 'L3' },
+    { status: 'OUT_OF_SCOPE', confidence: 'L3' },
+    { status: 'INSUFFICIENT_EVIDENCE', confidence: 'L3' },
+    { status: 'CLASSIFIED', confidence: 'L1' },
+    { status: 'CLASSIFIED', confidence: 'L2' },
+  ] as const;
+
+  for (const entry of cases) {
+    const router = new CountingRouter(routingRecommendation());
+    const runtime = new CountingRuntime(waitingRuntimeResult());
+    const service = new ControlledRuntimeHandoffService({ router, runtime, now: () => NOW });
+    const baseline = validHandoffRequest();
+    const request: ControlledRuntimeHandoffRequest = {
+      ...baseline,
+      intentResult: { ...baseline.intentResult, ...entry },
+    };
+
+    const result = service.handoff(request);
+
+    assert.equal(result.handoffDecision, 'INTENT_REJECTED');
+    assert.equal(router.calls, 0);
+    assert.equal(runtime.calls, 0);
+    assert.equal(result.routingRecommendation, undefined);
+    assert.equal(result.workflow, undefined);
+    assert.equal(result.task, undefined);
+  }
+});
+
+test('IH-04 keeps blocked routing decisions out of runtime', () => {
+  for (const decision of ['OUT_OF_SCOPE', 'INSUFFICIENT_EVIDENCE'] as const) {
+    const router = new CountingRouter(routingRecommendation(decision));
+    const runtime = new CountingRuntime(waitingRuntimeResult());
+    const service = new ControlledRuntimeHandoffService({ router, runtime, now: () => NOW });
+
+    const result = service.handoff(validHandoffRequest());
+
+    assert.equal(result.handoffDecision, 'ROUTING_BLOCKED');
+    assert.equal(router.calls, 1);
+    assert.equal(runtime.calls, 0);
+    assert.equal(result.routingRecommendation?.decision, decision);
+    assert.equal(result.workflow, undefined);
+    assert.equal(result.task, undefined);
+  }
+});
+
+test('IH-05 maps structured intent to routing and controlled runtime without reinterpretation', () => {
+  const router = new CountingRouter(routingRecommendation());
+  const runtime = new CountingRuntime(waitingRuntimeResult());
+  const service = new ControlledRuntimeHandoffService({ router, runtime, now: () => NOW });
+  const request = validHandoffRequest();
+
+  const result = service.handoff(request);
+
+  assert.deepEqual(router.lastRequest, {
+    routingId: 'routing-intent-001',
+    taskKind: 'DOCUMENTATION',
+    complexity: 'L1',
+    riskLevel: 'LOW',
+    reversibility: 'REVERSIBLE',
+    hasApplicableGate: false,
+    requiresCurrentEvidence: false,
+    evidenceInputs: request.intentResult.evidenceInputs,
+    evidenceObservations: request.intentResult.evidenceObservations,
+  });
+  assert.equal(runtime.calls, 1);
+  assert.equal(runtime.lastWorkflowInput?.controlMode, 'CONFIRM');
+  assert.equal(runtime.lastWorkflowInput?.intentRef, 'intent-001');
+  assert.deepEqual(runtime.lastTaskInput, {
+    request: 'handoff:v1:{"routingId":"routing-intent-001","objective":"Create a traceable documentation update plan."}',
+  });
+  assert.deepEqual(runtime.lastOptions, { cancelled: undefined });
+  assert.equal(result.handoffDecision, 'WAITING_APPROVAL');
 });
