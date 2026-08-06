@@ -88,11 +88,11 @@ Do not add icons, MCP dependencies, or other metadata in this iteration.
 
 ## 2. Isolated Workspace and Baseline
 
-- [ ] **Step 1: Create an isolated worktree**
+- [x] **Step 1: Create an isolated worktree**
 
 Use `superpowers:using-git-worktrees` at execution time. Create branch `feat/global-ai-cto-skill-gateway` and worktree `.worktrees/global-ai-cto-skill-gateway` from `main`.
 
-- [ ] **Step 2: Confirm the repository baseline**
+- [x] **Step 2: Confirm the repository baseline**
 
 Run:
 
@@ -109,7 +109,7 @@ Expected:
 - the existing Node test suite passes with 165 tests;
 - no production or governance file is changed by the test run.
 
-- [ ] **Step 3: Capture discovery RED evidence**
+- [x] **Step 3: Capture discovery RED evidence**
 
 Run:
 
@@ -136,7 +136,7 @@ Expected before implementation: both values are `False`. If the destination alre
 
 **Produces:** a dependency-free test process that exits `0` only when the package contract is valid.
 
-- [ ] **Step 1: Write the failing test**
+- [x] **Step 1: Write the failing test**
 
 The test must assert:
 
@@ -170,7 +170,7 @@ if ($LASTEXITCODE -ne 0) {
 }
 ```
 
-- [ ] **Step 2: Run the test and prove RED**
+- [x] **Step 2: Run the test and prove RED**
 
 Run:
 
@@ -180,7 +180,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File tests\ai-cto-skill-package.t
 
 Expected: FAIL because `skills\ai-cto-system\SKILL.md` does not exist.
 
-- [ ] **Step 3: Commit the RED test**
+- [x] **Step 3: Commit the RED test**
 
 ```powershell
 git add tests\ai-cto-skill-package.test.ps1
@@ -198,7 +198,7 @@ git commit -m "test: define global ai cto skill contract"
 
 **Produces:** one locally valid Codex Skill named `ai-cto-system` with implicit discovery enabled.
 
-- [ ] **Step 1: Run the official scaffold generator**
+- [x] **Step 1: Run the official scaffold generator**
 
 Run from the worktree root:
 
@@ -212,7 +212,7 @@ python "$env:USERPROFILE\.codex\skills\.system\skill-creator\scripts\init_skill.
 
 Expected: `skills\ai-cto-system\SKILL.md` and `skills\ai-cto-system\agents\openai.yaml` are created, with no resource directories requested.
 
-- [ ] **Step 2: Replace the scaffold with the approved thin gateway**
+- [x] **Step 2: Replace the scaffold with the approved thin gateway**
 
 Use `apply_patch`. Keep the body focused on:
 
@@ -242,11 +242,11 @@ Use existing analysis, design, ADR, Gate, Human Control, memory, and execution-r
 
 The final body may improve phrasing but must preserve every contract in Section 1 and remain below 12,000 characters.
 
-- [ ] **Step 3: Normalize `agents/openai.yaml`**
+- [x] **Step 3: Normalize `agents/openai.yaml`**
 
 Use exactly the metadata contract from Section 1. Quote every string and do not add dependencies or icons.
 
-- [ ] **Step 4: Run package validation**
+- [x] **Step 4: Run package validation**
 
 Run:
 
@@ -257,7 +257,7 @@ python "$env:USERPROFILE\.codex\skills\.system\skill-creator\scripts\quick_valid
 
 Expected: both commands PASS; official validation prints `Skill is valid!`.
 
-- [ ] **Step 5: Commit the package**
+- [x] **Step 5: Commit the package**
 
 ```powershell
 git add skills\ai-cto-system tests\ai-cto-skill-package.test.ps1
@@ -278,7 +278,7 @@ git commit -m "feat: add global ai cto skill gateway"
 
 **Produces:** isolated evidence for create, idempotency, conflict refusal, and verified rollback.
 
-- [ ] **Step 1: Write the failing test harness**
+- [x] **Step 1: Write the failing test harness**
 
 The script must create a unique test root under `$env:TEMP`, verify its absolute path begins with the resolved temp directory, and clean up only that verified root in `finally`.
 
@@ -325,7 +325,7 @@ function Invoke-Installer {
 }
 ```
 
-- [ ] **Step 2: Run the test and prove RED**
+- [x] **Step 2: Run the test and prove RED**
 
 Run:
 
@@ -335,7 +335,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File tests\ai-cto-skill-installer
 
 Expected: FAIL because `scripts\install-ai-cto-skill.ps1` does not exist.
 
-- [ ] **Step 3: Commit the RED test**
+- [x] **Step 3: Commit the RED test**
 
 ```powershell
 git add tests\ai-cto-skill-installer.test.ps1
@@ -352,7 +352,7 @@ git commit -m "test: define ai cto skill installation safety"
 
 **Produces:** a single verified NTFS Junction or a non-destructive failure.
 
-- [ ] **Step 1: Define the public script parameters and fixed source**
+- [x] **Step 1: Define the public script parameters and fixed source**
 
 ```powershell
 [CmdletBinding()]
@@ -369,7 +369,7 @@ $destination = Join-Path $SkillRoot 'ai-cto-system'
 
 The script must verify that the source contains both `SKILL.md` and `agents\openai.yaml` before creating or removing anything.
 
-- [ ] **Step 2: Add canonical path helpers**
+- [x] **Step 2: Add canonical path helpers**
 
 Implement:
 
@@ -396,7 +396,7 @@ function Get-JunctionTarget([System.IO.FileSystemInfo]$Item) {
 
 Require the destination to be inside the normalized `SkillRoot`. Reject any path relationship that fails this check.
 
-- [ ] **Step 3: Implement install behavior**
+- [x] **Step 3: Implement install behavior**
 
 1. Create `SkillRoot` if absent.
 2. If destination is absent, create `New-Item -ItemType Junction -Path $destination -Target $source`.
@@ -404,18 +404,18 @@ Require the destination to be inside the normalized `SkillRoot`. Reject any path
 4. If destination exists in any other form or points elsewhere, write an error, do not delete it, and exit non-zero.
 5. Print normalized `Source:` and `Discovery:` paths on success.
 
-- [ ] **Step 4: Implement explicit rollback behavior**
+- [x] **Step 4: Implement explicit rollback behavior**
 
 When `-Remove` is supplied:
 
 1. If destination is absent, report `NOT_INSTALLED` and exit `0`.
 2. Resolve the existing item and its Junction target.
 3. Remove it only when `LinkType` is `Junction` and the normalized target equals the canonical source.
-4. Use `Remove-Item -LiteralPath $destination -Force` without recursive deletion.
+4. Use `[System.IO.Directory]::Delete($destination, $false)` without recursive deletion. This avoids the Windows PowerShell 5.1 Junction `Remove-Item` null-reference defect observed during the RED→GREEN cycle.
 5. Confirm the canonical source still exists.
 6. Reject every unverified destination without modification.
 
-- [ ] **Step 5: Run installer tests**
+- [x] **Step 5: Run installer tests**
 
 Run:
 
@@ -425,7 +425,7 @@ powershell -NoProfile -ExecutionPolicy Bypass -File tests\ai-cto-skill-installer
 
 Expected: all five installer cases PASS and the temporary test root is removed after path containment verification.
 
-- [ ] **Step 6: Commit the installer**
+- [x] **Step 6: Commit the installer**
 
 ```powershell
 git add scripts\install-ai-cto-skill.ps1 tests\ai-cto-skill-installer.test.ps1
@@ -449,7 +449,7 @@ git commit -m "feat: add safe global skill installer"
 
 **Produces:** an accurate Layer 5 implementation record and a visible fresh-session validation limitation.
 
-- [ ] **Step 1: Update Master Plan**
+- [x] **Step 1: Update Master Plan**
 
 In the existing Layer 5 / Intent Gateway section, add one concise entry:
 
@@ -459,11 +459,11 @@ Global AI CTO Skill Gateway — Implemented locally; repository-authoritative Sk
 
 Do not add a Module, Phase, Runtime power, or automated execution claim.
 
-- [ ] **Step 2: Update Module Registry**
+- [x] **Step 2: Update Module Registry**
 
 Update the existing Intent Gateway or Runtime entry-surface row so `Related Documents` includes the approved design, the implementation plan, and `skills/ai-cto-system/SKILL.md`. Record status as `Implemented / Fresh-session validation pending` until the pilot passes.
 
-- [ ] **Step 3: Update Development Progress**
+- [x] **Step 3: Update Development Progress**
 
 Record:
 
@@ -474,7 +474,7 @@ Record:
 - final installation state separately from implementation state;
 - fresh-session pilot as pending until performed.
 
-- [ ] **Step 4: Update Project Memory**
+- [x] **Step 4: Update Project Memory**
 
 Record:
 

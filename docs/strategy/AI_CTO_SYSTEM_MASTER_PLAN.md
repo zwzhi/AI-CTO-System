@@ -76,7 +76,7 @@ Layer 定义稳定职责边界，Module 定义层内可独立治理的能力，P
 | Layer 2 | Idea Intake、Research、Evaluation、Build vs Buy、Confidence、Approval Gate、Portfolio、Priority、Dependency、Asset、Cost、Dashboard、Investment、Health | 评分与建议不自动启动项目或抵消安全、数据、合规和 Gate 红线 |
 | Layer 3 | PRD、需求优先级、Architecture、Database、Agent Design、Traceability、Task、Plan、Git、TDD、Review、Change Impact、Development Gate | 没有任何规则允许跳过 Design、Testing 或人工批准直接编码 |
 | Layer 4 | Lifecycle、Initialization、Testing、Security、Release、Deployment、Monitoring、Onboarding、Health、Maintenance、Incident、Debt、Feedback、Evolution、Retirement | 文档治理不等于真实项目已经通过相应门禁或部署 |
-| Layer 5 | Capability、Execution Routing、Intent Gateway 治理、Phase 9A / 9B / 9C-1、Phase 9C-2 Runtime Foundation MVP、Phase 9C-3 Agent Contract、Phase 9C-4 确定性 Planner 本地 MVP / Review、Phase 9C-5 Codex Capability Contract 设计，以及 `SYS-L5-HANDOFF-001` 结构化 Intent 到审批等待点的内部控制平面连接 | Handoff 仅为 `INTERNAL_ONLY`；自然语言入口、审批恢复、真实 Capability 激活、目标工作区安全与生产执行均未实现 |
+| Layer 5 | Capability、Execution Routing、Intent Gateway 治理、Phase 9A / 9B / 9C-1、Phase 9C-2 Runtime Foundation MVP、Phase 9C-3 Agent Contract、Phase 9C-4 确定性 Planner 本地 MVP / Review、Phase 9C-5 Codex Capability Contract 设计、`SYS-L5-HANDOFF-001` 内部控制平面连接，以及仓库权威的 Global AI CTO Skill Gateway | Global Skill 只提供 Codex 发现、意图入口和渐进上下文路由，不使内部 Runtime 自动可调用；Handoff 仍为 `INTERNAL_ONLY`，审批恢复、目标工作区安全与生产执行均未实现 |
 
 已完成的历史基线：Phase 1 Kernel、Phase 2 Operating Protocol、Phase 3 Decision Intelligence、Phase 4 Design Intelligence、Phase 5 Development Execution Intelligence、Phase 6 Testing & Release Intelligence、Phase 6.5 Existing Project Onboarding、Phase 7 Maintenance & Evolution、Phase 8 Portfolio Governance、Architecture Review、Strategic Alignment、Phase 8.2 Capability Governance、Phase 8.3 Knowledge Governance 与 Knowledge Governance Pilot。
 
