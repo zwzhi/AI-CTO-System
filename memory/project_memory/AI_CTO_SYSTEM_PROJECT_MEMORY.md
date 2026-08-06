@@ -4,7 +4,7 @@
 
 > 2026-08-06：用户已审阅并确认上述设计；已创建技术实现计划 `docs/superpowers/plans/2026-08-06-execution-profile-evidence-freshness-implementation.md`。计划仅设计一个独立、确定性、只读的建议性路由服务和 Evidence Freshness 比较器：不修改 Runtime Core/Workflow/Task/Agent/Capability/Audit Repository，不执行实际模型切换、工具调用或执行授权。编码仍须另行授权。
 
-> 2026-08-06：用户授权并完成 Execution Profile & Evidence Freshness 的只读实现。新增独立 `runtime/routing/` 合同、Evidence Freshness 比较器、Profile Policy 与 `AdvisoryExecutionRouter`：自动判断 `LIGHT / STANDARD / STRICT`、R0–R4、模型类别建议、验证义务及 `CURRENT / STALE / NOT_CAPTURED`，返回 L2 路由 Evidence；9 项目标测试与全量 135 项回归通过。实现不修改 Runtime Core/Workflow/Task/Agent/Capability/Permission/Audit Repository，不读取文件/Git/网络，不选择或调用真实模型/工具，也不创建执行授权。
+> 2026-08-06：用户授权并完成 Execution Profile & Evidence Freshness 的只读实现。新增独立 `runtime/routing/` 合同、Evidence Freshness 比较器、Profile Policy 与 `AdvisoryExecutionRouter`：自动判断 `LIGHT / STANDARD / STRICT`、R0–R4、模型类别建议、验证义务及 `CURRENT / STALE / NOT_CAPTURED`，返回 L2 路由 Evidence；HIGH/CRITICAL 风险固定 `STRICT`，强制当前证据缺失时返回 `INSUFFICIENT_EVIDENCE`。11 项目标测试与全量 137 项回归通过。实现不修改 Runtime Core/Workflow/Task/Agent/Capability/Permission/Audit Repository，不读取文件/Git/网络，不选择或调用真实模型/工具，也不创建执行授权。
 
 > 2026-07-15：AI Matrix 仓库拆分完成。独立仓库位于 `D:\AI Project\AI-Matrix`，通过 subtree split 保留历史，分支为 `main`、remote 未配置；产品源码已使用最小应用侧 Contract / Port 解除 AI CTO Runtime 相对路径依赖，39 / 39 测试和 0 漏洞审计通过。AI CTO System 已移出业务源码、Knowledge、Pilot 数据和产品专属文档，仅保留 ADR-0031、拆分设计 / 计划和外部项目记录，状态为 `AI_MATRIX_EXTERNAL_REPOSITORY_GOVERNED`。
 

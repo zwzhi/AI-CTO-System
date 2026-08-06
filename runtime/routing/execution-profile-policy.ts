@@ -26,6 +26,7 @@ function modelCategory(request: RoutingRequest): SuggestedModelCategory {
 
 function minimumProfile(request: RoutingRequest): ExecutionProfile {
   if (request.complexity === 'L4'
+    || request.riskLevel === 'HIGH'
     || request.riskLevel === 'CRITICAL'
     || request.reversibility === 'IRREVERSIBLE'
     || request.hasApplicableGate) {
@@ -68,7 +69,24 @@ export class ExecutionProfilePolicy {
       });
     }
 
+    const evidenceIsAbsent = request.requiresCurrentEvidence && request.evidenceInputs.length === 0;
     const hasNonCurrentEvidence = evidenceFreshness.some((item) => item.currentness !== 'CURRENT');
+    if (evidenceIsAbsent) {
+      return Object.freeze({
+        decision: 'INSUFFICIENT_EVIDENCE',
+        profile: 'STRICT',
+        reasoningBudget,
+        modelCategory: modelCategory(request),
+        validationObligation: 'FULL_GATE',
+        escalationConditions: Object.freeze([
+          'Current evidence is required, but no evidence input was supplied.',
+        ]),
+        limitations: Object.freeze([
+          'Model category is advisory; no model is selected or invoked.',
+          'Execution profile does not replace permissions, approval, ADR, or project gates.',
+        ]),
+      });
+    }
     const evidenceRequiresReview = request.requiresCurrentEvidence && hasNonCurrentEvidence;
     const profile = evidenceRequiresReview ? 'STRICT' : minimumProfile(request);
     let validationObligation = baseValidation(profile);

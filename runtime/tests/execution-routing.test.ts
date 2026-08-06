@@ -97,6 +97,16 @@ test('ER-05 escalates a simple irreversible task to STRICT without raising R1', 
   assert.equal(decision.validationObligation, 'FULL_GATE');
 });
 
+test('ER-05b treats HIGH risk as STRICT even when the task is reversible', () => {
+  const decision = new ExecutionProfilePolicy().decide(request({
+    riskLevel: 'HIGH',
+    reversibility: 'REVERSIBLE',
+  }), []);
+
+  assert.equal(decision.profile, 'STRICT');
+  assert.equal(decision.decision, 'ESCALATE_FOR_REVIEW');
+});
+
 test('ER-06 keeps stale evidence non-executable and requests review when current evidence is required', () => {
   const decision = new ExecutionProfilePolicy().decide(
     request({ requiresCurrentEvidence: true }),
@@ -104,6 +114,18 @@ test('ER-06 keeps stale evidence non-executable and requests review when current
   );
 
   assert.equal(decision.decision, 'ESCALATE_FOR_REVIEW');
+  assert.equal(decision.profile, 'STRICT');
+  assert.equal(decision.validationObligation, 'FULL_GATE');
+});
+
+test('ER-06b reports insufficient evidence when current evidence is required but absent', () => {
+  const decision = new ExecutionProfilePolicy().decide(request({
+    requiresCurrentEvidence: true,
+    evidenceInputs: Object.freeze([]),
+    evidenceObservations: Object.freeze([]),
+  }), []);
+
+  assert.equal(decision.decision, 'INSUFFICIENT_EVIDENCE');
   assert.equal(decision.profile, 'STRICT');
   assert.equal(decision.validationObligation, 'FULL_GATE');
 });
