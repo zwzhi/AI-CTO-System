@@ -16,9 +16,37 @@ If the current request says `AI_CTO_MODE: OFF`, “不要使用 AI CTO System”
 - `AI_CTO_MODE: ON` explicitly re-enables this Skill.
 - Opt-out never bypasses Codex safety, permissions, or mandatory confirmations.
 
-## Select the lightest route
+## Route before loading authority
 
-Load authority documents from `D:\AI Project\AI-CTO-System`. If that root is unavailable, report the missing authority source and do not invent replacement rules.
+Classify the route before loading authority documents. Apply opt-out, classify `L0`-`L4`, select the minimum sufficient workflow, execution profile, reasoning level, context scope and validation strength, then load only the authority required by that route.
+
+| Complexity | Default route | Context scope (load only relevant items) |
+|---|---|---|
+| `L0` | No AI CTO workflow / `R0` | Current request only |
+| `L1` | Instant / LIGHT / `R1` / TARGETED | Current file, governing paragraph, necessary Git state |
+| `L2` | Engineering / STANDARD / `R2` / CHANGE_IMPACT_AND_TARGETED | Project Memory and related requirement, design, task, tests |
+| `L3` | Design + Engineering / STRICT / `R3` / FULL_GATE | Project Memory, Architecture, related ADR, Knowledge, impact scope |
+| `L4` | CTO / STRICT / `R4` / FULL_GATE | User Brain, Portfolio, Knowledge, project context, applicable Gates |
+
+The context column is an allowed scope, not an eager-loading checklist. Load each item only when it is relevant to the current decision.
+
+Use `L0` for ordinary conversation or explanation with no project-state dependency. Use `L1` for confirmed, local, low-risk and reversible work; `L2` for normal engineering with an approved requirement and design; `L3` for module-level or cross-object change requiring design or impact analysis; and `L4` for a new project, major architecture, cross-project or high-risk decision.
+
+Risk, security, sensitive data, permission, irreversibility, unresolved ADR conflict and Gate triggers may raise the route. Preference, convenience and process completeness cannot lower a mandatory control. Using this Skill does not itself raise a request to L3 or L4.
+
+For L0, use ordinary handling without AI CTO context or a route line.
+
+For L1, use the existing Instant Workflow. Do not create a new Phase, ADR, design specification, review document, or Gate artifact for L1. Limit reading and validation to the affected scope, and do not scan the full repository or load the complete Memory or Knowledge corpus. Repository-local mandatory instructions still apply and may independently require an artifact or check.
+
+For governed project work, report one concise line before substantive work, then continue without waiting:
+
+`Route: L1 / Instant / LIGHT / R1 | Context: targeted | Validation: targeted`
+
+The route line is informational, not an approval pause. Ask the user only when evidence is insufficient or a meaningful decision is required.
+
+## Load routed authority
+
+Load authority documents only after routing. Use `D:\AI Project\AI-CTO-System` as the authority root. If that root is unavailable, report the missing authority source and do not invent replacement rules.
 
 | Request | First authority to load |
 |---|---|
@@ -28,12 +56,12 @@ Load authority documents from `D:\AI Project\AI-CTO-System`. If that root is una
 | Project status or continuation | The target project's `PROJECT_STATE.md` and `PROJECT_MEMORY.md` |
 | Ordinary conversation, simple explanation, or low-risk direct work | No AI CTO governance context |
 
-Load research, evaluation, design, development, testing, release, maintenance, capability, knowledge, or Runtime standards only when the request reaches that concern. Never eagerly load the full governance corpus.
+Load research, evaluation, design, development, testing, release, maintenance, capability, knowledge, or Runtime standards only when the selected route reaches that concern. Never eagerly load the full governance corpus.
 
 ## Preserve governed execution
 
-1. Classify whether the request is ordinary work, a new project, an existing project, a system change, or a continuation.
-2. Enter the applicable existing lifecycle stage and choose the lightest sufficient workflow through existing Execution Routing rules.
+1. Preserve the route decision and classify whether the request is ordinary work, a new project, an existing project, a system change, or a continuation.
+2. Enter the applicable existing lifecycle stage without inflating the selected workflow.
 3. Analyze and design before coding when AI CTO governance applies.
 4. Preserve existing ADR, Gate, Human Control, memory, audit, evidence, permission, and budget rules.
 5. State the current result, confidence, evidence gaps, and next authorized action.
@@ -41,3 +69,5 @@ Load research, evaluation, design, development, testing, release, maintenance, c
 ## Keep the boundary honest
 
 This Skill is not Runtime, a Workflow Controller, an Agent Manager, a Capability, a Provider, or a tool integration. It guides Codex into existing AI CTO contracts. Do not claim an internal Runtime or Capability is callable unless a stable authorized invocation path actually exists. Do not activate capabilities, install providers, call external models, access networks, modify production, or bypass Gates merely because this Skill was selected.
+
+Reasoning and model entries are routing guidance. They do not switch the host model or authorize tool use unless the host exposes a separate approved execution path.
