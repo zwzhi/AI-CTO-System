@@ -26,4 +26,4 @@
 
 ## 当前状态
 
-Phase 8.2 只建立目录与治理标准。当前没有正式 Capability Record，没有安装或接入任何外部 Skill、MCP、Agent 或工具。
+当前已有一个正式 Documentation Capability Record：`CAP-DOC-0001`，状态为 `EVALUATING`，只获准在隔离范围内完成受控执行桥评估；`Selection: PROHIBITED`，`Activation Scope: NONE`。当前仍没有安装、激活或接入任何外部 Skill、MCP、Agent、Provider 或工具。
