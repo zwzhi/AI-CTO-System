@@ -62,9 +62,17 @@ function Assert-JunctionTarget {
 function Invoke-Installer {
   param([Parameter(Mandatory = $true)][string[]]$Arguments)
 
-  $output = & powershell -NoProfile -ExecutionPolicy Bypass -File $installer @Arguments 2>&1
+  $previousPreference = $ErrorActionPreference
+  $ErrorActionPreference = 'Continue'
+  try {
+    $output = & powershell -NoProfile -ExecutionPolicy Bypass -File $installer @Arguments 2>&1
+    $exitCode = $LASTEXITCODE
+  }
+  finally {
+    $ErrorActionPreference = $previousPreference
+  }
   return [pscustomobject]@{
-    ExitCode = $LASTEXITCODE
+    ExitCode = $exitCode
     Output = ($output -join [Environment]::NewLine)
   }
 }
@@ -84,16 +92,16 @@ New-Item -ItemType Directory -Path $testSkillRoot -Force | Out-Null
 
 try {
   $firstInstall = Invoke-Installer @('-SkillRoot', $testSkillRoot)
-  Assert-Equal $firstInstall.ExitCode 0 'First installation must succeed.'
+  Assert-Equal $firstInstall.ExitCode 0 "First installation must succeed. Output: $($firstInstall.Output)"
   Assert-JunctionTarget $destination $expectedSource
 
   $secondInstall = Invoke-Installer @('-SkillRoot', $testSkillRoot)
-  Assert-Equal $secondInstall.ExitCode 0 'Second installation must succeed.'
+  Assert-Equal $secondInstall.ExitCode 0 "Second installation must succeed. Output: $($secondInstall.Output)"
   Assert-True $secondInstall.Output.Contains('ALREADY_INSTALLED') 'Second installation must report idempotent success.'
   Assert-JunctionTarget $destination $expectedSource
 
   $rollback = Invoke-Installer @('-SkillRoot', $testSkillRoot, '-Remove')
-  Assert-Equal $rollback.ExitCode 0 'Verified rollback must succeed.'
+  Assert-Equal $rollback.ExitCode 0 "Verified rollback must succeed. Output: $($rollback.Output)"
   Assert-True (-not (Test-Path -LiteralPath $destination)) 'Rollback must remove the Junction only.'
   Assert-True (Test-Path -LiteralPath $expectedSource) 'Rollback must preserve the canonical source.'
 
