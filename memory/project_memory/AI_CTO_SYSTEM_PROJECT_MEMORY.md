@@ -1,5 +1,7 @@
 # AI CTO System Project Memory
 
+> 2026-08-06：`SYS-L5-HANDOFF-001` Controlled Intent-to-Runtime Handoff 已按 TDD 完成内部实现。新增专用 Contract、严格不可变校验与薄 `ControlledRuntimeHandoffService`：只有 L3/L4 `CLASSIFIED` Intent 可进入现有 Router，`ROUTE_RECOMMENDED` / `ESCALATE_FOR_REVIEW` 通过现有 Runtime 创建单 Workflow / Task 并固定停在 `WAITING_APPROVAL`；超范围、证据不足、取消和预算超限均在执行前阻断。13 项目标测试与全量 150 项回归通过，静态扫描未发现 Capability、Agent、模型、工具、网络、文件或执行授权调用。Development Gate 为 `APPROVED_FOR_TESTING`，成熟度仅 `INTERNAL_ONLY`；仍缺用户入口、审批恢复、真实已激活工程 Capability、目标项目安全边界、持久审计与独立端到端 Pilot。
+
 > 2026-08-06：用户确认 `SYS-L5-HANDOFF-001` Controlled Intent-to-Runtime Handoff 设计：复用现有 Intent Gateway、Execution Routing、Runtime Foundation、Workflow、Task、Guard 与 Audit，以薄 `ControlledRuntimeHandoffService` 接受结构化 Intent；正常和升级审查结果创建单 Workflow / Task 并固定停在 `WAITING_APPROVAL`，超范围/证据不足不创建 Workflow，预算或取消由现有 Guard 阻断。归类为 Layer 5 `AI CTO Runtime Architecture` 的 `EXTEND_EXISTING_MODULE`，不新增 Module/Phase/ADR，不调用 Capability、Agent、模型、工具或网络。该设计完成不等于用户可直接自然语言驱动开发；最小可用开发闭环仍需用户入口、审批恢复、真实受控工程 Capability 与目标项目安全边界。
 
 > 2026-08-06：用户确认将“执行档位与证据新鲜度”作为 Layer 5 `Execution Routing Governance` 的设计扩展，而不是新 Module、Phase 或外部 Skill 接入。书面设计规定：L0–L4 决定默认 R0–R4；风险与可逆性确定最低 `LIGHT` / `STANDARD` / `STRICT`；质量和证据当前性确定验证强度。证据只能在已授权相关范围中标记 `CURRENT`、`STALE` 或 `NOT_CAPTURED`。该设计时点仅完成 ADR-0032；后续只读实现记录见下方。外部 Skills 包仍为 `REJECT_OR_DEFER`，不安装、不复制。

@@ -1,8 +1,10 @@
 # AI CTO System 开发进度
 
-## Controlled Intent-to-Runtime Handoff Design
+## Controlled Intent-to-Runtime Handoff Implementation
 
-用户确认采用薄集成服务，把结构化 `IntentClassificationResult` 经现有 `AdvisoryExecutionRouter` 送入现有 Runtime，并固定创建单 Workflow / Task 后停在 `WAITING_APPROVAL`。设计已明确 Intent拒绝、Routing阻断、Guard阻断、引用链、不可变输出和13项测试边界；不新增 Module/Phase/ADR，不解析自然语言、不恢复审批、不调用 Capability/Agent/模型/工具。该集成完成后仍只是内部控制平面连接；可直接提需求并受控开发还需要用户入口适配、审批后恢复、一个真实已激活工程 Capability 和目标项目安全边界。
+`SYS-L5-HANDOFF-001` 已在既有 Layer 5 `AI CTO Runtime Architecture` 内完成内部实现：结构化 `IntentClassificationResult` 先经不可变边界校验，再进入现有 `AdvisoryExecutionRouter`；只有 `ROUTE_RECOMMENDED` / `ESCALATE_FOR_REVIEW` 会创建单 Workflow / Task，且强制使用 `CONFIRM` 并停在 `WAITING_APPROVAL`。Intent 低置信度、超范围、证据不足、取消和预算超限均在执行前阻断。13 项目标测试与全量 150 项回归通过，范围扫描未发现 Capability、Agent、模型、工具、网络、文件或执行授权调用。
+
+当前成熟度为 `INTERNAL_ONLY`，Development Gate 为 `APPROVED_FOR_TESTING`。它不是自然语言用户入口，也没有审批恢复、真实已激活工程 Capability、目标工作区写入安全、持久审计或真实项目端到端 Pilot，因此不属于 `PILOT_READY`、`USER_READY` 或 `STABLE`。
 
 ## AI Matrix Repository Separation Completed
 
