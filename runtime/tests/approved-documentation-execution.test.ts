@@ -3,6 +3,9 @@ import assert from 'node:assert/strict';
 
 import type { AuthorizedDocumentationSource } from '../capability/documentation-execution-contract.ts';
 import type { DocumentationExecutionRequest } from '../capability/documentation-execution-contract.ts';
+import type { DocumentationInvocationPort } from '../capability/documentation-invocation-port.ts';
+import { DocumentationCapabilityAdapter } from '../capability/documentation-capability-adapter.ts';
+import { DeterministicDocumentationAssistant } from '../capability/deterministic-documentation-assistant.ts';
 import type { DocumentationCapabilityActivationSnapshot } from '../capability/documentation-capability-activation-contract.ts';
 import type { DocumentationCapabilityActivationPort } from '../capability/documentation-capability-activation-port.ts';
 import { InMemoryDocumentationCapabilityActivationRepository } from '../capability/in-memory-documentation-capability-activation-repository.ts';
@@ -12,6 +15,11 @@ import { InMemoryTaskRepository } from '../task/in-memory-task-repository.ts';
 import { TaskService } from '../task/task-service.ts';
 import { InMemoryWorkflowRepository } from '../workflow/in-memory-workflow-repository.ts';
 import { WorkflowService } from '../workflow/workflow-service.ts';
+import { PermissionBudgetGuard } from '../permission/permission-budget-guard.ts';
+import {
+  DocumentationCapabilityRuntimeService,
+  type DocumentationRuntimeExecutionResult,
+} from '../services/documentation-capability-runtime-service.ts';
 import type {
   ApprovedDocumentationExecutionRequest,
   DocumentationExecutionApproval,
@@ -103,10 +111,18 @@ test('AD-04 source fingerprint rejects empty, duplicate, and blank source fields
 
 class CountingDocumentationExecutionPort implements DocumentationExecutionPort {
   calls = 0;
+  readonly #delegate?: DocumentationExecutionPort;
 
-  execute(): never {
+  constructor(delegate?: DocumentationExecutionPort) {
+    this.#delegate = delegate;
+  }
+
+  execute(request: DocumentationExecutionRequest): DocumentationRuntimeExecutionResult {
     this.calls += 1;
-    throw new Error('Capability must not be called during preflight tests.');
+    if (this.#delegate === undefined) {
+      throw new Error('Capability must not be called during preflight tests.');
+    }
+    return this.#delegate.execute(request);
   }
 }
 
@@ -115,6 +131,7 @@ interface ExecutionFixture {
   readonly workflowService: WorkflowService;
   readonly taskService: TaskService;
   readonly port: CountingDocumentationExecutionPort;
+  readonly auditService: AuditService;
   readonly request: ApprovedDocumentationExecutionRequest;
 }
 
@@ -178,6 +195,7 @@ function createExecutionFixture(options: {
   readonly workflowState?: 'PLANNING' | 'WAITING_APPROVAL';
   readonly taskRequest?: string;
   readonly activationPort?: DocumentationCapabilityActivationPort;
+  readonly executionPortFactory?: (auditService: AuditService) => DocumentationExecutionPort;
 } = {}): ExecutionFixture {
   const workflowService = new WorkflowService(new InMemoryWorkflowRepository(), () => NOW);
   const taskService = new TaskService(new InMemoryTaskRepository());
@@ -201,7 +219,8 @@ function createExecutionFixture(options: {
       'handoff:v1:{"routingId":"routing-intent-001","objective":"Create an evidence-backed draft."}',
   });
   const requestBody = documentationRequest(workflow.workflowId, task.taskId);
-  const port = new CountingDocumentationExecutionPort();
+  const auditService = new AuditService(new InMemoryAuditRepository());
+  const port = new CountingDocumentationExecutionPort(options.executionPortFactory?.(auditService));
   const service = new ApprovedDocumentationExecutionService({
     workflowService,
     taskService,
@@ -209,7 +228,7 @@ function createExecutionFixture(options: {
       options.activationPort ??
       new InMemoryDocumentationCapabilityActivationRepository(activeSnapshot()),
     documentationExecutionPort: port,
-    auditService: new AuditService(new InMemoryAuditRepository()),
+    auditService,
     now: () => NOW,
   });
 
@@ -218,6 +237,7 @@ function createExecutionFixture(options: {
     workflowService,
     taskService,
     port,
+    auditService,
     request: {
       classificationId: 'classification-001',
       routingId: 'routing-intent-001',
@@ -394,4 +414,108 @@ test('AD-10 cancellation after valid preflight stops before capability invocatio
   assert.equal(result.workflow?.state, 'CANCELLED');
   assert.equal(result.auditEvents.at(-1)?.eventType, 'DOCUMENTATION_EXECUTION_CANCELLED');
   assert.equal(fixture.port.calls, 0);
+});
+
+function successfulExecutionPort(auditService: AuditService): DocumentationExecutionPort {
+  return new DocumentationCapabilityRuntimeService(
+    new DocumentationCapabilityAdapter(
+      new DeterministicDocumentationAssistant(() => NOW),
+      new PermissionBudgetGuard(),
+      () => NOW,
+    ),
+    auditService,
+    () => NOW,
+  );
+}
+
+function failedExecutionPort(auditService: AuditService): DocumentationExecutionPort {
+  const throwingInvocation: DocumentationInvocationPort = {
+    invoke: () => {
+      throw new Error('controlled local failure');
+    },
+  };
+  return new DocumentationCapabilityRuntimeService(
+    new DocumentationCapabilityAdapter(throwingInvocation, new PermissionBudgetGuard(), () => NOW),
+    auditService,
+    () => NOW,
+  );
+}
+
+test('AD-11 valid approval completes the bounded Documentation Capability loop', () => {
+  const fixture = createExecutionFixture({ executionPortFactory: successfulExecutionPort });
+  const result = fixture.service.execute(fixture.request);
+
+  assert.equal(result.decision, 'COMPLETED');
+  assert.equal(result.workflow?.state, 'COMPLETED');
+  assert.equal(result.task?.state, 'COMPLETED');
+  assert.equal(fixture.port.calls, 1);
+  assert.ok(result.documentationOutcome?.result?.draft.startsWith('DRAFT:'));
+  assert.ok((result.documentationOutcome?.result?.sourceReferences.length ?? 0) > 0);
+  assert.ok((result.documentationOutcome?.result?.evidence.length ?? 0) > 0);
+  assert.ok((result.documentationOutcome?.result?.limitations.length ?? 0) > 0);
+  assert.equal(result.documentationOutcome?.result?.confidence, 'L3');
+});
+
+test('AD-12 controlled Documentation Capability failure terminates without retry or fallback', () => {
+  const fixture = createExecutionFixture({ executionPortFactory: failedExecutionPort });
+  const result = fixture.service.execute(fixture.request);
+
+  assert.equal(result.decision, 'FAILED');
+  assert.equal(result.failure?.code, 'CAPABILITY_FAILED');
+  assert.equal(result.workflow?.state, 'FAILED');
+  assert.equal(result.task?.state, 'FAILED');
+  assert.equal(fixture.port.calls, 1);
+});
+
+test('AD-13 terminal approval replay cannot execute the Capability twice', () => {
+  const fixture = createExecutionFixture({ executionPortFactory: successfulExecutionPort });
+  const first = fixture.service.execute(fixture.request);
+  const replay = fixture.service.execute(fixture.request);
+
+  assert.equal(first.decision, 'COMPLETED');
+  assert.equal(replay.decision, 'BLOCKED');
+  assert.equal(replay.failure?.code, 'WORKFLOW_NOT_WAITING_APPROVAL');
+  assert.equal(replay.workflow?.state, 'COMPLETED');
+  assert.equal(fixture.port.calls, 1);
+});
+
+test('AD-14 audit chain preserves approval, execution, Capability, and terminal evidence', () => {
+  const successFixture = createExecutionFixture({ executionPortFactory: successfulExecutionPort });
+  const succeeded = successFixture.service.execute(successFixture.request);
+  assert.deepEqual(
+    succeeded.auditEvents.map((event) => event.eventType),
+    [
+      'DOCUMENTATION_APPROVAL_VERIFIED',
+      'DOCUMENTATION_EXECUTION_STARTED',
+      'DOCUMENTATION_CAPABILITY_COMPLETED',
+      'DOCUMENTATION_WORKFLOW_COMPLETED',
+    ],
+  );
+  assert.equal(succeeded.auditEvents[0]?.approvalStatus, 'CONFIRMED');
+  assert.ok(succeeded.auditEvents.every((event) => event.workflowId === successFixture.request.documentationRequest.workflowId));
+  assert.ok(succeeded.auditEvents.some((event) => event.outputRef === succeeded.documentationOutcome?.result?.resultRef));
+  assert.ok(succeeded.auditEvents.every((event) => (event.evidence.length ?? 0) > 0));
+
+  const failedFixture = createExecutionFixture({ executionPortFactory: failedExecutionPort });
+  const failed = failedFixture.service.execute(failedFixture.request);
+  const failureAudit = failed.auditEvents.at(-1);
+  assert.equal(failureAudit?.eventType, 'DOCUMENTATION_WORKFLOW_FAILED');
+  assert.ok(failureAudit?.failureReason);
+  assert.ok(failureAudit?.failureStage);
+});
+
+test('AD-15 execution preserves caller input, freezes results, and exposes no external side effects', () => {
+  const fixture = createExecutionFixture({ executionPortFactory: successfulExecutionPort });
+  const before = structuredClone(fixture.request);
+  const result = fixture.service.execute(fixture.request);
+
+  assert.deepEqual(fixture.request, before);
+  assert.equal(Object.isFrozen(result), true);
+  assert.equal(Object.isFrozen(result.auditEvents), true);
+  assert.equal(Object.isFrozen(result.documentationOutcome), true);
+  assert.equal(Object.isFrozen(result.documentationOutcome?.result), true);
+  assert.equal(fixture.port.calls, 1);
+  assert.equal('writeFile' in fixture.service, false);
+  assert.equal('fetch' in fixture.service, false);
+  assert.equal('activate' in fixture.service, false);
 });

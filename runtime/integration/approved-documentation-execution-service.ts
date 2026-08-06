@@ -6,7 +6,14 @@ import {
 import type { DocumentationCapabilityActivationPort } from '../capability/documentation-capability-activation-port.ts';
 import type { DocumentationExecutionRequest } from '../capability/documentation-execution-contract.ts';
 import { RuntimeError } from '../models/runtime-error.ts';
-import type { AuditEvent, BudgetSnapshot, Evidence, Task, WorkflowInstance } from '../models/runtime-types.ts';
+import type {
+  AuditEvent,
+  BudgetSnapshot,
+  CapabilityResult,
+  Evidence,
+  Task,
+  WorkflowInstance,
+} from '../models/runtime-types.ts';
 import type { TaskService } from '../task/task-service.ts';
 import type { WorkflowService } from '../workflow/workflow-service.ts';
 import type {
@@ -222,7 +229,7 @@ export class ApprovedDocumentationExecutionService {
         stage: 'PREFLIGHT',
         reason: 'Execution was cancelled before Capability invocation.',
       };
-      const event = this.#appendAudit(
+      const event = this.#appendFailureAudit(
         request,
         'DOCUMENTATION_EXECUTION_CANCELLED',
         'CANCELLED',
@@ -239,15 +246,155 @@ export class ApprovedDocumentationExecutionService {
       });
     }
 
-    return this.#blocked(
+    const approvalEvent = this.#appendLifecycleAudit(
       request,
-      workflow,
-      task,
-      'CAPABILITY_FAILED',
-      'Approved execution branch is not implemented yet.',
+      'DOCUMENTATION_APPROVAL_VERIFIED',
+      'WAITING_APPROVAL',
+      'Approval, activation identity, and source scope were verified.',
       sourceFingerprint,
-      'EXECUTION',
+      { approvalStatus: 'CONFIRMED' },
     );
+    this.#dependencies.workflowService.transition(workflow.workflowId, 'EXECUTING');
+    const startedEvent = this.#appendLifecycleAudit(
+      request,
+      'DOCUMENTATION_EXECUTION_STARTED',
+      'EXECUTING',
+      'Approved Documentation Capability execution started.',
+      sourceFingerprint,
+    );
+
+    let runtimeResult;
+    try {
+      runtimeResult = this.#dependencies.documentationExecutionPort.execute(documentationRequest);
+    } catch {
+      return this.#executionFailed(
+        request,
+        task,
+        [approvalEvent, startedEvent],
+        undefined,
+        'Documentation execution port threw an exception.',
+        'EXECUTION',
+        sourceFingerprint,
+      );
+    }
+
+    const outcome = runtimeResult.outcome;
+    const capabilityResult: CapabilityResult = {
+      status: outcome.status,
+      output: outcome.result?.draft ?? '',
+      evidence: outcome.evidence,
+      confidence: outcome.confidence,
+      timestamp: outcome.timestamp,
+      ...(outcome.failure === undefined ? {} : { error: outcome.failure.reason }),
+    };
+
+    if (outcome.status !== 'SUCCESS' || outcome.result === undefined) {
+      return this.#executionFailed(
+        request,
+        task,
+        [approvalEvent, startedEvent],
+        runtimeResult,
+        outcome.failure?.reason ?? 'Documentation Capability did not return a successful result.',
+        outcome.failure?.stage === 'VALIDATION' ? 'VALIDATION' : 'EXECUTION',
+        sourceFingerprint,
+        capabilityResult,
+      );
+    }
+
+    const completedTask = this.#dependencies.taskService.complete(task.taskId, capabilityResult);
+    this.#dependencies.workflowService.transition(workflow.workflowId, 'VALIDATING');
+    const resultIsValid =
+      completedTask.state === 'COMPLETED' &&
+      outcome.result.draft.trim().length > 0 &&
+      outcome.result.sourceReferences.length > 0 &&
+      outcome.result.evidence.length > 0 &&
+      outcome.result.limitations.length > 0 &&
+      outcome.result.sourceReferences.every((reference) =>
+        documentationRequest.authorizedSources.some((source) =>
+          source.sourceRef === reference.sourceRef &&
+          source.location === reference.location &&
+          source.versionRef === reference.versionRef,
+        ),
+      );
+    if (!resultIsValid) {
+      return this.#executionFailed(
+        request,
+        completedTask,
+        [approvalEvent, startedEvent],
+        runtimeResult,
+        'Documentation result failed bridge validation.',
+        'VALIDATION',
+        sourceFingerprint,
+        { ...capabilityResult, status: 'FAILURE', error: 'Documentation result failed bridge validation.' },
+      );
+    }
+
+    const completedWorkflow = this.#dependencies.workflowService.transition(workflow.workflowId, 'COMPLETED');
+    const completedEvent = this.#appendLifecycleAudit(
+      request,
+      'DOCUMENTATION_WORKFLOW_COMPLETED',
+      'COMPLETED',
+      'Documentation Workflow completed with a validated Draft Package.',
+      sourceFingerprint,
+      { outputRef: outcome.result.resultRef, evidence: outcome.evidence },
+    );
+    const auditEvents = [approvalEvent, startedEvent, runtimeResult.auditEvent, completedEvent];
+    return cloneAndFreeze({
+      decision: 'COMPLETED',
+      workflow: completedWorkflow,
+      task: completedTask,
+      documentationOutcome: outcome,
+      auditEvents,
+      evidence: auditEvents.flatMap((event) => event.evidence),
+    });
+  }
+
+  #executionFailed(
+    request: ApprovedDocumentationExecutionRequest,
+    task: Task,
+    priorEvents: readonly AuditEvent[],
+    runtimeResult: ReturnType<ApprovedDocumentationExecutionDependencies['documentationExecutionPort']['execute']> | undefined,
+    reason: string,
+    stage: ApprovedDocumentationExecutionFailure['stage'],
+    fingerprint: string,
+    capabilityResult: CapabilityResult = {
+      status: 'FAILURE',
+      output: '',
+      evidence: [],
+      confidence: 'L1',
+      timestamp: this.#now(),
+      error: reason,
+    },
+  ): ApprovedDocumentationExecutionResult {
+    const failedTask = this.#dependencies.taskService.complete(task.taskId, capabilityResult);
+    const currentWorkflow = this.#dependencies.workflowService.get(request.documentationRequest.workflowId);
+    const failedWorkflow = this.#dependencies.workflowService.transition(currentWorkflow.workflowId, 'FAILED');
+    const failure: ApprovedDocumentationExecutionFailure = {
+      code: 'CAPABILITY_FAILED',
+      stage,
+      reason,
+    };
+    const failedEvent = this.#appendFailureAudit(
+      request,
+      'DOCUMENTATION_WORKFLOW_FAILED',
+      'FAILED',
+      failure,
+      fingerprint,
+    );
+    const auditEvents = [
+      ...priorEvents,
+      ...(runtimeResult === undefined ? [] : [runtimeResult.auditEvent]),
+      failedEvent,
+    ];
+    return cloneAndFreeze({
+      decision: 'FAILED',
+      workflow: failedWorkflow,
+      task: failedTask,
+      ...(runtimeResult === undefined ? {} : { documentationOutcome: runtimeResult.outcome }),
+      auditEvents,
+      evidence: auditEvents.flatMap((event) => event.evidence),
+      failure,
+    });
   }
 
   #blocked(
@@ -260,7 +407,7 @@ export class ApprovedDocumentationExecutionService {
     stage: ApprovedDocumentationExecutionFailure['stage'] = 'PREFLIGHT',
   ): ApprovedDocumentationExecutionResult {
     const failure: ApprovedDocumentationExecutionFailure = { code, stage, reason };
-    const event = this.#appendAudit(request, 'DOCUMENTATION_EXECUTION_BLOCKED', 'BLOCKED', failure, fingerprint);
+    const event = this.#appendFailureAudit(request, 'DOCUMENTATION_EXECUTION_BLOCKED', 'BLOCKED', failure, fingerprint);
     return cloneAndFreeze({
       decision: 'BLOCKED',
       ...(workflow === undefined ? {} : { workflow }),
@@ -271,7 +418,7 @@ export class ApprovedDocumentationExecutionService {
     });
   }
 
-  #appendAudit(
+  #appendFailureAudit(
     request: ApprovedDocumentationExecutionRequest,
     eventType: string,
     status: AuditEvent['status'],
@@ -306,6 +453,51 @@ export class ApprovedDocumentationExecutionService {
       budgetSnapshot: request.documentationRequest.budget,
       failureReason: failure.code,
       failureStage: failure.stage,
+    });
+  }
+
+  #appendLifecycleAudit(
+    request: ApprovedDocumentationExecutionRequest,
+    eventType: string,
+    status: AuditEvent['status'],
+    summary: string,
+    fingerprint: string,
+    additions: {
+      readonly approvalStatus?: AuditEvent['approvalStatus'];
+      readonly outputRef?: string;
+      readonly evidence?: readonly Evidence[];
+    } = {},
+  ): AuditEvent {
+    const generatedEvidence: Evidence = {
+      evidenceId: `approved-documentation-evidence-${this.#nextAuditId}`,
+      source: 'approved-documentation-execution',
+      summary,
+      confidence: 'L3',
+      timestamp: this.#now(),
+      reference: additions.outputRef ?? request.approval?.approvalId ?? fingerprint,
+    };
+    return this.#dependencies.auditService.append({
+      auditId: `approved-documentation-audit-${this.#nextAuditId++}`,
+      workflowId: request.documentationRequest.workflowId,
+      taskId: request.documentationRequest.taskId,
+      eventType,
+      status,
+      evidence: additions.evidence ?? [generatedEvidence],
+      timestamp: this.#now(),
+      inputRefs: [
+        request.classificationId,
+        request.routingId,
+        request.documentationRequest.workflowId,
+        request.documentationRequest.taskId,
+        request.approval?.approvalId ?? 'missing-approval',
+        request.documentationRequest.permissionGrant.grantId,
+        DOCUMENTATION_CAPABILITY_ID,
+        DOCUMENTATION_CAPABILITY_VERSION,
+        fingerprint,
+      ],
+      budgetSnapshot: request.documentationRequest.budget,
+      ...(additions.approvalStatus === undefined ? {} : { approvalStatus: additions.approvalStatus }),
+      ...(additions.outputRef === undefined ? {} : { outputRef: additions.outputRef }),
     });
   }
 }
