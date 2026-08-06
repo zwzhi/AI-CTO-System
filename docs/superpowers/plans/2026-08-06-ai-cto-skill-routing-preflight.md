@@ -39,7 +39,7 @@ Assert-Contains $skillText 'Do not create a new Phase, ADR, design specification
 Assert-Contains $skillText 'Route: L1 / Instant / LIGHT / R1 | Context: targeted | Validation: targeted' 'Project work must expose one concise route line.'
 ```
 
-Also assert explicit `L0`, `L2`, `L3` and `L4` route rows, the `L0` no-route-line behavior and the statement that route visibility is informational rather than an approval pause.
+Also assert explicit `L0`, `L2`, `L3` and `L4` route rows, opt-out-before-routing order, targeted `L1` context, preservation of existing governance controls, the `L0` no-route-line behavior and the statement that route visibility contains actual selected values and is informational rather than an approval pause.
 
 - [ ] **Step 2: Run the test and verify RED**
 
@@ -73,11 +73,11 @@ Add the compact routing table from the approved design. Keep detailed standards 
 
 - [ ] **Step 2: Add the L0/L1 behavior contract**
 
-State positively that `L0` uses ordinary handling with no AI CTO context or route line. State that `L1` uses Instant / LIGHT / targeted behavior and does not generate new Phase, ADR, design, review or Gate artifacts.
+State positively that `L0` uses ordinary handling with no AI CTO context or route line. State that `L1` uses Instant / LIGHT / targeted behavior and does not generate new Phase, ADR, design, review or Gate artifacts. Keep normal `L3` at STANDARD / CHANGE_IMPACT_AND_TARGETED; risk, irreversibility, current-evidence requirements and applicable Gates remain independent escalation triggers to STRICT / FULL_GATE.
 
 - [ ] **Step 3: Add concise route visibility**
 
-For governed project work, emit one informational line and continue. Do not pause unless evidence or a meaningful user decision is missing.
+For governed project work, emit one informational line containing the actual selected route values and continue. The L1 line in the Skill is only a format example. Do not pause unless evidence or a meaningful user decision is missing.
 
 - [ ] **Step 4: Run focused tests and verify GREEN**
 

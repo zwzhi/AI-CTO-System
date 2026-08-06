@@ -30,7 +30,7 @@ The detailed governance documents remain authoritative. The Skill contains only 
 | `L0` | Ordinary conversation or explanation with no project-state dependency | No AI CTO workflow; `R0` | Current request only |
 | `L1` | Confirmed, local, low-risk and reversible change | Instant / LIGHT / `R1` / TARGETED | Current file, governing paragraph and necessary Git state |
 | `L2` | Normal engineering task with approved requirement and design | Engineering / STANDARD / `R2` / CHANGE_IMPACT_AND_TARGETED | Project Memory and related requirement, design, task and tests |
-| `L3` | Module-level or cross-object change requiring design or impact analysis | Design + Engineering / STRICT / `R3` / FULL_GATE | Project Memory, Architecture, related ADR, Knowledge and impact scope |
+| `L3` | Module-level or cross-object change requiring design or impact analysis | Design + Engineering / STANDARD / `R3` / CHANGE_IMPACT_AND_TARGETED | Project Memory, Architecture, related ADR, Knowledge and impact scope |
 | `L4` | New project, major architecture, cross-project or high-risk decision | CTO / STRICT / `R4` / FULL_GATE | User, Portfolio, Knowledge, project context and applicable Gates |
 
 Risk, security, data, permission, irreversibility, unresolved ADR conflict and Gate triggers may raise the route. Preference, convenience or process completeness may not lower a mandatory control.
@@ -49,7 +49,7 @@ When AI CTO governance applies, report one concise route line before substantive
 
 `Route: L1 / Instant / LIGHT / R1 | Context: targeted | Validation: targeted`
 
-This line is informational and does not create an approval pause. Omit it for `L0` ordinary conversation. Ask the user only when evidence is insufficient or a meaningful decision is required.
+This is a format example; the emitted line must contain the actual selected values. It is informational and does not create an approval pause. Omit it for `L0` ordinary conversation. Ask the user only when evidence is insufficient or a meaningful decision is required.
 
 ## 6. Scope and files
 

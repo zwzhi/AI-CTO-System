@@ -25,7 +25,7 @@ Classify the route before loading authority documents. Apply opt-out, classify `
 | `L0` | No AI CTO workflow / `R0` | Current request only |
 | `L1` | Instant / LIGHT / `R1` / TARGETED | Current file, governing paragraph, necessary Git state |
 | `L2` | Engineering / STANDARD / `R2` / CHANGE_IMPACT_AND_TARGETED | Project Memory and related requirement, design, task, tests |
-| `L3` | Design + Engineering / STRICT / `R3` / FULL_GATE | Project Memory, Architecture, related ADR, Knowledge, impact scope |
+| `L3` | Design + Engineering / STANDARD / `R3` / CHANGE_IMPACT_AND_TARGETED | Project Memory, Architecture, related ADR, Knowledge, impact scope |
 | `L4` | CTO / STRICT / `R4` / FULL_GATE | User Brain, Portfolio, Knowledge, project context, applicable Gates |
 
 The context column is an allowed scope, not an eager-loading checklist. Load each item only when it is relevant to the current decision.
@@ -41,6 +41,8 @@ For L1, use the existing Instant Workflow. Do not create a new Phase, ADR, desig
 For governed project work, report one concise line before substantive work, then continue without waiting:
 
 `Route: L1 / Instant / LIGHT / R1 | Context: targeted | Validation: targeted`
+
+The route line must contain the actual selected values; the L1 line above is only a format example.
 
 The route line is informational, not an approval pause. Ask the user only when evidence is insufficient or a meaningful decision is required.
 
