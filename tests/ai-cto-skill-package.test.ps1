@@ -76,6 +76,7 @@ Assert-Contains $metadataText 'allow_implicit_invocation: true' 'Implicit invoca
 Assert-Contains $metadataText '$ai-cto-system' 'Default prompt must name the Skill.'
 Assert-True ($skillText.Length -lt 12000) 'Gateway must remain thin.'
 
+$env:PYTHONUTF8 = '1'
 & python $quickValidate $skillRoot
 if ($LASTEXITCODE -ne 0) {
   throw "Official Skill validation failed with exit code $LASTEXITCODE."

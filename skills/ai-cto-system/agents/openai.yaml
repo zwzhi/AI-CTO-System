@@ -1,0 +1,6 @@
+interface:
+  display_name: "AI CTO System"
+  short_description: "Route projects through governed AI CTO workflows"
+  default_prompt: "Use $ai-cto-system to classify this request and enter the lightest applicable AI CTO workflow."
+policy:
+  allow_implicit_invocation: true
