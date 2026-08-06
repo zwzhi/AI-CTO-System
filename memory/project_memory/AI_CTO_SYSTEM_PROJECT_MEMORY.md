@@ -2,6 +2,8 @@
 
 > 2026-08-06：用户确认将“执行档位与证据新鲜度”作为 Layer 5 `Execution Routing Governance` 的设计扩展，而不是新 Module、Phase 或外部 Skill 接入。书面设计规定：L0–L4 决定默认 R0–R4；风险与可逆性确定最低 `LIGHT` / `STANDARD` / `STRICT`；质量和证据当前性确定验证强度。证据只能在已授权相关范围中标记 `CURRENT`、`STALE` 或 `NOT_CAPTURED`。当前仅完成设计与 ADR-0032：不实现 Router、不自动切换模型、不调用工具、不修改 Runtime 或用户 Git/审批策略；外部 Skills 包仍为 `REJECT_OR_DEFER`，不安装、不复制。
 
+> 2026-08-06：用户已审阅并确认上述设计；已创建技术实现计划 `docs/superpowers/plans/2026-08-06-execution-profile-evidence-freshness-implementation.md`。计划仅设计一个独立、确定性、只读的建议性路由服务和 Evidence Freshness 比较器：不修改 Runtime Core/Workflow/Task/Agent/Capability/Audit Repository，不执行实际模型切换、工具调用或执行授权。编码仍须另行授权。
+
 > 2026-07-15：AI Matrix 仓库拆分完成。独立仓库位于 `D:\AI Project\AI-Matrix`，通过 subtree split 保留历史，分支为 `main`、remote 未配置；产品源码已使用最小应用侧 Contract / Port 解除 AI CTO Runtime 相对路径依赖，39 / 39 测试和 0 漏洞审计通过。AI CTO System 已移出业务源码、Knowledge、Pilot 数据和产品专属文档，仅保留 ADR-0031、拆分设计 / 计划和外部项目记录，状态为 `AI_MATRIX_EXTERNAL_REPOSITORY_GOVERNED`。
 
 > 2026-07-15：AI Matrix Product Foundation 已完成。应用侧实现能力项目生命周期、四类角色、Repository Port、SQLite 内部 Pilot 持久化、版本化迁移、持久 Core Audit、项目 / Audit 原子事务、受控本地 JSON API 和重启持久化 Composition Root；`AM-R-001`～`AM-R-006` 已绑定真实提交与 `AM-PF-01`～`AM-PF-24`，ADR-0030 更新为 `Accepted`。应用 37 / 37、根回归 126 / 126，合计 163 / 163，依赖审计 0 项漏洞。未修改 Core / Runtime Contract / Phase / Module / Module Registry，未接入模型、Provider、冷启动训练、独立评分或多 Agent；真实 Pilot 仍为 `NOT_RUN`。
