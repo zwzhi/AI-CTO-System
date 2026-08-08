@@ -1,5 +1,9 @@
 # AI CTO System 开发进度
 
+## AI Matrix Maintenance Handoff Governance
+
+AI Matrix 已完成面向新维护者的内部交接整理：独立仓库新增项目入口、当前状态、维护指南、安全与数据边界、可重复打包脚本，并生成源码快照 + Git bundle 交接结构。全新目录 `npm ci`、152 / 152 测试、四页面启动、schema 007、bundle 克隆和文件 hash 校验通过，依赖审计 0 漏洞。交接包不包含 AI CTO System 源码、SQLite、本机 DPAPI 配置或密钥；两仓库继续只通过 Contract / Port / 外部项目登记连接。业务 Gate 仍为 `ENGINEERING_ACCEPTED_REAL_SUBJECT_PENDING`，不构成能力复制或 20 任务 Pilot 成功结论。
+
 ## Global AI CTO Skill Gateway Design
 
 `SYS-L5-SKILL-GATEWAY-001` 已完成设计并经用户选择方案 A：在仓库维护薄 `ai-cto-system` Skill，以用户级 NTFS Junction 提供跨项目、新对话发现；显式 `AI_CTO_MODE: OFF` 或等价自然语言具有最高入口优先级。该设计复用 Layer 5 现有 Intent Gateway、Execution Routing 与 Runtime，不新增 Module、Phase、Plugin、Provider、MCP 或 Runtime 合同。当前仅完成设计，尚未创建或安装用户级 Skill；仓库仍无 Git remote，未上传 GitHub。

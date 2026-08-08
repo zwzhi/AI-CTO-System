@@ -5,14 +5,14 @@
 - Repository: `D:\AI Project\AI-Matrix`
 - Repository Ownership: Independent
 - Governance System: AI CTO System
-- Current Stage: DEVELOPMENT
+- Current Stage: DEVELOPMENT / PILOT_PREPARATION
 - Status: ACTIVE
 - Owner: AI Matrix 发起人
 - Integration Boundary: Contract / Port only; no source-path dependency
-- Current Gate: `INDEPENDENT_REPOSITORY_READY` / `PILOT_DATA_REQUIRED`
+- Current Gate: `ENGINEERING_ACCEPTED_REAL_SUBJECT_PENDING`
 - Remote: `NOT_CONFIGURED`
-- Next Action: 冷启动训练与 Knowledge / Judgment Rule 确认
-- Last Updated: 2026-07-15
+- Next Action: 由真实能力主体完成例外式 Knowledge 感觉反馈，满足门槛后冻结首个正式 Knowledge Snapshot
+- Last Updated: 2026-08-08
 
 ## 治理边界
 
@@ -21,10 +21,12 @@ AI CTO System 负责需求分析、设计门禁、ADR、开发流程、验证、
 ## 当前 Evidence
 
 - 通过 subtree split 保留 AI Matrix 项目历史；
-- 独立仓库根目录为 `D:\AI Project\AI-Matrix`，分支为 `main`，remote 未配置；
-- AI Matrix 39 / 39 测试与 0 漏洞依赖审计通过；
+- 独立仓库根目录为 `D:\AI Project\AI-Matrix`；维护交接分支为 `codex/maintenance-handoff-2026-08-08`，remote 未配置；
+- Knowledge、训练、生成、独立评分、SQLite、Audit、本机百炼配置和四页工作台已完成工程实现；
+- AI Matrix 152 / 152 测试与 0 漏洞依赖审计通过；
 - 独立仓库生产源码不存在 AI CTO System 文件路径依赖；
-- 真实冷启动、AI 生成、独立评分和 20 任务 Pilot 尚未完成。
+- 交接包采用源码快照 + Git bundle，排除 SQLite、DPAPI 配置、密钥、依赖目录和 AI CTO System 源码；
+- 真实主体反馈、正式 Knowledge Snapshot、正式训练、真实百炼付费 smoke、业务验证和 20 任务 Pilot 尚未完成。
 
 ## 权威记录
 
