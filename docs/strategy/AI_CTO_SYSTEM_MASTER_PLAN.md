@@ -1,5 +1,15 @@
 # AI CTO System Master Plan
 
+## Execution Feedback Optimization (2026-08-13)
+
+基于近期真实项目反馈，现有 Layer 5 `Execution Routing Governance` 增加了三份文档级辅助标准：
+
+- [Execution Feedback Record Standard](../governance/EXECUTION_FEEDBACK_RECORD_STANDARD.md)：分离建议路由与实际执行，记录可比较的耗时、Token、Context、人工交互和质量字段；
+- [Routing Deviation Analysis](../governance/ROUTING_DEVIATION_ANALYSIS.md)：识别流程过重、上下文过载、推理预算过高、能力不可用和安全升级等偏差；
+- [Execution Status Reporting Standard](../governance/EXECUTION_STATUS_REPORTING_STANDARD.md)：规定长任务、等待外部服务、阻塞、取消和完成时的可见状态报告。
+
+本次调整属于既有 Execution Routing Governance 的文档扩展，不新增 Phase、Layer、Module 或 Capability，不修改 `AdvisoryExecutionRouter`、Runtime、Permission、Gate、宿主模型设置或 Codex 行为。所有反馈仅作为 Evidence；未知的 Duration、Token、Cost、宿主模型和根因继续标记为 `NOT_CAPTURED` / `UNKNOWN`。当前不自动切换模型、不自动重试、不创建后台监控。
+
 > `SYS-L5-DOC-ACT-001` 已完成第一个受限内部 Capability 激活：`CAP-DOC-0001` 只在任务级显式确认和完整 Preflight 通过后，将 `WAITING_APPROVAL` Workflow 连接至确定性 Documentation Runtime，并返回 Draft Package、Evidence 与 Audit。15/15 专项和 165/165 全量测试通过；成熟度仍为 `INTERNAL_ONLY`，不包含文件、网络、Provider、LLM、Codex、MCP、工具或 Knowledge 写入。
 
 > Phase 10 Self Evolution & Intelligent Optimization Architecture Design 已完成：只复用既有 Runtime、Audit、Evidence、Capability Governance 与 Human Control，定义观察、价值评估、Optimization Proposal 与验证；不新增 Module、Agent、Gate 或自动修改权。详见 [Self Evolution Architecture](../evolution/SELF_EVOLUTION_ARCHITECTURE.md)。

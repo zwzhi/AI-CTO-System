@@ -1,5 +1,14 @@
 # AI CTO System Project Memory
 
+## 2026-08-13 Execution Feedback Optimization
+
+- 用户批准对近期真实项目反馈进行低风险优化，范围限定为既有 Layer 5 `Execution Routing Governance` 的文档增强。
+- 新增 `EXECUTION_FEEDBACK_RECORD_STANDARD.md`、`ROUTING_DEVIATION_ANALYSIS.md` 和 `EXECUTION_STATUS_REPORTING_STANDARD.md`，并在 `EXECUTION_ROUTING_EVIDENCE_STANDARD.md` 建立交叉引用。
+- 目标是分离建议路由与实际执行，识别流程过重/上下文过载/推理预算过高/能力不可用/安全升级，及在长任务或阻塞时给出可见状态；不授予执行、模型切换、工具调用或自动化权限。
+- 当前仍不修改 Runtime、`AdvisoryExecutionRouter`、Permission、Gate、宿主模型设置或 Codex 行为；Self Evolution `executionAuthorization` 仍为 `NONE`。
+- 证据门槛：单案例只形成 Observation；至少 3 个同类案例才可形成 Candidate Pattern；至少 5 个可比较案例且质量、成本、时延和安全结果稳定后，才可进入正式 Evolution Proposal 风险评估。
+- 下一步：在真实 AI CTO 任务中按新标准收集最小 Evidence；不因一次模型容量事件自动修改路由。
+
 > 2026-08-06：用户选择方案 A 并批准 `SYS-L5-SKILL-GATEWAY-001` Global AI CTO Skill Gateway 设计：权威 Skill 源保留在 `D:\AI Project\AI-CTO-System\skills\ai-cto-system`，用户级 `C:\Users\白名单\.codex\skills\ai-cto-system` 通过 NTFS Junction 全局发现。入口采用轻量触发与按需加载；`AI_CTO_MODE: OFF`、“不要使用 AI CTO System”、“普通模式处理”和“本次禁用 AI CTO Skill”优先于自动触发。归类为 Layer 5 现有 Intent Gateway / Runtime 入口扩展，不新增 Module、Phase、Plugin 或 Runtime Capability。当前只完成设计，未安装，且本地仓库没有 Git remote、未上传 GitHub。
 
 > 2026-08-06：`SYS-L5-DOC-ACT-001` Controlled Documentation Capability Activation & Execution 已完成。内部确定性 `CAP-DOC-0001` 以 Source Commit `9876764`、`INTERNAL_USE_ONLY`、84/100 / L3、仅 `GENERATE_DRAFT`、`INTERNAL_LOCAL` 和 `CONFIRM_REQUIRED` 完成受限 `ACTIVE` 登记。`ApprovedDocumentationExecutionService` 校验 Workflow、Task、Handoff、绑定式 Approval、Activation、Source Fingerprint、Permission 与 Budget 后，才由 Workflow Service 推进执行并返回 Draft Package、Evidence 与 Audit。15/15 专项、165/165 全量测试、禁止范围与受保护文件扫描均通过；Gate 为 `APPROVED_FOR_RESTRICTED_INTERNAL_ACTIVATION`。`ACTIVE` 不构成单次调用授权；仍无文件/网络/Provider/LLM/Codex/MCP/Tool/Knowledge 写入、持久审批或生产可用性。

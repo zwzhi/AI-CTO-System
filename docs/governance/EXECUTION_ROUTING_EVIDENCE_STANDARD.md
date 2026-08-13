@@ -1,5 +1,10 @@
 # Execution Routing Evidence Standard
 
+## Execution Feedback Supplement
+
+For tasks that enter AI CTO routing, use [Execution Feedback Record Standard](./EXECUTION_FEEDBACK_RECORD_STANDARD.md) to record the difference between recommended and actual execution, and use [Routing Deviation Analysis](./ROUTING_DEVIATION_ANALYSIS.md) to classify the cause. Long tasks, external-service waits, blocks, and cancellations should follow [Execution Status Reporting Standard](./EXECUTION_STATUS_REPORTING_STANDARD.md).
+
+These fields are Evidence only. They do not grant execution, model switching, tool invocation, or automation authority. Model capacity, rate limiting, and external-service unavailability must be recorded as capability-availability events; unknown causes and unavailable Duration, Token, Cost, or host-model values remain `UNKNOWN` or `NOT_CAPTURED` and must not be guessed.
 ## 目的
 
 Execution Routing Evidence 用于评估路由建议是否改善质量、时延、成本、Token 使用、人工交互和风险控制，并为未来 Evolution 提供可复核输入。它不等于授权、能力激活或自动化规则。
