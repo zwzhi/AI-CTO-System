@@ -32,3 +32,23 @@
 ### Next Action
 
 Collect 3–5 comparable execution feedback records before proposing any change to default routing or Runtime behavior.
+
+## 2026-08-13 EFF-002 Case Capture
+
+### Status
+
+- Case: `EFF-002-execution-feedback-status-optimization`
+- Result: `CAPTURED`
+- Route observed: `L1 / Instant / LIGHT / R1`
+- Execution Authorization: `NONE`
+
+### Evidence
+
+- A low-risk, single-file feedback record was completed with targeted context and targeted validation.
+- No Runtime, Capability, Permission, Gate, external tool, model-routing, or network behavior changed.
+- `Duration`, `Token`, `Cost`, and host model remain `NOT_CAPTURED`.
+
+### Interpretation
+
+- This is one comparable case, so it supports an observation but does not justify changing default routing.
+- Compare at least two additional cases before proposing any default-route change.
