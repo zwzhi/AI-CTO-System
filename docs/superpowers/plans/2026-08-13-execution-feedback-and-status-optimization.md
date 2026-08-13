@@ -49,7 +49,7 @@
 
 ### Task 4: Validate and commit
 
-- [ ] Run `git diff --check`.
-- [ ] Confirm only the approved documentation paths changed.
-- [ ] Confirm no `runtime/`, `agents/`, `tools/`, `integrations/`, `api/`, or package files changed.
-- [ ] Commit with `docs: add execution feedback and status standards`.
+- [x] Run `git diff --check`.
+- [x] Confirm only the approved documentation paths changed.
+- [x] Confirm no `runtime/`, `agents/`, `tools/`, `integrations/`, `api/`, or package files changed.
+- [x] Commit with `docs: add execution feedback and status standards`.
