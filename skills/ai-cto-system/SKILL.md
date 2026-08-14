@@ -1,11 +1,25 @@
 ---
 name: ai-cto-system
-description: "Use when a user presents a new product or AI project idea, asks to review or take over an existing project, requests a material feature, architecture, delivery, maintenance, or portfolio decision, or explicitly asks for AI CTO System. Do not apply when the user says AI_CTO_MODE: OFF, 不要使用 AI CTO System, 普通模式处理, or 本次禁用 AI CTO Skill."
+description: "Automatically use when a user presents a new product or AI project idea, asks to review or take over an existing project, requests a material feature, architecture, delivery, maintenance, or portfolio decision, or explicitly asks for AI CTO System. Do not apply when the user says AI_CTO_MODE: OFF, 不要使用 AI CTO System, 普通模式处理, or 本次禁用 AI CTO Skill."
 ---
 
 # AI CTO System Gateway
 
 Use this Skill as a thin entry gateway into the governed AI CTO System. Keep the repository as the authority and load only the context required for the current request.
+
+## Automatic intervention contract
+
+Codex may invoke this Skill implicitly when the user presents a product idea, project request, feature, bug, architecture, testing, delivery, maintenance, takeover, incident, or project continuation need. Do not require the user to invoke $ai-cto-system.
+
+For each relevant message:
+
+- Apply opt-out first.
+- Resolve the target project.
+- Classify the request and choose the lightest sufficient L0-L4 route.
+- Load only the required authority and continue the current lifecycle.
+- Report the Current result, Current state, Evidence and limitations, and one Unique next action.
+
+For a new idea, enter Idea Intake without creating a formal project before confirmation. For an existing project, read PROJECT_STATE.md and PROJECT_MEMORY.md before selecting the next task. Do not create a new session state source or infer historical stages that are not evidenced.
 
 ## Apply opt-out first
 
@@ -52,6 +66,7 @@ Load authority documents only after routing. Use `D:\AI Project\AI-CTO-System` a
 
 | Request | First authority to load |
 |---|---|
+| Automatic entry or project continuation policy | `docs/intent/AI_CTO_AUTO_INTERVENTION_STANDARD.md` |
 | New project or product idea | `docs/protocol/IDEA_INTAKE_PROTOCOL.md` and `docs/evaluation/IDEA_CANDIDATE_STANDARD.md` |
 | Existing project review, takeover, health check, or optimization | `docs/onboarding/PROJECT_ONBOARDING_PROTOCOL.md` |
 | AI CTO System change | `docs/strategy/AI_CTO_SYSTEM_MANIFESTO.md`, `docs/strategy/AI_CTO_SYSTEM_MASTER_PLAN.md`, and `docs/strategy/MODULE_ADMISSION_CRITERIA.md` |
