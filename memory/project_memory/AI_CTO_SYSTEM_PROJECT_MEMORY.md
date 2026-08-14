@@ -10,6 +10,8 @@
 - 同一轮继续将 ZIP 的 Reviewer 分工、Review Packet、预算和隔离记录适配为既有 Layer 3 `Code Review` 的 `EXTEND_EXISTING_MODULE`：新增七类 Profile 的风险策略、`ReviewPlan`、不可变 Packet、敏感未跟踪文件排除和基线/Diff `CURRENT` / `STALE` / `NOT_CAPTURED` 判定。
 - Review Result 只允许结构化发现，明确区分 `SYSTEM_READONLY`、`LOGICAL_READONLY`、`SELF_REVIEW` 和 `UNKNOWN`；不产生 `APPROVED`、`executionAuthorization`、写入、Commit、部署或 Reviewer 派生权限。现有 Code Review 六项强制检查和 `APPROVED` / `CHANGES_REQUIRED` / `REJECTED` 三种结果保持权威。
 - Review Profile / Packet 实现提交为 `8bbfd7e`；当前分支全量 `188 / 188` 测试通过，Review 专项为 `RV-01`–`RV-11`。该实现只提供确定性计划、快照和 Evidence freshness，不调用 Reviewer、模型、工具或网络。
+- 同一轮将 ZIP 的 Checkpoint、Handoff、Recovery 适配为既有 Layer 1 `Project Memory / Memory Management` 的 `EXTEND_EXISTING_MODULE`：新增追加式内存 Checkpoint、前序链、恢复重新核验义务和 metadata-only Project Memory Projection；默认不写文件、不覆盖历史、不保存完整聊天或秘密。
+- Checkpoint / Projection 实现提交为 `f1f3846`；当前分支全量 `198 / 198` 测试通过，Checkpoint 专项为 `CP-01`–`CP-10`。未知或未验证 Evidence 不能投影为 Project Memory 事实，Checkpoint 也不改变 Workflow / Task 或授予执行权限。
 
 ## 2026-08-13 Execution Feedback Optimization
 

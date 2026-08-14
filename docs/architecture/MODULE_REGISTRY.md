@@ -21,7 +21,7 @@ Module 状态变化、Owning Layer 变化、Module 新增 / 合并 / 拆分或�
 |---|---|---|---|---|
 | AI CTO Identity & Work Rules | Layer 1 | 定义使命、角色、职责与全局工作约束 | Completed | [Manifesto](../strategy/AI_CTO_SYSTEM_MANIFESTO.md)、[Architecture Principles](../strategy/AI_CTO_ARCHITECTURE_PRINCIPLES.md)、[SKILL](../../SKILL.md)、[AGENTS](../../AGENTS.md) |
 | User Brain | Layer 1 | 保存用户画像、工作方式、技术偏好、产品哲学与决策风格 | Completed | [User Brain](../../memory/user_brain/) |
-| Project Memory | Layer 1 | 保存项目目标、技术选择、决策、历史、状态与计划 | Completed | [Project Memory](../../memory/project_memory/AI_CTO_SYSTEM_PROJECT_MEMORY.md) |
+| Project Memory | Layer 1 | 保存项目目标、技术选择、决策、历史、状态与计划；通过追加式 Runtime Checkpoint 与人工确认 Projection 补强跨会话恢复 | Completed（Checkpoint / Projection 为 `EXTEND_EXISTING_MODULE`） | [Project Memory](../../memory/project_memory/AI_CTO_SYSTEM_PROJECT_MEMORY.md)、[Memory Management](../protocol/MEMORY_MANAGEMENT.md)、[Task Checkpoint Standard](../protocol/TASK_CHECKPOINT_STANDARD.md)、[Checkpoint Contract](../../runtime/checkpoint/checkpoint-contract.ts)、[Checkpoint Tests](../../runtime/tests/checkpoint.test.ts) |
 | Knowledge Base | Layer 1 | 捕获、验证、注册、复用、纠错和演进可复用知识资产 | Completed | [Knowledge Governance](../knowledge/KNOWLEDGE_GOVERNANCE_STANDARD.md)、[Classification](../knowledge/KNOWLEDGE_CLASSIFICATION_STANDARD.md)、[Registry](../knowledge/KNOWLEDGE_REGISTRY_STANDARD.md)、[Knowledge Base](../../knowledge_base/) |
 | Memory Management | Layer 1 | 定义三类记忆的写入、更新、证据和边界 | Completed | [Memory Management](../protocol/MEMORY_MANAGEMENT.md) |
 

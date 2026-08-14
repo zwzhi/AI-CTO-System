@@ -4,6 +4,14 @@
 
 记忆只保存对未来协作有复用价值且有来源的信息。事实、推断和用户确认必须区分；敏感信息遵循最小记录原则。
 
+## Runtime Checkpoint 与 Project Memory Projection
+
+Runtime Checkpoint 是单个任务的追加式、内存内状态快照，只记录可验证事实、决策、Evidence 引用、阻塞、风险和下一步动作。它不保存完整聊天上下文、完整 Prompt、秘密、完整工具日志或隐性推理，也不改变 Workflow / Task 状态或产生执行授权。
+
+Project Memory Projection 是从已确认 Checkpoint 生成的元数据摘要，明确标记任务、项目、Checkpoint、Evidence 和建议写入章节。Projection 默认不写 Markdown、Git、外部记忆或 Knowledge Base；必须经过用户或受治理流程确认后，才能成为 Project Memory 的新追加记录。Project Memory 仍是单项目连续性的唯一权威事实源，Checkpoint 不能替代它或覆盖历史。
+
+Knowledge Base 只接收经过跨项目适用性、来源、许可、脱敏和生命周期门禁的复用知识。Checkpoint 或 Projection 中的单项目事实不会自动升级为 Knowledge。
+
 ## PROJECT_MEMORY
 
 ### 更新时机
