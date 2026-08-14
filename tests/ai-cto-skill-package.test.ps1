@@ -73,8 +73,16 @@ Assert-Contains $skillText 'D:\AI Project\AI-CTO-System' 'Authority root must be
 Assert-Contains $skillText 'IDEA_INTAKE_PROTOCOL.md' 'New-project route must be present.'
 Assert-Contains $skillText 'PROJECT_ONBOARDING_PROTOCOL.md' 'Existing-project route must be present.'
 Assert-Contains $metadataText 'allow_implicit_invocation: true' 'Implicit invocation must be enabled.'
-Assert-Contains $metadataText '$ai-cto-system' 'Default prompt must name the Skill.'
+Assert-Contains $metadataText 'Automatically classify this request' 'The default prompt must describe implicit classification.'
 Assert-True ($skillText.Length -lt 12000) 'Gateway must remain thin.'
+
+Assert-Contains $skillText 'Automatic intervention contract' 'The Skill must expose an automatic-intervention contract.'
+Assert-Contains $skillText 'Do not require the user to invoke $ai-cto-system' 'Automatic entry must not require a manual Skill command.'
+Assert-Contains $skillText 'PROJECT_STATE.md' 'Continuation must use the target project state.'
+Assert-Contains $skillText 'PROJECT_MEMORY.md' 'Continuation must use the target project memory.'
+Assert-Contains $skillText 'Current result' 'Governed responses must report the current result.'
+Assert-Contains $skillText 'Unique next action' 'Governed responses must report one next action.'
+Assert-True (Test-Path -LiteralPath (Join-Path $repoRoot 'docs\intent\AI_CTO_AUTO_INTERVENTION_STANDARD.md')) 'The automatic-intervention standard must exist.'
 
 $env:PYTHONUTF8 = '1'
 & python $quickValidate $skillRoot

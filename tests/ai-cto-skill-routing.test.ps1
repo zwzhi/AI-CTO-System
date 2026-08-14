@@ -58,4 +58,21 @@ Assert-Contains $skillText 'The route line must contain the actual selected valu
 Assert-Contains $skillText 'The route line is informational, not an approval pause.' 'Route visibility must not add a confirmation round.'
 Assert-Contains $skillText 'Preserve existing ADR, Gate, Human Control, memory, audit, evidence, permission, and budget rules.' 'Routed work must preserve governance controls.'
 
+Assert-Contains $skillText '## Automatic intervention contract' 'The automatic contract heading must exist.'
+Assert-Contains $skillText 'Apply opt-out first' 'Opt-out must remain the first decision.'
+Assert-Contains $skillText 'Resolve the target project' 'Target project resolution must be explicit.'
+Assert-Contains $skillText 'For a new idea, enter Idea Intake' 'New ideas must enter Idea Intake.'
+Assert-Contains $skillText 'For an existing project, read PROJECT_STATE.md' 'Existing projects must resume from project state.'
+Assert-Contains $skillText 'For each relevant message' 'Continuation output must be explicit.'
+Assert-Contains $skillText 'Current result' 'Continuation output must include the current result.'
+Assert-Contains $skillText 'Evidence and limitations' 'Continuation output must include evidence and limitations.'
+Assert-Contains $skillText 'Unique next action' 'Continuation output must include one next action.'
+Assert-Contains $skillText 'Do not create a new session state source' 'No second session state source may be created.'
+
+$contractIndex = $skillText.IndexOf('## Automatic intervention contract', [System.StringComparison]::Ordinal)
+$automaticRouteIndex = $skillText.IndexOf('## Route before loading authority', [System.StringComparison]::Ordinal)
+$automaticAuthorityIndex = $skillText.IndexOf('## Load routed authority', [System.StringComparison]::Ordinal)
+Assert-True ($contractIndex -ge 0 -and $contractIndex -lt $automaticRouteIndex) 'Automatic intervention must be declared before route selection.'
+Assert-True ($automaticRouteIndex -ge 0 -and $automaticRouteIndex -lt $automaticAuthorityIndex) 'Route-first ordering must remain intact.'
+
 Write-Output 'PASS: AI CTO Skill routing preflight contract is valid.'
