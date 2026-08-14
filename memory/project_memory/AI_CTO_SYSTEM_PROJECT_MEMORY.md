@@ -7,6 +7,9 @@
 - L0/L1 保持最小路径；L2–L4 必须声明项目基线、目标/非目标、范围、停止/回滚/验收、Evidence 和 Gate。缺失、档位不足、Evidence 过期或 Gate 未完成时返回 `ENVELOPE_BLOCKED`，不创建 Workflow / Task、不调用 Capability、不产生 `executionAuthorization`。
 - 新增 `TE-01`–`TE-09` 与 `IH-14`–`IH-16` 测试；当前实现仍不读取文件系统、Git、网络或外部 Provider，也未引入多 Reviewer、通用长记忆包、模板目录或新的 Module / Phase。
 - 实现提交为 `add72f5`、`fa5a445`、`fbac4ec`；当前分支全量 `177 / 177` 测试通过且 `git diff --check` 通过。该变更只允许进入现有 `CONFIRM` / `WAITING_APPROVAL`，不构成执行、部署或生产授权。
+- 同一轮继续将 ZIP 的 Reviewer 分工、Review Packet、预算和隔离记录适配为既有 Layer 3 `Code Review` 的 `EXTEND_EXISTING_MODULE`：新增七类 Profile 的风险策略、`ReviewPlan`、不可变 Packet、敏感未跟踪文件排除和基线/Diff `CURRENT` / `STALE` / `NOT_CAPTURED` 判定。
+- Review Result 只允许结构化发现，明确区分 `SYSTEM_READONLY`、`LOGICAL_READONLY`、`SELF_REVIEW` 和 `UNKNOWN`；不产生 `APPROVED`、`executionAuthorization`、写入、Commit、部署或 Reviewer 派生权限。现有 Code Review 六项强制检查和 `APPROVED` / `CHANGES_REQUIRED` / `REJECTED` 三种结果保持权威。
+- Review Profile / Packet 实现提交为 `8bbfd7e`；当前分支全量 `188 / 188` 测试通过，Review 专项为 `RV-01`–`RV-11`。该实现只提供确定性计划、快照和 Evidence freshness，不调用 Reviewer、模型、工具或网络。
 
 ## 2026-08-13 Execution Feedback Optimization
 

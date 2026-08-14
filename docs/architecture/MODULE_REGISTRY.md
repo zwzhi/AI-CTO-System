@@ -59,7 +59,7 @@ Module 状态变化、Owning Layer 变化、Module 新增 / 合并 / 拆分或�
 | Development Execution Plan | Layer 3 | 管理任务顺序、依赖、里程碑、风险与资源 | Completed | [Execution Plan](../development/DEVELOPMENT_EXECUTION_PLAN_STANDARD.md) |
 | Git Workflow | Layer 3 | 管理分支、提交和可追溯版本 | Completed | [Git Workflow](../development/GIT_WORKFLOW_STANDARD.md) |
 | Test-Driven Development | Layer 3 | 规定测试先行的工程实现顺序 | Completed | [TDD Standard](../development/TEST_DRIVEN_DEVELOPMENT_STANDARD.md) |
-| Code Review | Layer 3 | 审核需求、架构、ADR、安全、性能和测试 | Completed | [Code Review](../development/CODE_REVIEW_STANDARD.md) |
+| Code Review | Layer 3 | 审核需求、架构、ADR、安全、性能和测试；以风险为依据选择最小 Review Profile，并用冻结 Review Packet 绑定精确基线与 Diff Evidence | Completed（Profile / Packet 为 `EXTEND_EXISTING_MODULE`） | [Code Review](../development/CODE_REVIEW_STANDARD.md)、[Review Profile & Packet](../development/AI_CTO_REVIEW_PROFILE_STANDARD.md)、[Review Contract](../../runtime/review/review-contract.ts)、[Review Tests](../../runtime/tests/review-profile.test.ts) |
 | Change Impact | Layer 3 | 分析变更对模块、数据、API、测试和回滚的影响 | Completed | [Change Impact](../development/CHANGE_IMPACT_ANALYSIS.md) |
 | Development Status & Gate | Layer 3 | 管理开发状态并授权进入 Testing | Completed | [Status](../development/DEVELOPMENT_STATUS_STANDARD.md)、[Development Gate](../development/DEVELOPMENT_APPROVAL_GATE.md) |
 

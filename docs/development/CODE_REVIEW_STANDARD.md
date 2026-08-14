@@ -48,6 +48,12 @@
 
 主评审人必须与作者保持足够独立，不能只依据作者摘要、自动报告或先前版本结论。无法胜任某专项时，应要求具备能力的专项评审人加入，而不是缩小检查范围。
 
+### 4.1 Review Profile 与 Review Packet
+
+AI CTO 可使用 [Review Profile & Packet Standard](./AI_CTO_REVIEW_PROFILE_STANDARD.md) 为当前变更生成最小职责计划和冻结输入 Packet。该扩展只提供风险分流、基线/Diff 指纹和结构化发现合同：不固定 Reviewer 数量，不把逻辑只读当作系统权限隔离，也不授予 Reviewer 写入、提交、部署或批准权限。
+
+Review Profile 不能减少本标准的六项强制评审。Profile 计划中的 `PASS` 或 `NON_BLOCKING_FINDINGS` 也不能单独产生最终批准；主评审人必须在精确 Packet 基线和完整差异上，继续输出本标准规定的 `APPROVED`、`CHANGES_REQUIRED` 或 `REJECTED`。
+
 ## 5. 六项强制评审
 
 以下 6 项必须逐项检查并保存结论与证据；任一项不得省略或被综合评分抵消。
@@ -62,6 +68,8 @@
 | 6. 必要测试 | Test Case 在实现前定义并具有有效 TDD 证据；正常、边界、失败、安全和回归覆盖与风险匹配；测试在待评审 Commit 和声明环境真实执行，断言能判定需求 | Test Case、RED / GREEN / REFACTOR 记录、测试日志、覆盖映射和最终验证证据 |
 
 评审人还应检查正确性、可读性、可维护性、错误处理、兼容性和可逆性，但这些检查不能替代以上六项强制结论。
+
+Review Profile 可以把专项职责映射到上述强制项，但只能作为输入组织和证据归并方式。缺失 Profile、预算不足或 Packet 过期时，应降低结论为 `CHANGES_REQUIRED` 或 `REJECTED`，不得以“已启动多个 Reviewer”弥补证据缺口。
 
 ## 6. 评审方法与流程
 
