@@ -71,6 +71,8 @@ Review Profile 不能减少本标准的六项强制评审。Profile 计划中的
 
 Review Profile 可以把专项职责映射到上述强制项，但只能作为输入组织和证据归并方式。缺失 Profile、预算不足或 Packet 过期时，应降低结论为 `CHANGES_REQUIRED` 或 `REJECTED`，不得以“已启动多个 Reviewer”弥补证据缺口。
 
+在受控 Runtime Handoff 中，L2–L4 任务的 Envelope 可以绑定所需 Profile 与 Packet SHA；升级路由缺少该绑定时必须在创建 Workflow / Task 前阻断。该绑定只证明评审输入与任务 Evidence 关联，不替代六项强制评审，也不产生批准或执行授权。
+
 ## 6. 评审方法与流程
 
 1. 核验输入基线、评审权限和变更范围，确认链接与版本可访问。

@@ -1,7 +1,9 @@
 import type { Evidence } from '../models/runtime-types.ts';
 import type {
   ExecutionProfile,
+  RiskLevel,
   RoutingRecommendation,
+  TaskComplexity,
 } from '../routing/execution-routing-contract.ts';
 import {
   validateAndFreezeTaskExecutionEnvelope,
@@ -14,6 +16,8 @@ export type TaskEnvelopeReasonCode =
   | 'PROFILE_BELOW_MINIMUM'
   | 'GATE_REQUIRED'
   | 'AUTHORIZATION_MISMATCH'
+  | 'CONTEXT_MISMATCH'
+  | 'REVIEW_REQUIRED'
   | 'ENVELOPE_INVALID';
 
 export interface TaskEnvelopeValidationResult {
@@ -24,6 +28,12 @@ export interface TaskEnvelopeValidationResult {
 
 export interface TaskExecutionEnvelopeServiceOptions {
   readonly now?: () => string;
+}
+
+export interface TaskEnvelopeBindingContext {
+  readonly taskRef: string;
+  readonly complexity: TaskComplexity;
+  readonly riskLevel: RiskLevel;
 }
 
 const profileRank: Readonly<Record<ExecutionProfile, number>> = {
@@ -69,6 +79,7 @@ export class TaskExecutionEnvelopeService {
   validate(
     input: TaskExecutionEnvelope,
     routing: RoutingRecommendation | undefined,
+    binding?: TaskEnvelopeBindingContext,
   ): TaskEnvelopeValidationResult {
     let envelope: TaskExecutionEnvelope;
     try {
@@ -87,12 +98,30 @@ export class TaskExecutionEnvelopeService {
       };
     }
 
+    if (binding !== undefined && (
+      envelope.taskRef !== binding.taskRef
+      || envelope.execution.complexity !== binding.complexity
+      || envelope.execution.riskLevel !== binding.riskLevel
+    )) {
+      return blocked(envelope, 'CONTEXT_MISMATCH', this.#now);
+    }
+
     if (envelope.execution.complexity !== 'L0' && envelope.execution.complexity !== 'L1' && routing === undefined) {
       return blocked(envelope, 'EVIDENCE_REQUIRED', this.#now);
     }
 
     if (routing?.decision === 'INSUFFICIENT_EVIDENCE') {
       return blocked(envelope, 'EVIDENCE_REQUIRED', this.#now);
+    }
+
+    if (envelope.review?.packetSha256 !== undefined
+      && !envelope.evidence.reviews.includes(envelope.review.packetSha256)) {
+      return blocked(envelope, 'EVIDENCE_REQUIRED', this.#now);
+    }
+
+    if (routing?.decision === 'ESCALATE_FOR_REVIEW'
+      && (envelope.review === undefined || envelope.review.packetSha256 === undefined)) {
+      return blocked(envelope, 'REVIEW_REQUIRED', this.#now);
     }
 
     if (routing?.profile !== undefined

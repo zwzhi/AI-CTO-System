@@ -10,6 +10,8 @@ Runtime Checkpoint 是单个任务的追加式、内存内状态快照，只记�
 
 Project Memory Projection 是从已确认 Checkpoint 生成的元数据摘要，明确标记任务、项目、Checkpoint、Evidence 和建议写入章节。Projection 默认不写 Markdown、Git、外部记忆或 Knowledge Base；必须经过用户或受治理流程确认后，才能成为 Project Memory 的新追加记录。Project Memory 仍是单项目连续性的唯一权威事实源，Checkpoint 不能替代它或覆盖历史。
 
+受控 Runtime Handoff 只在调用方显式提供 Checkpoint 且配置了 CheckpointService 时追加任务快照；该追加不等于 Project Memory 写入，也不自动触发 Projection、恢复或继续执行。
+
 Knowledge Base 只接收经过跨项目适用性、来源、许可、脱敏和生命周期门禁的复用知识。Checkpoint 或 Projection 中的单项目事实不会自动升级为 Knowledge。
 
 ## PROJECT_MEMORY

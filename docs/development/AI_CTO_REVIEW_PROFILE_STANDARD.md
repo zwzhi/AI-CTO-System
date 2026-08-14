@@ -27,6 +27,7 @@ Profile 是职责标签，不是必须启动的 Agent 数量。相同 Profile �
 - `L0` / `L1`、低风险、可逆变更优先选择 `ECONOMY`，通常只保留一个最小职责和 `TEST_DELIVERY`。
 - `L2` / `L3` 或中风险变更使用 `BALANCED`，按数据、状态、兼容、性能等受影响边界增加必要 Profile。
 - `L4`、`HIGH` 或 `CRITICAL` 使用 `DEEP`，通常需要 `SECURITY_ACCESS`、`COMPATIBILITY_REGRESSION` 和受影响专项，但仍受 `maxProfiles`、`maxRounds`、`maxTotalReviewers` 限制。
+- 实际 Profile 上限为 `min(maxProfiles, maxTotalReviewers)`；实际轮次上限还会按 `floor(maxTotalReviewers / selectedProfiles)` 收窄，避免计划声明的 Reviewer 总量超过预算。`STRICT` Execution Profile 强制使用 `DEEP`，并产生显式升级条件。
 - 证据不是当前或未捕获时，计划设置 `evidenceRequired: true` 和可解释的 `escalationConditions`；不会静默增加 Reviewer 数量。
 - `isolationLevel` 默认是 `UNKNOWN`。Review effort、Profile 数量或独立上下文不能推导 `SYSTEM_READONLY`。
 
@@ -43,6 +44,8 @@ Profile 是职责标签，不是必须启动的 Agent 数量。相同 Profile �
 敏感的未跟踪路径（例如 `.env`、Secret/Credential、私钥文件）不进入 Packet 内容，只记录排除原因。Packet 不携带源代码正文，不代表文件读取或写入授权。
 
 `isCurrent(packet, observation)` 只在完整基线和 Diff 指纹一致时返回 `CURRENT`；发现任一已捕获指纹变化返回 `STALE`；没有完整观测返回 `NOT_CAPTURED`。`STALE` 或 `NOT_CAPTURED` 不得作为当前评审的批准依据。
+
+当 Review Packet 进入受控 Handoff 时，L2–L4 Envelope 可绑定 `review.requiredProfiles` 与 `review.packetSha256`；Packet SHA 必须出现在 Envelope 的 `evidence.reviews` 中。路由结果为 `ESCALATE_FOR_REVIEW` 而缺少该绑定时，Handoff 在创建 Workflow / Task 前阻断。这个绑定只校验证据关联，不等于已执行评审或已获得批准。
 
 ## 5. Review Result 与隔离等级
 

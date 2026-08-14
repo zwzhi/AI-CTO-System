@@ -13,6 +13,10 @@ import {
   TaskExecutionEnvelopeError,
   validateAndFreezeTaskExecutionEnvelope,
 } from '../task/task-execution-envelope-contract.ts';
+import {
+  CheckpointError,
+  validateAndFreezeCheckpoint,
+} from '../checkpoint/checkpoint-contract.ts';
 
 const REFERENCE_PATTERN = /^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$/;
 const CLASSIFICATION_STATUSES = new Set(['CLASSIFIED', 'AMBIGUOUS', 'OUT_OF_SCOPE', 'INSUFFICIENT_EVIDENCE']);
@@ -241,11 +245,30 @@ export function validateAndFreezeHandoffRequest(
     }
   }
 
+  let checkpoint: ControlledRuntimeHandoffRequest['checkpoint'];
+  if (request.checkpoint !== undefined) {
+    try {
+      checkpoint = validateAndFreezeCheckpoint(request.checkpoint);
+    } catch (error) {
+      const reason = error instanceof CheckpointError
+        ? error.message
+        : 'checkpoint failed validation';
+      invalid('checkpoint', reason);
+    }
+    if (checkpoint.taskRef !== intentResult.classificationId) {
+      invalid('checkpoint.taskRef', 'must match intentResult.classificationId');
+    }
+    if (executionContext.projectRef !== undefined && checkpoint.projectRef !== executionContext.projectRef) {
+      invalid('checkpoint.projectRef', 'must match executionContext.projectRef');
+    }
+  }
+
   return Object.freeze({
     intentResult,
     executionContext,
     budget,
     ...(executionEnvelope === undefined ? {} : { executionEnvelope }),
+    ...(checkpoint === undefined ? {} : { checkpoint }),
     ...(request.cancelled === undefined ? {} : { cancelled: request.cancelled }),
   });
 }

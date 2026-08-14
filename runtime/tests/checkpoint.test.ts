@@ -146,3 +146,10 @@ test('CP-10 refuses a projection with unverified facts', () => {
       && (error as Error & { code?: string }).code === 'PROJECTION_REQUIRES_CONFIRMED_EVIDENCE',
   );
 });
+
+test('CP-11 rejects a bare secret-like checkpoint value', () => {
+  assert.throws(
+    () => validateAndFreezeCheckpoint(withFact(validCheckpoint(), 'secret')),
+    error => error instanceof Error && (error as Error & { code?: string }).code === 'SENSITIVE_CHECKPOINT_CONTENT',
+  );
+});

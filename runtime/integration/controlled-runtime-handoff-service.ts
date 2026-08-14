@@ -1,6 +1,8 @@
 import type { AuditEvent, Evidence } from '../models/runtime-types.ts';
 import type { RoutingRecommendation, RoutingRequest } from '../routing/execution-routing-contract.ts';
 import { TaskExecutionEnvelopeService } from '../task/task-execution-envelope-service.ts';
+import type { TaskCheckpoint } from '../checkpoint/checkpoint-contract.ts';
+import { CheckpointService } from '../checkpoint/checkpoint-service.ts';
 import {
   HandoffError,
   type ControlledRuntimeHandoffRequest,
@@ -14,6 +16,7 @@ import { validateAndFreezeHandoffRequest } from './intent-runtime-handoff-valida
 export interface ControlledRuntimeHandoffDependencies {
   readonly router: HandoffRouterPort;
   readonly runtime: HandoffRuntimePort;
+  readonly checkpointService?: CheckpointService;
   readonly now?: () => string;
 }
 
@@ -43,16 +46,24 @@ export class ControlledRuntimeHandoffService {
   readonly #runtime: HandoffRuntimePort;
   readonly #now: () => string;
   readonly #envelopeService: TaskExecutionEnvelopeService;
+  readonly #checkpointService?: CheckpointService;
 
   constructor(dependencies: ControlledRuntimeHandoffDependencies) {
     this.#router = dependencies.router;
     this.#runtime = dependencies.runtime;
     this.#now = dependencies.now ?? (() => new Date().toISOString());
     this.#envelopeService = new TaskExecutionEnvelopeService({ now: this.#now });
+    this.#checkpointService = dependencies.checkpointService;
   }
 
   handoff(request: ControlledRuntimeHandoffRequest): ControlledRuntimeHandoffResult {
     const snapshot = validateAndFreezeHandoffRequest(request);
+    if (snapshot.checkpoint !== undefined && this.#checkpointService === undefined) {
+      throw new HandoffError(
+        'HANDOFF_INVARIANT_VIOLATION',
+        'an explicit checkpoint requires a configured CheckpointService',
+      );
+    }
     const intent = snapshot.intentResult;
 
     if (intent.status !== 'CLASSIFIED' || !this.#isRoutingConfidence(intent.confidence)) {
@@ -123,7 +134,11 @@ export class ControlledRuntimeHandoffService {
         });
       }
 
-      const envelopeValidation = this.#envelopeService.validate(snapshot.executionEnvelope, routing);
+      const envelopeValidation = this.#envelopeService.validate(snapshot.executionEnvelope, routing, {
+        taskRef: intent.classificationId,
+        complexity: intent.complexity,
+        riskLevel: intent.riskLevel,
+      });
       if (envelopeValidation.status === 'BLOCKED') {
         return this.#result({
           handoffDecision: 'ENVELOPE_BLOCKED',
@@ -174,10 +189,12 @@ export class ControlledRuntimeHandoffService {
     }
 
     if (runtimeResult.workflow.state === 'CANCELLED') {
+      const checkpoint = this.#appendCheckpoint(snapshot.checkpoint);
       return this.#result({
         handoffDecision: 'RUNTIME_BLOCKED',
         intentResult: intent,
         routingRecommendation: routing,
+        checkpoint,
         workflow: runtimeResult.workflow,
         task: runtimeResult.task,
         auditEvents: runtimeResult.auditEvents,
@@ -204,10 +221,12 @@ export class ControlledRuntimeHandoffService {
       );
     }
 
+    const checkpoint = this.#appendCheckpoint(snapshot.checkpoint);
     return this.#result({
       handoffDecision: 'WAITING_APPROVAL',
       intentResult: intent,
       routingRecommendation: routing,
+      checkpoint,
       workflow: runtimeResult.workflow,
       task: runtimeResult.task,
       auditEvents: runtimeResult.auditEvents,
@@ -243,6 +262,27 @@ export class ControlledRuntimeHandoffService {
       timestamp: this.#now(),
       reference,
     };
+  }
+
+  #appendCheckpoint(checkpoint: TaskCheckpoint | undefined): TaskCheckpoint | undefined {
+    if (checkpoint === undefined) {
+      return undefined;
+    }
+    if (this.#checkpointService === undefined) {
+      throw new HandoffError(
+        'HANDOFF_INVARIANT_VIOLATION',
+        'an explicit checkpoint requires a configured CheckpointService',
+      );
+    }
+    try {
+      return this.#checkpointService.append(checkpoint);
+    } catch (error) {
+      throw new HandoffError(
+        'HANDOFF_INVARIANT_VIOLATION',
+        'explicit checkpoint could not be appended',
+        { cause: error instanceof Error ? error.message : 'unknown checkpoint failure' },
+      );
+    }
   }
 
   #result(

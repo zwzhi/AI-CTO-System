@@ -8,6 +8,9 @@ import {
   type HandoffRuntimePort,
 } from '../integration/intent-runtime-handoff-contract.ts';
 import type { TaskExecutionEnvelope } from '../task/task-execution-envelope-contract.ts';
+import type { TaskCheckpoint } from '../checkpoint/checkpoint-contract.ts';
+import { CheckpointService } from '../checkpoint/checkpoint-service.ts';
+import { InMemoryCheckpointRepository } from '../checkpoint/in-memory-checkpoint-repository.ts';
 import { validateAndFreezeHandoffRequest } from '../integration/intent-runtime-handoff-validation.ts';
 import { ControlledRuntimeHandoffService } from '../integration/controlled-runtime-handoff-service.ts';
 import { AuditService } from '../audit/audit-service.ts';
@@ -32,6 +35,7 @@ import type { RunOptions } from '../services/runtime-foundation-service.ts';
 import type { TaskInput } from '../models/runtime-types.ts';
 
 const NOW = '2026-08-06T00:00:00.000Z';
+const REVIEW_PACKET_SHA256 = 'sha256:' + 'c'.repeat(64);
 
 function validHandoffRequest(): ControlledRuntimeHandoffRequest {
   return {
@@ -127,10 +131,40 @@ function validTaskEnvelope(overrides: Partial<TaskExecutionEnvelope> = {}): Task
     evidence: {
       repoFingerprint: { method: 'CONTENT_HASH', value: 'sha256:baseline' },
       validations: ['envelope-validated'],
-      reviews: ['architecture-review'],
+      reviews: ['architecture-review', REVIEW_PACKET_SHA256],
       staleItems: [],
     },
     nextAction: 'Wait for explicit approval.',
+    review: {
+      requiredProfiles: ['SECURITY_ACCESS', 'COMPATIBILITY_REGRESSION'],
+      packetSha256: REVIEW_PACKET_SHA256,
+    },
+    ...overrides,
+  };
+}
+
+function validCheckpoint(overrides: Partial<TaskCheckpoint> = {}): TaskCheckpoint {
+  return {
+    schemaVersion: '1.0',
+    checkpointId: 'handoff-checkpoint-001',
+    taskRef: 'intent-001',
+    projectRef: 'project-001',
+    phase: 'HANDOFF',
+    kind: 'HANDOFF',
+    status: 'COMPLETED',
+    createdAt: NOW,
+    confirmedFacts: ['The controlled handoff reached its approval checkpoint.'],
+    decisions: ['Keep execution behind explicit approval.'],
+    evidence: [{
+      evidenceId: 'handoff-checkpoint-evidence-001',
+      source: 'controlled-runtime-handoff',
+      confidence: 'L3',
+      reference: 'intent-001',
+    }],
+    blockers: [],
+    risks: [],
+    nextAction: 'Wait for explicit approval.',
+    ownerRef: 'ai-cto-system',
     ...overrides,
   };
 }
@@ -634,4 +668,110 @@ test('IH-16 blocks a stale or incomplete task execution envelope without invokin
   assert.equal(result.handoffDecision, 'ENVELOPE_BLOCKED');
   assert.equal(runtime.calls, 0);
   assert.equal(result.evidence.some(evidence => evidence.source === 'task-execution-envelope'), true);
+});
+
+test('IH-17 blocks an envelope whose complexity or risk is lower than the classified intent', () => {
+  const baseline = validHandoffRequest();
+  const request: ControlledRuntimeHandoffRequest = {
+    ...baseline,
+    intentResult: {
+      ...baseline.intentResult,
+      complexity: 'L3',
+      taskKind: 'ARCHITECTURE',
+      riskLevel: 'HIGH',
+      suggestedWorkflow: 'CTO',
+    },
+    executionEnvelope: validTaskEnvelope({
+      execution: {
+        mode: 'analysis',
+        profile: 'STRICT',
+        phase: 'REVIEW',
+        riskLevel: 'LOW',
+        complexity: 'L1',
+      },
+    }),
+  };
+  const runtime = new CountingRuntime(waitingRuntimeResult());
+  const result = new ControlledRuntimeHandoffService({
+    router: new CountingRouter(routingRecommendation('ESCALATE_FOR_REVIEW')),
+    runtime,
+    now: () => NOW,
+  }).handoff(request);
+
+  assert.equal(result.handoffDecision, 'ENVELOPE_BLOCKED');
+  assert.equal(runtime.calls, 0);
+  assert.equal(result.evidence.some(evidence => evidence.source === 'task-execution-envelope'), true);
+});
+
+test('IH-18 blocks an escalated handoff without an explicit review packet binding', () => {
+  const baseline = validHandoffRequest();
+  const envelope = validTaskEnvelope();
+  const { review: _review, ...withoutReview } = envelope;
+  const request: ControlledRuntimeHandoffRequest = {
+    ...baseline,
+    intentResult: {
+      ...baseline.intentResult,
+      complexity: 'L3',
+      taskKind: 'ARCHITECTURE',
+      riskLevel: 'HIGH',
+      suggestedWorkflow: 'CTO',
+    },
+    executionEnvelope: withoutReview,
+  };
+  const runtime = new CountingRuntime(waitingRuntimeResult());
+  const result = new ControlledRuntimeHandoffService({
+    router: new CountingRouter(routingRecommendation('ESCALATE_FOR_REVIEW')),
+    runtime,
+    now: () => NOW,
+  }).handoff(request);
+
+  assert.equal(result.handoffDecision, 'ENVELOPE_BLOCKED');
+  assert.equal(runtime.calls, 0);
+  assert.equal(result.evidence.some(evidence => evidence.source === 'task-execution-envelope'), true);
+});
+
+test('IH-19 appends an explicitly supplied checkpoint without writing Project Memory', () => {
+  const repository = new InMemoryCheckpointRepository();
+  const checkpointService = new CheckpointService(repository);
+  const runtime = new CountingRuntime(waitingRuntimeResult());
+  const result = new ControlledRuntimeHandoffService({
+    router: new CountingRouter(routingRecommendation()),
+    runtime,
+    checkpointService,
+    now: () => NOW,
+  }).handoff({
+    ...validHandoffRequest(),
+    checkpoint: validCheckpoint(),
+  });
+
+  assert.equal(result.handoffDecision, 'WAITING_APPROVAL');
+  assert.equal(result.checkpoint?.checkpointId, 'handoff-checkpoint-001');
+  assert.equal(repository.listByTaskRef('intent-001').length, 1);
+  assert.equal('projectMemoryWrite' in result, false);
+  assert.equal('executionAuthorization' in result, false);
+});
+
+test('IH-20 rejects an explicitly supplied checkpoint bound to another task', () => {
+  const request: ControlledRuntimeHandoffRequest = {
+    ...validHandoffRequest(),
+    checkpoint: validCheckpoint({ taskRef: 'intent-other' }),
+  };
+
+  assert.throws(
+    () => validateAndFreezeHandoffRequest(request),
+    error => error instanceof HandoffError && error.code === 'INVALID_HANDOFF_REQUEST',
+  );
+});
+
+test('IH-21 rejects an explicit checkpoint before routing when checkpoint persistence is not configured', () => {
+  const router = new CountingRouter(routingRecommendation());
+  const runtime = new CountingRuntime(waitingRuntimeResult());
+  const service = new ControlledRuntimeHandoffService({ router, runtime, now: () => NOW });
+
+  assert.throws(
+    () => service.handoff({ ...validHandoffRequest(), checkpoint: validCheckpoint() }),
+    error => error instanceof HandoffError && error.code === 'HANDOFF_INVARIANT_VIOLATION',
+  );
+  assert.equal(router.calls, 0);
+  assert.equal(runtime.calls, 0);
 });

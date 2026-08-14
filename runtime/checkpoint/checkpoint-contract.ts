@@ -81,7 +81,7 @@ const CONFIDENCES = new Set<CheckpointEvidenceConfidence>([
   'UNKNOWN',
   'NOT_CAPTURED',
 ]);
-const SECRET_PATTERN = /(?:api[_-]?key|password|token|secret)\s*[:=]|-----BEGIN (?:[A-Z0-9 ]+ )?PRIVATE KEY-----|authorization\s*:\s*bearer\s+/i;
+const SECRET_PATTERN = /(?:api[_-]?key|password|token|secret)\s*[:=]|^\s*(?:api[_-]?key|password|token|secret)\s*$|-----BEGIN (?:[A-Z0-9 ]+ )?PRIVATE KEY-----|authorization\s*:\s*bearer\s+/i;
 
 function invalid(field: string, reason: string): never {
   throw new CheckpointError('INVALID_CHECKPOINT', `checkpoint field is invalid: ${field}`, { field, reason });

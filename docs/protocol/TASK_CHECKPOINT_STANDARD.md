@@ -29,6 +29,8 @@ Confirmed facts 必须有非空 Evidence 集合；Evidence ID 不得重复。Che
 
 旧 Checkpoint 不能替代当前代码、配置、Git、授权或 Evidence；恢复不会自动恢复 Workflow / Task，不创建执行授权，不自动重试或继续执行。
 
+在受控 Runtime Handoff 中，调用方可以显式提交一个已验证的 Checkpoint。集成边界会校验其 `taskRef` 与 Intent、`projectRef` 与 Execution Context 一致；若未配置 `CheckpointService`，请求在路由前失败。Runtime 到达 `WAITING_APPROVAL` 或 `CANCELLED` 后才追加该快照，追加失败会作为 Handoff 不变量错误暴露；未显式提供 Checkpoint 时不产生任何 Checkpoint 写入。
+
 ## 4. Project Memory Projection
 
 `ProjectMemoryProjectionService` 只从 Evidence Confidence 为 `L1`–`L4` 的 Checkpoint 生成不可变、metadata-only Projection，内容包括确认事实、决策、Evidence、阻塞、风险、下一步和建议章节。Projection 始终带 `rawConversationIncluded: false`。

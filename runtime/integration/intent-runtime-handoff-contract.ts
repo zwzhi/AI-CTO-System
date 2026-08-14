@@ -20,6 +20,7 @@ import type {
 import type { RunOptions, RuntimeRunResult } from '../services/runtime-foundation-service.ts';
 import type { CreateWorkflowInput } from '../workflow/workflow-service.ts';
 import type { TaskExecutionEnvelope } from '../task/task-execution-envelope-contract.ts';
+import type { TaskCheckpoint } from '../checkpoint/checkpoint-contract.ts';
 
 export type IntentClassificationStatus =
   | 'CLASSIFIED'
@@ -77,6 +78,7 @@ export interface ControlledRuntimeHandoffRequest {
   readonly executionContext: ExecutionContext;
   readonly budget: BudgetSnapshot;
   readonly executionEnvelope?: TaskExecutionEnvelope;
+  readonly checkpoint?: TaskCheckpoint;
   readonly cancelled?: boolean;
 }
 
@@ -84,6 +86,7 @@ export interface ControlledRuntimeHandoffResult {
   readonly handoffDecision: HandoffDecision;
   readonly intentResult: StructuredIntentClassificationResult;
   readonly routingRecommendation?: RoutingRecommendation;
+  readonly checkpoint?: TaskCheckpoint;
   readonly workflow?: WorkflowInstance;
   readonly task?: Task;
   readonly auditEvents: readonly AuditEvent[];

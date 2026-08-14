@@ -27,6 +27,7 @@ Envelope 版本固定为 `1.0`，包含：
 - `gates`：要求通过的 Gate 及已完成 Gate；未完成的 required Gate 阻断交接。
 - `stopConditions`、`rollbackConditions`、`acceptanceCriteria`、`nextAction`：必须明确、非空且可复核。
 - `evidence`：仓库指纹、验证记录、Review 记录和过期项目；L2–L4 至少需要仓库基线指纹且不得存在 `staleItems`。
+- 可选 `review`：声明本次交接要求的 `ReviewProfile` 列表和 `packetSha256`；声明的 Packet 指纹必须同时出现在 `evidence.reviews` 中。
 
 ## 4. 运行时校验顺序
 
@@ -35,8 +36,8 @@ Envelope 版本固定为 `1.0`，包含：
 1. 在集成边界重建并深度冻结 Intent、Execution Context、Budget 和可选 Envelope，不修改调用方输入。
 2. 仅允许已分类且达到 L3/L4 路由置信度的 Intent 进入现有 Advisory Router。
 3. 对 `OUT_OF_SCOPE` 和 `INSUFFICIENT_EVIDENCE` 保持原有路由阻断。
-4. 对 L2–L4 检查 Envelope：缺失、结构无效、档位低于路由最低档位、基线证据缺失/过期或 required Gate 未完成时返回 `ENVELOPE_BLOCKED`。
-5. 只有通过上述检查，才调用现有 Runtime；现有 `CONFIRM` 和 `WAITING_APPROVAL` 不变。
+4. 对 L2–L4 检查 Envelope：缺失、结构无效、复杂度/风险低于 Intent、档位低于路由最低档位、基线证据缺失/过期、required Gate 未完成或升级路由缺少 Review Packet 绑定时返回 `ENVELOPE_BLOCKED`。
+5. 只有通过上述检查，才调用现有 Runtime；现有 `CONFIRM` 和 `WAITING_APPROVAL` 不变。显式 Checkpoint 只有在配置 `CheckpointService` 时，才会在受控 Runtime 终态追加。
 
 `ENVELOPE_BLOCKED` 必须在 Workflow / Task 创建前返回，只产生集成层 Evidence 和可解释限制，不产生 Capability Invocation、Execution Record 或 `executionAuthorization`。
 
@@ -48,6 +49,8 @@ Envelope 版本固定为 `1.0`，包含：
 - `EVIDENCE_REQUIRED`：L2–L4 缺少当前仓库基线或仍有过期证据。
 - `PROFILE_BELOW_MINIMUM`：Envelope 声明的档位低于 Router 建议的最低档位。
 - `GATE_REQUIRED`：required Gate 未完成，或路由要求 Review 却没有声明 Gate。
+- `CONTEXT_MISMATCH`：Envelope 的 `taskRef`、复杂度或风险与已冻结 Intent 不一致。
+- `REVIEW_REQUIRED`：路由升级为 `ESCALATE_FOR_REVIEW`，但 Envelope 没有绑定 Review Profile / Packet。
 
 通过和阻断都返回带 `envelopeId` 关联的 Evidence。Evidence 只描述校验事实，不回显项目源代码或生成执行权限。
 
@@ -61,12 +64,14 @@ Envelope 版本固定为 `1.0`，包含：
 
 - 当前实现是确定性、内存内、受控 Handoff 前置校验；不读取文件系统、Git、网络或外部 Provider。
 - `repoFingerprint` 由调用方提供并由合同验证格式；当前不会自行计算真实仓库哈希。
+- Review Profile / Packet 仍由调用方或既有 Code Review 流程生成；Handoff 只校验 Envelope 中的 Profile 与 Packet 指纹绑定，不启动 Reviewer 或模型。
 - 通过 Envelope 只代表“允许进入现有审批检查点”，不代表批准执行、部署或生产变更。
+- Checkpoint 是显式、追加式的 Runtime 快照；未显式提供时不写入，Projection 也不会自动写入 Project Memory。
 - 现有 L1 轻量路径继续可用，以保持渐进上下文和反流程膨胀原则。
 
 ## 8. 验证记录
 
-- 目标测试：Task Envelope `TE-01`–`TE-09`，Controlled Handoff `IH-14`–`IH-16`。
+- 目标测试：Task Envelope `TE-01`–`TE-13`，Controlled Handoff `IH-14`–`IH-21`。
 - 当前分支：`feat/ai-cto-zip-reinforcement`。
 - 实现提交：`add72f5`、`fa5a445`、`fbac4ec`。
 - 验证要求：`npm.cmd test`、`git diff --check`，并确认结果中不存在 `executionAuthorization`。

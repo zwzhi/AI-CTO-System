@@ -12,6 +12,8 @@
 - Review Profile / Packet 实现提交为 `8bbfd7e`；当前分支全量 `188 / 188` 测试通过，Review 专项为 `RV-01`–`RV-11`。该实现只提供确定性计划、快照和 Evidence freshness，不调用 Reviewer、模型、工具或网络。
 - 同一轮将 ZIP 的 Checkpoint、Handoff、Recovery 适配为既有 Layer 1 `Project Memory / Memory Management` 的 `EXTEND_EXISTING_MODULE`：新增追加式内存 Checkpoint、前序链、恢复重新核验义务和 metadata-only Project Memory Projection；默认不写文件、不覆盖历史、不保存完整聊天或秘密。
 - Checkpoint / Projection 实现提交为 `f1f3846`；当前分支全量 `198 / 198` 测试通过，Checkpoint 专项为 `CP-01`–`CP-10`。未知或未验证 Evidence 不能投影为 Project Memory 事实，Checkpoint 也不改变 Workflow / Task 或授予执行权限。
+- 第二轮加固将 Envelope 与已冻结 Intent 的 taskRef、复杂度和风险绑定；`ESCALATE_FOR_REVIEW` 必须具备 Review Profile / Packet SHA 与任务 Evidence 的关联，否则在 Runtime 创建前阻断。Review 预算现在实际限制 Profile 数和轮次，`STRICT` 强制使用 `DEEP`；Review Packet phase、嵌套 `.env` 路径和裸敏感字段也有运行时校验。
+- 受控 Handoff 现在支持调用方显式提交 Checkpoint：必须配置 `CheckpointService`，且 taskRef/projectRef 与上下文一致；只在 `WAITING_APPROVAL` 或 `CANCELLED` 终态追加，不自动写 Project Memory、恢复或继续执行。
 
 ## 2026-08-13 Execution Feedback Optimization
 

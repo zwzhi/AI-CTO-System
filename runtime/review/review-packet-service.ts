@@ -5,6 +5,7 @@ import type {
   ReviewPacketFreshnessResult,
   ReviewPacketInput,
   ReviewPacketObservation,
+  ReviewPhase,
   ReviewProfileId,
 } from './review-contract.ts';
 
@@ -17,6 +18,7 @@ const PROFILE_IDS = new Set<ReviewProfileId>([
   'STATE_CONCURRENCY',
   'TEST_DELIVERY',
 ]);
+const PHASES = new Set<ReviewPhase>(['PRE_IMPLEMENTATION', 'POST_IMPLEMENTATION']);
 
 function nonBlank(value: unknown, field: string): string {
   if (typeof value !== 'string' || value.trim().length === 0) {
@@ -39,11 +41,17 @@ function profiles(values: readonly ReviewProfileId[]): readonly ReviewProfileId[
   return Object.freeze([...new Set(values)].sort());
 }
 
+function phase(value: unknown): ReviewPhase {
+  if (typeof value !== 'string' || !PHASES.has(value as ReviewPhase)) {
+    throw new TypeError('phase contains an unsupported review phase');
+  }
+  return value as ReviewPhase;
+}
+
 function sensitivePath(path: string): boolean {
   const lower = path.toLowerCase();
-  return lower === '.env'
-    || lower.startsWith('.env.')
-    || lower.includes('/.env.')
+  const segments = lower.split('/');
+  return segments.some(segment => segment === '.env' || segment.startsWith('.env.'))
     || /(^|\/)(secret|secrets|credential|credentials)(\/|\.|$)/.test(lower)
     || lower.endsWith('.pem')
     || lower.endsWith('.key');
@@ -56,7 +64,7 @@ function packetHash(payload: unknown): string {
 export class ReviewPacketService {
   create(input: ReviewPacketInput): ReviewPacket {
     const boundary = nonBlank(input.boundary, 'boundary');
-    const phase = nonBlank(input.phase, 'phase') as ReviewPacket['phase'];
+    const packetPhase = phase(input.phase);
     const baselineCommit = nonBlank(input.baselineCommit, 'baselineCommit');
     const headCommit = nonBlank(input.headCommit, 'headCommit');
     const diffSha256 = nonBlank(input.diffSha256, 'diffSha256');
@@ -78,7 +86,7 @@ export class ReviewPacketService {
     const payload = {
       schemaVersion: '1.0',
       boundary,
-      phase,
+      phase: packetPhase,
       profiles: selectedProfiles,
       baselineCommit,
       headCommit,

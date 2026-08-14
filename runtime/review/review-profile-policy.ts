@@ -42,8 +42,12 @@ function positiveInteger(value: number | undefined, fallback: number, field: str
   return candidate;
 }
 
-function effortTier(complexity: TaskComplexity, riskLevel: RiskLevel): ReviewEffortTier {
-  if (complexity === 'L4' || riskLevel === 'HIGH' || riskLevel === 'CRITICAL') {
+function effortTier(
+  complexity: TaskComplexity,
+  riskLevel: RiskLevel,
+  executionProfile: ExecutionProfile | undefined,
+): ReviewEffortTier {
+  if (complexity === 'L4' || riskLevel === 'HIGH' || riskLevel === 'CRITICAL' || executionProfile === 'STRICT') {
     return 'DEEP';
   }
   if (complexity === 'L2' || complexity === 'L3' || riskLevel === 'MEDIUM') {
@@ -89,14 +93,15 @@ export class ReviewProfilePolicy {
     }
     addUnique(profiles, 'TEST_DELIVERY');
 
-    const tier = effortTier(input.complexity, input.riskLevel);
+    const tier = effortTier(input.complexity, input.riskLevel, input.executionProfile);
     if (tier === 'DEEP') {
       addUnique(profiles, 'COMPATIBILITY_REGRESSION');
       addUnique(profiles, 'SECURITY_ACCESS');
     }
 
     const uncappedCount = profiles.length;
-    const selectedProfiles = profiles.slice(0, this.#maxProfiles);
+    const effectiveMaxProfiles = Math.min(this.#maxProfiles, this.#maxTotalReviewers);
+    const selectedProfiles = profiles.slice(0, effectiveMaxProfiles);
     const escalationConditions: string[] = [];
     const rationale: string[] = [
       `Selected profiles from changed areas: ${areas.length === 0 ? 'none declared' : areas.join(', ')}.`,
@@ -106,10 +111,23 @@ export class ReviewProfilePolicy {
       escalationConditions.push('Current baseline and change Evidence is required before review can be considered complete.');
     }
     if (uncappedCount > selectedProfiles.length) {
-      escalationConditions.push(`Profile budget capped selection at ${this.#maxProfiles}; omitted profiles remain unreviewed.`);
+      escalationConditions.push(`Profile budget capped selection at ${effectiveMaxProfiles}; omitted profiles remain unreviewed.`);
     }
     if (tier === 'DEEP') {
       escalationConditions.push('High-risk review requires explicit human disposition of blocking findings.');
+    }
+    if (input.executionProfile === 'STRICT') {
+      escalationConditions.push('strict execution routing profile requires deep review effort.');
+    }
+
+    const effectiveMaxRounds = Math.min(
+      this.#maxRounds,
+      Math.max(1, Math.floor(this.#maxTotalReviewers / Math.max(1, selectedProfiles.length))),
+    );
+    if (effectiveMaxRounds < this.#maxRounds) {
+      escalationConditions.push(
+        `Reviewer budget caps review rounds at ${effectiveMaxRounds} for ${selectedProfiles.length} selected profiles.`,
+      );
     }
 
     return Object.freeze({
@@ -119,8 +137,8 @@ export class ReviewProfilePolicy {
       effortTier: tier,
       isolationLevel: 'UNKNOWN',
       budget: Object.freeze({
-        maxProfiles: this.#maxProfiles,
-        maxRounds: this.#maxRounds,
+        maxProfiles: effectiveMaxProfiles,
+        maxRounds: effectiveMaxRounds,
         maxTotalReviewers: this.#maxTotalReviewers,
       }),
       evidenceRequired: !input.evidenceCurrent,

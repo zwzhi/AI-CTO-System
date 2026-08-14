@@ -182,3 +182,46 @@ test('RV-11 marks a packet stale when the bound diff fingerprint changes', () =>
 
   assert.equal(service.isCurrent(packet, { diffSha256: 'sha256:changed' }).status, 'STALE');
 });
+
+test('RV-12 treats an explicitly strict execution profile as deep review effort', () => {
+  const plan = new ReviewProfilePolicy().decide({
+    complexity: 'L1',
+    riskLevel: 'LOW',
+    executionProfile: 'STRICT',
+    changedAreas: ['documentation'],
+    evidenceCurrent: true,
+  });
+
+  assert.equal(plan.effortTier, 'DEEP');
+  assert.equal(plan.escalationConditions.some(condition => condition.includes('strict')), true);
+});
+
+test('RV-13 excludes sensitive environment files from nested untracked paths', () => {
+  const packet = new ReviewPacketService().create(withUntracked(validPacketInput(), [
+    'config/.env',
+    'src/a.ts',
+  ]));
+
+  assert.deepEqual(packet.untrackedFiles, ['src/a.ts']);
+  assert.deepEqual(packet.excludedFiles, [{ path: 'config/.env', reason: 'sensitive-path' }]);
+});
+
+test('RV-14 rejects a packet with an unsupported review phase', () => {
+  assert.throws(() => new ReviewPacketService().create({
+    ...validPacketInput(),
+    phase: 'UNKNOWN' as ReviewPacketInput['phase'],
+  }), error => error instanceof TypeError && error.message.includes('phase'));
+});
+
+test('RV-15 keeps selected profiles and rounds within the total reviewer budget', () => {
+  const plan = new ReviewProfilePolicy({ maxProfiles: 4, maxRounds: 3, maxTotalReviewers: 2 }).decide({
+    complexity: 'L4',
+    riskLevel: 'CRITICAL',
+    changedAreas: ['permission', 'database', 'production'],
+    evidenceCurrent: false,
+  });
+
+  assert.equal(plan.profiles.length <= 2, true);
+  assert.equal(plan.budget.maxRounds * plan.profiles.length <= 2, true);
+  assert.equal(plan.budget.maxTotalReviewers, 2);
+});

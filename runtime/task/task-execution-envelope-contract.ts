@@ -5,9 +5,27 @@ import type {
   RiskLevel,
   TaskComplexity,
 } from '../routing/execution-routing-contract.ts';
+import type { ReviewProfileId } from '../review/review-contract.ts';
 
 export type EnvelopeMode = 'analysis' | 'local-modification' | 'nonproduction' | 'production';
 export type EnvelopePhase = 'IDENTIFY' | 'PLAN' | 'IMPLEMENT' | 'VALIDATE' | 'REVIEW' | 'DELIVER';
+
+const ENVELOPE_MODES = new Set<EnvelopeMode>(['analysis', 'local-modification', 'nonproduction', 'production']);
+const ENVELOPE_PHASES = new Set<EnvelopePhase>(['IDENTIFY', 'PLAN', 'IMPLEMENT', 'VALIDATE', 'REVIEW', 'DELIVER']);
+const EXECUTION_PROFILES = new Set<ExecutionProfile>(['LIGHT', 'STANDARD', 'STRICT']);
+const RISK_LEVELS = new Set<RiskLevel>(['LOW', 'MEDIUM', 'HIGH', 'CRITICAL']);
+const TASK_COMPLEXITIES = new Set<TaskComplexity>(['L0', 'L1', 'L2', 'L3', 'L4']);
+const REVERSIBILITIES = new Set<Reversibility>(['REVERSIBLE', 'CONDITIONALLY_REVERSIBLE', 'IRREVERSIBLE']);
+const REVIEW_PROFILES = new Set<ReviewProfileId>([
+  'FUNCTIONAL_BUSINESS',
+  'COMPATIBILITY_REGRESSION',
+  'SECURITY_ACCESS',
+  'PERFORMANCE_RESOURCES',
+  'DATA_CONTRACT',
+  'STATE_CONCURRENCY',
+  'TEST_DELIVERY',
+]);
+const PACKET_SHA_PATTERN = /^sha256:[0-9a-f]{64}$/;
 
 export interface TaskEnvelopeProject {
   readonly name: string;
@@ -57,6 +75,11 @@ export interface TaskEnvelopeEvidence {
   readonly staleItems: readonly string[];
 }
 
+export interface TaskEnvelopeReviewBinding {
+  readonly requiredProfiles: readonly ReviewProfileId[];
+  readonly packetSha256?: string;
+}
+
 export interface TaskExecutionEnvelope {
   readonly schemaVersion: '1.0';
   readonly envelopeId: string;
@@ -71,6 +94,7 @@ export interface TaskExecutionEnvelope {
   readonly rollbackConditions: readonly string[];
   readonly acceptanceCriteria: readonly string[];
   readonly evidence: TaskEnvelopeEvidence;
+  readonly review?: TaskEnvelopeReviewBinding;
   readonly nextAction: string;
 }
 
@@ -95,6 +119,18 @@ function freezeArray<T>(values: readonly T[]): readonly T[] {
 function nonBlank(value: unknown, field: string): asserts value is string {
   if (typeof value !== 'string' || value.trim().length === 0) {
     throw new TaskExecutionEnvelopeError(`task envelope field is blank: ${field}`, { field });
+  }
+}
+
+function object(value: unknown, field: string): asserts value is Record<string, unknown> {
+  if (value === null || typeof value !== 'object' || Array.isArray(value)) {
+    throw new TaskExecutionEnvelopeError(`task envelope field must be an object: ${field}`, { field });
+  }
+}
+
+function vocabulary<T extends string>(value: unknown, allowed: ReadonlySet<T>, field: string): asserts value is T {
+  if (typeof value !== 'string' || !allowed.has(value as T)) {
+    throw new TaskExecutionEnvelopeError(`task envelope field has an unsupported value: ${field}`, { field });
   }
 }
 
@@ -139,6 +175,7 @@ function validateAuthorization(
   mode: EnvelopeMode,
   authorization: TaskEnvelopeAuthorization,
 ): void {
+  object(authorization, 'authorization');
   const fields: readonly (keyof TaskEnvelopeAuthorization)[] = [
     'modifyFiles',
     'createCommit',
@@ -164,6 +201,7 @@ function validateAuthorization(
 }
 
 function validateEvidence(evidence: TaskEnvelopeEvidence): void {
+  object(evidence, 'evidence');
   optionalList(evidence.validations, 'evidence.validations');
   optionalList(evidence.reviews, 'evidence.reviews');
   optionalList(evidence.staleItems, 'evidence.staleItems');
@@ -171,6 +209,30 @@ function validateEvidence(evidence: TaskEnvelopeEvidence): void {
     nonBlank(evidence.repoFingerprint.value, 'evidence.repoFingerprint.value');
     if (!['CONTENT_HASH', 'GIT_SCOPE'].includes(evidence.repoFingerprint.method)) {
       throw new TaskExecutionEnvelopeError('unsupported evidence fingerprint method', { field: 'evidence.repoFingerprint.method' });
+    }
+  }
+}
+
+function validateReview(review: TaskEnvelopeReviewBinding): void {
+  object(review, 'review');
+  if (!Array.isArray(review.requiredProfiles)
+    || review.requiredProfiles.length === 0
+    || review.requiredProfiles.some(profile => !REVIEW_PROFILES.has(profile))) {
+    throw new TaskExecutionEnvelopeError('review.requiredProfiles must contain supported profiles', {
+      field: 'review.requiredProfiles',
+    });
+  }
+  if (new Set(review.requiredProfiles).size !== review.requiredProfiles.length) {
+    throw new TaskExecutionEnvelopeError('review.requiredProfiles must not contain duplicates', {
+      field: 'review.requiredProfiles',
+    });
+  }
+  if (review.packetSha256 !== undefined) {
+    nonBlank(review.packetSha256, 'review.packetSha256');
+    if (!PACKET_SHA_PATTERN.test(review.packetSha256)) {
+      throw new TaskExecutionEnvelopeError('review.packetSha256 must be a sha256 fingerprint', {
+        field: 'review.packetSha256',
+      });
     }
   }
 }
@@ -205,6 +267,12 @@ function freezeEnvelope(input: TaskExecutionEnvelope): TaskExecutionEnvelope {
       reviews: freezeArray(input.evidence.reviews),
       staleItems: freezeArray(input.evidence.staleItems),
     }),
+    ...(input.review === undefined ? {} : {
+      review: Object.freeze({
+        requiredProfiles: freezeArray(input.review.requiredProfiles),
+        ...(input.review.packetSha256 === undefined ? {} : { packetSha256: input.review.packetSha256 }),
+      }),
+    }),
   });
 }
 
@@ -218,6 +286,13 @@ export function validateAndFreezeTaskExecutionEnvelope(
     throw new TaskExecutionEnvelopeError('unsupported task envelope schema version', { field: 'schemaVersion' });
   }
 
+  object(input.project, 'project');
+  object(input.execution, 'execution');
+  object(input.authorization, 'authorization');
+  object(input.scope, 'scope');
+  object(input.gates, 'gates');
+  object(input.evidence, 'evidence');
+
   nonBlank(input.envelopeId, 'envelopeId');
   nonBlank(input.taskRef, 'taskRef');
   nonBlank(input.title, 'title');
@@ -225,11 +300,14 @@ export function validateAndFreezeTaskExecutionEnvelope(
   nonBlank(input.project.repoPath, 'project.repoPath');
   nonBlank(input.project.branch, 'project.branch');
   nonBlank(input.project.baselineCommit, 'project.baselineCommit');
-  nonBlank(input.execution.mode, 'execution.mode');
-  nonBlank(input.execution.profile, 'execution.profile');
-  nonBlank(input.execution.phase, 'execution.phase');
-  nonBlank(input.execution.riskLevel, 'execution.riskLevel');
-  nonBlank(input.execution.complexity, 'execution.complexity');
+  vocabulary(input.execution.mode, ENVELOPE_MODES, 'execution.mode');
+  vocabulary(input.execution.profile, EXECUTION_PROFILES, 'execution.profile');
+  vocabulary(input.execution.phase, ENVELOPE_PHASES, 'execution.phase');
+  vocabulary(input.execution.riskLevel, RISK_LEVELS, 'execution.riskLevel');
+  vocabulary(input.execution.complexity, TASK_COMPLEXITIES, 'execution.complexity');
+  if (input.execution.reversibility !== undefined) {
+    vocabulary(input.execution.reversibility, REVERSIBILITIES, 'execution.reversibility');
+  }
   validateAuthorization(input.execution.mode, input.authorization);
   nonEmptyList(input.scope.goals, 'scope.goals');
   nonEmptyList(input.scope.nonGoals, 'scope.nonGoals');
@@ -241,6 +319,9 @@ export function validateAndFreezeTaskExecutionEnvelope(
   nonEmptyList(input.acceptanceCriteria, 'acceptanceCriteria');
   nonBlank(input.nextAction, 'nextAction');
   validateEvidence(input.evidence);
+  if (input.review !== undefined) {
+    validateReview(input.review);
+  }
 
   return freezeEnvelope(input);
 }

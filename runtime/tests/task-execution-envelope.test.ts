@@ -175,3 +175,74 @@ test('TE-09 never returns execution authorization', () => {
 
   assert.equal('executionAuthorization' in result, false);
 });
+
+test('TE-10 rejects runtime-invalid execution vocabulary instead of relying on TypeScript types', () => {
+  const cases = [
+    mutate(validEnvelope(), copy => { copy.execution.profile = 'UNKNOWN'; }),
+    mutate(validEnvelope(), copy => { copy.execution.phase = 'UNKNOWN'; }),
+    mutate(validEnvelope(), copy => { copy.execution.complexity = 'L5'; }),
+  ];
+
+  for (const input of cases) {
+    assert.throws(() => validateAndFreezeTaskExecutionEnvelope(input), {
+      code: 'INVALID_TASK_ENVELOPE',
+    });
+  }
+});
+
+test('TE-11 rejects an envelope that does not match the bound intent context', () => {
+  const input = mutate(validEnvelope(), copy => {
+    copy.execution.complexity = 'L3';
+    copy.execution.profile = 'STRICT';
+    copy.execution.riskLevel = 'HIGH';
+  });
+  const result = new TaskExecutionEnvelopeService().validate(input, routingFor('STRICT'), {
+    taskRef: 'intent-001',
+    complexity: 'L2',
+    riskLevel: 'MEDIUM',
+  });
+
+  assert.equal(result.status, 'BLOCKED');
+  assert.equal(result.reasonCode, 'CONTEXT_MISMATCH');
+});
+
+test('TE-12 binds a declared review packet to task evidence', () => {
+  const packetSha256 = 'sha256:' + 'c'.repeat(64);
+  const input = mutate(validEnvelope(), copy => {
+    copy.execution.complexity = 'L3';
+    copy.execution.profile = 'STRICT';
+    copy.execution.riskLevel = 'HIGH';
+    copy.review = {
+      requiredProfiles: ['SECURITY_ACCESS', 'TEST_DELIVERY'],
+      packetSha256,
+    };
+    copy.evidence.reviews = [packetSha256];
+  });
+  const result = new TaskExecutionEnvelopeService().validate(input, routingFor('STRICT'), {
+    taskRef: 'task-1',
+    complexity: 'L3',
+    riskLevel: 'HIGH',
+  });
+
+  assert.equal(result.status, 'VALID');
+});
+
+test('TE-13 blocks a declared review packet that is absent from task evidence', () => {
+  const input = mutate(validEnvelope(), copy => {
+    copy.execution.complexity = 'L3';
+    copy.execution.profile = 'STRICT';
+    copy.execution.riskLevel = 'HIGH';
+    copy.review = {
+      requiredProfiles: ['SECURITY_ACCESS'],
+      packetSha256: 'sha256:' + 'd'.repeat(64),
+    };
+  });
+  const result = new TaskExecutionEnvelopeService().validate(input, routingFor('STRICT'), {
+    taskRef: 'task-1',
+    complexity: 'L3',
+    riskLevel: 'HIGH',
+  });
+
+  assert.equal(result.status, 'BLOCKED');
+  assert.equal(result.reasonCode, 'EVIDENCE_REQUIRED');
+});

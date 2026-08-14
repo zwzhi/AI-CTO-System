@@ -1,5 +1,34 @@
 # Development Progress
 
+## 2026-08-14 AI-CTO ZIP Selective Reinforcement Hardening
+
+### Status
+
+- Phase / Module: Existing Layer 1 / Layer 3 / Layer 5 extensions
+- Result: `SECOND_PASS_VERIFIED`
+- Integration decision: `EXTEND_EXISTING_MODULE`
+- Execution Authorization: `NONE`
+
+### Completed
+
+- Added runtime vocabulary validation and Intent-to-Envelope context binding for task reference, complexity and risk.
+- Bound escalated Handoff to an explicit Review Profile / Packet SHA and made Review budget ceilings effective rather than descriptive.
+- Added strict-profile deep-review escalation, Review Packet phase validation and nested sensitive-path filtering.
+- Added explicit Checkpoint lifecycle integration at controlled Handoff boundaries without automatic Project Memory writes.
+
+### Scope Guard
+
+- No fixed Reviewer orchestration, automatic Reviewer launch, file/Git/Network write, model/tool call, automatic memory write, Workflow continuation or execution authorization was added.
+
+### Evidence and Risks
+
+- Focused tests: `TE-01`–`TE-13`, `IH-01`–`IH-21`, `RV-01`–`RV-15`, `CP-01`–`CP-11` pass in the current worktree.
+- Full regression: `212 / 212` passed; `git diff --check` passed. The branch is not merged into `main`.
+
+### Next Action
+
+Reassess whether the selective reinforcement is ready for explicit branch integration; no merge into `main` is implied by this verification.
+
 ## 2026-08-14 AI-CTO Task Execution Envelope Reinforcement
 
 ### Status
