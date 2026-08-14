@@ -68,6 +68,33 @@
 
 因此，本设计中的能力结论均为候选处理建议，不替代后续 Capability Evaluation 和真实 Pilot。
 
+### 3.3 历史吸收基线
+
+历史记录表明，AI-CTO 已经吸收了 ZIP V4.1 中若干关键思想；但这些吸收主要是围绕 AI-CTO 自身问题逐步完成的，不是对 ZIP 全包进行过一次逐项准入迁移。当前应把候选能力分为“已吸收”“部分吸收”“尚未吸收”和“明确不直接吸收”，避免重复建设。
+
+| ZIP 机制 | AI-CTO 当前状态 | 证据 | 本次是否作为新能力 |
+|---|---|---|---|
+| `LIGHT / STANDARD / STRICT` 与风险升级 | 已吸收为 `L0–L4`、`R0–R4`、Execution Profile 和风险升级 | `docs/superpowers/specs/2026-08-06-execution-profile-evidence-freshness-design.md`、`runtime/routing/` | 否；只评估合同边界和实际使用反馈补强 |
+| Evidence Fingerprint / Freshness | 已有确定性只读比较器，支持 `CURRENT / STALE / NOT_CAPTURED` | `runtime/routing/evidence-freshness-service.ts`、ER 测试 | 部分；评估是否扩展到 Review、Validation 和 Task Envelope |
+| Progressive Context / Route-first | 已吸收 `L0–L4`、最小充分流程、渐进 Context 和 `L1` 防流程膨胀 | `skills/ai-cto-system/SKILL.md`、2026-08-06 Skill Routing Preflight | 否；只评估与 ZIP 领域 Skill 的路由衔接 |
+| Approval、Permission、Budget、Audit | 已有 Runtime Foundation、Planner-first、Guard、Workflow、Task 和 Audit | `runtime/services/`、`runtime/permission/`、165/165 回归 | 否；不重复建立执行控制平面 |
+| Controlled Handoff | 已有 Intent → Router → Workflow / Task → `WAITING_APPROVAL` 的内部链路 | `runtime/integration/controlled-runtime-handoff-service.ts`、IH 测试 | 否；只评估与任务信封、Review Profile 的连接 |
+| Capability Governance | 已有 Admission、Registry、Evaluation、Activation 的治理标准 | `docs/capability/CAPABILITY_GOVERNANCE_STANDARD.md` | 否；ZIP Skills 作为候选 Capability 逐项评估 |
+| Code Review / Security Review / Testing | 已有工程 Review、Security、Testing 和 Gate 标准 | `docs/development/CODE_REVIEW_STANDARD.md`、`docs/testing/` | 部分；评估 ZIP 的 Review Packet、预算、隔离和结构化归并是否能补强 |
+| Agent 独立上下文与结构化复审 | 已有 Agent Contract 和 Planner，但没有 ZIP 级 Reviewer Packet / Controller | `runtime/agent/`、`runtime/services/single-agent-runtime-service.ts` | 是，作为部分补强候选 |
+| Task Execution Envelope | 已有 Workflow / Task / Execution Context 字段，但没有统一的跨阶段任务信封 | `runtime/models/runtime-types.ts`、`runtime/workflow/` | 是，作为合同补强候选 |
+| Checkpoint / Handoff / Recovery | 有 Project Memory 和 Memory Management，但没有 ZIP 级任务节点 Checkpoint 体系 | `memory/project_memory/`、`docs/protocol/MEMORY_MANAGEMENT.md` | 是，作为 Project Memory 补强候选 |
+| 9 个领域 Skills | AI-CTO 只有仓库权威的 AI CTO Skill Gateway，没有 ZIP 的 9 个领域 Skill | `skills/ai-cto-system/`、Module Registry | 是，逐项 Conditional Admission，不整体接纳 |
+| ZIP 安装器、Doctor、模板集合 | AI-CTO 有自己的 Skill Gateway 安装器、治理模板和权威文档 | `scripts/install-ai-cto-skill.ps1`、`templates/` | 否；只提取可复用字段和诊断思想 |
+
+因此，历史判断不是“当时完全没注意”，也不是“ZIP 已经全部融入”：
+
+- **已经吸收的部分**：主要是 ZIP 的问题抽象，例如轻重路由、渐进 Context、Evidence Freshness、人工确认和受控 Runtime。
+- **尚未完整吸收的部分**：主要是 ZIP 的执行运营化机制，例如任务信封、Review Packet / Controller、任务级 Checkpoint 和领域 Skill 能力化。
+- **当时刻意没有吸收的部分**：ZIP 的全局规则、安装包结构、固定 Reviewer 数量、模板全集和未经真实客户端验证的权限 / 自动化假设。
+
+本次工作因此不是从零吸收 ZIP，而是对“已有吸收是否完整、哪些只停留在思想层、哪些值得形成 AI-CTO 原生合同”进行补强审计。
+
 ## 4. 能力评估模型
 
 每项候选能力使用 0–3 分进行内部比较，不把总分直接当作准入授权：
