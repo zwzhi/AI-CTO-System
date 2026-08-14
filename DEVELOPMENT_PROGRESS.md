@@ -1,5 +1,38 @@
 # Development Progress
 
+## 2026-08-14 AI-CTO Task Execution Envelope Reinforcement
+
+### Status
+
+- Phase / Module: Existing Layer 5 `AI CTO Runtime Architecture` extension
+- Result: `IMPLEMENTED`
+- Integration decision: `EXTEND_EXISTING_MODULE`
+- Execution Authorization: `NONE`
+- Capability Activation: `NONE`
+
+### Completed
+
+- Added immutable `TaskExecutionEnvelope` contract and deterministic validation service.
+- Added L2–L4 pre-runtime gate in `ControlledRuntimeHandoffService`; missing or blocked envelopes return `ENVELOPE_BLOCKED` before Workflow / Task creation.
+- Preserved L0/L1 minimal routing, existing Permission / Budget / Cancellation behavior, and the `CONFIRM` → `WAITING_APPROVAL` invariant.
+- Added Task Envelope and Controlled Handoff regression coverage; synchronized Runtime Architecture, Module Registry and Project Memory.
+
+### Scope Guard
+
+- No new Phase, Layer, Module, Capability, Agent, Provider, Reviewer orchestration, long-memory package, external tool, model switch, automatic retry, background monitor, file write, network call or execution authorization was added.
+- Envelope validation does not calculate repository hashes itself; it validates caller-supplied baseline Evidence and remains non-authorizing.
+
+### Evidence and Risks
+
+- Targeted tests: `TE-01`–`TE-09`, `IH-14`–`IH-16`.
+- Implementation commits: `add72f5`, `fa5a445`, `fbac4ec`.
+- Full regression: `177 / 177` passed.
+- `git diff --check`: passed; boundary scan confirms the envelope remains non-authorizing.
+
+### Next Action
+
+Proceed to the separately planned Review Profile / Packet reinforcement; do not infer broader execution authorization from this contract.
+
 ## 2026-08-13 Execution Feedback and Status Optimization
 
 ### Status

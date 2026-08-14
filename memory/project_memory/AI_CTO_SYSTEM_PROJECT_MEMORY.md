@@ -1,5 +1,13 @@
 # AI CTO System Project Memory
 
+## 2026-08-14 ZIP Capability Selective Reinforcement
+
+- 用户确认以 AI-CTO System 为主体，对外部 Skills ZIP 逐项判断后只吸收可验证、适配且能补强现有边界的能力，不进行一比一复制。
+- 本轮实现将 ZIP 的 Task Execution Envelope 提炼为既有 Layer 5 `AI CTO Runtime Architecture` 的 `EXTEND_EXISTING_MODULE`：新增版本化 Envelope 合同、确定性校验服务，并接入 `ControlledRuntimeHandoffService` 的前置门禁。
+- L0/L1 保持最小路径；L2–L4 必须声明项目基线、目标/非目标、范围、停止/回滚/验收、Evidence 和 Gate。缺失、档位不足、Evidence 过期或 Gate 未完成时返回 `ENVELOPE_BLOCKED`，不创建 Workflow / Task、不调用 Capability、不产生 `executionAuthorization`。
+- 新增 `TE-01`–`TE-09` 与 `IH-14`–`IH-16` 测试；当前实现仍不读取文件系统、Git、网络或外部 Provider，也未引入多 Reviewer、通用长记忆包、模板目录或新的 Module / Phase。
+- 实现提交为 `add72f5`、`fa5a445`、`fbac4ec`；当前分支全量 `177 / 177` 测试通过且 `git diff --check` 通过。该变更只允许进入现有 `CONFIRM` / `WAITING_APPROVAL`，不构成执行、部署或生产授权。
+
 ## 2026-08-13 Execution Feedback Optimization
 
 - 用户批准对近期真实项目反馈进行低风险优化，范围限定为既有 Layer 5 `Execution Routing Governance` 的文档增强。
