@@ -7,6 +7,7 @@ import {
   type HandoffRouterPort,
   type HandoffRuntimePort,
 } from '../integration/intent-runtime-handoff-contract.ts';
+import type { TaskExecutionEnvelope } from '../task/task-execution-envelope-contract.ts';
 import { validateAndFreezeHandoffRequest } from '../integration/intent-runtime-handoff-validation.ts';
 import { ControlledRuntimeHandoffService } from '../integration/controlled-runtime-handoff-service.ts';
 import { AuditService } from '../audit/audit-service.ts';
@@ -78,6 +79,59 @@ function validHandoffRequest(): ControlledRuntimeHandoffRequest {
       costLimit: 0,
       costUsed: 0,
     },
+  };
+}
+
+function validTaskEnvelope(overrides: Partial<TaskExecutionEnvelope> = {}): TaskExecutionEnvelope {
+  return {
+    schemaVersion: '1.0',
+    envelopeId: 'envelope-001',
+    taskRef: 'intent-001',
+    title: 'Controlled architecture change',
+    project: {
+      name: 'AI-CTO-System',
+      repoPath: 'D:/AI Project/AI-CTO-System',
+      branch: 'main',
+      baselineCommit: 'abc123',
+    },
+    execution: {
+      mode: 'analysis',
+      profile: 'STRICT',
+      phase: 'REVIEW',
+      riskLevel: 'HIGH',
+      complexity: 'L3',
+      reversibility: 'CONDITIONALLY_REVERSIBLE',
+    },
+    authorization: {
+      modifyFiles: false,
+      createCommit: false,
+      push: false,
+      deploy: false,
+      restart: false,
+      databaseWrite: false,
+      cacheOrMqWrite: false,
+    },
+    scope: {
+      goals: ['Produce a controlled architecture change plan.'],
+      nonGoals: ['Deploy the change.'],
+      allowedPaths: ['runtime/'],
+      forbiddenPaths: ['.env'],
+    },
+    gates: {
+      required: ['architecture-review'],
+      completed: ['architecture-review'],
+    },
+    stopConditions: ['Current evidence becomes stale.'],
+    rollbackConditions: ['Approval is withdrawn.'],
+    acceptanceCriteria: ['The plan identifies affected runtime boundaries.'],
+    evidence: {
+      repoFingerprint: { method: 'CONTENT_HASH', value: 'sha256:baseline' },
+      validations: ['envelope-validated'],
+      reviews: ['architecture-review'],
+      staleItems: [],
+    },
+    nextAction: 'Wait for explicit approval.',
+    ...overrides,
   };
 }
 
@@ -349,6 +403,7 @@ test('IH-07 escalates high-risk architecture work but still stops at WAITING_APP
       riskLevel: 'HIGH',
       suggestedWorkflow: 'CTO',
     },
+    executionEnvelope: validTaskEnvelope(),
   };
 
   const result = realService().handoff(request);
@@ -494,4 +549,89 @@ test('IH-13 never emits execution authorization or invokes downstream execution'
     true,
   );
   assert.equal(result.auditEvents.some(event => event.eventType === 'CAPABILITY_COMPLETED'), false);
+});
+
+test('IH-14 blocks L3/L4 handoff without a task execution envelope before runtime', () => {
+  const baseline = validHandoffRequest();
+  const request: ControlledRuntimeHandoffRequest = {
+    ...baseline,
+    intentResult: {
+      ...baseline.intentResult,
+      complexity: 'L3',
+      taskKind: 'ARCHITECTURE',
+      riskLevel: 'HIGH',
+      suggestedWorkflow: 'CTO',
+    },
+  };
+  const router = new CountingRouter(routingRecommendation('ESCALATE_FOR_REVIEW'));
+  const runtime = new CountingRuntime(waitingRuntimeResult());
+  const result = new ControlledRuntimeHandoffService({ router, runtime, now: () => NOW }).handoff(request);
+
+  assert.equal(result.handoffDecision, 'ENVELOPE_BLOCKED');
+  assert.equal(router.calls, 1);
+  assert.equal(runtime.calls, 0);
+  assert.equal(result.workflow, undefined);
+  assert.equal(result.task, undefined);
+  assert.equal(result.evidence.some(evidence => evidence.reference === 'intent-001'), true);
+  assert.equal(result.limitations.includes('No execution authorization was created.'), true);
+});
+
+test('IH-15 allows a valid task execution envelope to reach the existing approval checkpoint', () => {
+  const baseline = validHandoffRequest();
+  const request: ControlledRuntimeHandoffRequest = {
+    ...baseline,
+    intentResult: {
+      ...baseline.intentResult,
+      complexity: 'L3',
+      taskKind: 'ARCHITECTURE',
+      riskLevel: 'HIGH',
+      suggestedWorkflow: 'CTO',
+    },
+    executionEnvelope: validTaskEnvelope(),
+  };
+  const runtime = new CountingRuntime(waitingRuntimeResult());
+  const result = new ControlledRuntimeHandoffService({
+    router: new CountingRouter(routingRecommendation('ESCALATE_FOR_REVIEW')),
+    runtime,
+    now: () => NOW,
+  }).handoff(request);
+
+  assert.equal(result.handoffDecision, 'WAITING_APPROVAL');
+  assert.equal(runtime.calls, 1);
+  assert.equal(result.workflow?.state, 'WAITING_APPROVAL');
+  assert.equal(result.evidence.some(evidence => evidence.source === 'task-execution-envelope'), true);
+  assert.equal('executionAuthorization' in result, false);
+});
+
+test('IH-16 blocks a stale or incomplete task execution envelope without invoking runtime', () => {
+  const baseline = validHandoffRequest();
+  const request: ControlledRuntimeHandoffRequest = {
+    ...baseline,
+    intentResult: {
+      ...baseline.intentResult,
+      complexity: 'L3',
+      taskKind: 'ARCHITECTURE',
+      riskLevel: 'HIGH',
+      suggestedWorkflow: 'CTO',
+    },
+    executionEnvelope: validTaskEnvelope({
+      evidence: {
+        repoFingerprint: { method: 'CONTENT_HASH', value: 'sha256:baseline' },
+        validations: [],
+        reviews: [],
+        staleItems: ['runtime/'],
+      },
+      gates: { required: ['architecture-review'], completed: [] },
+    }),
+  };
+  const runtime = new CountingRuntime(waitingRuntimeResult());
+  const result = new ControlledRuntimeHandoffService({
+    router: new CountingRouter(routingRecommendation('ESCALATE_FOR_REVIEW')),
+    runtime,
+    now: () => NOW,
+  }).handoff(request);
+
+  assert.equal(result.handoffDecision, 'ENVELOPE_BLOCKED');
+  assert.equal(runtime.calls, 0);
+  assert.equal(result.evidence.some(evidence => evidence.source === 'task-execution-envelope'), true);
 });

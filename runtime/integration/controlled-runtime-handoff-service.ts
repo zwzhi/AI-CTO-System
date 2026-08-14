@@ -1,5 +1,6 @@
 import type { AuditEvent, Evidence } from '../models/runtime-types.ts';
 import type { RoutingRecommendation, RoutingRequest } from '../routing/execution-routing-contract.ts';
+import { TaskExecutionEnvelopeService } from '../task/task-execution-envelope-service.ts';
 import {
   HandoffError,
   type ControlledRuntimeHandoffRequest,
@@ -41,11 +42,13 @@ export class ControlledRuntimeHandoffService {
   readonly #router: HandoffRouterPort;
   readonly #runtime: HandoffRuntimePort;
   readonly #now: () => string;
+  readonly #envelopeService: TaskExecutionEnvelopeService;
 
   constructor(dependencies: ControlledRuntimeHandoffDependencies) {
     this.#router = dependencies.router;
     this.#runtime = dependencies.runtime;
     this.#now = dependencies.now ?? (() => new Date().toISOString());
+    this.#envelopeService = new TaskExecutionEnvelopeService({ now: this.#now });
   }
 
   handoff(request: ControlledRuntimeHandoffRequest): ControlledRuntimeHandoffResult {
@@ -96,6 +99,56 @@ export class ControlledRuntimeHandoffService {
       });
     }
 
+    let envelopeEvidence: readonly Evidence[] = [];
+    if (intent.complexity !== 'L0' && intent.complexity !== 'L1') {
+      if (snapshot.executionEnvelope === undefined) {
+        return this.#result({
+          handoffDecision: 'ENVELOPE_BLOCKED',
+          intentResult: intent,
+          routingRecommendation: routing,
+          evidence: [
+            ...routing.evidence,
+            this.#handoffEvidence(
+              intent,
+              'L2-L4 handoff requires a validated Task Execution Envelope before runtime creation.',
+            ),
+          ],
+          limitations: [
+            ...routing.limitations,
+            'Task Execution Envelope is required for L2-L4 work.',
+            'Workflow and Task were not created.',
+            'No execution authorization was created.',
+            'No capability, tool, model, or agent was invoked.',
+          ],
+        });
+      }
+
+      const envelopeValidation = this.#envelopeService.validate(snapshot.executionEnvelope, routing);
+      if (envelopeValidation.status === 'BLOCKED') {
+        return this.#result({
+          handoffDecision: 'ENVELOPE_BLOCKED',
+          intentResult: intent,
+          routingRecommendation: routing,
+          evidence: [
+            ...routing.evidence,
+            ...envelopeValidation.evidence,
+            this.#handoffEvidence(
+              intent,
+              `Task Execution Envelope blocked handoff with ${envelopeValidation.reasonCode ?? 'UNKNOWN'}.`,
+            ),
+          ],
+          limitations: [
+            ...routing.limitations,
+            'Task Execution Envelope validation stopped the handoff before runtime creation.',
+            'Workflow and Task were not created.',
+            'No execution authorization was created.',
+            'No capability, tool, model, or agent was invoked.',
+          ],
+        });
+      }
+      envelopeEvidence = envelopeValidation.evidence;
+    }
+
     const runtimeResult = this.#runtime.run(
       {
         intentRef: intent.classificationId,
@@ -130,6 +183,7 @@ export class ControlledRuntimeHandoffService {
         auditEvents: runtimeResult.auditEvents,
         evidence: [
           ...routing.evidence,
+          ...envelopeEvidence,
           ...auditEvidence(runtimeResult.auditEvents),
           this.#handoffEvidence(intent, 'Runtime guard blocked the controlled handoff.', routing.routingId),
         ],
@@ -159,6 +213,7 @@ export class ControlledRuntimeHandoffService {
       auditEvents: runtimeResult.auditEvents,
       evidence: [
         ...routing.evidence,
+        ...envelopeEvidence,
         ...auditEvidence(runtimeResult.auditEvents),
         this.#handoffEvidence(intent, 'Runtime created a controlled approval checkpoint.', routing.routingId),
       ],

@@ -19,6 +19,7 @@ import type {
 } from '../routing/execution-routing-contract.ts';
 import type { RunOptions, RuntimeRunResult } from '../services/runtime-foundation-service.ts';
 import type { CreateWorkflowInput } from '../workflow/workflow-service.ts';
+import type { TaskExecutionEnvelope } from '../task/task-execution-envelope-contract.ts';
 
 export type IntentClassificationStatus =
   | 'CLASSIFIED'
@@ -44,6 +45,7 @@ export type HandoffDecision =
   | 'WAITING_APPROVAL'
   | 'INTENT_REJECTED'
   | 'ROUTING_BLOCKED'
+  | 'ENVELOPE_BLOCKED'
   | 'RUNTIME_BLOCKED'
   | 'INTEGRATION_FAILED';
 
@@ -74,6 +76,7 @@ export interface ControlledRuntimeHandoffRequest {
   readonly intentResult: StructuredIntentClassificationResult;
   readonly executionContext: ExecutionContext;
   readonly budget: BudgetSnapshot;
+  readonly executionEnvelope?: TaskExecutionEnvelope;
   readonly cancelled?: boolean;
 }
 

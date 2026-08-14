@@ -9,6 +9,10 @@ import {
   type ControlledRuntimeHandoffRequest,
   type StructuredIntentClassificationResult,
 } from './intent-runtime-handoff-contract.ts';
+import {
+  TaskExecutionEnvelopeError,
+  validateAndFreezeTaskExecutionEnvelope,
+} from '../task/task-execution-envelope-contract.ts';
 
 const REFERENCE_PATTERN = /^[A-Za-z0-9][A-Za-z0-9._:/-]{0,127}$/;
 const CLASSIFICATION_STATUSES = new Set(['CLASSIFIED', 'AMBIGUOUS', 'OUT_OF_SCOPE', 'INSUFFICIENT_EVIDENCE']);
@@ -225,10 +229,23 @@ export function validateAndFreezeHandoffRequest(
     invalid('cancelled', 'must be boolean');
   }
 
+  let executionEnvelope: ControlledRuntimeHandoffRequest['executionEnvelope'];
+  if (request.executionEnvelope !== undefined) {
+    try {
+      executionEnvelope = validateAndFreezeTaskExecutionEnvelope(request.executionEnvelope);
+    } catch (error) {
+      const reason = error instanceof TaskExecutionEnvelopeError
+        ? error.message
+        : 'task execution envelope failed validation';
+      invalid('executionEnvelope', reason);
+    }
+  }
+
   return Object.freeze({
     intentResult,
     executionContext,
     budget,
+    ...(executionEnvelope === undefined ? {} : { executionEnvelope }),
     ...(request.cancelled === undefined ? {} : { cancelled: request.cancelled }),
   });
 }
