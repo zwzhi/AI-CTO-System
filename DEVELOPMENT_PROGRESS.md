@@ -201,4 +201,4 @@ Collect 3–5 comparable execution feedback records before proposing any change 
 
 ### Limitation and Next Action
 
-The feature branch is not merged, while the user-level Junction targets the canonical `main` tree. Do not claim host-level automatic discovery until the branch is integrated and the five Fresh Session cases are run in a newly opened Codex conversation.
+The feature branch is merged into `main`, and the user-level Junction targets the canonical Skill source. Host-level automatic discovery is still not claimed until the five Fresh Session cases are run in a newly opened Codex conversation.

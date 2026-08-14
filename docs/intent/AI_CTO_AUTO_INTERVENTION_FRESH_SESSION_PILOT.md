@@ -26,7 +26,7 @@ This pilot verifies host-level implicit discovery and request-level routing afte
 
 `NOT_CAPTURED`
 
-The implementation branch is intentionally not merged yet. The user-level Junction points to the canonical `main` tree, so a new-session pilot must be run only after the integration decision makes the tested Skill source canonical. Until then, the matrix remains unverified.
+The implementation branch is now merged into the canonical `main` tree. The user-level Junction points to that canonical Skill source, so the matrix is ready for a newly opened Codex conversation but remains unverified until the host-level cases are observed.
 
 ## Pilot record template
 
