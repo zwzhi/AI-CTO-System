@@ -203,3 +203,11 @@ AI Matrix 已迁移到 `D:\AI Project\AI-Matrix` 独立仓库并继续由 AI CTO
 ## 未来计划
 
 通过外部项目记录持续治理 AI Matrix。下一步在独立仓库冻结 Subject Profile 与资料授权，收集成功、失败和 holdout 案例，确认九维判断规则并准备 20 个真实任务与专家独立基线；不得为此重新把业务源码放回 AI CTO System 或修改 Core。
+## 2026-08-14：AI CTO Automatic Intervention Reinforcement
+
+- Classification: `EXTEND_EXISTING_MODULE`; owning module remains Layer 5 `Intent Gateway`.
+- The repository Skill is now an implicit entry point for relevant product, project, feature, bug, architecture, testing, delivery, maintenance, takeover, incident, and continuation requests; users do not need to invoke `$ai-cto-system` explicitly.
+- The Skill only identifies, routes, and continues work. Explicit opt-out has priority; routing uses the lightest sufficient `L0`–`L4`; authority is loaded progressively; no background monitor, external call, lifecycle advancement, code change, commit, or execution authorization is introduced.
+- Evidence captured: package contract test passed, routing preflight passed, official Skill validator passed under UTF-8 mode. Execution Authorization remains `NONE`.
+- Fresh Session host behavior is `NOT_CAPTURED`: the implementation branch is not merged and the user-level Junction targets canonical `main`; the five-case pilot must be run in a newly opened Codex conversation after integration.
+- Next Action: make an explicit branch integration decision, then run and record the Fresh Session pilot without inferring host selection from static files.

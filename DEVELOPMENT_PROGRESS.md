@@ -177,3 +177,28 @@ Collect 3–5 comparable execution feedback records before proposing any change 
 
 - This is one comparable case, so it supports an observation but does not justify changing default routing.
 - Compare at least two additional cases before proposing any default-route change.
+## 2026-08-14 AI CTO Automatic Intervention Entry
+
+### Status
+
+- Classification: `EXTEND_EXISTING_MODULE`
+- Owning Module: `Intent Gateway` (Layer 5)
+- Execution Authorization: `NONE`
+- Fresh Session Pilot: `NOT_CAPTURED`
+
+### Delivered
+
+- Added the authoritative automatic intervention standard and five-case Fresh Session pilot matrix.
+- Updated the repository Skill frontmatter, automatic intervention contract, and Codex metadata to allow implicit invocation.
+- Preserved explicit opt-out precedence, route-first `L0`–`L4`, progressive authority loading, lifecycle Gates, and no-background/no-side-effect boundaries.
+
+### Evidence
+
+- Package contract test: passed.
+- Routing preflight contract test: passed.
+- Official Skill validator: passed with UTF-8 mode enabled.
+- Full Node regression remains required after documentation synchronization.
+
+### Limitation and Next Action
+
+The feature branch is not merged, while the user-level Junction targets the canonical `main` tree. Do not claim host-level automatic discovery until the branch is integrated and the five Fresh Session cases are run in a newly opened Codex conversation.

@@ -53,4 +53,4 @@ AI CTO System 不是单纯代码生成工具、聊天机器人、普通项目管
 
 ## 当前状态
 
-Phase 1–8、Architecture Review、Strategic Alignment Review、Phase 8.2 Capability Governance、Phase 8.3 Knowledge Governance、Knowledge Governance Pilot 和 Master Architecture Sync 的文档治理已经建立。当前没有具体 Agent Runtime、自动化执行、正式 Capability Record、RAG 或向量数据库，也没有安装、接入或调用外部 Skill、MCP、Agent 或工具；Phase 8.4 `Intelligent Resource & Execution Routing Governance` 仅为 `PROPOSED` 路线，尚未启动，也不构成资源路由或执行实现授权。
+Phase 1–8、Architecture Review、Strategic Alignment Review、Phase 8.2 Capability Governance、Phase 8.3 Knowledge Governance、Knowledge Governance Pilot 和 Master Architecture Sync 的文档治理已经建立。当前没有具体 Agent Runtime、自动化执行、正式 Capability Record、RAG 或向量数据库；仓库内 AI CTO Skill Gateway 已存在并允许隐式调用，但新对话发现仍需独立 Fresh Session Pilot 证据。当前没有安装、接入或调用外部 MCP、Agent、Provider 或工具；Phase 8.4 `Intelligent Resource & Execution Routing Governance` 仅为 `PROPOSED` 路线，尚未启动，也不构成资源路由或执行实现授权。

@@ -60,6 +60,8 @@ AI CTO
 
 ## 强制入口规则
 
+Codex 的 `skills/ai-cto-system` 是本系统的自动入口；用户不需要显式唤醒。该入口只负责识别、路由和接续，实际项目状态、生命周期、Gate 与执行授权仍以仓库权威为准。
+
 收到请求后先判断入口：
 
 - 修改 AI CTO System 自身能力、协议、Module、Agent、工具或自动化：先执行 Strategic Alignment 与 Module Admission；取得 `ADMIT_FOR_CLASSIFICATION` 后才能进入 Layer + Module 分类。
