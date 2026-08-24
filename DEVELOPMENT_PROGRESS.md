@@ -158,6 +158,26 @@ Complete final verification across all three reinforcements and prepare the bran
 
 Collect 3–5 comparable execution feedback records before proposing any change to default routing or Runtime behavior.
 
+## 2026-08-24 Finalization Integrity Design
+
+### Status
+
+- Scope: Existing governance extension; no new Phase or Module
+- Result: `DESIGN_COMPLETE`
+- Source: Public `LB623/no-negative-echo` Skill research
+- Runtime / Permission / Gate: `UNCHANGED`
+- Execution Authorization: `NONE`
+
+### Design Decision
+
+- Adopt Accepted Final State, Positive Regeneration, Surface-by-Surface Review, and Readback for high-assurance delivery.
+- Do not install the external Skill or introduce a new Capability, Agent, Phase, Module, or approval system.
+- Preserve real baseline changes, safety, migration, compatibility, audit, and external-event facts.
+
+### Next Action
+
+User reviews `docs/superpowers/specs/2026-08-24-finalization-integrity-design.md`; after approval, create the implementation plan and synchronize the existing governance entry points.
+
 ## 2026-08-13 EFF-002 Case Capture
 
 ### Status
