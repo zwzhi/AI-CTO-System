@@ -119,3 +119,9 @@ Commit SHA 生成后必须写入 Traceability Matrix。合并、变基、压缩�
 ## 9. 完成证据
 
 一项 Git 工作流任务只有在以下证据彼此一致时才完成：最终 Commit SHA、分支与合并记录、评审结论、测试证据、Task / Requirement / Design / Test Case 追踪、变更影响记录，以及适用的发布和回滚记录。缺少任一强制证据时，任务保持未完成状态，不得用分支已合并或文件已出现代替。
+
+## 10. Finalization Integrity
+
+Commit subject、Commit body、合并请求标题 / 说明和交接摘要必须从批准范围、实际 Diff、评审结果和测试 Evidence 生成。会话中被否决且未进入基线的方案不应成为提交或交付物的命名中心；真实删除、迁移、兼容性、安全、审计和外部操作事实必须保留。
+
+高保障提交或合并前，按 [Finalization Integrity Standard](../governance/FINALIZATION_INTEGRITY_STANDARD.md) 执行 `Preflight → Freeze → Authorized Action → Readback → Postflight`。Hook、平台包装或合并后内容发生变化时，必须重新读取并检查；文本扫描通过不等于语义正确或评审通过。

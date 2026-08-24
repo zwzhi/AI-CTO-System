@@ -64,3 +64,7 @@ Next Action: 收集可比较案例，不自动改规则
 ## 6. 边界
 
 本标准不创建遥测系统、不读取文件系统、不调用网络、不选择具体模型、不自动重试、不自动切换、不修改 Runtime、Capability、Permission、Gate 或权威治理文件。
+
+## 7. Finalization Integrity Observation
+
+Quality Outcome 可以记录最终交付是否出现会话残留、标题 / 文件名 / Commit / PR / Handoff 是否与 Accepted Final State 一致，以及是否完成 Readback。该字段只形成 Observation / Evidence；单案例不得自动修改路由、模型、Skill、Tool、Context、Git 策略或执行授权。

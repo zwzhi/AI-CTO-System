@@ -307,3 +307,9 @@ AI 项目必须：
 未通过时必须形成 `CHANGES_REQUIRED` 或 `BLOCKED` 记录、全部失败 / 阻断项、责任人、修订或解除条件、生命周期落点和下一动作。
 
 无论测试通过率、开发完成度或审批人数多高，本门禁都不能直接把 DEVELOPMENT 或 TESTING 修改为 RELEASE。只有 Testing Release Gate 可以基于当前有效 `READY_FOR_RELEASE` 执行 TESTING → RELEASE；进入 RELEASE 后仍需按部署方案实际执行、验证、观察并记录发布结果，才能证明版本已部署或已发布。
+
+## 13. Finalization Integrity
+
+Release 标题、Release Report、Known Issues、回滚说明和用户沟通必须从当前冻结的 Release Version Baseline、实际验证结果和必要风险事实生成。按 [Finalization Integrity Standard](../governance/FINALIZATION_INTEGRITY_STANDARD.md) 检查各交付表面；会话中未进入基线的被否方案不应成为发布物身份，真实行为变化、安全、兼容、迁移、失败和回滚事实不得隐藏。
+
+发布前后涉及平台包装、Hook、生成制品或用户可见页面时，分别执行适用的 Preflight、Freeze、Readback 和 Postflight。该检查不新增 Gate Result、不改变 `READY_FOR_RELEASE` 的授权链，也不替代 Security、UAT、Deployment、Rollback 或 Testing Release Gate。
