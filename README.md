@@ -43,6 +43,7 @@ Phase 只记录历史交付批次，Module 表示可独立治理的能力，Life
 - [Capability Registry](./docs/capability/CAPABILITY_REGISTRY_STANDARD.md)
 - [Knowledge Governance](./docs/knowledge/KNOWLEDGE_GOVERNANCE_STANDARD.md)
 - [Knowledge Registry](./docs/knowledge/KNOWLEDGE_REGISTRY_STANDARD.md)
+- [Finalization Integrity](./docs/governance/FINALIZATION_INTEGRITY_STANDARD.md)
 - [Governed Knowledge Base](./knowledge_base/)
 
 未来系统能力先以 Master Plan 核对当前架构和路线，再证明 Mission Alignment 和长期价值；取得 `ADMIT_FOR_CLASSIFICATION` 后，才能进入 Layer / Module 分类。无法证明使命价值的功能不进入 AI CTO System。
