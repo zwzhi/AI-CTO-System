@@ -200,6 +200,39 @@ User reviews `docs/superpowers/specs/2026-08-24-finalization-integrity-design.md
 
 - This is one comparable case, so it supports an observation but does not justify changing default routing.
 - Compare at least two additional cases before proposing any default-route change.
+
+## 2026-08-24 Finalization Integrity Adoption
+
+### Status
+
+- Classification: `EXTEND_EXISTING_MODULE`
+- Owning surfaces: Layer 3 Git / Layer 4 Delivery & Release / Layer 5 Skill Gateway
+- Result: `DOCUMENTATION_COMPLETE`
+- Execution Authorization: `NONE`
+- Capability Activation: `NONE`
+
+### Completed
+
+- Aligned README, canonical progress authority and core ADR index scope.
+- Added `docs/governance/FINALIZATION_INTEGRITY_STANDARD.md`.
+- Synchronized root SKILL and `skills/ai-cto-system/SKILL.md` with Accepted Final State, surface checks and high-assurance Readback.
+- Integrated Delivery, Git, Audit, Execution Feedback and Release Approval guidance.
+- Recorded Project Memory and preserved the separate Phase 8.4 model-routing boundary.
+
+### Scope Guard
+
+- No external Skill installation, new Phase, Layer, Module, Capability, Agent, Runtime, model switch, tool call, permission change or Gate result was added.
+- Real baseline changes, security, migration, compatibility, audit, failure and external-action facts remain mandatory to preserve.
+
+### Evidence and Limitations
+
+- `git diff --check` and targeted scope checks passed after each documentation commit.
+- Repository Skill and user-level Junction content remain SHA-256 identical.
+- No semantic model efficacy claim is made; current integration is a governance / prompt-level mitigation.
+
+### Next Action
+
+Collect real project examples where final Commit, PR, Release or Handoff surfaces can be compared against the Accepted Final State; record them as Evidence without automatically changing routing or model behavior.
 ## 2026-08-14 AI CTO Automatic Intervention Entry
 
 ### Status

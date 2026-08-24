@@ -195,6 +195,8 @@
 - 2026-08-06：Global AI CTO Skill Gateway 已合并到 `main` 并在本机安装。用户级 `C:\Users\白名单\.codex\skills\ai-cto-system` 是指向仓库 `skills\ai-cto-system` 的 NTFS Junction，重复安装验证为幂等，canonical source 和 metadata 可读。当前状态严格保持 `INSTALLED_AWAITING_FRESH_SESSION_PILOT`；当前对话的 Skill catalog 不能充当启动发现 Evidence，需在新 Codex 对话验证四类 Pilot 后再决定是否标记 `GLOBAL_SKILL_GATEWAY_VALIDATED`。
 - 2026-08-06：用户授权创建私有 GitHub 远程仓库。已在 `zwzhi/AI-CTO-System` 创建 `PRIVATE` 仓库，配置本地 `origin` 为 `https://github.com/zwzhi/AI-CTO-System.git`，将 `main` 设为远程默认分支并推送完整提交历史。本记录取代“当前没有 Git remote”的运行状态，但不改写此前设计阶段的历史事实。
 - 2026-08-06：完成 Global AI CTO Skill Routing Preflight：真实使用反馈证明旧 Gateway 的“选择最轻流程”缺少入口硬合同；新增 `L0`–`L4` Route-first 表、`L1` 防流程膨胀、渐进 Context 与单行非阻塞路由提示。路由合同、官方 Skill 校验、安装器与 165 项 Node 回归通过；新上下文抽检覆盖 L1、L4 和显式 OFF。未新增 Module、Phase、ADR、Runtime 或真实模型/工具执行。
+- 2026-08-24：完成 AI CTO System 全局治理源审查并修复状态漂移：README 与 Master Plan / Module Registry 对 Phase 8.4 的状态已对齐；根 `DEVELOPMENT_PROGRESS.md` 被确认为当前进度权威，`docs/DEVELOPMENT_PROGRESS.md` 标记为历史档案；Master Plan 补充核心 ADR 索引范围与 ADR-0031。该修正不改变 Runtime、模型路由执行或项目 Gate。
+- 2026-08-24：完成 Finalization Integrity 横向治理接入。吸收 Accepted Final State、正向重新生成、交付表面检查和高保障 Readback / Postflight；保留真实删除、迁移、安全、兼容、审计、失败与外部操作事实。未安装外部 Skill，未新增 Phase / Module / Capability / Agent / Runtime / 审批系统；Phase 8.4 模型路由保持独立，Execution Authorization 为 `NONE`。Evidence 为公开 `LB623/no-negative-echo` Skill 文档（L2），集成后真实项目效果仍待收集。
 
 ## 当前状态
 
