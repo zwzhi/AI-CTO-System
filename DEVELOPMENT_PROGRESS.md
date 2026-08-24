@@ -173,6 +173,7 @@ Collect 3–5 comparable execution feedback records before proposing any change 
 - Adopt Accepted Final State, Positive Regeneration, Surface-by-Surface Review, and Readback for high-assurance delivery.
 - Do not install the external Skill or introduce a new Capability, Agent, Phase, Module, or approval system.
 - Preserve real baseline changes, safety, migration, compatibility, audit, and external-event facts.
+- Clarified that this integration does not implement model switching; Phase 8.4 model-routing work remains an independent future capability.
 
 ### Next Action
 

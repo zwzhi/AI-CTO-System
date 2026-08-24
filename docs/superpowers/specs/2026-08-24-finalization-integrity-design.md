@@ -55,7 +55,7 @@ Preflight → Freeze → Authorized Action → Readback → Postflight
 3. 不建立对词语的全局禁用清单；
 4. 不因“避免负向回声”而隐藏真实删除、迁移、安全、兼容、审计或用户要求的对比事实；
 5. 不把文本扫描通过解释为语义正确或模型行为得到证明；
-6. 不自动切换模型、调用工具、修改 Runtime、改变权限或绕过 Gate；
+6. 本次整合不实现或触发自动模型切换、工具调用或 Runtime 行为变化；Phase 8.4 的模型路由治理保持独立、现状不变，未来仍可在单独授权下实现宿主模型切换；
 7. 不覆盖用户已有改动、已执行外部事件或真实失败记录。
 
 ## 4. Integration Design
@@ -119,4 +119,4 @@ Finalization Integrity 是横向质量约束，不拥有项目价值判断、架
 
 ## 8. Implementation Boundary
 
-下一步只允许实施本文定义的文档和入口同步。实施完成后需要更新 Project Memory 与 Development Progress，并进行针对性的交付表面示例验证；不得借此进入新的 Runtime、Capability 或自动化开发阶段。
+下一步只允许实施本文定义的文档和入口同步。实施完成后需要更新 Project Memory 与 Development Progress，并进行针对性的交付表面示例验证；不得借此进入新的 Runtime、Capability 或自动化开发阶段，也不改变 Phase 8.4 的模型路由实施边界。
