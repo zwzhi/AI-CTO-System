@@ -1,5 +1,7 @@
 # Development Progress
 
+> **Canonical current progress:** This root file is the current AI CTO System progress authority. `docs/DEVELOPMENT_PROGRESS.md` is a legacy historical archive and must not override this file's current status.
+
 ## 2026-08-14 AI-CTO ZIP Selective Reinforcement Hardening
 
 ### Status

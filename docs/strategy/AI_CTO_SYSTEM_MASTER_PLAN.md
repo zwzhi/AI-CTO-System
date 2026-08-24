@@ -188,6 +188,8 @@ flowchart TD
 
 ## 10. 核心 ADR 索引
 
+本表索引 AI CTO System 核心仓库中的持续生效 ADR。AI Matrix 等外部项目的产品 ADR 由其独立仓库维护；本仓库只索引影响 AI CTO System 与外部项目边界的 ADR。
+
 | ADR | 主题 | 持续影响 |
 |---|---|---|
 | [ADR-0001](../adr/ADR-0001-PROJECT-LIFECYCLE-ORDER.md) | Research 与 Evaluation 顺序 | 两阶段均完成后才能进入 Design |
@@ -215,6 +217,7 @@ flowchart TD
 | [ADR-0023](../adr/ADR-0023-SINGLE-AGENT-RUNTIME-IMPLEMENTATION.md) | Single Agent Runtime Implementation | 先以确定性 Planner 验证 Agent Runtime 闭环；Plan 版本化且默认等待确认 |
 | [ADR-0024](../adr/ADR-0024-CODEX-CAPABILITY-INTEGRATION.md) | Codex Capability Integration | Codex 经可替换 Adapter 作为受控 Capability 接入；真实接入仍需独立准入、实现与授权 |
 | [ADR-0025](../adr/ADR-0025-CODEX-CAPABILITY-IMPLEMENTATION.md) | Codex Capability Implementation Design | 先以无副作用 Local Mock 验证 Adapter、Guard 与 Audit 合同；不激活或连接真实 Provider |
+| [ADR-0031](../adr/ADR-0031-AI-MATRIX-INDEPENDENT-REPOSITORY.md) | AI Matrix 独立仓库 | AI CTO System 负责开发治理，不拥有外部项目业务源码；两者通过边界合同与外部项目记录连接 |
 
 ### 使用与维护
 

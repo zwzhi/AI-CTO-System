@@ -1,4 +1,6 @@
-# AI CTO System 开发进度
+# AI CTO System 开发进度（Legacy Historical Archive）
+
+> 当前进度权威文件是仓库根目录 [`DEVELOPMENT_PROGRESS.md`](../DEVELOPMENT_PROGRESS.md)。本文件保留历史记录，不得用于覆盖根文件中的当前状态、Git remote、Skill 安装或 Runtime 状态。
 
 ## AI Matrix Maintenance Handoff Governance
 
