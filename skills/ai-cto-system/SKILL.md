@@ -71,6 +71,7 @@ Load authority documents only after routing. Use `D:\AI Project\AI-CTO-System` a
 | Existing project review, takeover, health check, or optimization | `docs/onboarding/PROJECT_ONBOARDING_PROTOCOL.md` |
 | AI CTO System change | `docs/strategy/AI_CTO_SYSTEM_MANIFESTO.md`, `docs/strategy/AI_CTO_SYSTEM_MASTER_PLAN.md`, and `docs/strategy/MODULE_ADMISSION_CRITERIA.md` |
 | Project status or continuation | The target project's `PROJECT_STATE.md` and `PROJECT_MEMORY.md` |
+| Finalization, Commit, PR, Release, Handoff or delivery packaging | `docs/governance/FINALIZATION_INTEGRITY_STANDARD.md` plus the applicable Git / Delivery / Release standard |
 | Ordinary conversation, simple explanation, or low-risk direct work | No AI CTO governance context |
 
 Load research, evaluation, design, development, testing, release, maintenance, capability, knowledge, or Runtime standards only when the selected route reaches that concern. Never eagerly load the full governance corpus.
@@ -82,6 +83,10 @@ Load research, evaluation, design, development, testing, release, maintenance, c
 3. Analyze and design before coding when AI CTO governance applies.
 4. Preserve existing ADR, Gate, Human Control, memory, audit, evidence, permission, and budget rules.
 5. State the current result, confidence, evidence gaps, and next authorized action.
+
+## Finalization integrity
+
+When the request produces a user-visible artifact or delivery wrapper, generate it from the accepted final state and actual validation evidence. Treat rejected session-only alternatives as control information, not as the artifact's identity. Preserve real baseline changes and required safety, migration, compatibility, audit, failure and external-action facts. For high-assurance delivery, use the existing Finalization Integrity Standard's Preflight / Freeze / Readback / Postflight sequence; this rule does not grant execution, model switching, tool invocation or Gate bypass authority.
 
 ## Keep the boundary honest
 

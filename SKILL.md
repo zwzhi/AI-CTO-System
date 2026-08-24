@@ -266,6 +266,14 @@ Capability Governance 当前是 Layer 5 的 `Completed` 文档治理 Module；�
 3. 只有 Delivery Readiness Gate 的 `READY_FOR_DELIVERY` 可表示交付准备就绪；不等于部署、上线或用户成功使用。
 4. Phase 8.6 不实现 CI/CD、Installer、部署工具或 Runtime，也不进入 Phase 9。
 
+## FINALIZATION INTEGRITY 规则
+
+1. 生成标题、文件名、注释、Commit、PR、Release、Handoff 和用户交付说明前，先依据批准的 Requirement / Design、实际 Diff、Validation Evidence 和当前限制确定 `Accepted Final State`；不要从完整会话逐词删改中间草案。
+2. 仅在会话中被否决、未进入基线的方案默认不进入最终交付；真实删除、迁移、安全、兼容、审计、外部操作、失败和用户要求的对比事实必须保留。
+3. 按 [Finalization Integrity Standard](docs/governance/FINALIZATION_INTEGRITY_STANDARD.md) 检查每个适用交付表面。文本扫描或自动检查只提供 Evidence，不替代语义判断、Review、Security、Release Gate 或用户决定。
+4. Commit、PR、Release、外部发送、生产变更、敏感或难回滚动作，以及压缩 / 委托后的高保障交付必须执行 `Preflight → Freeze → Authorized Action → Readback → Postflight`；无法读取的表面标记 `NOT_CAPTURED`。
+5. 本规则不创建新的 Phase、Module、Capability、Agent、Runtime 或审批系统，不自动切换模型、不调用工具、不改变权限或 Gate；Phase 8.4 模型路由治理保持独立。
+
 ## PHASE 9A RUNTIME ARCHITECTURE 规则
 
 Runtime 只按 `docs/runtime/` 架构合同设计；Agent 经 Workflow Engine 流转，工具经 Capability Adapter，执行受 Permission、Approval、Budget、Audit、Kill Switch 和 Gate 约束。Phase 9A 不实现 Runtime、Agent、Codex、MCP、工具调用或自动执行，不进入 Phase 9B。
