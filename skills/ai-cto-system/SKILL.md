@@ -73,6 +73,7 @@ Load authority documents only after routing. Use `D:\AI Project\AI-CTO-System` a
 | Project status or continuation | The target project's `PROJECT_STATE.md` and `PROJECT_MEMORY.md` |
 | Finalization, Commit, PR, Release, Handoff or delivery packaging | `docs/governance/FINALIZATION_INTEGRITY_STANDARD.md` plus the applicable Git / Delivery / Release standard |
 | Codex execution surface, Subagent, MCP, Plugin, Goal, Worktree or Scheduled Task selection | `docs/architecture/AI_CTO_CODEX_OPERATING_MODEL.md` plus the applicable project / security / delivery standard |
+| AI CTO context-pack or active operating-core selection | `docs/architecture/AI_CTO_ACTIVE_OPERATING_CORE.md` plus the selected route authority |
 | Ordinary conversation, simple explanation, or low-risk direct work | No AI CTO governance context |
 
 Load research, evaluation, design, development, testing, release, maintenance, capability, knowledge, or Runtime standards only when the selected route reaches that concern. Never eagerly load the full governance corpus.

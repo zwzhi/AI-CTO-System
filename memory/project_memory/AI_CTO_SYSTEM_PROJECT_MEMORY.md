@@ -199,6 +199,7 @@
 - 2026-08-24：完成 Finalization Integrity 横向治理接入。吸收 Accepted Final State、正向重新生成、交付表面检查和高保障 Readback / Postflight；保留真实删除、迁移、安全、兼容、审计、失败与外部操作事实。未安装外部 Skill，未新增 Phase / Module / Capability / Agent / Runtime / 审批系统；Phase 8.4 模型路由保持独立，Execution Authorization 为 `NONE`。Evidence 为公开 `LB623/no-negative-echo` Skill 文档（L2），集成后真实项目效果仍待收集。
 - 2026-08-25：完成 AI CTO–Codex Execution Plane 对齐。AI CTO System 定位为 Governance Plane，Codex App / CLI / IDE 定位为默认 Execution Plane；Subagents、Skills、MCP、Plugins、文件 / Shell、Worktree、Goal 和 Scheduled Tasks 优先复用 Codex Host。既有 Runtime / Agent / Codex 文档保留为 Internal MVP Evidence、Governance Contract 或 Optional External Runtime Reference，不继续复制 Codex 执行层。ADR-0033 已 Accepted；外部 Codex Registry 仍为 `ABSENT`，Selection 为 `PROHIBITED`，Activation 为 `NONE`，Execution Authorization 为 `NONE`。
 - 2026-08-25：完成 AI CTO–Codex Operating Model 优化。将新项目、已有项目接管、项目续接、普通功能、Subagent、MCP / Plugin、Goal 和 Scheduled Task 统一映射到 L0–L4、最小 Context 和 Codex Host Surface；继续复用现有 Intent Gateway、Execution Routing、Finalization Integrity、Evidence、Audit 和 Gate。未新增 Runtime、Provider、模型切换器、RAG、后台监控或自动执行服务，未改变外部 Codex Registry 与 `Execution Authorization: NONE`。
+- 2026-08-25：完成 AI CTO System Comprehensive Product Review。确认核心产品是“AI CTO Governance Plane + Codex Execution Plane”，保留 Mission、Memory、Decision、Design、Lifecycle、Evidence、Audit、Gate 和 Self Evolution Proposal；将 Subagents、MCP、Plugins、Worktree、Goal、Scheduled Task、模型与实际代码执行交由 Codex Host。新增 Active Operating Core 作为最小上下文地图，明确 Runtime / Capability 历史文档不再作为默认全量上下文。
 
 ## 当前状态
 

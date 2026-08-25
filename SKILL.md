@@ -334,6 +334,10 @@ AgentTask 只通过 Agent Runtime domain service 管理；Workflow Engine 独占
 4. Host Surface 不可用时输出 `NOT_AVAILABLE`，不得把未调用的内部 Runtime、Mock Capability 或设计合同冒充为实际执行。
 5. Scheduled Task、Goal、Subagent、MCP 和 Plugin 都必须有明确范围、停止条件、验证、回滚或人工控制；宿主权限不能覆盖 AI CTO 的安全、ADR、Gate 和用户最终决定。
 
+## ACTIVE OPERATING CORE 规则
+
+日常请求先使用 `docs/architecture/AI_CTO_ACTIVE_OPERATING_CORE.md` 选择最小 Context Pack；完整 Runtime、Capability、ADR、历史 Phase 和 Knowledge 只在任务确实触及时加载。新项目、已有项目、继续开发、状态查询和退出治理的实际操作路径以 [AI CTO–Codex Operating Model](docs/architecture/AI_CTO_CODEX_OPERATING_MODEL.md) 为准。
+
 ## CAPABILITY GOVERNANCE 规则
 
 1. 使用 `docs/capability/CAPABILITY_GOVERNANCE_STANDARD.md` 区分 Module、Capability、Feature 和 Technical Asset。Capability 是可调用的内部或外部能力，不是系统功能 Module。

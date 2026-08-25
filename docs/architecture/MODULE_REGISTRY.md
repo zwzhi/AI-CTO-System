@@ -119,6 +119,8 @@ AI CTO System 的 Layer 5 Runtime、Agent 和 Codex 文档不等于 Codex Host �
 
 日常 Codex 操作入口统一遵循 [AI CTO–Codex Operating Model](./AI_CTO_CODEX_OPERATING_MODEL.md)：该文档是 Intent Gateway / Execution Routing 的操作映射，不是新 Module，也不产生 Runtime 或 Capability 激活。
 
+日常最小上下文以 [AI CTO Active Operating Core](./AI_CTO_ACTIVE_OPERATING_CORE.md) 为地图；该地图和 [AI CTO Comprehensive Product Review](../strategy/AI_CTO_SYSTEM_COMPREHENSIVE_REVIEW.md) 是治理 Artifact，不注册为 Module。
+
 Capability Governance 的文档治理在 Phase 8.2 完成；Engineering Capability Strategy 与 Roadmap 已定义 Provider 无关的类别、合同、优先级、依赖、人类控制和 `Adopt / Improve / Merge / Deprecate / Remove` 策略动作。P0 Evidence-driven Documentation Assistant 已登记为 `CAP-DOC-0001` 并完成受限内部激活：它只接受任务级确认绑定的 Authorized Source Scope，以 Evidence-first 方式生成只读 Draft Package 并追加 Audit；不读取或写入文件、不接入 Provider/LLM/网络/MCP/CLI、不推进 Knowledge 状态。`ACTIVE` 不等于单次调用授权。当前没有外部 Capability 被安装或激活；自动选择、插件接入和工具调用仍未实现。
 
 Execution Routing Governance 的文档治理和确定性只读 Router 已完成；它只输出建议性 Execution Plan 与 L2 Evidence。Intent Gateway 与 Agent Runtime 的合同治理已完成，但没有真实 Agent、自动模型切换、真实工具调用或执行授权；Tool Calling 与 Automation 仍为 `Planned`。

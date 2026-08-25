@@ -22,6 +22,8 @@ AI CTO System 采用 Governance Plane / Codex Execution Plane 分工。AI CTO �
 
 日常使用入口和 Host Surface 选择统一遵循 [AI CTO–Codex Operating Model](../architecture/AI_CTO_CODEX_OPERATING_MODEL.md)：新项目、已有项目接管、项目续接、普通功能、Subagent、MCP / Plugin、Goal 和 Scheduled Task 均先经过 L0–L4 路由与最小上下文判断，不要求用户反复输入唤醒命令；Host Surface 不可用时必须报告 `NOT_AVAILABLE`，不冒充内部 Runtime 已执行。
 
+系统日常 Context Pack 和主动入口以 [AI CTO Active Operating Core](../architecture/AI_CTO_ACTIVE_OPERATING_CORE.md) 为最小地图；完整能力与剩余风险见 [AI CTO Comprehensive Product Review](AI_CTO_SYSTEM_COMPREHENSIVE_REVIEW.md)。历史 Runtime / Phase 文档按任务读取，不作为全量默认上下文。
+
 ## 1. 系统使命
 
 AI CTO System 的使命是帮助个人或组织建立可持续运作的 AI 技术组织，将想法持续转化为可交付、可维护、可进化的产品资产，并通过真实使用、经验沉淀和技术资产复用形成研发复利。
