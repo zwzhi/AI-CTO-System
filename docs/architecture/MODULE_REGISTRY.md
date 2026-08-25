@@ -106,6 +106,17 @@ Module 状态变化、Owning Layer 变化、Module 新增 / 合并 / 拆分或�
 | Capability Governance | Layer 5 | 管理内部 / 外部能力的准入、注册、评估、选择、权限和生命周期；当前含一个受限内部 `ACTIVE` Documentation Capability | Completed（`CAP-DOC-0001` restricted `ACTIVE`） | [Governance](../capability/CAPABILITY_GOVERNANCE_STANDARD.md)、[Registry](../capability/CAPABILITY_REGISTRY_STANDARD.md)、[Evaluation](../capability/DOCUMENTATION_CAPABILITY_EVALUATION.md)、[CAP-DOC-0001](../../capabilities/documentation/CAP-DOC-0001.md)、[Documentation Requirement](../capability/DOCUMENTATION_CAPABILITY_REQUIREMENT.md)、[Documentation MVP Runtime](../../runtime/services/documentation-capability-runtime-service.ts) |
 | Execution Routing Governance | Layer 5 | 根据任务特征生成建议性 Execution Plan，治理复杂度、Workflow、资源、上下文、偏好、执行档位与 Evidence；不执行、不授予权限 | Completed（含确定性只读 Router） | [Routing Standard](../governance/EXECUTION_ROUTING_GOVERNANCE_STANDARD.md)、[Profile & Freshness Standard](../governance/EXECUTION_PROFILE_EVIDENCE_FRESHNESS_STANDARD.md)、[Complexity](../governance/TASK_COMPLEXITY_MODEL.md)、[Evidence](../governance/EXECUTION_ROUTING_EVIDENCE_STANDARD.md)、[Advisory Router](../../runtime/routing/advisory-execution-router.ts)、[ADR-0014](../adr/ADR-0014-EXECUTION-ROUTING-GOVERNANCE.md)、[ADR-0032](../adr/ADR-0032-EXECUTION-PROFILE-AND-EVIDENCE-FRESHNESS.md) |
 
+### Codex Execution Plane Alignment
+
+AI CTO System 的 Layer 5 Runtime、Agent 和 Codex 文档不等于 Codex Host 的实现。现有记录按以下方式解释：
+
+- `Agent Runtime`：内部 MVP Evidence / Governance Contract；不替代 Codex Subagents。
+- `AI CTO Runtime Architecture`：AI CTO 控制平面合同；日常 Codex 执行默认由宿主提供。
+- `Codex Integration`：Provider-neutral Contract / Mock-only Evidence；真实外部 Provider 仍为 `ABSENT`、`REJECT_OR_DEFER`、`PROHIBITED`、`NONE`。
+- `Tool Calling` / `Automation`：继续 `Planned`；Codex 原生 Tools、MCP、Plugins、Goals 和 Scheduled Tasks 由宿主 / 项目系统提供，AI CTO 负责治理而非复制实现。
+
+详见 [Codex Execution Plane Alignment](./CODEX_EXECUTION_PLANE_ALIGNMENT.md) 与 [ADR-0033](../adr/ADR-0033-AI-CTO-CODEX-EXECUTION-PLANE-ALIGNMENT.md)。
+
 Capability Governance 的文档治理在 Phase 8.2 完成；Engineering Capability Strategy 与 Roadmap 已定义 Provider 无关的类别、合同、优先级、依赖、人类控制和 `Adopt / Improve / Merge / Deprecate / Remove` 策略动作。P0 Evidence-driven Documentation Assistant 已登记为 `CAP-DOC-0001` 并完成受限内部激活：它只接受任务级确认绑定的 Authorized Source Scope，以 Evidence-first 方式生成只读 Draft Package 并追加 Audit；不读取或写入文件、不接入 Provider/LLM/网络/MCP/CLI、不推进 Knowledge 状态。`ACTIVE` 不等于单次调用授权。当前没有外部 Capability 被安装或激活；自动选择、插件接入和工具调用仍未实现。
 
 Execution Routing Governance 的文档治理和确定性只读 Router 已完成；它只输出建议性 Execution Plan 与 L2 Evidence。Intent Gateway 与 Agent Runtime 的合同治理已完成，但没有真实 Agent、自动模型切换、真实工具调用或执行授权；Tool Calling 与 Automation 仍为 `Planned`。

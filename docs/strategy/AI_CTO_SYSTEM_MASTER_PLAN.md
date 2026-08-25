@@ -16,6 +16,10 @@
 
 > Phase 10 治理设计现已包含风险驱动的 Optimization Autonomy Model：`AUTO_EXECUTE`、`AUTO_WITH_VALIDATION`、`NOTIFY`、`CONFIRM_REQUIRED` 与 `MANDATORY_APPROVAL` 定义未来执行策略。当前 MVP 仍仅分析与提案，`executionAuthorization: NONE`；这不构成 Runtime、自动执行或既有 Gate 变化的授权。
 
+## Codex Execution Plane Alignment (2026-08-25)
+
+AI CTO System 采用 Governance Plane / Codex Execution Plane 分工。AI CTO 负责使命、记忆、决策、设计、生命周期、Evidence、Audit、Gate 和人类控制；Codex App / CLI / IDE 负责模型、Subagents、Skills、MCP、Plugins、文件 / Shell、Worktree、Goal 和宿主执行。既有 Runtime / Agent / Codex 文档保留为 Internal MVP Evidence、Governance Contract 或 Optional External Runtime Reference，不继续在 AI CTO Core 中复制 Codex 的执行基础设施。详见 [Codex Execution Plane Alignment](../architecture/CODEX_EXECUTION_PLANE_ALIGNMENT.md) 与 [ADR-0033](../adr/ADR-0033-AI-CTO-CODEX-EXECUTION-PLANE-ALIGNMENT.md)。
+
 ## 1. 系统使命
 
 AI CTO System 的使命是帮助个人或组织建立可持续运作的 AI 技术组织，将想法持续转化为可交付、可维护、可进化的产品资产，并通过真实使用、经验沉淀和技术资产复用形成研发复利。
@@ -218,6 +222,7 @@ flowchart TD
 | [ADR-0024](../adr/ADR-0024-CODEX-CAPABILITY-INTEGRATION.md) | Codex Capability Integration | Codex 经可替换 Adapter 作为受控 Capability 接入；真实接入仍需独立准入、实现与授权 |
 | [ADR-0025](../adr/ADR-0025-CODEX-CAPABILITY-IMPLEMENTATION.md) | Codex Capability Implementation Design | 先以无副作用 Local Mock 验证 Adapter、Guard 与 Audit 合同；不激活或连接真实 Provider |
 | [ADR-0031](../adr/ADR-0031-AI-MATRIX-INDEPENDENT-REPOSITORY.md) | AI Matrix 独立仓库 | AI CTO System 负责开发治理，不拥有外部项目业务源码；两者通过边界合同与外部项目记录连接 |
+| [ADR-0033](../adr/ADR-0033-AI-CTO-CODEX-EXECUTION-PLANE-ALIGNMENT.md) | AI CTO / Codex Execution Plane 对齐 | AI CTO 治理 Codex，不在 Core 中复制 Codex 执行层 |
 
 ### 使用与维护
 

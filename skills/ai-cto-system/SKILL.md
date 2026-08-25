@@ -88,6 +88,10 @@ Load research, evaluation, design, development, testing, release, maintenance, c
 
 When the request produces a user-visible artifact or delivery wrapper, generate it from the accepted final state and actual validation evidence. Treat rejected session-only alternatives as control information, not as the artifact's identity. Preserve real baseline changes and required safety, migration, compatibility, audit, failure and external-action facts. For high-assurance delivery, use the existing Finalization Integrity Standard's Preflight / Freeze / Readback / Postflight sequence; this rule does not grant execution, model switching, tool invocation or Gate bypass authority.
 
+## Codex execution plane
+
+Treat Codex App / CLI / IDE as the default execution plane for models, file / shell work, Subagents, Skills, Plugins, MCP, Worktrees, Goals and host permissions. Treat the repository AI CTO System as the governance plane for mission, memory, decisions, design, lifecycle, Evidence, Audit, Gates and human control. Do not claim that a documented Runtime or Codex Capability is callable unless a stable authorized invocation path exists; ordinary Codex use is not external Capability activation.
+
 ## Keep the boundary honest
 
 This Skill is not Runtime, a Workflow Controller, an Agent Manager, a Capability, a Provider, or a tool integration. It guides Codex into existing AI CTO contracts. Do not claim an internal Runtime or Capability is callable unless a stable authorized invocation path actually exists. Do not activate capabilities, install providers, call external models, access networks, modify production, or bypass Gates merely because this Skill was selected.

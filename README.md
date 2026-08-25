@@ -44,6 +44,7 @@ Phase 只记录历史交付批次，Module 表示可独立治理的能力，Life
 - [Knowledge Governance](./docs/knowledge/KNOWLEDGE_GOVERNANCE_STANDARD.md)
 - [Knowledge Registry](./docs/knowledge/KNOWLEDGE_REGISTRY_STANDARD.md)
 - [Finalization Integrity](./docs/governance/FINALIZATION_INTEGRITY_STANDARD.md)
+- [Codex Execution Plane Alignment](./docs/architecture/CODEX_EXECUTION_PLANE_ALIGNMENT.md)
 - [Governed Knowledge Base](./knowledge_base/)
 
 未来系统能力先以 Master Plan 核对当前架构和路线，再证明 Mission Alignment 和长期价值；取得 `ADMIT_FOR_CLASSIFICATION` 后，才能进入 Layer / Module 分类。无法证明使命价值的功能不进入 AI CTO System。
@@ -51,6 +52,10 @@ Phase 只记录历史交付批次，Module 表示可独立治理的能力，Life
 ## 系统边界
 
 AI CTO System 不是单纯代码生成工具、聊天机器人、普通项目管理工具或无约束自动化机器人。与使命无直接关系的通用工具应作为独立产品或外部能力管理，不因“使用 AI”自动成为系统核心模块。
+
+## 与 Codex 的关系
+
+AI CTO System 负责治理平面：使命、记忆、决策、设计、生命周期、Evidence、Audit、Gate 和人类控制；Codex App / CLI / IDE 负责执行平面：模型、文件 / Shell、Subagents、Skills、MCP、Plugins、Worktree、Goal 和宿主权限。日常使用 Codex 不等于激活外部 Codex Capability；真实 Provider 接入仍遵循独立准入和安全规则。详见 [Codex Execution Plane Alignment](./docs/architecture/CODEX_EXECUTION_PLANE_ALIGNMENT.md)。
 
 ## 当前状态
 

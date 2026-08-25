@@ -318,6 +318,14 @@ AgentTask 只通过 Agent Runtime domain service 管理；Workflow Engine 独占
 4. 第一版所有代码/文件/Commit 请求均为 `CONFIRM_REQUIRED`；无 `AUTO` 路径。Approval 只能绑定一次明确 Task、操作、范围、版本、Permission、Budget 和有效期。
 5. Mock-only Implementation Gate 为 `APPROVED_FOR_IMPLEMENTATION`，但 Capability Registry 仍固定为 `Registry Record: ABSENT`、`Selection: PROHIBITED`、`Activation Scope: NONE`。此 Gate 不授权真实 Provider 接入、Activation、代码执行、文件修改、Commit 或生产使用。
 
+## CODEX EXECUTION PLANE ALIGNMENT 规则
+
+1. AI CTO System 是 Governance Plane；Codex App / CLI / IDE 是默认 Execution Plane。AI CTO 负责使命、记忆、决策、设计、生命周期、Evidence、Audit、Gate 和人类控制；Codex 负责模型、Subagents、Skills、MCP、Plugins、文件 / Shell、Worktree、Goal 和宿主执行。
+2. 日常使用 Codex 不等于将外部 Codex Provider 激活到 Capability Registry。真实 Provider 仍须执行来源、版本、License、安全、成本、兼容性、准入、评估、激活和项目权限流程。
+3. 现有 Runtime / Agent / Codex 文档可以作为内部 MVP Evidence、Governance Contract 或 Optional External Runtime Reference；不得因为这些文档存在而在 AI CTO Core 中复制 Codex 的执行基础设施。
+4. 多 Agent、MCP、Plugin、部署、Scheduled Task、模型选择和代码修改必须遵循 Codex 宿主权限、Sandbox、Approval、Worktree、项目 Gate 和本系统 Evidence 规则；AI CTO 不自动扩大范围。
+5. 生产发布、权限提升、核心治理文件、模块删除、不可逆数据操作和无人监督的全自动开发不进入默认自动路径。Phase 8.4 模型路由仍是建议性治理，宿主切换另行授权。
+
 ## CAPABILITY GOVERNANCE 规则
 
 1. 使用 `docs/capability/CAPABILITY_GOVERNANCE_STANDARD.md` 区分 Module、Capability、Feature 和 Technical Asset。Capability 是可调用的内部或外部能力，不是系统功能 Module。
