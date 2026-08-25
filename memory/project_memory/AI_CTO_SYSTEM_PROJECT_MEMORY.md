@@ -201,6 +201,7 @@
 - 2026-08-25：完成 AI CTO–Codex Operating Model 优化。将新项目、已有项目接管、项目续接、普通功能、Subagent、MCP / Plugin、Goal 和 Scheduled Task 统一映射到 L0–L4、最小 Context 和 Codex Host Surface；继续复用现有 Intent Gateway、Execution Routing、Finalization Integrity、Evidence、Audit 和 Gate。未新增 Runtime、Provider、模型切换器、RAG、后台监控或自动执行服务，未改变外部 Codex Registry 与 `Execution Authorization: NONE`。
 - 2026-08-25：完成 AI CTO System Comprehensive Product Review。确认核心产品是“AI CTO Governance Plane + Codex Execution Plane”，保留 Mission、Memory、Decision、Design、Lifecycle、Evidence、Audit、Gate 和 Self Evolution Proposal；将 Subagents、MCP、Plugins、Worktree、Goal、Scheduled Task、模型与实际代码执行交由 Codex Host。新增 Active Operating Core 作为最小上下文地图，明确 Runtime / Capability 历史文档不再作为默认全量上下文。
 - 2026-08-25：建立 v2 `v2-codex-native` 分支，并以 `v1.0.0-governance-baseline` 冻结 v1 基线。v2 精简根 `SKILL.md`、增加 Active / Reference / Historical 文档索引、保留全部历史文件和 Runtime Evidence；日常入口优先使用 Active Operating Core，Codex Host 承担执行，不新增 Runtime、Module、Provider、MCP、RAG 或自动化服务。
+- 2026-08-25：v2 增加 Progress Checkpoint Sync：任务开始、有效里程碑、阻塞 / 取消 / 失败 / 回滚、完成和合法阶段转换时同步 PROJECT_STATE、DEVELOPMENT_PROGRESS、PROJECT_MEMORY；不为每个工具调用写入，不把未经验证推理或临时草案写入长期记忆。
 
 ## 当前状态
 

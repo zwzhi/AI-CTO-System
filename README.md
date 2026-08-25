@@ -50,6 +50,7 @@ Phase 只记录历史交付批次，Module 表示可独立治理的能力，Life
 - [AI CTO–Codex Operating Model](./docs/architecture/AI_CTO_CODEX_OPERATING_MODEL.md)
 - [AI CTO Active Operating Core](./docs/architecture/AI_CTO_ACTIVE_OPERATING_CORE.md)
 - [AI CTO Comprehensive Product Review](./docs/strategy/AI_CTO_SYSTEM_COMPREHENSIVE_REVIEW.md)
+- [Progress Synchronization](./docs/governance/PROGRESS_SYNCHRONIZATION_STANDARD.md)
 - [Governed Knowledge Base](./knowledge_base/)
 
 未来系统能力先以 Master Plan 核对当前架构和路线，再证明 Mission Alignment 和长期价值；取得 `ADMIT_FOR_CLASSIFICATION` 后，才能进入 Layer / Module 分类。无法证明使命价值的功能不进入 AI CTO System。

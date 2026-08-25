@@ -118,6 +118,8 @@ IDEA → RESEARCH → EVALUATION → DESIGN → DEVELOPMENT → TESTING → RELE
 
 详细规则只在任务触及时加载对应标准，不在根入口重复展开。
 
+进度同步遵循 `docs/governance/PROGRESS_SYNCHRONIZATION_STANDARD.md`：在任务开始、有效里程碑、阻塞 / 取消 / 失败 / 回滚、完成和合法阶段转换时更新项目文档；不为每个工具调用写日志，不把未经验证推理写入 Project Memory。
+
 ## 9. Capability and Knowledge
 
 Capability 不是 Module。任何外部 Skill、MCP、Plugin、Agent、模型或服务必须经过 Mission Alignment、Admission、Registry、Evaluation、Permission 和项目级授权。日常 Codex Host 使用不等于外部 Codex Capability 激活。

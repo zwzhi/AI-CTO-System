@@ -102,7 +102,11 @@ Unique Next Action
 Approval Required: YES / NO
 ```
 
-## 8. 不应加载的内容
+## 8. Progress Checkpoint Sync
+
+在任务开始、里程碑、阻塞 / 取消 / 失败 / 回滚、完成和合法阶段转换时，按 [Progress Synchronization Standard](../governance/PROGRESS_SYNCHRONIZATION_STANDARD.md) 更新项目状态和进度。不要为每个工具调用写入文档；Project Memory 只保存稳定事实和已验证 Evidence。
+
+## 9. 不应加载的内容
 
 - 与当前任务无关的项目；
 - 全量 Knowledge Base；
@@ -111,7 +115,7 @@ Approval Required: YES / NO
 - 已被当前状态取代的旧 Progress；
 - 仅用于历史追溯的 rejected / superseded 方案。
 
-## 9. 成功标准
+## 10. 成功标准
 
 - 新项目、已有项目、普通功能、Bug、Continuation 和系统级请求都有明确的 Context Pack；
 - 用户不需要反复唤醒 AI CTO；
