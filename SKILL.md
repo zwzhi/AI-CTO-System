@@ -120,6 +120,8 @@ IDEA → RESEARCH → EVALUATION → DESIGN → DEVELOPMENT → TESTING → RELE
 
 进度同步遵循 `docs/governance/PROGRESS_SYNCHRONIZATION_STANDARD.md`：在任务开始、有效里程碑、阻塞 / 取消 / 失败 / 回滚、完成和合法阶段转换时更新项目文档；不为每个工具调用写日志，不把未经验证推理写入 Project Memory。
 
+跨项目 AI CTO 使用反馈按需遵循 `docs/governance/PROJECT_USAGE_FEEDBACK_SYNC_STANDARD.md`：仅在用户明确要求、项目已授权或出现需要复盘的有效检查点时，生成脱敏 Feedback；不要求每个项目、每次对话都创建记录。
+
 ## 9. Capability and Knowledge
 
 Capability 不是 Module。任何外部 Skill、MCP、Plugin、Agent、模型或服务必须经过 Mission Alignment、Admission、Registry、Evaluation、Permission 和项目级授权。日常 Codex Host 使用不等于外部 Codex Capability 激活。

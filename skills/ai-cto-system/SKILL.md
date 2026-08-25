@@ -75,6 +75,7 @@ Load authority documents only after routing. Use `D:\AI Project\AI-CTO-System` a
 | Codex execution surface, Subagent, MCP, Plugin, Goal, Worktree or Scheduled Task selection | `docs/architecture/AI_CTO_CODEX_OPERATING_MODEL.md` plus the applicable project / security / delivery standard |
 | AI CTO context-pack or active operating-core selection | `docs/architecture/AI_CTO_ACTIVE_OPERATING_CORE.md` plus the selected route authority |
 | Progress / Project State / Project Memory checkpoint synchronization | `docs/governance/PROGRESS_SYNCHRONIZATION_STANDARD.md` plus the target project's state and memory |
+| Project usage feedback or cross-project self-evolution evidence | `docs/governance/PROJECT_USAGE_FEEDBACK_SYNC_STANDARD.md` plus `docs/governance/EXECUTION_FEEDBACK_RECORD_STANDARD.md` and the target project's checkpoint |
 | AI CTO v2 version, document classification or migration question | `docs/architecture/AI_CTO_V2_DOCUMENT_INDEX.md` and `docs/strategy/AI_CTO_SYSTEM_COMPREHENSIVE_REVIEW.md` |
 | Ordinary conversation, simple explanation, or low-risk direct work | No AI CTO governance context |
 

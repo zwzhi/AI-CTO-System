@@ -1,5 +1,12 @@
 # AI CTO System Project Memory
 
+## 2026-08-25 Project Usage Feedback Sync Design
+
+- 已将跨项目使用反馈定义为既有 Execution Feedback / Evidence 与 Phase 10 Self Evolution 的轻量扩展，不新增 Module、Phase 或后台采集系统。
+- 外部项目的 `PROJECT_STATE.md`、`PROJECT_MEMORY.md` 和 `DEVELOPMENT_PROGRESS.md` 仍是项目事实权威；AI CTO System 只保存经明确授权、最小字段和脱敏后的派生记录，统一放在 `evaluations/project_usage/<project-id>/PROJECT_USAGE_FEEDBACK.md`。
+- 单个案例只形成 Observation；至少三个可比较案例才能形成 Candidate Pattern，多个项目的稳定质量、成本、时延和安全 Evidence 才能进入 Optimization Proposal 评估。当前 `Execution Authorization` 仍为 `NONE`。
+- 当前未实现跨聊天自动收集、遥测、后台同步、模型切换、Knowledge 激活或自动优化。下一步仅在一到两个真实项目中受控试用模板。
+
 ## 2026-08-14 ZIP Capability Selective Reinforcement
 
 - 用户确认以 AI-CTO System 为主体，对外部 Skills ZIP 逐项判断后只吸收可验证、适配且能补强现有边界的能力，不进行一比一复制。

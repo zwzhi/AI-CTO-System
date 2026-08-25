@@ -106,6 +106,8 @@ Approval Required: YES / NO
 
 在任务开始、里程碑、阻塞 / 取消 / 失败 / 回滚、完成和合法阶段转换时，按 [Progress Synchronization Standard](../governance/PROGRESS_SYNCHRONIZATION_STANDARD.md) 更新项目状态和进度。不要为每个工具调用写入文档；Project Memory 只保存稳定事实和已验证 Evidence。
 
+如果项目已明确启用跨项目反馈，或用户要求复盘 AI CTO 使用效果，再按 [Project Usage Feedback Sync Standard](../governance/PROJECT_USAGE_FEEDBACK_SYNC_STANDARD.md) 生成最小、脱敏的项目使用反馈。该记录是派生 Evidence，不替代项目状态，也不自动改变路由或执行授权。
+
 ## 9. 不应加载的内容
 
 - 与当前任务无关的项目；

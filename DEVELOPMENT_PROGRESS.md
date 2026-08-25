@@ -2,6 +2,36 @@
 
 > **Canonical current progress:** This root file is the current AI CTO System progress authority. `docs/DEVELOPMENT_PROGRESS.md` is a legacy historical archive and must not override this file's current status.
 
+## 2026-08-25 Project Usage Feedback Sync Design
+
+### Status
+
+- Classification: `EXTEND_EXISTING_MODULE`
+- Owning surfaces: Layer 1 Evidence / Layer 5 Execution Routing / Phase 10 Self Evolution
+- Result: `DESIGN_COMPLETE`
+- Execution Authorization: `NONE`
+
+### Completed
+
+- Added a lightweight per-project usage feedback template.
+- Added a controlled cross-project synchronization standard and `evaluations/project_usage/` storage convention.
+- Defined checkpoint-based capture, redaction, Evidence thresholds and single-writer conflict handling.
+
+### Scope Guard
+
+- No new Phase, Module, Runtime, telemetry service, background collector, model switch, external tool, Knowledge activation or automatic optimization was added.
+- Feedback remains derived Evidence; external project State / Memory / Progress remain authoritative.
+
+### Evidence and Limitations
+
+- The design supports explicit, authorized synchronization from real project conversations.
+- Cross-chat automatic collection is not implemented; unavailable fields remain `NOT_CAPTURED`.
+- One record is an Observation only; comparable multi-project evidence is required before an Optimization Proposal.
+
+### Next Action
+
+Create one or two explicitly authorized project feedback records and evaluate whether the schema is sufficient; do not change routing rules from a single case.
+
 ## 2026-08-14 AI-CTO ZIP Selective Reinforcement Hardening
 
 ### Status
