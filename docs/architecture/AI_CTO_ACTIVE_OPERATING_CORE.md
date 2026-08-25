@@ -1,5 +1,7 @@
 # AI CTO Active Operating Core
 
+> v2 daily context map. Full Active / Reference / Historical classification is maintained in [AI CTO System v2 Document Index](./AI_CTO_V2_DOCUMENT_INDEX.md).
+
 ## 1. 用途
 
 本文件是 AI CTO System 的日常最小上下文地图。它告诉 Codex 在不同任务中先读什么、不要读什么，避免把历史 Phase、全部 Runtime 文档和无关项目一次性加载。
