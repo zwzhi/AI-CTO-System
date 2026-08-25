@@ -1,5 +1,7 @@
 # Codex Capability Contract
 
+> **Scope:** This is a provider-neutral contract for a future external Adapter. It does not wrap or activate the Codex App / CLI / IDE host used for ordinary project work. Current external Codex Registry status remains `ABSENT` and `Selection: PROHIBITED`.
+
 ## Capability identity
 
 | Field | Contract |

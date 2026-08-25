@@ -68,6 +68,10 @@ flowchart TD
 
 [Execution Profile & Evidence Freshness Standard](./EXECUTION_PROFILE_EVIDENCE_FRESHNESS_STANDARD.md) 定义确定性 `AdvisoryExecutionRouter`：L0–L4 决定默认 R0–R4，风险、可逆性和 Gate 决定最低 Profile，调用方提供的相关范围与指纹决定 Evidence Freshness。实现只返回建议与 L2 Evidence；不读取文件/Git/网络，不调用模型/工具，不持久化，也不改变任何 Runtime 状态。
 
+## Codex Host 对接边界
+
+在 Codex App / CLI / IDE 中，Execution Plan 是治理建议和任务边界，不要求 AI CTO 复制 Codex 的模型客户端、Subagent 调度器、Skill / Plugin / MCP 层或文件 / Shell 执行器。Codex Host 只有在当前项目、Sandbox、Approval、Worktree、Capability 和用户授权均允许时，才负责实际执行。AI CTO 的模型 / Reasoning 输出仍是建议，不构成宿主模型切换或外部调用授权；若未来需要自动切换，必须另行取得宿主集成证据和实现授权。
+
 ## 与 EFF-001 的关系
 
 [EFF-001](./execution_cases/EFF-001-phase-8-4-route-sync-review.md) 提供“低复杂度治理同步可能经历高复杂度流程”的单案例信号。它只支持建立路由治理和继续收集 Evidence，不能直接成为默认 Workflow、模型、Git 策略或自动化规则。

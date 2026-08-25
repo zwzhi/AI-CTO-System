@@ -2,7 +2,9 @@
 
 ## 定位
 
-Codex 是未来可替换的 `Engineering Capability` 提供方，不是 AI CTO Core、Agent Manager 或 Workflow Controller。AI CTO Runtime 保持控制平面权威：分配任务、检查权限和预算、等待人工确认、写入审计并推进 Workflow；Codex 仅在获得一次受控调用授权后返回结果和 Evidence。
+Codex 是未来可替换的 `Engineering Capability` 提供方，不是 AI CTO Core、Agent Manager 或 Workflow Controller。对于当前在 Codex App / CLI / IDE 中的日常开发，Codex 由宿主直接作为 Execution Plane 提供；本文件描述的是未来脱离宿主或接入其他 Provider 时可复用的 Adapter / Contract 参考，不是当前真实 Provider 激活说明。
+
+AI CTO Runtime 保持 Governance / Control Plane 权威：分配任务、检查权限和预算、等待人工确认、写入审计并推进 Workflow；任何外部 Adapter 只能在独立准入和授权后返回 Result + Evidence。
 
 ```mermaid
 flowchart TD
@@ -49,4 +51,4 @@ flowchart TD
 
 ## 本阶段边界
 
-本阶段只定义合同和架构。没有真实 Codex、API、CLI、网络、MCP、文件修改、项目执行或外部工具调用。
+本阶段只定义未来外部 Adapter 的合同和架构。当前不激活外部 Codex Provider；日常使用 Codex Host 不改变 Registry 状态，也不等于通过该 Adapter 调用。没有由本文件授权的真实 API、CLI、网络、MCP、文件修改、项目执行或外部工具调用。
