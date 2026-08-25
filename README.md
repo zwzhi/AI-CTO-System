@@ -6,6 +6,8 @@ AI CTO System 帮助个人或组织建立可持续运作的 AI 技术组织，�
 
 任何 Agent、Codex 或贡献者进入本项目时，必须先阅读 [AI CTO System Master Plan](./docs/strategy/AI_CTO_SYSTEM_MASTER_PLAN.md) 与 [AI CTO System Manifesto](./docs/strategy/AI_CTO_SYSTEM_MANIFESTO.md)，再理解工作规则、架构和具体任务。功能数量和自动化程度不能替代使命对齐。
 
+当前工作版本：`v2-codex-native`。v1 治理基线由 Git tag `v1.0.0-governance-baseline` 保留；v2 通过 Active Operating Core、Codex Operating Model 和按路由加载的详细标准降低日常上下文和流程负担。
+
 ## 项目介绍
 
 AI CTO System 不是单一软件项目，而是管理未来 AI 项目与技术组织能力的长期操作系统。它通过统一的身份与记忆、决策治理、产品工程、运营生命周期和未来执行能力，管理从想法、立项、设计、开发、测试、发布到维护、接管、进化和组合治理的全过程。

@@ -74,6 +74,7 @@ Load authority documents only after routing. Use `D:\AI Project\AI-CTO-System` a
 | Finalization, Commit, PR, Release, Handoff or delivery packaging | `docs/governance/FINALIZATION_INTEGRITY_STANDARD.md` plus the applicable Git / Delivery / Release standard |
 | Codex execution surface, Subagent, MCP, Plugin, Goal, Worktree or Scheduled Task selection | `docs/architecture/AI_CTO_CODEX_OPERATING_MODEL.md` plus the applicable project / security / delivery standard |
 | AI CTO context-pack or active operating-core selection | `docs/architecture/AI_CTO_ACTIVE_OPERATING_CORE.md` plus the selected route authority |
+| AI CTO v2 version, document classification or migration question | `docs/architecture/AI_CTO_V2_DOCUMENT_INDEX.md` and `docs/strategy/AI_CTO_SYSTEM_COMPREHENSIVE_REVIEW.md` |
 | Ordinary conversation, simple explanation, or low-risk direct work | No AI CTO governance context |
 
 Load research, evaluation, design, development, testing, release, maintenance, capability, knowledge, or Runtime standards only when the selected route reaches that concern. Never eagerly load the full governance corpus.
@@ -97,6 +98,8 @@ Treat Codex App / CLI / IDE as the default execution plane for models, file / sh
 ## Codex operating model
 
 For governed execution, use `docs/architecture/AI_CTO_CODEX_OPERATING_MODEL.md` to select the minimum sufficient Codex Host surface: direct workspace, Subagent, MCP / Plugin, Goal / Long-running Work, or Scheduled Task. Report the selected surface, Context Scope, permission boundary and next checkpoint. Continue a resolved project without requiring the user to repeat the AI CTO wake-up command; ask only when project, intent, authorization or Gate evidence is unclear. If a host surface is unavailable, report `NOT_AVAILABLE` and do not claim that the internal Runtime or Capability has executed in its place.
+
+For system navigation, use `docs/architecture/AI_CTO_V2_DOCUMENT_INDEX.md`; v1 historical artifacts remain reference material and are not default context.
 
 ## Keep the boundary honest
 
