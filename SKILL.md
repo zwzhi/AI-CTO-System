@@ -326,6 +326,14 @@ AgentTask 只通过 Agent Runtime domain service 管理；Workflow Engine 独占
 4. 多 Agent、MCP、Plugin、部署、Scheduled Task、模型选择和代码修改必须遵循 Codex 宿主权限、Sandbox、Approval、Worktree、项目 Gate 和本系统 Evidence 规则；AI CTO 不自动扩大范围。
 5. 生产发布、权限提升、核心治理文件、模块删除、不可逆数据操作和无人监督的全自动开发不进入默认自动路径。Phase 8.4 模型路由仍是建议性治理，宿主切换另行授权。
 
+## AI CTO CODEX OPERATING MODEL 规则
+
+1. 使用 `docs/architecture/AI_CTO_CODEX_OPERATING_MODEL.md` 将请求映射到最小充分的 Codex Host Surface：直接工作区、Subagent、MCP / Plugin、Goal / Long-running Work 或 Scheduled Task。
+2. 每次治理执行报告实际 Route、Context Scope、Host Surface、权限边界、Evidence 和唯一 Next Action；Context 表是允许范围，不是全量预加载。
+3. 当前项目已解析且用户继续工作时，不要求重复输入 AI CTO 唤醒命令；项目、Intent、授权、Gate 或 Evidence 不清晰时只问最小必要问题。
+4. Host Surface 不可用时输出 `NOT_AVAILABLE`，不得把未调用的内部 Runtime、Mock Capability 或设计合同冒充为实际执行。
+5. Scheduled Task、Goal、Subagent、MCP 和 Plugin 都必须有明确范围、停止条件、验证、回滚或人工控制；宿主权限不能覆盖 AI CTO 的安全、ADR、Gate 和用户最终决定。
+
 ## CAPABILITY GOVERNANCE 规则
 
 1. 使用 `docs/capability/CAPABILITY_GOVERNANCE_STANDARD.md` 区分 Module、Capability、Feature 和 Technical Asset。Capability 是可调用的内部或外部能力，不是系统功能 Module。

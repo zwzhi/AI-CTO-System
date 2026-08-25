@@ -72,6 +72,7 @@ Load authority documents only after routing. Use `D:\AI Project\AI-CTO-System` a
 | AI CTO System change | `docs/strategy/AI_CTO_SYSTEM_MANIFESTO.md`, `docs/strategy/AI_CTO_SYSTEM_MASTER_PLAN.md`, and `docs/strategy/MODULE_ADMISSION_CRITERIA.md` |
 | Project status or continuation | The target project's `PROJECT_STATE.md` and `PROJECT_MEMORY.md` |
 | Finalization, Commit, PR, Release, Handoff or delivery packaging | `docs/governance/FINALIZATION_INTEGRITY_STANDARD.md` plus the applicable Git / Delivery / Release standard |
+| Codex execution surface, Subagent, MCP, Plugin, Goal, Worktree or Scheduled Task selection | `docs/architecture/AI_CTO_CODEX_OPERATING_MODEL.md` plus the applicable project / security / delivery standard |
 | Ordinary conversation, simple explanation, or low-risk direct work | No AI CTO governance context |
 
 Load research, evaluation, design, development, testing, release, maintenance, capability, knowledge, or Runtime standards only when the selected route reaches that concern. Never eagerly load the full governance corpus.
@@ -91,6 +92,10 @@ When the request produces a user-visible artifact or delivery wrapper, generate 
 ## Codex execution plane
 
 Treat Codex App / CLI / IDE as the default execution plane for models, file / shell work, Subagents, Skills, Plugins, MCP, Worktrees, Goals and host permissions. Treat the repository AI CTO System as the governance plane for mission, memory, decisions, design, lifecycle, Evidence, Audit, Gates and human control. Do not claim that a documented Runtime or Codex Capability is callable unless a stable authorized invocation path exists; ordinary Codex use is not external Capability activation.
+
+## Codex operating model
+
+For governed execution, use `docs/architecture/AI_CTO_CODEX_OPERATING_MODEL.md` to select the minimum sufficient Codex Host surface: direct workspace, Subagent, MCP / Plugin, Goal / Long-running Work, or Scheduled Task. Report the selected surface, Context Scope, permission boundary and next checkpoint. Continue a resolved project without requiring the user to repeat the AI CTO wake-up command; ask only when project, intent, authorization or Gate evidence is unclear. If a host surface is unavailable, report `NOT_AVAILABLE` and do not claim that the internal Runtime or Capability has executed in its place.
 
 ## Keep the boundary honest
 
