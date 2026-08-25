@@ -77,3 +77,13 @@
 ## Completion Gate
 
 The operating model is complete when a new project, existing-project takeover, ordinary feature request, continuation, and opt-out each have a clear Codex-native path without loading the full governance corpus or creating a duplicate AI CTO execution layer.
+
+## Execution Record (2026-08-25)
+
+- Task 1–5: completed.
+- Full regression: `212 / 212` passed.
+- Required architecture and operating-model references: present.
+- Forbidden Runtime / package scope: unchanged.
+- Skill source and user-level Junction: SHA-256 identical.
+- External Codex Registry: `ABSENT / PROHIBITED / NONE`.
+- Working tree: clean on `main`.
