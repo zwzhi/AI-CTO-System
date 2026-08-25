@@ -45,6 +45,7 @@ Phase 只记录历史交付批次，Module 表示可独立治理的能力，Life
 - [Knowledge Registry](./docs/knowledge/KNOWLEDGE_REGISTRY_STANDARD.md)
 - [Finalization Integrity](./docs/governance/FINALIZATION_INTEGRITY_STANDARD.md)
 - [Codex Execution Plane Alignment](./docs/architecture/CODEX_EXECUTION_PLANE_ALIGNMENT.md)
+- [AI CTO–Codex Operating Model](./docs/architecture/AI_CTO_CODEX_OPERATING_MODEL.md)
 - [Governed Knowledge Base](./knowledge_base/)
 
 未来系统能力先以 Master Plan 核对当前架构和路线，再证明 Mission Alignment 和长期价值；取得 `ADMIT_FOR_CLASSIFICATION` 后，才能进入 Layer / Module 分类。无法证明使命价值的功能不进入 AI CTO System。
@@ -56,6 +57,17 @@ AI CTO System 不是单纯代码生成工具、聊天机器人、普通项目管
 ## 与 Codex 的关系
 
 AI CTO System 负责治理平面：使命、记忆、决策、设计、生命周期、Evidence、Audit、Gate 和人类控制；Codex App / CLI / IDE 负责执行平面：模型、文件 / Shell、Subagents、Skills、MCP、Plugins、Worktree、Goal 和宿主权限。日常使用 Codex 不等于激活外部 Codex Capability；真实 Provider 接入仍遵循独立准入和安全规则。详见 [Codex Execution Plane Alignment](./docs/architecture/CODEX_EXECUTION_PLANE_ALIGNMENT.md)。
+
+## 最常用的使用方式
+
+```text
+新项目：我想做一个新项目：……请按 AI CTO System 先做 Idea 分析，不要直接编码。
+已有项目：请接管当前项目，先完成 Onboarding 和健康评估，不修改代码。
+继续开发：继续当前项目，读取 Project State 和 Memory，完成下一个已授权任务。
+退出治理：AI_CTO_MODE: OFF
+```
+
+用户不需要每条消息重复唤醒；AI CTO Skill 会根据当前项目、Intent、风险和 Gate 选择最小充分的 Codex 执行面。完整规则见 [AI CTO–Codex Operating Model](./docs/architecture/AI_CTO_CODEX_OPERATING_MODEL.md)。
 
 ## 当前状态
 

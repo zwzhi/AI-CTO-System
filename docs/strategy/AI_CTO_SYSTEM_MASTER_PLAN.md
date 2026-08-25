@@ -20,6 +20,8 @@
 
 AI CTO System 采用 Governance Plane / Codex Execution Plane 分工。AI CTO 负责使命、记忆、决策、设计、生命周期、Evidence、Audit、Gate 和人类控制；Codex App / CLI / IDE 负责模型、Subagents、Skills、MCP、Plugins、文件 / Shell、Worktree、Goal 和宿主执行。既有 Runtime / Agent / Codex 文档保留为 Internal MVP Evidence、Governance Contract 或 Optional External Runtime Reference，不继续在 AI CTO Core 中复制 Codex 的执行基础设施。详见 [Codex Execution Plane Alignment](../architecture/CODEX_EXECUTION_PLANE_ALIGNMENT.md) 与 [ADR-0033](../adr/ADR-0033-AI-CTO-CODEX-EXECUTION-PLANE-ALIGNMENT.md)。
 
+日常使用入口和 Host Surface 选择统一遵循 [AI CTO–Codex Operating Model](../architecture/AI_CTO_CODEX_OPERATING_MODEL.md)：新项目、已有项目接管、项目续接、普通功能、Subagent、MCP / Plugin、Goal 和 Scheduled Task 均先经过 L0–L4 路由与最小上下文判断，不要求用户反复输入唤醒命令；Host Surface 不可用时必须报告 `NOT_AVAILABLE`，不冒充内部 Runtime 已执行。
+
 ## 1. 系统使命
 
 AI CTO System 的使命是帮助个人或组织建立可持续运作的 AI 技术组织，将想法持续转化为可交付、可维护、可进化的产品资产，并通过真实使用、经验沉淀和技术资产复用形成研发复利。
