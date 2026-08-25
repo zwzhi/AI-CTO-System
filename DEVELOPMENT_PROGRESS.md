@@ -230,6 +230,32 @@ Use the operating model in real projects; record Host Surface, Context Scope, Ev
 
 Use the Active Operating Core in real projects and collect Fresh Session, routing, Host Surface, Context, quality and finalization Evidence before any further architectural expansion.
 
+## 2026-08-25 AI CTO System v2 Codex-Native Simplification
+
+### Status
+
+- Branch: `v2-codex-native`
+- v1 Baseline: `v1.0.0-governance-baseline`
+- Result: `DOCUMENTATION_COMPLETE`
+- Execution Authorization: `NONE`
+
+### Completed
+
+- Created v2 Active / Reference / Historical document index.
+- Reduced root `SKILL.md` from approximately 54 KB to a compact daily governance entry while preserving links to detailed standards.
+- Preserved all Runtime, Agent, Capability, ADR, Test and Phase history; no physical deletion or mass move performed.
+- Synchronized README, Master Plan, Module Registry, Gateway Skill, Project Memory and Progress with v2 positioning.
+
+### Evidence and Limitations
+
+- v1 remains recoverable through Git tag; v2 is a separate branch.
+- Full regression, link presence, scope and Skill hash validation remain required before merging v2.
+- Fresh Session and real-project behavior evidence is still not captured by static documentation.
+
+### Next Action
+
+Run the v2 validation suite, then use v2 in real Codex projects before merging or pushing it as the default branch.
+
 ## 2026-08-24 Finalization Integrity Design
 
 ### Status
