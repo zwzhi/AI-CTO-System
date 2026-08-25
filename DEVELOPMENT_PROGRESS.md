@@ -186,6 +186,31 @@ Collect 3–5 comparable execution feedback records before proposing any change 
 
 Use Codex Host-native execution in real projects and collect Evidence before considering any external Runtime, automatic model switching or autonomous execution implementation.
 
+## 2026-08-25 AI CTO–Codex Operating Model Optimization
+
+### Status
+
+- Classification: `EXTEND_EXISTING_MODULE`
+- Owning Module: Intent Gateway + Execution Routing Governance
+- Result: `DOCUMENTATION_COMPLETE`
+- Execution Authorization: `NONE`
+
+### Completed
+
+- Added one operating model for request → route → minimum context → Codex Host Surface → Evidence.
+- Added direct-workspace, Subagent, MCP / Plugin, Goal / Long-running Work and Scheduled Task selection rules.
+- Added L0–L4 context loading matrix and practical new / existing / continuation / opt-out examples.
+- Synchronized Skill, README, Master Plan and Module Registry.
+
+### Scope Guard
+
+- No new Phase, Module, Runtime, Agent, Capability, Provider, MCP server, RAG store, model switcher or background service.
+- Codex Host remains the execution plane; AI CTO remains the governance plane.
+
+### Next Action
+
+Use the operating model in real projects; record Host Surface, Context Scope, Evidence and final result before proposing further automation.
+
 ## 2026-08-24 Finalization Integrity Design
 
 ### Status
