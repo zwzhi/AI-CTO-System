@@ -74,6 +74,19 @@
 
 ## Execution Record (2026-08-25)
 
+- v1 baseline: `v1.0.0-governance-baseline`.
+- v2 branch: `v2-codex-native`.
+- Root `SKILL.md`: approximately 8.1 KB after the progress-sync addition.
+- Active / Reference / Historical index: present.
+- Progress Checkpoint Sync standard: present and linked.
+- Historical file deletions: `0`.
+- Full regression: `212 / 212` passed.
+- Forbidden Runtime / package scope: unchanged.
+- Skill source / user-level Junction hash parity: passed.
+- Working tree: clean.
+
+## Execution Record (2026-08-25)
+
 - v1 baseline tag: `v1.0.0-governance-baseline`.
 - v2 branch: `v2-codex-native`.
 - Root `SKILL.md`: reduced from approximately 54 KB to 7.8 KB.
