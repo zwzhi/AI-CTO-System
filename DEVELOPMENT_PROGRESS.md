@@ -160,6 +160,32 @@ Complete final verification across all three reinforcements and prepare the bran
 
 Collect 3–5 comparable execution feedback records before proposing any change to default routing or Runtime behavior.
 
+## 2026-08-25 Codex Execution Plane Alignment
+
+### Status
+
+- Classification: `EXTEND_EXISTING_MODULE`
+- Result: `DOCUMENTATION_COMPLETE`
+- ADR: `ADR-0033-AI-CTO-CODEX-EXECUTION-PLANE-ALIGNMENT`
+- Execution Authorization: `NONE`
+
+### Completed
+
+- Added the Governance Plane / Codex Execution Plane architecture and twelve-capability ownership matrix.
+- Synchronized README, Master Plan, Module Registry and both Skill entry points.
+- Clarified Execution Routing and Model Routing as advisory governance; Codex Host owns actual execution.
+- Reclassified Runtime / Codex documents as internal evidence, governance contracts or optional external-runtime references.
+- Preserved external Codex Registry `ABSENT`, `PROHIBITED` selection and `NONE` activation boundaries.
+
+### Scope Guard
+
+- No Runtime code, Agent code, Provider, MCP server, model switcher, deployment service, RAG store, permission change or automatic execution was added.
+- No existing Runtime / Mock / ADR evidence was deleted.
+
+### Next Action
+
+Use Codex Host-native execution in real projects and collect Evidence before considering any external Runtime, automatic model switching or autonomous execution implementation.
+
 ## 2026-08-24 Finalization Integrity Design
 
 ### Status
