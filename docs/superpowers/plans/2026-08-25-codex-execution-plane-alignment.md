@@ -82,3 +82,12 @@
 ## Completion Gate
 
 The alignment is complete only when the ownership matrix, ADR, Module Registry, Master Plan, Skill entry points, routing boundaries, Project Memory and Progress agree, while all existing implementation tests remain green and no duplicate execution layer is authorized.
+
+## Execution Record (2026-08-25)
+
+- Task 1–5: completed.
+- Full regression: `212 / 212` passed.
+- `git diff --check`: passed.
+- Forbidden runtime / package scope scan: passed.
+- External Codex Registry: `ABSENT`; Selection: `PROHIBITED`; Activation: `NONE`.
+- Working tree: clean on `main`.
