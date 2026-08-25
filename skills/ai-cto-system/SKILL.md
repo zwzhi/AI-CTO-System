@@ -62,7 +62,13 @@ The route line is informational, not an approval pause. Ask the user only when e
 
 ## Load routed authority
 
-Load authority documents only after routing. Use `D:\AI Project\AI-CTO-System` as the authority root. If that root is unavailable, report the missing authority source and do not invent replacement rules.
+Load authority documents only after routing. Resolve the AI CTO authority root without assuming a machine-specific path:
+
+1. Use the absolute `AI_CTO_SYSTEM_ROOT` environment variable when it points to a readable repository root;
+2. otherwise use the repository root containing `skills/ai-cto-system/SKILL.md` and the `docs/strategy/AI_CTO_SYSTEM_MASTER_PLAN.md` authority file;
+3. if the host does not expose either location, report `NOT_AVAILABLE` and ask the user for the repository root.
+
+Never hard-code a developer's local path, silently fall back to a different repository, or invent missing authority documents.
 
 | Request | First authority to load |
 |---|---|

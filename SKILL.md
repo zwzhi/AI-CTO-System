@@ -187,6 +187,6 @@ Snapshot → Observation → Analysis → Optimization Proposal
 
 ## 14. Current Version
 
-当前工作分支：`v2-codex-native`。v1 基线：Git tag `v1.0.0-governance-baseline`。
+当前工作分支：`v2-codex-native`；发布标签：`v2.0.0-codex-native`。v1 基线：Git tag `v1.0.0-governance-baseline`。
 
 v2 的目标是让 Codex 按 AI CTO 治理工作，而不是让 AI CTO 重新实现 Codex。

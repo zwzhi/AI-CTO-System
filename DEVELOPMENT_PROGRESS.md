@@ -2,6 +2,37 @@
 
 > **Canonical current progress:** This root file is the current AI CTO System progress authority. `docs/DEVELOPMENT_PROGRESS.md` is a legacy historical archive and must not override this file's current status.
 
+## 2026-08-25 AI CTO v2 Portability and Distribution Preparation
+
+### Status
+
+- Classification: `EXTEND_EXISTING_MODULE`
+- Owning surfaces: Layer 5 Skill Gateway + existing Codex Operating Model
+- Result: `DOCUMENTATION_COMPLETE`
+- Execution Authorization: `NONE`
+
+### Scope
+
+- Replace the developer-specific authority path in the Gateway Skill with portable root resolution and honest `NOT_AVAILABLE` behavior.
+- Add installation and first-use documentation for the v2 Codex-native version.
+- Document per-user repository, project feedback directory and privacy boundaries.
+- Prepare a local `v2.0.0-codex-native` tag; remote publication remains a separate explicit push action.
+
+### Scope Guard
+
+- No new Phase, Module, Runtime, Agent, Provider, MCP, telemetry service or automatic cross-chat collector.
+- No change to `Execution Authorization`, external Codex Registry, Permission, Gate or AI CTO Core behavior.
+
+### Evidence and Limitations
+
+- Portable authority-root contract, Skill package validation, routing preflight, installer idempotency / conflict safety, documentation references and `212 / 212` Node tests pass.
+- The v2 tag and branch are local until explicitly pushed; `main` remains unchanged.
+- Automatic cross-chat feedback collection and multi-user shared storage are not implemented.
+
+### Next Action
+
+Use the local tagged version in one fresh-user or fresh-project pilot; push the branch or tag only after an explicit integration decision.
+
 ## 2026-08-25 Project Usage Feedback Sync Design
 
 ### Status

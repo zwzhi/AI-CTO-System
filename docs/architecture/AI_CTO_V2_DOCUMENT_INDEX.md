@@ -2,7 +2,7 @@
 
 ## 1. Version
 
-v2 is the Codex-native operating version on branch `v2-codex-native`. The v1 governance baseline is preserved by Git tag `v1.0.0-governance-baseline`.
+v2 is the Codex-native operating version on branch `v2-codex-native` and release tag `v2.0.0-codex-native`. The v1 governance baseline is preserved by Git tag `v1.0.0-governance-baseline`.
 
 v2 changes the daily entry and document-loading strategy; it does not delete historical files or change Runtime behavior.
 
@@ -19,6 +19,8 @@ Read these first for current system work:
 7. `docs/architecture/MODULE_REGISTRY.md` — current Module facts;
 8. Current project `PROJECT_STATE.md` / `PROJECT_MEMORY.md`;
 9. The relevant standard, ADR, Gate and Evidence only.
+
+面向新用户的安装、路径配置和首次使用示例见 [`docs/GETTING_STARTED.md`](../GETTING_STARTED.md)。它是用户入口，不覆盖 Manifesto、Master Plan、Module Registry 或项目状态权威。
 
 ## 3. Reference Layer
 

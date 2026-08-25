@@ -6,7 +6,7 @@ AI CTO System 帮助个人或组织建立可持续运作的 AI 技术组织，�
 
 任何 Agent、Codex 或贡献者进入本项目时，必须先阅读 [AI CTO System Master Plan](./docs/strategy/AI_CTO_SYSTEM_MASTER_PLAN.md) 与 [AI CTO System Manifesto](./docs/strategy/AI_CTO_SYSTEM_MANIFESTO.md)，再理解工作规则、架构和具体任务。功能数量和自动化程度不能替代使命对齐。
 
-当前工作版本：`v2-codex-native`。v1 治理基线由 Git tag `v1.0.0-governance-baseline` 保留；v2 通过 Active Operating Core、Codex Operating Model 和按路由加载的详细标准降低日常上下文和流程负担。
+当前工作版本：`v2-codex-native`，对应发布标签 `v2.0.0-codex-native`。v1 治理基线由 Git tag `v1.0.0-governance-baseline` 保留；v2 通过 Active Operating Core、Codex Operating Model 和按路由加载的详细标准降低日常上下文和流程负担。
 
 ## 项目介绍
 
@@ -51,6 +51,7 @@ Phase 只记录历史交付批次，Module 表示可独立治理的能力，Life
 - [AI CTO Active Operating Core](./docs/architecture/AI_CTO_ACTIVE_OPERATING_CORE.md)
 - [AI CTO Comprehensive Product Review](./docs/strategy/AI_CTO_SYSTEM_COMPREHENSIVE_REVIEW.md)
 - [Progress Synchronization](./docs/governance/PROGRESS_SYNCHRONIZATION_STANDARD.md)
+- [安装与首次使用](./docs/GETTING_STARTED.md)
 - [Governed Knowledge Base](./knowledge_base/)
 
 未来系统能力先以 Master Plan 核对当前架构和路线，再证明 Mission Alignment 和长期价值；取得 `ADMIT_FOR_CLASSIFICATION` 后，才能进入 Layer / Module 分类。无法证明使命价值的功能不进入 AI CTO System。
