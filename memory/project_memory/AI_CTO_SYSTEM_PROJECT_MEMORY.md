@@ -5,7 +5,7 @@
 - 当前工作继续在 `v2-codex-native` 分支；目标是让其他 Codex 用户可在自己的仓库副本中使用，而不是把 AI CTO System 变成独立 Runtime 或插件服务。
 - Gateway Skill 已移除开发者特定的 `D:\AI Project\AI-CTO-System` 假设，改为 `AI_CTO_SYSTEM_ROOT`、可发现的仓库根和 `NOT_AVAILABLE` 失败路径。
 - 新用户入口已提供安装、首次使用、项目接管、反馈同步、退出治理和个人 `evaluations/project_usage/<project-id>/` 隔离说明。
-- 可移植性、Skill 包、安装器、文档引用和 `212 / 212` 回归验证已通过；将创建本地 `v2.0.0-codex-native` 标签。未授权前不推送远程、不修改 `main`。Execution Authorization 仍为 `NONE`。
+- 可移植性、Skill 包、安装器、文档引用和 `212 / 212` 回归验证已通过；当前提交将标记为本地 `v2.0.0-codex-native`。未授权前不推送远程、不修改 `main`。Execution Authorization 仍为 `NONE`。
 
 ## 2026-08-25 Project Usage Feedback Sync Design
 

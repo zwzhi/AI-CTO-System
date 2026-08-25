@@ -16,7 +16,7 @@
 - Replace the developer-specific authority path in the Gateway Skill with portable root resolution and honest `NOT_AVAILABLE` behavior.
 - Add installation and first-use documentation for the v2 Codex-native version.
 - Document per-user repository, project feedback directory and privacy boundaries.
-- Prepare a local `v2.0.0-codex-native` tag; remote publication remains a separate explicit push action.
+- Create the local `v2.0.0-codex-native` tag after final validation; remote publication remains a separate explicit push action.
 
 ### Scope Guard
 
@@ -26,7 +26,7 @@
 ### Evidence and Limitations
 
 - Portable authority-root contract, Skill package validation, routing preflight, installer idempotency / conflict safety, documentation references and `212 / 212` Node tests pass.
-- The v2 tag and branch are local until explicitly pushed; `main` remains unchanged.
+- The v2 branch is local until explicitly pushed; `main` remains unchanged.
 - Automatic cross-chat feedback collection and multi-user shared storage are not implemented.
 
 ### Next Action
