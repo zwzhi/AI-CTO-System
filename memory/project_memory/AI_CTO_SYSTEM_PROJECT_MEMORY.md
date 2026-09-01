@@ -1,5 +1,12 @@
 # AI CTO System Project Memory
 
+## 2026-09-01 AI CTO Selective Absorption and Thin Plugin Design
+
+- 已完成对 `JimmyVGDY/codex-long-term-assistant-skills` 的公开快照审查。外部项目明确采用 Plugin-first，并包含多 Skill、Reviewer、Hook、事件链和受控自进化；临时 Git 索引下包级测试 `121 / 121` 通过，缺少 `.git` 的初始压缩包错误属于复现条件限制。
+- AI CTO 只吸收四类机制作为既有 Module 扩展：`Project ID + Repository Fingerprint`、Requested/Runtime/Diagnostic 模型证据分离、Skill 路由预算与回归、Self Evolution Evidence Threshold + Proposal Fingerprint。不会整体复制外部 Skill、Reviewer、Hook、Runtime、第二套 AGENTS 或固定模型天花板。
+- 已形成 `docs/superpowers/specs/2026-09-01-ai-cto-plugin-and-selective-absorption-design.md` 与 ADR-0034。Plugin 仅作为版本化分发包装；Git 仓库仍是唯一权威源，Plugin 第一版不声明 Hooks、Apps、MCP、Provider、第二套 Memory、Evolution 或 Runtime。
+- Plugin staging 必须排除创建者 User Brain、Project Memory、真实项目反馈、Secrets、Git 元数据、工作树和缓存；当前只完成设计，`Execution Authorization` 仍为 `NONE`，尚未创建 manifest 或安装 Plugin。
+
 ## 2026-08-25 AI CTO v2 Portability and Distribution Preparation
 
 - 当前工作继续在 `v2-codex-native` 分支；目标是让其他 Codex 用户可在自己的仓库副本中使用，而不是把 AI CTO System 变成独立 Runtime 或插件服务。

@@ -2,6 +2,33 @@
 
 > **Canonical current progress:** This root file is the current AI CTO System progress authority. `docs/DEVELOPMENT_PROGRESS.md` is a legacy historical archive and must not override this file's current status.
 
+## 2026-09-01 AI CTO Selective Absorption and Thin Plugin Design
+
+### Status
+
+- Classification: `EXTEND_EXISTING_MODULE`
+- Owning surfaces: Layer 1 Evidence / Layer 5 Execution Routing / Phase 10 Self Evolution / Skill Gateway packaging
+- Result: `DESIGN_READY_FOR_IMPLEMENTATION`
+- ADR: `ADR-0034-AI-CTO-THIN-PLUGIN-PACKAGING`
+- Execution Authorization: `NONE`
+
+### Completed
+
+- 完成当前 AI CTO System 全面盘点：`main` 干净，`212 / 212` Node 测试通过。
+- 完成外部 Codex 长期助手仓库只读审查：临时索引下 `121 / 121` Python 测试通过，路由、语义、Payload 和模型门禁校验通过。
+- 确定仅吸收四类机制：项目/仓库指纹隔离、模型证据三分法、Skill 路由预算、Self Evolution 证据门槛与提案去重。
+- 完成薄 Plugin 包装设计：只暴露现有 `ai-cto-system` Skill，不引入外部 Hook、App、MCP、Provider、第二套 Runtime 或个人记忆。
+
+### Scope Guard
+
+- 尚未创建 `.codex-plugin/plugin.json`，尚未修改 Runtime、Permission、Gate、Manifesto、现有 ADR 或执行行为。
+- Plugin 发行制品必须排除创建者 User Brain、Project Memory、项目反馈正文、Secrets、Git 元数据和缓存。
+- Plugin 设计不等于 Plugin 已安装、Codex 宿主已验证或自动执行已授权。
+
+### Next Action
+
+请审阅 [AI CTO Plugin 与选择性吸收设计规格](docs/superpowers/specs/2026-09-01-ai-cto-plugin-and-selective-absorption-design.md)。确认后再进入实现计划和薄 Plugin 构建；实现完成前不修改远程发布状态。
+
 ## 2026-08-25 AI CTO v2 Portability and Distribution Preparation
 
 ### Status
