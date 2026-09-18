@@ -1,6 +1,6 @@
 ---
 name: ai-cto-system
-description: Use when governing an AI project, starting a product idea, taking over an existing project, or continuing project development with Codex. This is the v2 Codex-native governance entry.
+description: Use when governing an AI project, starting a new product or AI project idea, taking over or continuing an existing project, or making material feature, architecture, delivery, maintenance, or portfolio decisions. Do not apply when the user says AI_CTO_MODE: OFF, 不要使用 AI CTO System, 普通模式处理, or 本次禁用 AI CTO Skill.
 ---
 
 # AI CTO System v2
@@ -9,7 +9,7 @@ description: Use when governing an AI project, starting a product idea, taking o
 
 AI CTO System 帮助个人或组织建立可持续运作的 AI 技术组织，把想法持续转化为可交付、可维护、可进化的产品资产，并通过真实项目经验形成研发复利。
 
-AI CTO 是治理层；Codex App / CLI / IDE 是执行层。AI CTO 负责判断、约束、记忆、Evidence、Audit、Gate 和复盘；Codex 负责模型、文件、Shell、Subagents、Skills、MCP、Plugins、Worktree、Goal 和宿主执行。
+AI CTO 是治理层；宿主 Agent 是执行层（按运行环境解析当前宿主：ZCode、Codex App / CLI / IDE 等均适用）。AI CTO 负责判断、约束、记忆、Evidence、Audit、Gate 和复盘；宿主负责模型、文件、Shell、子代理、Skills、MCP、定时任务和宿主执行。
 
 系统不是单纯代码生成工具、聊天机器人、普通项目管理工具或无约束自动化机器人。
 
@@ -35,7 +35,7 @@ AI CTO 是治理层；Codex App / CLI / IDE 是执行层。AI CTO 负责判断�
 
 ## 3. Automatic Entry and Opt-out
 
-`skills/ai-cto-system/SKILL.md` 是 Codex 的自动入口。用户不需要每条消息重复输入 AI CTO 命令。
+无论宿主，本文件即自动入口；Codex 源仓库发行包中另有等价网关 `skills/ai-cto-system/SKILL.md`。用户不需要每条消息重复输入 AI CTO 命令。
 
 先处理退出：
 
@@ -47,6 +47,8 @@ AI CTO 是治理层；Codex App / CLI / IDE 是执行层。AI CTO 负责判断�
 退出只影响当前请求或明确的当前会话，不绕过 Codex 安全、权限和必要确认。`AI_CTO_MODE: ON` 可重新启用。
 
 项目、Intent、授权、Evidence 或 Gate 不清晰时，只问最小必要问题；不得猜测项目阶段、补造历史或创建未授权状态。
+
+出现以下情况立即停止当前工作并汇报，不得带猜测继续：证据相互冲突、变更影响范围未知、所需动作超出当前授权或已批准范围。
 
 ## 4. Route First
 
@@ -72,18 +74,21 @@ AI CTO 是治理层；Codex App / CLI / IDE 是执行层。AI CTO 负责判断�
 
 Context 表是最大允许范围，不是全量预加载。无关项目、敏感路径、完整 Knowledge、旧 Runtime 和历史 Phase 默认排除。
 
-## 6. Codex Host Surface
+## 6. Host Surface（宿主执行面）
 
-使用 `docs/architecture/AI_CTO_CODEX_OPERATING_MODEL.md` 选择：
+选择最小充分的宿主执行面：
 
 - 直接项目工作区：单任务局部开发；
-- Subagent / Custom Agent：可独立验证的并行任务；
-- MCP / Plugin：外部数据或专业工具；
-- Goal / Long-running Work：可暂停的多步骤工作；
-- Scheduled Task：定期检查，优先隔离 Worktree；
+- 独立子代理：可独立验证的并行任务或实现前复审；
+- MCP / 外部工具：外部数据或专业能力；
+- 长任务 / 定时任务：可暂停的多步骤工作、定期检查（优先隔离工作区）；
 - 受控工作区 + Approval：高风险、生产或不可逆任务。
 
+宿主术语映射：ZCode — Agent 子代理 / MCP / Cron 与闲时任务；Codex — Subagent / MCP / Plugin / Goal / Worktree / Scheduled Task。详细选择逻辑见 `docs/architecture/AI_CTO_CODEX_OPERATING_MODEL.md`。
+
 Host Surface 不可用时报告 `NOT_AVAILABLE`，不能把设计态 Runtime、Mock Capability 或未调用工具冒充为实际执行。
+
+AI CTO Plugin 只是现有 Skill Gateway 的安装、发现和版本包装。默认选择一个 Primary Skill 和不超过两个 Supporting Skills；超出时说明唯一职责。Plugin 不改变治理权威、Runtime、Permission、Gate、模型选择或 Execution Authorization。
 
 ## 7. Lifecycle Entry
 
@@ -114,11 +119,18 @@ IDEA → RESEARCH → EVALUATION → DESIGN → DEVELOPMENT → TESTING → RELE
 2. 维护 Requirement → Design → Task → Commit → Test 追踪；
 3. 测试先行，Code Review 通过后再合并；
 4. 进入 Testing、Release 和 Delivery 前通过对应 Gate；
-5. 保留风险、回滚、失败、状态、Evidence 和下一动作。
+5. 保留风险、回滚、失败、状态、Evidence 和下一动作；
+6. 证据新鲜度：关键 Evidence 须绑定其对象与时间；Evidence 产生后对象文件再发生变更，该 Evidence 自动失效（stale），重新验证前不得用于 Gate 或交付判断。修改前对 `docs/architecture/MODULE_REGISTRY.md` 与项目状态做有界检索，变更后对应事实视为待更新；
+7. 分离授权：commit、push、部署/发布、重启/迁移、数据写入是相互独立的授权动作——逐项授权、逐项执行、逐项读回真实结果（diff、状态、日志）、逐项汇报；任何一项的授权不覆盖下一项，读回不得以「假定成功」替代；
+8. 风险导向复审：高风险或 L3+ 变更在实现前使用独立子代理复审，按风险选择 1-3 个视角（安全、兼容、测试充分性、数据影响），不机械全量；复审发现的问题按严重度处理，复审通过不等于 Gate 授权。
 
 详细规则只在任务触及时加载对应标准，不在根入口重复展开。
 
 进度同步遵循 `docs/governance/PROGRESS_SYNCHRONIZATION_STANDARD.md`：在任务开始、有效里程碑、阻塞 / 取消 / 失败 / 回滚、完成和合法阶段转换时更新项目文档；不为每个工具调用写日志，不把未经验证推理写入 Project Memory。
+
+会话交接检查点：会话即将结束、切换宿主/工具，或用户要求交接时，向 `PROJECT_STATE.md` 写入最小交接块（当前状态、未完成事项、唯一下一步、验证方式）；交接块必须从已接受状态与真实 Evidence 生成。恢复工作时先读交接块，再与磁盘现状核对，不得直接信任交接块而跳过核对。
+
+记忆隐私边界：Project Memory 与交接记录只写事实、决策、结论与指针（文件路径、commit hash、链接），不写入密钥、token、完整对话原文或完整 diff。
 
 跨项目 AI CTO 使用反馈按需遵循 `docs/governance/PROJECT_USAGE_FEEDBACK_SYNC_STANDARD.md`：仅在用户明确要求、项目已授权或出现需要复盘的有效检查点时，生成脱敏 Feedback；不要求每个项目、每次对话都创建记录。
 
@@ -153,14 +165,16 @@ Preflight → Freeze → Authorized Action → Readback → Postflight
 
 ## 11. Response Contract
 
-所有进入 AI CTO 的非 L0 响应应简要说明：
+L1–L2：先输出一行路由（格式见第 4 节路由说明），随后直接交付结果，不暂停等待；仅在阻塞、异常或需要用户决策时补充 Evidence 与 Approval 字段。
+
+L3–L4、Gate 决策及高保障交付：输出完整契约：
 
 ```text
 Route
 Current Stage / State
 Current Result
 Context Scope
-Codex Host Surface
+Host Surface
 Evidence / Confidence / Limitations
 Unique Next Action
 Approval Required: YES / NO
@@ -187,6 +201,8 @@ Snapshot → Observation → Analysis → Optimization Proposal
 
 ## 14. Current Version
 
-当前工作分支：`v2-codex-native`；发布标签：`v2.0.0-codex-native`。v1 基线：Git tag `v1.0.0-governance-baseline`。
+当前工作版本：`v2.1.1`；v2 基线：`v2.0.0-codex-native`；v1 基线：Git tag `v1.0.0-governance-baseline`。
 
-v2 的目标是让 Codex 按 AI CTO 治理工作，而不是让 AI CTO 重新实现 Codex。
+v2.1.1：吸收 codex-long-term-assistant-skills（LTA V7.10.0）实践——证据新鲜度、分离授权、风险导向复审、会话交接检查点、记忆隐私边界、响应契约分级、显式停止条件，并将宿主措辞通用化（ZCode / Codex 双宿主）。
+
+v2 的目标是让宿主 Agent 按 AI CTO 治理工作，而不是让 AI CTO 重新实现宿主。
