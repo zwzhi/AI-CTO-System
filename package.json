@@ -1,6 +1,7 @@
 {
   "name": "ai-cto-system-runtime-foundation",
   "private": true,
+  "license": "Apache-2.0",
   "type": "module",
   "scripts": {
     "test": "node --experimental-strip-types --test runtime/tests/runtime-foundation.test.ts runtime/tests/single-agent-runtime.test.ts runtime/tests/mock-codex-capability.test.ts runtime/tests/documentation-capability.test.ts runtime/tests/code-analysis-capability.test.ts runtime/tests/testing-capability.test.ts runtime/tests/code-modification-capability.test.ts runtime/tests/execution-routing.test.ts runtime/tests/controlled-runtime-handoff.test.ts runtime/tests/approved-documentation-execution.test.ts runtime/tests/task-execution-envelope.test.ts runtime/tests/review-profile.test.ts runtime/tests/checkpoint.test.ts self-evolution/self-evolution-mvp.test.ts optimization-execution/optimization-execution-mvp.test.ts optimization-execution/real-target/real-target-integration.test.ts"
