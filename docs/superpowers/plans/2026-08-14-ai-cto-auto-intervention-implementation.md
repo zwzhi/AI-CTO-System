@@ -277,7 +277,7 @@ git commit -m "docs: sync AI CTO automatic intervention entry"
 
 ~~~powershell
 $source = 'D:\AI Project\AI-CTO-System\skills\ai-cto-system'
-$destination = 'C:\Users\白名单\.codex\skills\ai-cto-system'
+$destination = '~.codex\skills\ai-cto-system'
 Get-Item -LiteralPath $source
 Get-Item -LiteralPath $destination -Force
 ~~~

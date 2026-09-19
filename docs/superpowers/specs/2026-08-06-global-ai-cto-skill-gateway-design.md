@@ -43,7 +43,7 @@ D:\AI Project\AI-CTO-System\skills\ai-cto-system\
 Discovery path:
 
 ```text
-C:\Users\白名单\.codex\skills\ai-cto-system
+~.codex\skills\ai-cto-system
     -> NTFS Junction ->
 D:\AI Project\AI-CTO-System\skills\ai-cto-system
 ```

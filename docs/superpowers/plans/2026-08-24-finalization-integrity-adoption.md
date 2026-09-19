@@ -118,7 +118,7 @@ State that this integration does not implement or trigger model switching; Phase
 Run:
 
 ```powershell
-Get-FileHash C:\Users\白名单\.codex\skills\ai-cto-system\SKILL.md,D:\AI Project\AI-CTO-System\skills\ai-cto-system\SKILL.md -Algorithm SHA256
+Get-FileHash ~.codex\skills\ai-cto-system\SKILL.md,D:\AI Project\AI-CTO-System\skills\ai-cto-system\SKILL.md -Algorithm SHA256
 ```
 
 - [ ] **Step 5: Commit**

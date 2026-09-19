@@ -13,7 +13,7 @@
 - Design authority: `docs/superpowers/specs/2026-08-06-global-ai-cto-skill-gateway-design.md`, Design ID `SYS-L5-SKILL-GATEWAY-001`.
 - Canonical repository: `D:\AI Project\AI-CTO-System`.
 - Canonical Skill source after merge: `D:\AI Project\AI-CTO-System\skills\ai-cto-system`.
-- User discovery path: `C:\Users\白名单\.codex\skills\ai-cto-system`.
+- User discovery path: `~.codex\skills\ai-cto-system`.
 - The repository remains the single source of truth; do not copy the Skill into the user Skill directory.
 - The global Skill is a thin Layer 5 entry gateway extending the existing Intent Gateway/Runtime entry surface; do not add a Phase, Module, Runtime contract, Agent, Capability record, Plugin, Provider, MCP integration, model call, network call, or production behavior.
 - Explicit opt-out overrides inferred activation. Support request-scoped and conversation-scoped opt-out plus explicit re-enable with `AI_CTO_MODE: ON`.
@@ -46,7 +46,7 @@
 ### Explicitly forbidden modifications
 
 - Root `README.md`, root `SKILL.md`, Manifesto, ADRs, Gates, lifecycle definitions, Capability Registry, Knowledge Base, Runtime Core, Workflow, Task, Agent, Permission, and Budget code.
-- Any file under `C:\Users\白名单\.codex\skills` except the single verified Junction named `ai-cto-system` created after merge.
+- Any file under `~.codex\skills` except the single verified Junction named `ai-cto-system` created after merge.
 - Any Git remote configuration or GitHub repository.
 
 ---
